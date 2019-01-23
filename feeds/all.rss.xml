@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>もくもくブログ</title><link>https://muunyblue.github.io/</link><description></description><lastBuildDate>Fri, 21 Dec 2018 13:41:01 +0900</lastBuildDate><item><title>受託開発からスタートアップにTwitter転職した話</title><link>https://muunyblue.github.io/214cfbe603b7f9f9bc005d5f53f7a1d3.html</link><description>&lt;p&gt;今年の10月に最近流行りのTwitter転職をしました。受託開発の中小企業からスタートアップへの転職です。&lt;/p&gt;
-&lt;p&gt;自分にとって転職はなかなか大きな出来事で今年は激動の年だったので今までとこれから、それと転職について年の瀬なので今年の振り返りとして記事にまとめてみます。&lt;/p&gt;
-&lt;h1&gt;Twitter転職&lt;/h1&gt;
-&lt;p&gt;最近はひよこになんとかというハッシュタグが流行っていますが、自分のときはまだなかったので、転職したい〜とつぶやいたところ昔からフォローし合っていた方から🍣食べに行こうと言われて付いていって無事転職と相成りました …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">yuya yano</dc:creator><pubDate>Fri, 21 Dec 2018 13:41:01 +0900</pubDate><guid isPermaLink="false">tag:muunyblue.github.io,2018-12-21:/214cfbe603b7f9f9bc005d5f53f7a1d3.html</guid><category>Poem</category></item><item><title>Zen Keyboard Build log</title><link>https://muunyblue.github.io/3a1f85dfef891b2a3685ccb35efa807e.html</link><description>&lt;p&gt;&lt;img alt="Zen Keyboard" src="https://pbs.twimg.com/media/Dk7SEiLU8AAAqTr.jpg"&gt;&lt;/p&gt;
+<rss version="2.0"><channel><title>もくもくブログ</title><link>https://muunyblue.github.io/</link><description></description><lastBuildDate>Wed, 23 Jan 2019 21:41:01 +0900</lastBuildDate><item><title>普通のTwitter転職</title><link>https://muunyblue.github.io/214cfbe603b7f9f9bc005d5f53f7a1d3.html</link><description>&lt;p&gt;インフルを発症してだいぶ落ち着いてきたので転職エントリでも書いてみることにしました。&lt;/p&gt;
+&lt;p&gt;よくありそうな受託開発の会社からスタートアップへの転職話です。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;私は大学の頃に物理学を選考していて、複雑怪奇な数式を見ると妙にテンションが上ってしまうような
+性分であったので受託開発時代は主に数値計算系の業務をしていました。
+使用していた主な言語は頻度順に、C、C++、Fortranです。&lt;/p&gt;
+&lt;p&gt;ちなみに私は大学の頃すごく理解度が低いままC言語を書いてしまっていたので …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">yuya yano</dc:creator><pubDate>Wed, 23 Jan 2019 21:41:01 +0900</pubDate><guid isPermaLink="false">tag:muunyblue.github.io,2019-01-23:/214cfbe603b7f9f9bc005d5f53f7a1d3.html</guid><category>Poem</category></item><item><title>Zen Keyboard Build log</title><link>https://muunyblue.github.io/3a1f85dfef891b2a3685ccb35efa807e.html</link><description>&lt;p&gt;&lt;img alt="Zen Keyboard" src="https://pbs.twimg.com/media/Dk7SEiLU8AAAqTr.jpg"&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img alt="Zen Keyboard LED" src="https://pbs.twimg.com/media/DlFqdWxU8AA1VlS.jpg"&gt;&lt;/p&gt;
 &lt;p&gt;LEDの輝きと黒の透過キーキャップを活かして中二ぽい感じに仕上げてみました。&lt;/p&gt;
 &lt;p&gt;自分が感じたZen Keyboardの特徴です。&lt;/p&gt;
