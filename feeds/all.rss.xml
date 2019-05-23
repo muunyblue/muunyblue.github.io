@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>もくもくブログ</title><link>https://muunyblue.github.io/</link><description></description><lastBuildDate>Wed, 23 Jan 2019 21:41:01 +0900</lastBuildDate><item><title>普通のTwitter転職</title><link>https://muunyblue.github.io/214cfbe603b7f9f9bc005d5f53f7a1d3.html</link><description>&lt;p&gt;インフルを発症してだいぶ落ち着いてきたので転職エントリでも書いてみることにしました。&lt;/p&gt;
+<rss version="2.0"><channel><title>もくもくブログ</title><link>https://muunyblue.github.io/</link><description></description><lastBuildDate>Fri, 24 May 2019 01:41:01 +0900</lastBuildDate><item><title>React Hooks: useReducer &amp; Context API with TypeScript</title><link>https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html</link><description>&lt;p&gt;最近React Hooksに入門してみていて、reduxを意識したuseReducerというAPIと
+Context APIが気になったので素振りしてみました。&lt;/p&gt;
+&lt;p&gt;あとFunctionalに書けるHooksとTypeScriptは相性が良いのではないかと思ったので
+すべてTypeScriptで書いていきます。&lt;/p&gt;
+&lt;h1&gt;canvas animation framework …&lt;/h1&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">yuya yano</dc:creator><pubDate>Fri, 24 May 2019 01:41:01 +0900</pubDate><guid isPermaLink="false">tag:muunyblue.github.io,2019-05-24:/8eb51d0a68e9373df41f88e5b551d4a3.html</guid><category>React</category><category>Hooks</category><category>TypeScript</category></item><item><title>普通のTwitter転職</title><link>https://muunyblue.github.io/214cfbe603b7f9f9bc005d5f53f7a1d3.html</link><description>&lt;p&gt;インフルを発症してだいぶ落ち着いてきたので転職エントリでも書いてみることにしました。&lt;/p&gt;
 &lt;p&gt;よくありそうな受託開発の会社からスタートアップへの転職話です。&lt;/p&gt;
 &lt;hr&gt;
 &lt;p&gt;私は大学の頃に物理学を選考していて、複雑怪奇な数式を見ると妙にテンションが上ってしまうような

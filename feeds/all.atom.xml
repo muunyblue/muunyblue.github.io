@@ -1,5 +1,276 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>もくもくブログ</title><link href="https://muunyblue.github.io/" rel="alternate"></link><link href="https://muunyblue.github.io/feeds/all.atom.xml" rel="self"></link><id>https://muunyblue.github.io/</id><updated>2019-01-23T21:41:01+09:00</updated><entry><title>普通のTwitter転職</title><link href="https://muunyblue.github.io/214cfbe603b7f9f9bc005d5f53f7a1d3.html" rel="alternate"></link><published>2019-01-23T21:41:01+09:00</published><updated>2019-01-23T21:41:01+09:00</updated><author><name>yuya yano</name></author><id>tag:muunyblue.github.io,2019-01-23:/214cfbe603b7f9f9bc005d5f53f7a1d3.html</id><summary type="html">&lt;p&gt;インフルを発症してだいぶ落ち着いてきたので転職エントリでも書いてみることにしました。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>もくもくブログ</title><link href="https://muunyblue.github.io/" rel="alternate"></link><link href="https://muunyblue.github.io/feeds/all.atom.xml" rel="self"></link><id>https://muunyblue.github.io/</id><updated>2019-05-24T01:41:01+09:00</updated><entry><title>React Hooks: useReducer &amp; Context API with TypeScript</title><link href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html" rel="alternate"></link><published>2019-05-24T01:41:01+09:00</published><updated>2019-05-24T01:41:01+09:00</updated><author><name>yuya yano</name></author><id>tag:muunyblue.github.io,2019-05-24:/8eb51d0a68e9373df41f88e5b551d4a3.html</id><summary type="html">&lt;p&gt;最近React Hooksに入門してみていて、reduxを意識したuseReducerというAPIと
+Context APIが気になったので素振りしてみました。&lt;/p&gt;
+&lt;p&gt;あとFunctionalに書けるHooksとTypeScriptは相性が良いのではないかと思ったので
+すべてTypeScriptで書いていきます。&lt;/p&gt;
+&lt;h1&gt;canvas animation framework …&lt;/h1&gt;</summary><content type="html">&lt;p&gt;最近React Hooksに入門してみていて、reduxを意識したuseReducerというAPIと
+Context APIが気になったので素振りしてみました。&lt;/p&gt;
+&lt;p&gt;あとFunctionalに書けるHooksとTypeScriptは相性が良いのではないかと思ったので
+すべてTypeScriptで書いていきます。&lt;/p&gt;
+&lt;h1&gt;canvas animation framework&lt;/h1&gt;
+&lt;p&gt;&lt;img alt="demo" src="https://raw.githubusercontent.com/yymm/hooks-canvas-sample/master/1000-particle-example.gif"&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/yymm/hooks-canvas-sample"&gt;yymm/hooks-canvas-sample&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;素振りするにあたりお題があったほうが良いので、今回はcanvasでanimation framework的なものを作ることにしました。&lt;/p&gt;
+&lt;p&gt;※ 動いているアニメーションはそのframeworkに乱数と円軌道を使った描画関数を適当にのせたものです。&lt;/p&gt;
+&lt;h2&gt;仕組み&lt;/h2&gt;
+&lt;p&gt;menuでrequestAnimationFrameを使用してアニメーションを開始、
+Context APIを利用してframe等のデータをcanvasに渡してアニメーションを描画します。&lt;/p&gt;
+&lt;p&gt;データはuseReducerとContext APIを使って管理、コンポーネントは
+HooksのFunctional Componentで実装しています。&lt;/p&gt;
+&lt;h1&gt;storeの実装&lt;/h1&gt;
+&lt;p&gt;useReducerとContext APIを使ったデータ層の仕組みをstoreと名付けて実装してみました。&lt;/p&gt;
+&lt;p&gt;内部は大まかにuseReducerに使うReducer部分と、それらを束ねて提供するContext APIのProviderに分かれています。&lt;/p&gt;
+&lt;h2&gt;Reducer&lt;/h2&gt;
+&lt;p&gt;useReducerの第一引数にはreducerを渡します、reducerの型は以下の通りです。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;type&lt;/span&gt; &lt;span class="nt"&gt;Reducer&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;S&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;A&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nt"&gt;prevState&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nt"&gt;S&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;action&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nt"&gt;A&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="nt"&gt;S&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;この型に合わせたreducerを作成します。型定義はReactのDefinitelyTypedを
+見るとわかりますので定義ジャンプ機能で逐一確認すると良いです。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kr"&gt;interface&lt;/span&gt; &lt;span class="nx"&gt;IStore&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nx"&gt;startTime&lt;/span&gt;: &lt;span class="kt"&gt;number&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nx"&gt;frame&lt;/span&gt;: &lt;span class="kt"&gt;number&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nx"&gt;fps&lt;/span&gt;: &lt;span class="kt"&gt;number&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nx"&gt;spendTime&lt;/span&gt;: &lt;span class="kt"&gt;number&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nx"&gt;ctx?&lt;/span&gt;: &lt;span class="kt"&gt;CanvasRenderingContext2D&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="kr"&gt;const&lt;/span&gt; &lt;span class="nx"&gt;initialStore&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nx"&gt;frame&lt;/span&gt;: &lt;span class="kt"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="nx"&gt;fps&lt;/span&gt;: &lt;span class="kt"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="nx"&gt;spendTime&lt;/span&gt;: &lt;span class="kt"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="nx"&gt;startTime&lt;/span&gt;: &lt;span class="kt"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="nx"&gt;ctx&lt;/span&gt;: &lt;span class="kt"&gt;null&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+
+&lt;span class="kr"&gt;interface&lt;/span&gt; &lt;span class="nx"&gt;IAction&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nx"&gt;payload&lt;/span&gt;: &lt;span class="kt"&gt;IStore&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nx"&gt;error?&lt;/span&gt;: &lt;span class="kt"&gt;boolean&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="kr"&gt;const&lt;/span&gt; &lt;span class="nx"&gt;reducer&lt;/span&gt;: &lt;span class="kt"&gt;React.Reducer&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;IStore&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;IAction&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;state&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;action&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;&lt;span class="nx"&gt;action&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;payload&lt;/span&gt; &lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;見ての通りreducerはActionに入ってきたpayloadを素通しする手抜き実装です、
+ActionTypeを定義してswitchする実装が正攻法です。Enumを使った実装パターンがあるのでそちらも以下に紹介します。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kr"&gt;enum&lt;/span&gt; &lt;span class="nx"&gt;ActionType&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nx"&gt;UPDATE_CANVAS_CTX&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;UPDATE_CANVAS_CTX&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="nx"&gt;UPDATE_FRAME&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;UPDATE_FRAME&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="kr"&gt;interface&lt;/span&gt; &lt;span class="nx"&gt;IAction&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nx"&gt;type&lt;/span&gt;: &lt;span class="kt"&gt;ActionType&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nx"&gt;payload&lt;/span&gt;: &lt;span class="kt"&gt;IStore&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="kr"&gt;const&lt;/span&gt; &lt;span class="nx"&gt;reducer&lt;/span&gt;: &lt;span class="kt"&gt;React.Reducer&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;IStore&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;IAction&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;state&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;action&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;switch&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;action&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="nx"&gt;ActionType.UPDATE_CANVAS_CTX&lt;/span&gt;:
+      &lt;span class="kt"&gt;return&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="p"&gt;...&lt;/span&gt;&lt;span class="nx"&gt;state&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="nx"&gt;ctx&lt;/span&gt;: &lt;span class="kt"&gt;action.payload.ctx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="p"&gt;};&lt;/span&gt;
+    &lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="nx"&gt;ActionType.UPDATE_FRAME&lt;/span&gt;:
+      &lt;span class="kt"&gt;return&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="p"&gt;...&lt;/span&gt;&lt;span class="nx"&gt;state&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="nx"&gt;frame&lt;/span&gt;: &lt;span class="kt"&gt;action.payload.frame&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="p"&gt;};&lt;/span&gt;
+    &lt;span class="k"&gt;default&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+      &lt;span class="k"&gt;throw&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nb"&gt;Error&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Provider HOC&lt;/h2&gt;
+&lt;p&gt;Context APIのProviderをHOCとして実装するパターンが存在します。
+これによってProviderの利用側がvalueを生成しないでよくなるので責務がきれいに分離されます。&lt;/p&gt;
+&lt;p&gt;TypeScriptで書く場合は型を指定する必要がります、今回はuseReducerの戻り値をまとめたStoreWithActionという
+型を作成してContextに入れています。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kr"&gt;interface&lt;/span&gt; &lt;span class="nx"&gt;StoreWithAction&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nx"&gt;state&lt;/span&gt;: &lt;span class="kt"&gt;IStore&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nx"&gt;dispatch&lt;/span&gt;: &lt;span class="kt"&gt;React.Dispatch&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;IAction&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="kr"&gt;const&lt;/span&gt; &lt;span class="nx"&gt;Store&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;React&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;createContext&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;StoreWithAction&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
+  &lt;span class="nx"&gt;state&lt;/span&gt;: &lt;span class="kt"&gt;initialStore&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="nx"&gt;dispatch&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{},&lt;/span&gt;
+&lt;span class="p"&gt;});&lt;/span&gt;
+
+&lt;span class="kr"&gt;const&lt;/span&gt; &lt;span class="nx"&gt;StoreProvider&lt;/span&gt;: &lt;span class="kt"&gt;React.FC&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;React&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Props&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="p"&gt;{}&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;props&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="kr"&gt;const&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;state&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;dispatch&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;React&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;useReducer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;reducer&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;initialStore&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;
+    &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;Store&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Provider&lt;/span&gt; &lt;span class="nx"&gt;value&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;{{&lt;/span&gt; &lt;span class="nx"&gt;state&lt;/span&gt;: &lt;span class="kt"&gt;state&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;dispatch&lt;/span&gt;: &lt;span class="kt"&gt;dispatch&lt;/span&gt; &lt;span class="p"&gt;}}&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;props&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;children&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="err"&gt;/Store.Provider&amp;gt;&lt;/span&gt;
+  &lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Context APIはHooksのAPIと組み合わせると大変有用です、
+Contextを使用するコンポーネントの全てでリアクティブにデータを取得・更新することができるようになります。&lt;/p&gt;
+&lt;p&gt;メモ: Contextに入れるdispatchの初期値は空の関数を使うことでTypeScriptのエラーを回避できました、
+型が一致していないように思うので少し不安ですがProviderとして使われる際には必ずdispatch関数が入るので問題ないと思います。&lt;/p&gt;
+&lt;h1&gt;Componentの実装&lt;/h1&gt;
+&lt;p&gt;アプリケーションのルートコンポーネントにあたるApp.tsxは以下のようになっています。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="kr"&gt;as&lt;/span&gt; &lt;span class="nx"&gt;React&lt;/span&gt; &lt;span class="nx"&gt;from&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;react&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="nx"&gt;Canvas&lt;/span&gt; &lt;span class="nx"&gt;from&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;./canvas&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="nx"&gt;Menu&lt;/span&gt; &lt;span class="nx"&gt;from&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;./menu&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;StoreProvider&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="nx"&gt;from&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;./store&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="kr"&gt;const&lt;/span&gt; &lt;span class="nx"&gt;App&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;
+    &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;StoreProvider&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;Canvas&lt;/span&gt; &lt;span class="o"&gt;/&amp;gt;&lt;/span&gt;
+      &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;Menu&lt;/span&gt; &lt;span class="o"&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="err"&gt;/StoreProvider&amp;gt;&lt;/span&gt;
+  &lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+
+&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;App&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;これでStoreProviderの子コンポーネントはContext APIを使ってstoreのデータにアクセスすることができます、非常にシンプル。&lt;/p&gt;
+&lt;h2&gt;Menu&lt;/h2&gt;
+&lt;p&gt;MenuコンポーネントではrequestAnimationFrameを発火してframeを+1していきます、
+開始時間を記録しておくことでfpsも測定します(requestAnimationFrameは60fpsで動作しようとします)。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;const Menu = () =&amp;gt; {
+  const { state, dispatch } = React.useContext(Store);
+
+  const [requestID, setRequestID] = React.useState(0);
+
+  const animation = () =&amp;gt; {
+    const now = new Date().getTime();
+    const spendTime = (now - state.startTime) / 1000;
+    state.frame += 1;
+    state.fps = state.frame / spendTime;
+    state.spendTime = spendTime;
+    dispatch({ payload: state });
+    const requestID = window.requestAnimationFrame(animation);
+    setRequestID(requestID);
+  };
+
+  const start = () =&amp;gt; {
+    state.start = true;
+    state.startTime = new Date().getTime();
+    dispatch({ payload: state });
+    const requestID = window.requestAnimationFrame(animation);
+    setRequestID(requestID);
+  };
+
+  const stop = () =&amp;gt; {
+    window.cancelAnimationFrame(requestID);
+  };
+
+  return (
+    &lt;span class="nt"&gt;&amp;lt;div&amp;gt;&lt;/span&gt;
+      &lt;span class="nt"&gt;&amp;lt;div&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;h3&amp;gt;&lt;/span&gt;Menu&lt;span class="nt"&gt;&amp;lt;/h3&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;button&lt;/span&gt; &lt;span class="na"&gt;onClick=&lt;/span&gt;&lt;span class="s"&gt;{()&lt;/span&gt; &lt;span class="err"&gt;=&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt; start()}&amp;gt;start&lt;span class="nt"&gt;&amp;lt;/button&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;button&lt;/span&gt; &lt;span class="na"&gt;onClick=&lt;/span&gt;&lt;span class="s"&gt;{()&lt;/span&gt; &lt;span class="err"&gt;=&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt; stop()}&amp;gt;stop&lt;span class="nt"&gt;&amp;lt;/button&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;TIME: {float2str(state.spendTime, 0)} sec&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;{float2str(state.fps)} FPS&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+      &lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+  );
+};
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Canvas&lt;/h2&gt;
+&lt;p&gt;Menuで更新されるframeを監視してアニメーションをします。
+状態の更新を監視するにはuseEffectを使います。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;const Canvas = () =&amp;gt; {
+  const { state, dispatch } = React.useContext(Store);
+
+  const canvasRef = React.useRef&lt;span class="nt"&gt;&amp;lt;HTMLCanvasElement&amp;gt;&lt;/span&gt;(null);
+  React.useEffect(() =&amp;gt; {
+    if (canvasRef.current) {
+      state.ctx = canvasRef.current.getContext(&amp;quot;2d&amp;quot;);
+      dispatch({ payload: state });
+    }
+  }, [canvasRef]);
+
+  React.useEffect(() =&amp;gt; {
+    draw(state);
+  }, [state.frame]);
+
+  return (
+    &lt;span class="nt"&gt;&amp;lt;div&amp;gt;&lt;/span&gt;
+      &lt;span class="nt"&gt;&amp;lt;canvas&lt;/span&gt;
+        &lt;span class="na"&gt;ref=&lt;/span&gt;&lt;span class="s"&gt;{canvasRef}&lt;/span&gt;
+        &lt;span class="na"&gt;width=&lt;/span&gt;&lt;span class="s"&gt;{state.canvasWidth}&lt;/span&gt;
+        &lt;span class="na"&gt;height=&lt;/span&gt;&lt;span class="s"&gt;{state.canvasHeight}&lt;/span&gt;
+      &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+  );
+};
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;draw関数がcanvas描画の本体です。ここにframeによって変化するような描画関数を
+仕込めばアニメーションが完成します。最初にあげたgifの例は以下のようなコードです。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kr"&gt;const&lt;/span&gt; &lt;span class="nx"&gt;drawParticles&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;state&lt;/span&gt;: &lt;span class="kt"&gt;IStore&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="kr"&gt;const&lt;/span&gt; &lt;span class="nx"&gt;ctx&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;state&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;ctx&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nx"&gt;state&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;ctx&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;clearRect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;600&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;400&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="nx"&gt;state&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;particles&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;particle&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kr"&gt;const&lt;/span&gt; &lt;span class="nx"&gt;vframe&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;state&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;frame&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// velocity = 10 px/sec&lt;/span&gt;
+    &lt;span class="nx"&gt;ctx&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;beginPath&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="nx"&gt;particle&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;x&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt;
+      &lt;span class="nx"&gt;particle&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;r&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nb"&gt;Math&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;cos&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nx"&gt;vframe&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nb"&gt;Math&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;PI&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="mi"&gt;180&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;particle&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="nx"&gt;particle&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;y&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt;
+      &lt;span class="nx"&gt;particle&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;r&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nb"&gt;Math&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;sin&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="nx"&gt;vframe&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nb"&gt;Math&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;PI&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="mi"&gt;180&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;particle&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;arg&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="kr"&gt;const&lt;/span&gt; &lt;span class="nx"&gt;rad&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;
+      &lt;span class="nx"&gt;particle&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;size&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
+      &lt;span class="nb"&gt;Math&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;abs&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;Math&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;cos&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nx"&gt;vframe&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nb"&gt;Math&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;PI&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="mi"&gt;180&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;particle&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;size_arg&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+    &lt;span class="kr"&gt;const&lt;/span&gt; &lt;span class="nx"&gt;startAng&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kr"&gt;const&lt;/span&gt; &lt;span class="nx"&gt;endAng&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;Math&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;PI&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="nx"&gt;ctx&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;arc&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;particle&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;particle&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;rad&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;startAng&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;endAng&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="nx"&gt;ctx&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;fill&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+  &lt;span class="p"&gt;});&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Canvasコンポーネントのコードを見ると、useRefでCanvasのrefを取得しています。
+HooksからCanvasを扱う場合はこの処理が必要になります。&lt;/p&gt;
+&lt;p&gt;refから取得できるctxをstoreに入れるとdraw関数がctxを参照できて、
+draw関数とCanvasコンポーネントの依存が分離されるので便利です。&lt;/p&gt;
+&lt;h1&gt;まとめと感想&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;React単体でここまでreduxライクに書けるのはすごい&lt;/li&gt;
+&lt;li&gt;HooksのAPIはシンプルで書きやすい&lt;/li&gt;
+&lt;li&gt;APIはシンプルで柔軟に設計されているので実装者の設計力が試されている気がする&lt;/li&gt;
+&lt;li&gt;HooksとTypeScriptの相性は良さそう&lt;/li&gt;
+&lt;li&gt;ライブラリの型定義は参考になるのでgoto definitionしよう&lt;/li&gt;
+&lt;li&gt;TypeScriptの型推論強い&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Context APIの使いどころ&lt;/h2&gt;
+&lt;p&gt;あまり深く考えずにバケツリレーを回避する目的でContext APIを使う発想は微妙で
+本当に広くアクセスする必要のあるデータが必要なのか考えたほうが良いと思いました。&lt;/p&gt;
+&lt;p&gt;グローバルに使えるデータは便利ですが、その分コードの見通しを悪くする可能性があります。
+useReducerのみで事足りるケースかどうか見極めると良いと考えます。&lt;/p&gt;
+&lt;p&gt;今回のようにコンポーネント間での役割分担を明確にする名目で使うパターンはありかもしれないと感じました、
+他に用途があるとするとrouterを超えて共有する必要のあるデータ(Login情報やSession情報など)は
+Contextに入れると良さそうな感じがします。&lt;/p&gt;
+&lt;p&gt;Reduxもそうですが、銀の弾丸ではないのでしっかりと設計を考えて便利さやかっこよさに
+囚われてオーバーな技術選定にならないようにしていきたさみをあらためて感じました。&lt;/p&gt;
+&lt;p&gt;若干ポエムってしまいましたが、React単体でここまでできるのは肥大化しがちなbundleファイルを小さく保つ上でも良さを
+感じたので使っていこうと思っています、あとTypeScriptは一度使うとJSに戻るのをためらいたくなる効果がまじである...すごい...&lt;/p&gt;
+&lt;h1&gt;参考URL&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://reactjs.org/docs/hooks-intro.html"&gt;Introducing Hooks&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://levelup.gitconnected.com/usetypescript-a-complete-guide-to-react-hooks-and-typescript-db1858d1fb9c"&gt;useTypescript — A Complete Guide to React Hooks and TypeScript&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://medium.com/@jrwebdev/react-hooks-in-typescript-88fce7001d0d"&gt;React Hooks in TypeScript&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://dev.to/oieduardorabelo/react-hooks-how-to-create-and-update-contextprovider-1f68"&gt;React Hooks: How to create and update Context.Provider&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><category term="React"></category><category term="Hooks"></category><category term="TypeScript"></category></entry><entry><title>普通のTwitter転職</title><link href="https://muunyblue.github.io/214cfbe603b7f9f9bc005d5f53f7a1d3.html" rel="alternate"></link><published>2019-01-23T21:41:01+09:00</published><updated>2019-01-23T21:41:01+09:00</updated><author><name>yuya yano</name></author><id>tag:muunyblue.github.io,2019-01-23:/214cfbe603b7f9f9bc005d5f53f7a1d3.html</id><summary type="html">&lt;p&gt;インフルを発症してだいぶ落ち着いてきたので転職エントリでも書いてみることにしました。&lt;/p&gt;
 &lt;p&gt;よくありそうな受託開発の会社からスタートアップへの転職話です。&lt;/p&gt;
 &lt;hr&gt;
 &lt;p&gt;私は大学の頃に物理学を選考していて、複雑怪奇な数式を見ると妙にテンションが上ってしまうような
