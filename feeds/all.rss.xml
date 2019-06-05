@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>もくもくブログ</title><link>https://muunyblue.github.io/</link><description></description><lastBuildDate>Wed, 05 Jun 2019 22:50:00 +0900</lastBuildDate><item><title>ParcelではRustをimportして使える</title><link>https://muunyblue.github.io/f571b230f35658c8bd8c6348021e0b53.html</link><description>&lt;p&gt;タイトルのままなのですが、実際にはimportされたRustファイルはwasmに変換されます。&lt;/p&gt;
+<rss version="2.0"><channel><title>もくもくブログ</title><link>https://muunyblue.github.io/</link><description></description><lastBuildDate>Wed, 05 Jun 2019 22:50:00 +0900</lastBuildDate><item><title>ParcelではJavaScriptからRustをimportして使える</title><link>https://muunyblue.github.io/f571b230f35658c8bd8c6348021e0b53.html</link><description>&lt;p&gt;タイトルのままなのですが、実際にはimportされたRustファイルはwasmに変換されます。&lt;/p&gt;
 &lt;p&gt;
 &lt;a class="embedly-card" href="https://github.com/parcel-bundler/examples"&gt;embed.ly&lt;/a&gt;
 &lt;script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"&gt;&lt;/script&gt;
