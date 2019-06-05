@@ -4,6 +4,7 @@
 &lt;a class="embedly-card" href="https://github.com/parcel-bundler/examples"&gt;embed.ly&lt;/a&gt;
 &lt;script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"&gt;&lt;/script&gt;
 &lt;/p&gt;
+&lt;p&gt;このリポジトリを見ていてこの事実に気がついたのですが、Parcelの特徴であるノーコンフィグで手軽にrust+wasmを扱えるのは便利だと感じました。&lt;/p&gt;
 &lt;p&gt;コード片は上のリポジトリにありますが、実際に軽く手を動かして試してみました。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;add&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="nx"&gt;from&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;./main.rs&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 
