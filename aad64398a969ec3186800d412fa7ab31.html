@@ -62,34 +62,34 @@
 </ul>
 </footer><!-- /.post-info -->      <p><a href="http://blog.muuny-blue.info/f5cfbc876972bd0d031c8abc37344c28.html" title="プログラミング言語を作る前知識">前の記事(プログラミング言語を作る前知識)</a>でプログラミング言語少し作れる気がしてきたので、lexとyaccに軽く触れてみた。</p>
 <p>実際はflexとbisonを使っている。</p>
-<h1>lexの書き方</h1>
+<h1 id="lex">lexの書き方</h1>
 <p>lexのファイルには3つのブロックがあって、%%で区切って記述します。</p>
-<div class="highlight"><pre><span></span> -------------------------------------------------------
-| 定義部
-| オプションやincludeや変数宣言、マクロなどを記述します。
-| includeや変数宣言は%{...%}で囲って書きます。
-| yaccと組み合わせて使う場合、生成されるCソースを
-| インクルードすることがあるので、ここに記載します。 
-| オプションは%ではじめます。
-| %noyywrap
-| これは入力が1ファイルであることを示していて、よく使われます。
-| マクロは、「マクロ名  正規表現」で書きます。
- -------------------------------------------------------
-%%
- -------------------------------------------------------
-| ルール部
-| 「正規表現  対応するCコード」という記述方法でルールを書きます。
-| +や*などは正規表現の特殊文字なので、文字として使いたい場合は
-| \でエスケープしたり、&quot;&quot;で囲んで明示的に文字列として書きます。
-| 定義部で宣言したマクロは{}で囲うことで使えます。
- -------------------------------------------------------
-%%
- -------------------------------------------------------
-| ユーザーサブルーチン部
-| C言語のmain関数などを書きます。
-| yaccと組み合わせて使う場合は、main関数はyacc側に書くため
-| この部分はあまり書かないかもしれません。
- -------------------------------------------------------
+<div class="highlight"><pre><span></span> <span class="o">-------------------------------------------------------</span>
+<span class="o">|</span> 定義部
+<span class="o">|</span> オプションや<span class="k">include</span>や変数宣言、マクロなどを記述します。
+<span class="o">|</span> <span class="k">include</span>や変数宣言は<span class="o">%</span>{...<span class="o">%</span>}で囲って書きます。
+<span class="o">|</span> <span class="nv">yacc</span>と組み合わせて使う場合、生成される<span class="nv">C</span>ソースを
+<span class="o">|</span> インクルードすることがあるので、ここに記載します。 
+<span class="o">|</span> オプションは<span class="o">%</span>ではじめます。
+<span class="o">|</span> <span class="o">%</span><span class="nv">noyywrap</span>
+<span class="o">|</span> これは入力が<span class="mi">1</span>ファイルであることを示していて、よく使われます。
+<span class="o">|</span> マクロは、「マクロ名  正規表現」で書きます。
+ <span class="o">-------------------------------------------------------</span>
+<span class="o">%%</span>
+ <span class="o">-------------------------------------------------------</span>
+<span class="o">|</span> ルール部
+<span class="o">|</span> 「正規表現  対応する<span class="nv">C</span>コード」という記述方法でルールを書きます。
+<span class="o">|</span> <span class="o">+</span>や<span class="o">*</span>などは正規表現の特殊文字なので、文字として使いたい場合は
+<span class="o">|</span> \でエスケープしたり、<span class="s2">&quot;&quot;</span>で囲んで明示的に文字列として書きます。
+<span class="o">|</span> 定義部で宣言したマクロは{}で囲うことで使えます。
+ <span class="o">-------------------------------------------------------</span>
+<span class="o">%%</span>
+ <span class="o">-------------------------------------------------------</span>
+<span class="o">|</span> ユーザーサブルーチン部
+<span class="o">|</span> <span class="nv">C</span>言語の<span class="nv">main</span>関数などを書きます。
+<span class="o">|</span> <span class="nv">yacc</span>と組み合わせて使う場合は、<span class="nv">main</span>関数は<span class="nv">yacc</span>側に書くため
+<span class="o">|</span> この部分はあまり書かないかもしれません。
+ <span class="o">-------------------------------------------------------</span>
 </pre></div>
 
 
@@ -104,36 +104,36 @@ $ flex sample.l
 
 
 <p>lex.yy.cというファイルが出力されていればok。</p>
-<h1>yaccの書き方</h1>
+<h1 id="yacc">yaccの書き方</h1>
 <p>基本構造はlexと同じです。</p>
-<div class="highlight"><pre><span></span> -------------------------------------------------------
-| 定義部
-| includeや%union, %token, %typeなどを定義します。
-| includeはlexと同様に%{...%}で記述します。
-| %unionは、型定義に使います。
-| %tokenは、単にトークンを定義します。
-| %typeは、ルール部で使用する変数名を定義します。
-| &lt;&gt;で囲んでuniconの変数名を参照して記述することもできます。
- -------------------------------------------------------
-%%
- -------------------------------------------------------
-| ルール部
-| ルール定義のブロックは以下のよな構成になります。
-| 変換結果: 構成要素1 構成要素2 ...
-|         | (他の構成内容)
-|         { (マッチした際に実行されるCコード) }
-|         ;
-| ;は省略可能で、{}は構成内容につきそれぞれ定義できます。
- -------------------------------------------------------
-%%
- -------------------------------------------------------
-| ユーザーサブルーチン部
-| C言語のmain関数などを書きます。
-| 実際に入力を解析したりするのに使います。
-| 構文解析関数はyyparseです。
-| yyparse関数を使う際、yacc単体で利用するときは
-| 字句解析器としてyylex関数の実装が必要になります。
- -------------------------------------------------------
+<div class="highlight"><pre><span></span> <span class="o">-------------------------------------------------------</span>
+<span class="o">|</span> 定義部
+<span class="o">|</span> <span class="k">include</span>や<span class="o">%</span><span class="nv">union</span>, <span class="o">%</span><span class="nv">token</span>, <span class="o">%</span><span class="nv">type</span>などを定義します。
+<span class="o">|</span> <span class="k">include</span>は<span class="nv">lex</span>と同様に<span class="o">%</span>{...<span class="o">%</span>}で記述します。
+<span class="o">|</span> <span class="o">%</span><span class="nv">union</span>は、型定義に使います。
+<span class="o">|</span> <span class="o">%</span><span class="nv">token</span>は、単にトークンを定義します。
+<span class="o">|</span> <span class="o">%</span><span class="nv">type</span>は、ルール部で使用する変数名を定義します。
+<span class="o">|</span> <span class="o">&lt;&gt;</span>で囲んで<span class="nv">unicon</span>の変数名を参照して記述することもできます。
+ <span class="o">-------------------------------------------------------</span>
+<span class="o">%%</span>
+ <span class="o">-------------------------------------------------------</span>
+<span class="o">|</span> ルール部
+<span class="o">|</span> ルール定義のブロックは以下のよな構成になります。
+<span class="o">|</span> 変換結果: 構成要素<span class="mi">1</span> 構成要素<span class="mi">2</span> ...
+<span class="o">|</span>         <span class="o">|</span> <span class="ss">(</span>他の構成内容<span class="ss">)</span>
+<span class="o">|</span>         { <span class="ss">(</span>マッチした際に実行される<span class="nv">C</span>コード<span class="ss">)</span> }
+<span class="o">|</span>         <span class="c1">;</span>
+<span class="o">|</span> <span class="c1">;は省略可能で、{}は構成内容につきそれぞれ定義できます。</span>
+ <span class="o">-------------------------------------------------------</span>
+<span class="o">%%</span>
+ <span class="o">-------------------------------------------------------</span>
+<span class="o">|</span> ユーザーサブルーチン部
+<span class="o">|</span> <span class="nv">C</span>言語の<span class="nv">main</span>関数などを書きます。
+<span class="o">|</span> 実際に入力を解析したりするのに使います。
+<span class="o">|</span> 構文解析関数は<span class="nv">yyparse</span>です。
+<span class="o">|</span> <span class="nv">yyparse</span>関数を使う際、<span class="nv">yacc</span>単体で利用するときは
+<span class="o">|</span> 字句解析器として<span class="nv">yylex</span>関数の実装が必要になります。
+ <span class="o">-------------------------------------------------------</span>
 </pre></div>
 
 
@@ -146,25 +146,25 @@ $ bison -d sample.y
 
 
 <p>sample.tab.hとsample.tab.cというファイルが出力されていればok。</p>
-<h1>lexとyaccを組み合わせて使う</h1>
+<h1 id="lexyacc">lexとyaccを組み合わせて使う</h1>
 <p>yyparseが、yylexを必要としているように、lexとyaccは組み合わせ使うと便利です。</p>
-<h2>大域変数の利用パターン(変数)</h2>
+<h2 id="_1">大域変数の利用パターン(変数)</h2>
 <p>intやdoubleなどの変数を扱う場合に、lexとyaccの間で大域変数を使用して、lexの正規表現にマッチした変数を、yaccのunionと紐付けておくことができます。</p>
 <p>yaccでuniconで定義した変数は、lexで、<strong>yylval.変数名</strong>で参照できます。</p>
 <p>double型の足し算をするだけの単純な例です。</p>
 <p>lexファイル(sample.l)</p>
-<div class="highlight"><pre><span></span><span class="cm">%{</span>
-<span class="cm">#include &lt;stdio.h&gt;</span>
-<span class="cm">#include &lt;stdlib.h&gt;</span>
-<span class="cm">#include &quot;sample.tab.h&quot;</span>
-<span class="cm">%}</span>
-<span class="c">%%</span>
-<span class="p">[</span><span class="mi">0</span><span class="o">-</span><span class="mi">9</span><span class="p">]</span><span class="o">+\</span><span class="p">.[</span><span class="mi">0</span><span class="o">-</span><span class="mi">9</span><span class="p">]</span><span class="o">*</span> <span class="p">{</span>
-    <span class="n">yylval</span><span class="p">.</span><span class="n">double_value</span> <span class="p">=</span> <span class="n">atof</span><span class="p">(</span><span class="n">yytext</span><span class="p">);</span>
-    <span class="k">return</span> <span class="n">DOUBLE</span><span class="p">;</span>
-<span class="p">}</span>
-&quot;<span class="o">+</span>&quot;  <span class="p">{</span> <span class="k">return</span> <span class="n">ADD</span><span class="p">;</span> <span class="p">}</span>
-<span class="c">%%</span>
+<div class="highlight"><pre><span></span><span class="o">%</span>{
+#<span class="k">include</span> <span class="o">&lt;</span><span class="nv">stdio</span>.<span class="nv">h</span><span class="o">&gt;</span>
+#<span class="k">include</span> <span class="o">&lt;</span><span class="nv">stdlib</span>.<span class="nv">h</span><span class="o">&gt;</span>
+#<span class="k">include</span> <span class="s2">&quot;</span><span class="s">sample.tab.h</span><span class="s2">&quot;</span>
+<span class="o">%</span>}
+<span class="o">%%</span>
+[<span class="mi">0</span><span class="o">-</span><span class="mi">9</span>]<span class="o">+</span>\.[<span class="mi">0</span><span class="o">-</span><span class="mi">9</span>]<span class="o">*</span> {
+    <span class="nv">yylval</span>.<span class="nv">double_value</span> <span class="o">=</span> <span class="nv">atof</span><span class="ss">(</span><span class="nv">yytext</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="k">return</span> <span class="nv">DOUBLE</span><span class="c1">;</span>
+}
+<span class="s2">&quot;</span><span class="s">+</span><span class="s2">&quot;</span>  { <span class="k">return</span> <span class="nv">ADD</span><span class="c1">; }</span>
+<span class="o">%%</span>
 </pre></div>
 
 
@@ -203,7 +203,7 @@ $ bison -d sample.y
 
 <p>double_valをいうyaccで定義した型を、lexファイルでyylvalを介して参照しています。</p>
 <p>yaccファイルでは、%tokenを使ってDOUBLEとunionの変数を紐付けることで、自動的に型をつけるように指定しています。</p>
-<h1>簡単な計算機を作る</h1>
+<h1 id="_2">簡単な計算機を作る</h1>
 <p>計算機なので計算順序を正しく定義してあげるのが大事だと思います。計算順序を決めるのに、yaccの%left、%rightが役に立ちそうです。</p>
 <p>%leftは左結合規則を定義、%rightは右結合規則を定義できます。</p>
 <p>身近なところだと、足し算などは左結合、代入などは右結合です。</p>
@@ -301,7 +301,7 @@ $ ./cal
 
 
 <p>おぉ、ちゃんと動いてる風だ。</p>
-<h4>計算機の例が書いてあって参考にした記事</h4>
+<h4 id="_3">計算機の例が書いてあって参考にした記事</h4>
 <ul>
 <li><a href="http://kmaebashi.com/programmer/devlang/yacclex.html" title="プログラミング言語を作る/yaccとlex">プログラミング言語を作る/yaccとlex</a></li>
 <li><a href="http://d.hatena.ne.jp/hake/20110207/p1" title="bison &amp; flexメモ　その５ - はけの徒然日記">bison &amp; flexメモ　その５ - はけの徒然日記</a></li>
@@ -309,10 +309,10 @@ $ ./cal
 <li><a href="https://ja.wikipedia.org/wiki/Yacc" title="Yacc - Wikipedia">Yacc - Wikipedia</a></li>
 <li><a href="http://www.cs.man.ac.uk/~pjj/cs212/ho/node4.html" title="YACC">YACC</a></li>
 </ul>
-<h1>まとめ</h1>
+<h1 id="_4">まとめ</h1>
 <p>lexとyaccの記法について、わかってくれば計算機作れた。</p>
 <p>実際に言語を作るときは、yaccで即時評価するのでなく、ASTを作成することになるので、ややこしくなってくる。。</p>
-<h1>参考記事</h1>
+<h1 id="_5">参考記事</h1>
 <ul>
 <li><a href="http://kmaebashi.com/programmer/devlang/yacclex.html" title="プログラミング言語を作る/yaccとlex">プログラミング言語を作る/yaccとlex</a></li>
 <li><a href="http://www.hpcs.cs.tsukuba.ac.jp/~msato/lecture-note/comp-lecture/note7.html" title="プログラミング言語処理">プログラミング言語処理</a></li>
@@ -447,6 +447,14 @@ $ ./cal
         <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
         <ul>
 			    <li>
+                    <p>2019年 6月05日 PM 10:50<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/f571b230f35658c8bd8c6348021e0b53.html">
+                            ParcelではRustをimportして使える
+                        </a>
+                    </p>
+			    </li>
+			    <li>
                     <p>2019年 5月24日 AM 01:41<br />
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
@@ -475,14 +483,6 @@ $ ./cal
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
                             Minidoxビルドログ
-                        </a>
-                    </p>
-			    </li>
-			    <li>
-                    <p>2018年 1月16日 AM 10:32<br />
-			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
-                        <a href="https://muunyblue.github.io/520bae6649b42ff5a3c8c58b7fcfc5a9.html">
-                            Neovim/Vim8で快適Vue.js開発(Vue Language Server)
                         </a>
                     </p>
 			    </li>
@@ -518,6 +518,7 @@ $ ./cal
                 <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
                 <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/parcel.html">Parcel</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
                 <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
@@ -535,7 +536,7 @@ $ ./cal
                 <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
-                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
@@ -554,6 +555,12 @@ $ ./cal
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

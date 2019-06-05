@@ -43,6 +43,36 @@
             <header>
                 <div class="page-header">
                     <h1 class="entry-title">
+                        <a href="https://muunyblue.github.io/fd9e2ae32b53addc06c63208be3aaa43.html" rel="bookmark"
+                           title="Permalink to Pelicanのブログにsitemapを追加する方法 - Python">
+								<span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                            Pelicanのブログにsitemapを追加する方法 - Python
+                        </a>
+                </h1>
+                </div>
+            </header>
+
+            <div class="entry-content">
+<footer class="post-info">
+<ul>
+    <li class="published" title="2015-10-15T07:46:54+09:00">
+        <span>Date:</span>2015-10-15 木 (AM 07:46:54)
+    </li>
+<li><span>Tags:</span><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> <a href="https://muunyblue.github.io/tag/python.html">Python</a> </li>
+    <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
+</ul>
+</footer><!-- /.post-info -->            <p><a href="https://github.com/getpelican/pelican/wiki/Tips-n-Tricks#generate-sitemapxml" title="Tips n Tricks · getpelican/pelican Wiki">Tips n Tricks · getpelican/pelican Wiki</a></p>
+<p>こちらに方法がのっていたので実践してみた。</p>
+<h1 id="sitemaphtml">sitemap.htmlを作成</h1>
+<p>使っているテーマのtemplatesにsitemap ...</p>
+            <div class="bottom-fade">
+                <a href="https://muunyblue.github.io/fd9e2ae32b53addc06c63208be3aaa43.html"><div>read more</div></a>
+            </div>
+        </li>
+        <li><article class="hentry">
+            <header>
+                <div class="page-header">
+                    <h1 class="entry-title">
                         <a href="https://muunyblue.github.io/51fd081fb2f037078fc8a4e037daabe4.html" rel="bookmark"
                            title="Permalink to PelicanのTheme【作る編】 - Python">
 								<span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
@@ -66,12 +96,14 @@
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
 </footer><!-- /.post-info -->            <p><a href="http://blog.muuny-blue.info/4738a8f6fab937d899ae9631beab116f.html" title="PelicanのTheme【使う編】">前回</a>は人の作ったThemeを使う話でしたが、今回は作る話です。</p>
-<hr>
+<hr />
 <p>目次</p>
-<p>[TOC]</p>
-<h1>Themeを作成する</h1>
-<p>Pelicanのドキュメントはとても親切でThemeを作る場合のことも書いてあります。</p>
-<p><a href="http://docs.getpelican.com/en/3.6.3/themes.html" title="Creating themes — Pelican 3.6.3 documentation">Creating themes — Pelican …</a></p>
+<div class="toc">
+<ul>
+<li><a href="#theme">Themeを作成する</a></li>
+<li><a href="#themetips">Theme作成Tips</a><ul>
+<li><a href="#include-xxxhtml">include xxx.html</a></li>
+<li><a href="#if-pelicanconfpy">if ...</a></li></ul></li></ul></div>
             <div class="bottom-fade">
                 <a href="https://muunyblue.github.io/51fd081fb2f037078fc8a4e037daabe4.html"><div>read more</div></a>
             </div>
@@ -105,7 +137,7 @@
 </footer><!-- /.post-info -->            <p>Pythonには、<a href="http://daringfireball.net/projects/markdown/syntax" title="Daring Fireball: Markdown Syntax Documentation">Daring Fireball: Markdown</a>を実装したMarkdownというパッケージがあります。</p>
 <ul>
 <li><a href="http://pythonhosted.org/Markdown/index.html" title="Python Markdown">Python Markdown</a></li>
-<li><a href="https://pythonhosted.org/Markdown/reference.html" title="Library Reference — Python Markdown">Library Reference — Python …</a></li></ul>
+<li><a href="https://pythonhosted.org/Markdown/reference.html" title="Library Reference — Python Markdown">Library Reference — Python ...</a></li></ul>
             <div class="bottom-fade">
                 <a href="https://muunyblue.github.io/234e5dc39dc52740524f9d863bec963c.html"><div>read more</div></a>
             </div>
@@ -138,8 +170,8 @@
 </ul>
 </footer><!-- /.post-info -->            <p><a href="http://blog.muuny-blue.info/64517d8435994992e682b3e4aa0a0661.html" title="Pelicanでブログを始める最初の一歩">前回の記事</a>でPelicanをgh-pagesにデプロイする方法を書きましたが、PelicanはThemeがデフォルトで2つしかなくてパッとしません。</p>
 <p>デフォルトのThemeをカスタムして使う方法から、Themeリポジトリを利用する方法をまとめました。</p>
-<h1>デフォルトのTheme</h1>
-<p>notmyideaというThemeがデフォルトで使用できます。もう一つ"simple"というThemaがありますが …</p>
+<h1 id="theme">デフォルトのTheme</h1>
+<p>notmyideaというThemeがデフォルトで使用できます。もう一つ"simple"というThemaがありますが ...</p>
             <div class="bottom-fade">
                 <a href="https://muunyblue.github.io/4738a8f6fab937d899ae9631beab116f.html"><div>read more</div></a>
             </div>
@@ -173,41 +205,12 @@
 </footer><!-- /.post-info -->            <p>PelicanはPython製の静的サイトジェネレータ。</p>
 <p>このブログもPelicanで作られています。</p>
 <p>Pelicanでgh-pagesにブログをデプロイする方法をまとめました。</p>
-<h1>Pelicanのインストールとセットアップ</h1>
+<h1 id="pelican">Pelicanのインストールとセットアップ</h1>
 <p>Pythonをある程度触ったことのある人ならPelicanを使うのは簡単です。</p>
 <p>まず、Pelicanと必要なパッケージをインストールします。</p>
-<div class="highlight"><pre><span></span>$ pip install pelican …</pre></div>
+<div class="highlight"><pre><span></span>$ pip install pelican ...</pre></div>
             <div class="bottom-fade">
                 <a href="https://muunyblue.github.io/64517d8435994992e682b3e4aa0a0661.html"><div>read more</div></a>
-            </div>
-        </li>
-        <li><article class="hentry">
-            <header>
-                <div class="page-header">
-                    <h1 class="entry-title">
-                        <a href="https://muunyblue.github.io/bcf9d6bd14a2095866ce8c950b702341.html" rel="bookmark"
-                           title="Permalink to Node.jsでささっとSPA始める個人的なメモ">
-								<span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
-                            Node.jsでささっとSPA始める個人的なメモ
-                        </a>
-                </h1>
-                </div>
-            </header>
-
-            <div class="entry-content">
-<footer class="post-info">
-<ul>
-    <li class="published" title="2015-10-05T01:47:27+09:00">
-        <span>Date:</span>2015-10-05 月 (AM 01:47:27)
-    </li>
-<li><span>Tags:</span><a href="https://muunyblue.github.io/tag/asakatsu.html">Asakatsu</a> <a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> </li>
-    <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
-</ul>
-</footer><!-- /.post-info -->            <p>朝活#3</p>
-<p>※個人的なメモです、簡単なアプリしか想定していません。</p>
-<p>gulp, browserify, reactjs, coffee-script, sass(scss …</p>
-            <div class="bottom-fade">
-                <a href="https://muunyblue.github.io/bcf9d6bd14a2095866ce8c950b702341.html"><div>read more</div></a>
             </div>
         </li>
                 </ol><!-- /#posts-list -->
@@ -268,6 +271,14 @@
         <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
         <ul>
 			    <li>
+                    <p>2019年 6月05日 PM 10:50<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/f571b230f35658c8bd8c6348021e0b53.html">
+                            ParcelではRustをimportして使える
+                        </a>
+                    </p>
+			    </li>
+			    <li>
                     <p>2019年 5月24日 AM 01:41<br />
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
@@ -296,14 +307,6 @@
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
                             Minidoxビルドログ
-                        </a>
-                    </p>
-			    </li>
-			    <li>
-                    <p>2018年 1月16日 AM 10:32<br />
-			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
-                        <a href="https://muunyblue.github.io/520bae6649b42ff5a3c8c58b7fcfc5a9.html">
-                            Neovim/Vim8で快適Vue.js開発(Vue Language Server)
                         </a>
                     </p>
 			    </li>
@@ -339,6 +342,7 @@
                 <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
                 <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/parcel.html">Parcel</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
                 <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
@@ -356,7 +360,7 @@
                 <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
-                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
@@ -375,6 +379,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

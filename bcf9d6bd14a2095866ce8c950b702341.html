@@ -63,27 +63,27 @@
 </footer><!-- /.post-info -->      <p>朝活#3</p>
 <p>※個人的なメモです、簡単なアプリしか想定していません。</p>
 <p>gulp, browserify, reactjs, coffee-script, sass(scss), hamlで始めます。</p>
-<h1>ディレクトリ構成</h1>
+<h1 id="_1">ディレクトリ構成</h1>
 <p>srcにあるcoffee-script, haml, scssを編集して、そこをgulpでwatchします。</p>
 <p>dest/, *.htmlはgulpが勝手に作ります。libにはダウンロードしたCSS及びJSライブラリを入れる構成です。</p>
-<div class="highlight"><pre><span></span>.
-├── package.json
-├── gulpfile.coffee
-├── *.html
-├── dest
-│   ├── css
-│   └── js
-├── lib
-│   ├── css
-│   └── js
-└── src
-    ├── coffee
-    ├── haml
-    └── scss
+<div class="highlight"><pre><span></span><span class="p">.</span>
+<span class="err">├──</span> <span class="n">package</span><span class="p">.</span><span class="n">json</span>
+<span class="err">├──</span> <span class="n">gulpfile</span><span class="p">.</span><span class="n">coffee</span>
+<span class="err">├──</span> <span class="o">*</span><span class="p">.</span><span class="n">html</span>
+<span class="err">├──</span> <span class="n">dest</span>
+<span class="err">│  </span> <span class="err">├──</span> <span class="n">css</span>
+<span class="err">│  </span> <span class="err">└──</span> <span class="n">js</span>
+<span class="err">├──</span> <span class="n">lib</span>
+<span class="err">│  </span> <span class="err">├──</span> <span class="n">css</span>
+<span class="err">│  </span> <span class="err">└──</span> <span class="n">js</span>
+<span class="err">└──</span> <span class="n">src</span>
+    <span class="err">├──</span> <span class="n">coffee</span>
+    <span class="err">├──</span> <span class="n">haml</span>
+    <span class="err">└──</span> <span class="n">scss</span>
 </pre></div>
 
 
-<h1>Bootstrapping</h1>
+<h1 id="bootstrapping">Bootstrapping</h1>
 <div class="highlight"><pre><span></span>$ npm install gulp -g
 $ npm init
 $ npm install gulp browserify gulp-sass gulp-haml gulp-watch glob vinyl-source-stream react coffee-script coffee-reactify superagent sanitize.css -save
@@ -111,7 +111,7 @@ $ npm install gulp browserify gulp-sass gulp-haml gulp-watch glob vinyl-source-s
 
 
 <p>エントリポイントです、Reactを使う場合、bodyをReactで扱えばこれ以上書かなくても良いかもしれないです。libに追加したCSS/JSがあればロードします。</p>
-<h1>gulpfile</h1>
+<h1 id="gulpfile">gulpfile</h1>
 <p>watchしていますが、コンパイルエラーでgulpのプロセスが落ちるという欠陥がありますが、個人用途ですぐに捨てゆくのもなので気にせず使っています。</p>
 <div class="highlight"><pre><span></span><span class="nv">gulp       = </span><span class="nx">require</span> <span class="s">&#39;gulp&#39;</span>
 <span class="nv">browserify = </span><span class="nx">require</span> <span class="s">&#39;browserify&#39;</span>
@@ -281,6 +281,14 @@ $ npm install gulp browserify gulp-sass gulp-haml gulp-watch glob vinyl-source-s
         <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
         <ul>
 			    <li>
+                    <p>2019年 6月05日 PM 10:50<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/f571b230f35658c8bd8c6348021e0b53.html">
+                            ParcelではRustをimportして使える
+                        </a>
+                    </p>
+			    </li>
+			    <li>
                     <p>2019年 5月24日 AM 01:41<br />
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
@@ -309,14 +317,6 @@ $ npm install gulp browserify gulp-sass gulp-haml gulp-watch glob vinyl-source-s
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
                             Minidoxビルドログ
-                        </a>
-                    </p>
-			    </li>
-			    <li>
-                    <p>2018年 1月16日 AM 10:32<br />
-			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
-                        <a href="https://muunyblue.github.io/520bae6649b42ff5a3c8c58b7fcfc5a9.html">
-                            Neovim/Vim8で快適Vue.js開発(Vue Language Server)
                         </a>
                     </p>
 			    </li>
@@ -352,6 +352,7 @@ $ npm install gulp browserify gulp-sass gulp-haml gulp-watch glob vinyl-source-s
                 <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
                 <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/parcel.html">Parcel</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
                 <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
@@ -369,7 +370,7 @@ $ npm install gulp browserify gulp-sass gulp-haml gulp-watch glob vinyl-source-s
                 <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
-                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
@@ -388,6 +389,12 @@ $ npm install gulp browserify gulp-sass gulp-haml gulp-watch glob vinyl-source-s
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

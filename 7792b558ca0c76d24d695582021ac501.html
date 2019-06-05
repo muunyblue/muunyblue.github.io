@@ -66,7 +66,7 @@
 </ul>
 </footer><!-- /.post-info -->      <p>去年(2016年8月頃)、社内で使う電話帳blacklistアプリをIsomorphic Javascriptで作りながらWikiにまとめていた開発話が面白い感じになっていたのでその転載です。</p>
 <p>GitLab上で開発していたのでJavascript以外にもGitLab CIの話もあります。</p>
-<h1>開発話</h1>
+<h1 id="_1">開発話</h1>
 <p>Reactを使用して楽をしたいので、開発言語はNode.jsを選択。</p>
 <p>versionは新しいものを使っていこうと思うので、v6.3.0を使っていきます。</p>
 <div class="highlight"><pre><span></span>$ mkdir blacklist
@@ -89,7 +89,7 @@ $ vim .gitignore <span class="c1"># https://gist.github.com/pmq20/2887714</span>
 <li>テスト =&gt; Mocha</li>
 </ul>
 <p>ｳｯ。。。。ｵｵｽｷﾞ。。。。。</p>
-<h1>Boilerplate</h1>
+<h1 id="boilerplate">Boilerplate</h1>
 <p><a href="http://qiita.com/masato/items/b4fff7e885f78cd96edb" title="ES6で書くIsomorphicアプリ入門 - Part1: リソース - Qiita">ES6で書くIsomorphicアプリ入門 - Part1: リソース - Qiita</a></p>
 <p>このリンクからわかるように様々な人が色んなboilerplateを作成していて、しかも割りと複雑で控えめに言って地獄。</p>
 <p><a href="https://github.com/dozoisch/koa-react-full-example" title="dozoisch/koa-react-full-example: Full example using Koa, React, Passport, Mongoose, Webpack, Mocha, Babel">dozoisch/koa-react-full-example: Full example using Koa, React, Passport, Mongoose, Webpack, Mocha, Babel</a></p>
@@ -102,7 +102,7 @@ $ vim .gitignore <span class="c1"># https://gist.github.com/pmq20/2887714</span>
 </ul>
 <p>いろいろ大変そうだが以下の記事が最高だと感じたので全面的に参考にしていく。</p>
 <p><a href="http://blog.joanboixados.com/building-a-boilerplate-for-a-koa-redux-react-application-including-webpack-mocha-and-sass/" title="Building a boilerplate for a Koa, Redux, React application including Webpack, Mocha and SASS">Building a boilerplate for a Koa, Redux, React application including Webpack, Mocha and SASS</a></p>
-<h2>setup server-side (koa)</h2>
+<h2 id="setup-server-side-koa">setup server-side (koa)</h2>
 <div class="highlight"><pre><span></span>$ npm install --save koa
 </pre></div>
 
@@ -160,19 +160,19 @@ $ vim .gitignore <span class="c1"># https://gist.github.com/pmq20/2887714</span>
 </pre></div>
 
 
-<h2>setup front-end (babel/webpack/react)</h2>
+<h2 id="setup-front-end-babelwebpackreact">setup front-end (babel/webpack/react)</h2>
 <p>ディレクトリ構成は以下のようにする方針で行きます。</p>
-<div class="highlight"><pre><span></span>.
-├── app
-│   ├── dist
-│   │   └── bundle.js
-│   └── src
-│       └── main.js
-├── package.json
-├── server.js
-├── views
-│   └── index.html
-└── webpack.config.js
+<div class="highlight"><pre><span></span><span class="p">.</span>
+<span class="err">├──</span> <span class="n">app</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">dist</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">bundle</span><span class="p">.</span><span class="n">js</span>
+<span class="err">│</span>   <span class="err">└──</span> <span class="n">src</span>
+<span class="err">│</span>       <span class="err">└──</span> <span class="n">main</span><span class="p">.</span><span class="n">js</span>
+<span class="err">├──</span> <span class="n">package</span><span class="p">.</span><span class="n">json</span>
+<span class="err">├──</span> <span class="n">server</span><span class="p">.</span><span class="n">js</span>
+<span class="err">├──</span> <span class="n">views</span>
+<span class="err">│</span>   <span class="err">└──</span> <span class="k">index</span><span class="p">.</span><span class="n">html</span>
+<span class="err">└──</span> <span class="n">webpack</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">js</span>
 </pre></div>
 
 
@@ -205,28 +205,28 @@ $ npm install --save-dev webpack-dev-server
 </blockquote>
 <p>ということなので、index.htmlから参照するbundle.jsのディレクトリを指定します。</p>
 <p>Webpackを実行してみます。</p>
-<div class="highlight"><pre><span></span>$ ./node_modules/.bin/webpack
-Hash: 448a36d28f029188e4ee
-Version: webpack <span class="m">1</span>.13.1
-Time: 51ms
-    Asset     Size  Chunks             Chunk Names
-bundle.js  <span class="m">1</span>.51 kB       <span class="m">0</span>  <span class="o">[</span>emitted<span class="o">]</span>  main
-   <span class="o">[</span><span class="m">0</span><span class="o">]</span> multi main <span class="m">28</span> bytes <span class="o">{</span><span class="m">0</span><span class="o">}</span> <span class="o">[</span>built<span class="o">]</span>
-   <span class="o">[</span><span class="m">1</span><span class="o">]</span> ./app/src/main.js <span class="m">0</span> bytes <span class="o">{</span><span class="m">0</span><span class="o">}</span> <span class="o">[</span>built<span class="o">]</span>
+<div class="highlight"><pre><span></span><span class="err">$</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="n">node_modules</span><span class="o">/</span><span class="p">.</span><span class="n">bin</span><span class="o">/</span><span class="n">webpack</span><span class="w"></span>
+<span class="nl">Hash</span><span class="p">:</span><span class="w"> </span><span class="mi">448</span><span class="n">a36d28f029188e4ee</span><span class="w"></span>
+<span class="nl">Version</span><span class="p">:</span><span class="w"> </span><span class="n">webpack</span><span class="w"> </span><span class="mf">1.13.1</span><span class="w"></span>
+<span class="nc">Time</span><span class="err">:</span><span class="w"> </span><span class="mi">51</span><span class="n">ms</span><span class="w"></span>
+<span class="w">    </span><span class="n">Asset</span><span class="w">     </span><span class="k">Size</span><span class="w">  </span><span class="n">Chunks</span><span class="w">             </span><span class="n">Chunk</span><span class="w"> </span><span class="k">Names</span><span class="w"></span>
+<span class="n">bundle</span><span class="p">.</span><span class="n">js</span><span class="w">  </span><span class="mf">1.51</span><span class="w"> </span><span class="n">kB</span><span class="w">       </span><span class="mi">0</span><span class="w">  </span><span class="o">[</span><span class="n">emitted</span><span class="o">]</span><span class="w">  </span><span class="n">main</span><span class="w"></span>
+<span class="w">   </span><span class="o">[</span><span class="n">0</span><span class="o">]</span><span class="w"> </span><span class="n">multi</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="mi">28</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="err">{</span><span class="mi">0</span><span class="err">}</span><span class="w"> </span><span class="o">[</span><span class="n">built</span><span class="o">]</span><span class="w"></span>
+<span class="w">   </span><span class="o">[</span><span class="n">1</span><span class="o">]</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">main</span><span class="p">.</span><span class="n">js</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="err">{</span><span class="mi">0</span><span class="err">}</span><span class="w"> </span><span class="o">[</span><span class="n">built</span><span class="o">]</span><span class="w"></span>
 </pre></div>
 
 
 <p>bundle.jsが誕生しました。package.jsonのscriptsにwebpackビルドのコマンドを追加します。</p>
-<div class="highlight"><pre><span></span>  &quot;scripts&quot;: {
-    &quot;webserver&quot;: &quot;node server.js&quot;,
-    &quot;build&quot;: &quot;./node_modules/.bin/webpack&quot;,
-    &quot;dev&quot;: &quot;./node_modules/.bin/webpack-dev-server&quot;
-  },
+<div class="highlight"><pre><span></span>  <span class="ss">&quot;scripts&quot;</span><span class="p">:</span> <span class="err">{</span>
+    <span class="ss">&quot;webserver&quot;</span><span class="p">:</span> <span class="ss">&quot;node server.js&quot;</span><span class="p">,</span>
+    <span class="ss">&quot;build&quot;</span><span class="p">:</span> <span class="ss">&quot;./node_modules/.bin/webpack&quot;</span><span class="p">,</span>
+    <span class="ss">&quot;dev&quot;</span><span class="p">:</span> <span class="ss">&quot;./node_modules/.bin/webpack-dev-server&quot;</span>
+  <span class="err">}</span><span class="p">,</span>
 </pre></div>
 
 
 <p>これで、"npm run build"や"npm run dev"でwebpackビルドやdev-serverの起動ができます。</p>
-<p>さぁ、ここからが本番です。~~Let's yak shaving!~~</p>
+<p>さぁ、ここからが本番です。<del>Let's yak shaving!</del></p>
 <p>Webpackにbabelビルドを追加します。ついでにdevServerにHotRoadも追加します。</p>
 <div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack&#39;</span><span class="p">);</span>
 
@@ -289,12 +289,12 @@ bundle.js  <span class="m">1</span>.51 kB       <span class="m">0</span>  <span 
 <p>開発中に2つサーバを動かすことを妥協点としてやっていくことにします。</p>
 <p>(正直この辺の選択は難しいのと個人差がありそうなので、皆さんがどうしてるか知りたいところ...)</p>
 <p>ここで今までのことの60,70%くらいが水の泡と化したので改めて検討し直します。</p>
-<h1>方針を決める</h1>
+<h1 id="_2">方針を決める</h1>
 <p>フロントエンドのほうはそのままwebpackで行きます。</p>
 <p>サーバサイドはAPIサーバとindex.htmlを単に表示して、jsとcssをstaticファイルとして配信することができればokです。</p>
 <p>本番環境ではフロントエンドをWebpackでビルドして通ったらKoaサーバを動かして完了。</p>
 <p>開発環境ではwebpack-dev-serverでフロントエンド開発、KoaサーバでAPI開発をします。(一応Koaサーバのindex.htmlで本番環境と同等の状態で動かせますがHotリロードはない)</p>
-<h1>setup server-side (Koa)</h1>
+<h1 id="setup-server-side-koa_1">setup server-side (Koa)</h1>
 <p>koa-staticとkoa-routeを使ってSPAとAPIを同じプロジェクト内に作ります。</p>
 <div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">koa</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;koa&#39;</span><span class="p">);</span>
 <span class="kd">var</span> <span class="nx">route</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;koa-route&#39;</span><span class="p">);</span>
@@ -315,20 +315,20 @@ bundle.js  <span class="m">1</span>.51 kB       <span class="m">0</span>  <span 
 </pre></div>
 
 
-<h1>setup front-end (webpack, babel, react)</h1>
+<h1 id="setup-front-end-webpack-babel-react">setup front-end (webpack, babel, react)</h1>
 <p>reactを使う方向でディレクトリ構成を改めて決めていきます。</p>
-<div class="highlight"><pre><span></span>.
-├── app
-│   ├── dist
-│   │   ├── bundle.js
-│   │   └── index.html
-│   └── src
-│       ├── components
-│       │   └── App.jsx
-│       └── index.jsx
-├── package.json
-├── server.js
-└── webpack.config.js
+<div class="highlight"><pre><span></span><span class="p">.</span>
+<span class="err">├──</span> <span class="n">app</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">dist</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">bundle</span><span class="p">.</span><span class="n">js</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="k">index</span><span class="p">.</span><span class="n">html</span>
+<span class="err">│</span>   <span class="err">└──</span> <span class="n">src</span>
+<span class="err">│</span>       <span class="err">├──</span> <span class="n">components</span>
+<span class="err">│</span>       <span class="err">│</span>   <span class="err">└──</span> <span class="n">App</span><span class="p">.</span><span class="n">jsx</span>
+<span class="err">│</span>       <span class="err">└──</span> <span class="k">index</span><span class="p">.</span><span class="n">jsx</span>
+<span class="err">├──</span> <span class="n">package</span><span class="p">.</span><span class="n">json</span>
+<span class="err">├──</span> <span class="n">server</span><span class="p">.</span><span class="n">js</span>
+<span class="err">└──</span> <span class="n">webpack</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">js</span>
 </pre></div>
 
 
@@ -379,9 +379,9 @@ bundle.js  <span class="m">1</span>.51 kB       <span class="m">0</span>  <span 
 
 
 <p>.babelrc</p>
-<div class="highlight"><pre><span></span>{
-  &quot;presets&quot;: [&quot;react&quot;, &quot;es2015&quot;]
-}
+<div class="highlight"><pre><span></span><span class="err">{</span>
+  <span class="ss">&quot;presets&quot;</span><span class="p">:</span> <span class="p">[</span><span class="ss">&quot;react&quot;</span><span class="p">,</span> <span class="ss">&quot;es2015&quot;</span><span class="p">]</span>
+<span class="err">}</span>
 </pre></div>
 
 
@@ -424,9 +424,9 @@ bundle.js  <span class="m">1</span>.51 kB       <span class="m">0</span>  <span 
 </pre></div>
 
 
-<h1>setup test/lint</h1>
+<h1 id="setup-testlint">setup test/lint</h1>
 <p>mochaとeslintのセットアップをしていきます。</p>
-<h2>eslint</h2>
+<h2 id="eslint">eslint</h2>
 <p>eslintをdevにインストールして、initします。</p>
 <div class="highlight"><pre><span></span><span class="err">$</span> <span class="n">npm</span> <span class="n">install</span> <span class="o">--</span><span class="n">save</span><span class="o">-</span><span class="n">dev</span> <span class="n">eslint</span>
 <span class="err">$</span> <span class="p">.</span><span class="o">/</span><span class="n">node_modules</span><span class="o">/</span><span class="p">.</span><span class="n">bin</span><span class="o">/</span><span class="n">eslint</span> <span class="o">--</span><span class="n">init</span>
@@ -456,7 +456,7 @@ bundle.js  <span class="m">1</span>.51 kB       <span class="m">0</span>  <span 
 
 <p>今いるディレクトリのeslint.jsを読み込んでくれます。</p>
 <p>実はinitで吐いたeslint設定では、jsx内で使ってるはずの変数に対して</p>
-<p><img alt="" src="https://i.gyazo.com/e4d0a9c09cbb3d9ddb09dcd6fcef3009.png"></p>
+<p><img alt="" src="https://i.gyazo.com/e4d0a9c09cbb3d9ddb09dcd6fcef3009.png" /></p>
 <blockquote>
 <p>error  'App' is defined but never used  (no-unused-vars)</p>
 </blockquote>
@@ -468,25 +468,25 @@ bundle.js  <span class="m">1</span>.51 kB       <span class="m">0</span>  <span 
 <p>というわけで、initで生成したeslintの設定を少し変えてあげる必要があります。</p>
 <p>eslint-plugin-reactのREADMEにあるように、rulesを追加します。</p>
 <p><a href="https://github.com/yannickcr/eslint-plugin-react" title="yannickcr/eslint-plugin-react: React specific linting rules for ESLint">yannickcr/eslint-plugin-react: React specific linting rules for ESLint</a></p>
-<div class="highlight"><pre><span></span>  &quot;rules&quot;: {
-    &quot;react/jsx-uses-react&quot;: &quot;error&quot;,
-    &quot;react/jsx-uses-vars&quot;: &quot;error&quot;,
-  }
+<div class="highlight"><pre><span></span>  <span class="ss">&quot;rules&quot;</span><span class="p">:</span> <span class="err">{</span>
+    <span class="ss">&quot;react/jsx-uses-react&quot;</span><span class="p">:</span> <span class="ss">&quot;error&quot;</span><span class="p">,</span>
+    <span class="ss">&quot;react/jsx-uses-vars&quot;</span><span class="p">:</span> <span class="ss">&quot;error&quot;</span><span class="p">,</span>
+  <span class="err">}</span>
 </pre></div>
 
 
 <p>おすすめルールを全て有効にするようにしてもいいなら</p>
-<div class="highlight"><pre><span></span>&quot;extends&quot;: [&quot;eslint:recommended&quot;, &quot;plugin:react/recommended&quot;],
+<div class="highlight"><pre><span></span><span class="ss">&quot;extends&quot;</span><span class="p">:</span> <span class="p">[</span><span class="ss">&quot;eslint:recommended&quot;</span><span class="p">,</span> <span class="ss">&quot;plugin:react/recommended&quot;</span><span class="p">],</span>
 </pre></div>
 
 
 <p>のようにしても良さそうです。なんとなくこっちのほうが良さそうなのでextendsのほうを採用します。</p>
 <p>npm run lintで実行できるようにします。</p>
-<div class="highlight"><pre><span></span>&quot;lint&quot;: &quot;./node_modules/.bin/eslint server.js app/src/* --ext .js --ext .jsx&quot;,
+<div class="highlight"><pre><span></span><span class="ss">&quot;lint&quot;</span><span class="p">:</span> <span class="ss">&quot;./node_modules/.bin/eslint server.js app/src/* --ext .js --ext .jsx&quot;</span><span class="p">,</span>
 </pre></div>
 
 
-<h2>mocha</h2>
+<h2 id="mocha">mocha</h2>
 <p>babelを噛ましてテストをするのでbabel-coreもインストールします。</p>
 <div class="highlight"><pre><span></span>$ npm install --save-dev babel-core mocha
 </pre></div>
@@ -494,12 +494,12 @@ bundle.js  <span class="m">1</span>.51 kB       <span class="m">0</span>  <span 
 
 <p>assertにはchaiを使っているケースが多いですが、せっかく日本人なのでpower-assertを使おうと思います。</p>
 <p><a href="http://qiita.com/gitseitanaka/items/ea47d261284879a1d774" title="mocha + power-assert環境の構築 - Qiita">mocha + power-assert環境の構築 - Qiita</a>を参考にインストール。</p>
-<div class="highlight"><pre><span></span>npm install --save-dev intelli-espower-loader power-assert
+<div class="highlight"><pre><span></span><span class="n">npm</span> <span class="n">install</span> <span class="c1">--save-dev intelli-espower-loader power-assert</span>
 </pre></div>
 
 
 <p>npm run testでテストをするためにpackage.jsonのscriptsにコマンドを作成します。</p>
-<div class="highlight"><pre><span></span>test: &quot;./node_modules/mocha/bin/mocha --require intelli-espower-loader --recursive&quot;
+<div class="highlight"><pre><span></span><span class="n">test</span><span class="p">:</span> <span class="ss">&quot;./node_modules/mocha/bin/mocha --require intelli-espower-loader --recursive&quot;</span>
 </pre></div>
 
 
@@ -530,28 +530,28 @@ bundle.js  <span class="m">1</span>.51 kB       <span class="m">0</span>  <span 
 <p>......</p>
 <p>.........</p>
 <p>いよいよisomorphicが幻想だとわかってきました。というより自分の想像していたisomorphicが大きすぎる解釈だったと気付きました。サーバサイドとフロントエンドは別物です、全てESで書けるとはいえjavascriptとnodejsは違います、しっかり線引して扱うと良いということがわかりました。</p>
-<h1>boilerplate完成</h1>
+<h1 id="boilerplate_1">boilerplate完成</h1>
 <p>ｾﾞｪ...ｾﾞｪ...</p>
 <p>やっと記念すべき最初のコミットが完成しました。</p>
 <p>最終的なディレクトリ構成</p>
-<div class="highlight"><pre><span></span>.
-├── .babelrc
-├── .eslintrc.js
-├── .gitignore
-├── app
-│   ├── dist
-│   │   ├── bundle.js
-│   │   └── index.html
-│   ├── src
-│   │   ├── components
-│   │   └── index.jsx
-│   ├── test
-│   │   └── model-test.js
-│   └── webpack.config.js
-├── package.json
-├── server.js
-└── test
-    └── server-test.js
+<div class="highlight"><pre><span></span><span class="p">.</span>
+<span class="err">├──</span> <span class="p">.</span><span class="n">babelrc</span>
+<span class="err">├──</span> <span class="p">.</span><span class="n">eslintrc</span><span class="p">.</span><span class="n">js</span>
+<span class="err">├──</span> <span class="p">.</span><span class="n">gitignore</span>
+<span class="err">├──</span> <span class="n">app</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">dist</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">bundle</span><span class="p">.</span><span class="n">js</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="k">index</span><span class="p">.</span><span class="n">html</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">src</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">components</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="k">index</span><span class="p">.</span><span class="n">jsx</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">test</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">model</span><span class="o">-</span><span class="n">test</span><span class="p">.</span><span class="n">js</span>
+<span class="err">│</span>   <span class="err">└──</span> <span class="n">webpack</span><span class="p">.</span><span class="n">config</span><span class="p">.</span><span class="n">js</span>
+<span class="err">├──</span> <span class="n">package</span><span class="p">.</span><span class="n">json</span>
+<span class="err">├──</span> <span class="n">server</span><span class="p">.</span><span class="n">js</span>
+<span class="err">└──</span> <span class="n">test</span>
+    <span class="err">└──</span> <span class="n">server</span><span class="o">-</span><span class="n">test</span><span class="p">.</span><span class="n">js</span>
 </pre></div>
 
 
@@ -561,30 +561,30 @@ bundle.js  <span class="m">1</span>.51 kB       <span class="m">0</span>  <span 
 <li>serverはnodejsなのでrequireで依存解決</li>
 </ul>
 <p>npm runコマンド</p>
-<div class="highlight"><pre><span></span>  &quot;scripts&quot;: {
-    &quot;lint&quot;: &quot;./node_modules/.bin/eslint server.js app/src/* --ext .js --ext .jsx&quot;,
-    &quot;build:front&quot;: &quot;cd app &amp;&amp; ../node_modules/.bin/webpack&quot;,
-    &quot;dev:front&quot;: &quot;cd app &amp;&amp; ../node_modules/.bin/webpack-dev-server&quot;,
-    &quot;dev:server&quot;: &quot;node server.js&quot;,
-    &quot;test:front&quot;: &quot;./node_modules/mocha/bin/mocha --compilers js:babel-core/register --require intelli-espower-loader app/test/*.js&quot;,
-    &quot;test:server&quot;: &quot;./node_modules/mocha/bin/mocha --require intelli-espower-loader test/*.js&quot;
-  },
+<div class="highlight"><pre><span></span>  <span class="ss">&quot;scripts&quot;</span><span class="p">:</span> <span class="err">{</span>
+    <span class="ss">&quot;lint&quot;</span><span class="p">:</span> <span class="ss">&quot;./node_modules/.bin/eslint server.js app/src/* --ext .js --ext .jsx&quot;</span><span class="p">,</span>
+    <span class="ss">&quot;build:front&quot;</span><span class="p">:</span> <span class="ss">&quot;cd app &amp;&amp; ../node_modules/.bin/webpack&quot;</span><span class="p">,</span>
+    <span class="ss">&quot;dev:front&quot;</span><span class="p">:</span> <span class="ss">&quot;cd app &amp;&amp; ../node_modules/.bin/webpack-dev-server&quot;</span><span class="p">,</span>
+    <span class="ss">&quot;dev:server&quot;</span><span class="p">:</span> <span class="ss">&quot;node server.js&quot;</span><span class="p">,</span>
+    <span class="ss">&quot;test:front&quot;</span><span class="p">:</span> <span class="ss">&quot;./node_modules/mocha/bin/mocha --compilers js:babel-core/register --require intelli-espower-loader app/test/*.js&quot;</span><span class="p">,</span>
+    <span class="ss">&quot;test:server&quot;</span><span class="p">:</span> <span class="ss">&quot;./node_modules/mocha/bin/mocha --require intelli-espower-loader test/*.js&quot;</span>
+  <span class="err">}</span><span class="p">,</span>
 </pre></div>
 
 
 <p>というわけで、本番のアプリ開発にとりかかります。</p>
-<h1>GitLab CI</h1>
+<h1 id="gitlab-ci">GitLab CI</h1>
 <p>dockerビルドを試してみます。</p>
 <p>まずはRunnerの設置です。</p>
 <p><a href="https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/blob/master/docs/install/docker.md" title="docs/install/docker.md · master · GitLab.org / gitlab-ci-multi-runner · GitLab">docs/install/docker.md · master · GitLab.org / gitlab-ci-multi-runner · GitLab</a></p>
 <p>dockerビルドするためにはdockerコマンドを叩く必要があるのでhostの/var/run/docker.sockをマウントする必要があります。</p>
-<div class="highlight"><pre><span></span>$ docker run -d <span class="se">\</span>
---name blacklist-runner <span class="se">\</span>
---restart always <span class="se">\</span>
--v /var/run/docker.sock:/var/run/docker.sock <span class="se">\</span>
--v /srv/blacklist-runner/config:/etc/gitlab-runner <span class="se">\</span>
-gitlab/gitlab-runner:latest
-$ docker <span class="nb">exec</span> -it blacklist-runner gitlab-runner register
+<div class="highlight"><pre><span></span>$ <span class="nv">docker</span> <span class="nv">run</span> <span class="o">-</span><span class="nv">d</span> \
+<span class="o">--</span><span class="nv">name</span> <span class="nv">blacklist</span><span class="o">-</span><span class="nv">runner</span> \
+<span class="o">--</span><span class="nv">restart</span> <span class="nv">always</span> \
+<span class="o">-</span><span class="nv">v</span> <span class="o">/</span><span class="nv">var</span><span class="o">/</span><span class="nv">run</span><span class="o">/</span><span class="nv">docker</span>.<span class="nv">sock</span>:<span class="o">/</span><span class="nv">var</span><span class="o">/</span><span class="nv">run</span><span class="o">/</span><span class="nv">docker</span>.<span class="nv">sock</span> \
+<span class="o">-</span><span class="nv">v</span> <span class="o">/</span><span class="nv">srv</span><span class="o">/</span><span class="nv">blacklist</span><span class="o">-</span><span class="nv">runner</span><span class="o">/</span><span class="nv">config</span>:<span class="o">/</span><span class="nv">etc</span><span class="o">/</span><span class="nv">gitlab</span><span class="o">-</span><span class="nv">runner</span> \
+<span class="nv">gitlab</span><span class="o">/</span><span class="nv">gitlab</span><span class="o">-</span><span class="nv">runner</span>:<span class="nv">latest</span>
+$ <span class="nv">docker</span> <span class="k">exec</span> <span class="o">-</span><span class="nv">it</span> <span class="nv">blacklist</span><span class="o">-</span><span class="nv">runner</span> <span class="nv">gitlab</span><span class="o">-</span><span class="nv">runner</span> <span class="nv">register</span>
 </pre></div>
 
 
@@ -619,10 +619,10 @@ $ docker <span class="nb">exec</span> -it blacklist-runner gitlab-runner registe
 <li>masterへのpushのときだけdeploy(only: master)</li>
 <li>stagingもあるとよさ(only: staging)</li>
 </ul>
-<h1>Koaサーバをコード変更でリロード</h1>
+<h1 id="koa">Koaサーバをコード変更でリロード</h1>
 <p><a href="http://stackoverflow.com/questions/22062298/automatically-reloading-koa-server" title="node.js - automatically reloading Koa server - Stack Overflow">node.js - automatically reloading Koa server - Stack Overflow</a></p>
 <p>nodemonで動かす。</p>
-<h1>server-side (~~redis~~mongo)</h1>
+<h1 id="server-side-redismongo">server-side (<del>redis</del>mongo)</h1>
 <p>stagingブランチを作成して作っていきます。</p>
 <p>redisかなと思っていましたが、やっぱりmongodbを使ってみます。mongo採用の理由は</p>
 <ul>
@@ -633,24 +633,24 @@ $ docker <span class="nb">exec</span> -it blacklist-runner gitlab-runner registe
 <li>同期処理(generator)のmongo+koaの例があった =&gt; <a href="https://eladnava.com/write-synchronous-node-js-code-with-es6-generators/" title="Write &quot;Synchronous&quot; Node.js Code with ES6 Generators">Write "Synchronous" Node.js Code with ES6 Generators</a></li>
 </ul>
 <p>早速書いてみます。</p>
-<div class="highlight"><pre><span></span>const mongoose = require(&#39;mongoose&#39;);
+<div class="highlight"><pre><span></span><span class="nv">const</span> <span class="nv">mongoose</span> <span class="o">=</span> <span class="nv">require</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">mongoose</span><span class="s1">&#39;</span><span class="ss">)</span><span class="c1">;</span>
 
-const mongoUrl = process.env.MONGO_URL ? process.env.MONGO_URL
-                                     : &#39;localhost/blacklist&#39;;
+<span class="nv">const</span> <span class="nv">mongoUrl</span> <span class="o">=</span> <span class="nv">process</span>.<span class="nv">env</span>.<span class="nv">MONGO_URL</span> ? <span class="nv">process</span>.<span class="nv">env</span>.<span class="nv">MONGO_URL</span>
+                                     : <span class="s1">&#39;</span><span class="s">localhost/blacklist</span><span class="s1">&#39;</span><span class="c1">;</span>
 
-mongoose.connect(mongoUrl);
-mongoose.connection.on(&#39;error&#39;, (err) =&gt; {
-  console.log(err);
-});
+<span class="nv">mongoose</span>.<span class="k">connect</span><span class="ss">(</span><span class="nv">mongoUrl</span><span class="ss">)</span><span class="c1">;</span>
+<span class="nv">mongoose</span>.<span class="nv">connection</span>.<span class="nv">on</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">error</span><span class="s1">&#39;</span>, <span class="ss">(</span><span class="nv">err</span><span class="ss">)</span> <span class="o">=&gt;</span> {
+  <span class="nv">console</span>.<span class="nv">log</span><span class="ss">(</span><span class="nv">err</span><span class="ss">)</span><span class="c1">;</span>
+}<span class="ss">)</span><span class="c1">;</span>
 
-const Blacklist = mongoose.model( &#39;blacklist&#39;, new mongoose.Schema({
-  company: { type: String, required: true },
-  sender:  String,
-  target:  String,
-  date:    { type: Date, default: Date.now() },
-  comment: String,
-  black:   { type: Boolean, default: true }
-}));
+<span class="nv">const</span> <span class="nv">Blacklist</span> <span class="o">=</span> <span class="nv">mongoose</span>.<span class="nv">model</span><span class="ss">(</span> <span class="s1">&#39;</span><span class="s">blacklist</span><span class="s1">&#39;</span>, <span class="nv">new</span> <span class="nv">mongoose</span>.<span class="nv">Schema</span><span class="ss">(</span>{
+  <span class="nv">company</span>: { <span class="nv">type</span>: <span class="nv">String</span>, <span class="nv">required</span>: <span class="nv">true</span> },
+  <span class="nv">sender</span>:  <span class="nv">String</span>,
+  <span class="nv">target</span>:  <span class="nv">String</span>,
+  <span class="nv">date</span>:    { <span class="nv">type</span>: <span class="nv">Date</span>, <span class="nv">default</span>: <span class="nv">Date</span>.<span class="nv">now</span><span class="ss">()</span> },
+  <span class="nv">comment</span>: <span class="nv">String</span>,
+  <span class="nv">black</span>:   { <span class="nv">type</span>: <span class="nv">Boolean</span>, <span class="nv">default</span>: <span class="nv">true</span> }
+}<span class="ss">))</span><span class="c1">;</span>
 </pre></div>
 
 
@@ -725,13 +725,13 @@ const Blacklist = mongoose.model( &#39;blacklist&#39;, new mongoose.Schema({
 
 
 <p>そんなこんなで、テストも一通り書いて実装が完成しました。</p>
-<h1>.gitlab-ciの改善</h1>
+<h1 id="gitlab-ci_1">.gitlab-ciの改善</h1>
 <p>サーバサイド実装のコミットでCIが死にました。mongoがないのが原因です。</p>
 <p>デプロイをしたいのもあるのでもう少し凝ったCIに書き直します。</p>
 <p><a href="http://docs.gitlab.com/ce/ci/yaml/README.html" title="GitLab Documentation">GitLab Documentation</a>によると、docker image/serviceはjobごとに設定できます。デプロイはdocker containerではなくrunner上でやるほうが良さそうなので明示的にcontainerとrunnerでのjobを分けます。</p>
 <p>.........</p>
 <p>試してみましたが、imageを一度指定してしまうと全てのjobに対してimageが適用される模様...</p>
-<h1>front-end開発</h1>
+<h1 id="front-end">front-end開発</h1>
 <p><a href="http://www.material-ui.com/#/get-started/prerequisites" title="Prerequisites - Material-UI">Prerequisites - Material-UI</a></p>
 <p>Getting Startsする。</p>
 <div class="highlight"><pre><span></span>$ npm install --save react-tap-event-plugin material-ui
@@ -739,7 +739,7 @@ const Blacklist = mongoose.model( &#39;blacklist&#39;, new mongoose.Schema({
 
 
 <p>そろそろまとめるのが面倒になってきたのでリンクと何を勉強したかとまとめていきます。</p>
-<h2>Material UI関連</h2>
+<h2 id="material-ui">Material UI関連</h2>
 <ul>
 <li><a href="http://www.material-ui.com/#/components/text-field" title="Text Field - Material-UI">Text Field - Material-UI</a></li>
 </ul>
@@ -792,7 +792,7 @@ const Blacklist = mongoose.model( &#39;blacklist&#39;, new mongoose.Schema({
 </pre></div>
 
 
-<h2>GUI設計</h2>
+<h2 id="gui">GUI設計</h2>
 <ul>
 <li><a href="http://qiita.com/kiita312/items/d769c85f446994349b52" title="Redux入門 6日目 ReduxとReactの連携(公式ドキュメント和訳) - Qiita">Redux入門 6日目 ReduxとReactの連携(公式ドキュメント和訳) - Qiita</a></li>
 <li><a href="http://azu.github.io/slide/react-meetup/flux.html" title="10分で実装するFlux">10分で実装するFlux</a></li>
@@ -919,6 +919,14 @@ const Blacklist = mongoose.model( &#39;blacklist&#39;, new mongoose.Schema({
         <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
         <ul>
 			    <li>
+                    <p>2019年 6月05日 PM 10:50<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/f571b230f35658c8bd8c6348021e0b53.html">
+                            ParcelではRustをimportして使える
+                        </a>
+                    </p>
+			    </li>
+			    <li>
                     <p>2019年 5月24日 AM 01:41<br />
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
@@ -947,14 +955,6 @@ const Blacklist = mongoose.model( &#39;blacklist&#39;, new mongoose.Schema({
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
                             Minidoxビルドログ
-                        </a>
-                    </p>
-			    </li>
-			    <li>
-                    <p>2018年 1月16日 AM 10:32<br />
-			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
-                        <a href="https://muunyblue.github.io/520bae6649b42ff5a3c8c58b7fcfc5a9.html">
-                            Neovim/Vim8で快適Vue.js開発(Vue Language Server)
                         </a>
                     </p>
 			    </li>
@@ -990,6 +990,7 @@ const Blacklist = mongoose.model( &#39;blacklist&#39;, new mongoose.Schema({
                 <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
                 <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/parcel.html">Parcel</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
                 <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
@@ -1007,7 +1008,7 @@ const Blacklist = mongoose.model( &#39;blacklist&#39;, new mongoose.Schema({
                 <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
-                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
@@ -1026,6 +1027,12 @@ const Blacklist = mongoose.model( &#39;blacklist&#39;, new mongoose.Schema({
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

@@ -67,7 +67,7 @@
 </footer><!-- /.post-info -->      <p>PelicanはPython製の静的サイトジェネレータ。</p>
 <p>このブログもPelicanで作られています。</p>
 <p>Pelicanでgh-pagesにブログをデプロイする方法をまとめました。</p>
-<h1>Pelicanのインストールとセットアップ</h1>
+<h1 id="pelican">Pelicanのインストールとセットアップ</h1>
 <p>Pythonをある程度触ったことのある人ならPelicanを使うのは簡単です。</p>
 <p>まず、Pelicanと必要なパッケージをインストールします。</p>
 <div class="highlight"><pre><span></span>$ pip install pelican Markdown
@@ -80,69 +80,71 @@
 
 
 <p>以下のようなディレクトリが作られます。</p>
-<div class="highlight"><pre><span></span>yourproject/
-├── content
-│   └── (pages)
-├── output
-├── develop_server.sh
-├── fabfile.py
-├── Makefile
-├── pelicanconf.py       # Main settings file
-└── publishconf.py       # Settings to use when ready to publish
+<div class="highlight"><pre><span></span><span class="n">yourproject</span><span class="o">/</span>
+<span class="err">├──</span> <span class="n">content</span>
+<span class="err">│</span>   <span class="err">└──</span> <span class="p">(</span><span class="n">pages</span><span class="p">)</span>
+<span class="err">├──</span> <span class="k">output</span>
+<span class="err">├──</span> <span class="n">develop_server</span><span class="p">.</span><span class="n">sh</span>
+<span class="err">├──</span> <span class="n">fabfile</span><span class="p">.</span><span class="n">py</span>
+<span class="err">├──</span> <span class="n">Makefile</span>
+<span class="err">├──</span> <span class="n">pelicanconf</span><span class="p">.</span><span class="n">py</span>       <span class="o">#</span> <span class="n">Main</span> <span class="n">settings</span> <span class="n">file</span>
+<span class="err">└──</span> <span class="n">publishconf</span><span class="p">.</span><span class="n">py</span>       <span class="o">#</span> <span class="n">Settings</span> <span class="k">to</span> <span class="n">use</span> <span class="k">when</span> <span class="n">ready</span> <span class="k">to</span> <span class="n">publish</span>
 </pre></div>
 
 
-<h1>記事を書く</h1>
+<h1 id="_1">記事を書く</h1>
 <p>記事はcontent以下に書きます。</p>
 <p>記事にはタイトルや日付、タグなどのメタデータを書く必要があります。</p>
 <p>reStructuredTextの場合</p>
-<div class="highlight"><pre><span></span>:title: &lt;title&gt;
-:date: YYYY-MM-DD HH:MM
-:modified: YYYY-MM-DD HH:MM
-:tags: &lt;tag&gt;, &lt;tag&gt;
-:category: &lt;category&gt;
-:slug: &lt;slug&gt;
-:authors: &lt;author&gt;, &lt;author&gt;
-:summary: &lt;summary&gt;
+<div class="highlight"><pre><span></span><span class="p">:</span><span class="n">title</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">title</span><span class="o">&gt;</span>
+<span class="p">:</span><span class="nb">date</span><span class="p">:</span> <span class="n">YYYY</span><span class="o">-</span><span class="n">MM</span><span class="o">-</span><span class="n">DD</span> <span class="n">HH</span><span class="p">:</span><span class="n">MM</span>
+<span class="p">:</span><span class="n">modified</span><span class="p">:</span> <span class="n">YYYY</span><span class="o">-</span><span class="n">MM</span><span class="o">-</span><span class="n">DD</span> <span class="n">HH</span><span class="p">:</span><span class="n">MM</span>
+<span class="p">:</span><span class="n">tags</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">tag</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">tag</span><span class="o">&gt;</span>
+<span class="p">:</span><span class="n">category</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">category</span><span class="o">&gt;</span>
+<span class="p">:</span><span class="n">slug</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">slug</span><span class="o">&gt;</span>
+<span class="p">:</span><span class="n">authors</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">author</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">author</span><span class="o">&gt;</span>
+<span class="p">:</span><span class="n">summary</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">summary</span><span class="o">&gt;</span>
 </pre></div>
 
 
 <p>Markdownの場合</p>
-<div class="highlight"><pre><span></span>Title: &lt;title&gt;
-Date: YYYY-MM-DD HH:MM
-Modified: YYYY-MM-DD HH:MM
-Tags: &lt;tag&gt;, &lt;tag&gt;
-Category: &lt;category&gt;
-Slug: &lt;slug&gt;
-Authors: &lt;author&gt;, &lt;author&gt;
-Summary: &lt;summary&gt;
+<div class="highlight"><pre><span></span><span class="n">Title</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">title</span><span class="o">&gt;</span>
+<span class="nb">Date</span><span class="p">:</span> <span class="n">YYYY</span><span class="o">-</span><span class="n">MM</span><span class="o">-</span><span class="n">DD</span> <span class="n">HH</span><span class="p">:</span><span class="n">MM</span>
+<span class="n">Modified</span><span class="p">:</span> <span class="n">YYYY</span><span class="o">-</span><span class="n">MM</span><span class="o">-</span><span class="n">DD</span> <span class="n">HH</span><span class="p">:</span><span class="n">MM</span>
+<span class="n">Tags</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">tag</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">tag</span><span class="o">&gt;</span>
+<span class="n">Category</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">category</span><span class="o">&gt;</span>
+<span class="n">Slug</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">slug</span><span class="o">&gt;</span>
+<span class="n">Authors</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">author</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">author</span><span class="o">&gt;</span>
+<span class="n">Summary</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">summary</span><span class="o">&gt;</span>
 </pre></div>
 
 
 <p>titleとdate以外は省略可能です。</p>
-<p>!!! note
-    slugは記事のURLを指定できます。
-    slugを省略するとtitleのlower-caseがURLになります。</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>slugは記事のURLを指定できます。<br />
+slugを省略するとtitleのlower-caseがURLになります。</p>
+</div>
 <p>Markdownをインストールしたので*.mdという拡張子でファイルを作ればMarkdownが使えます。</p>
 <p>ビルドは以下のコマンドで、outputに静的ページがビルドされます。</p>
 <div class="highlight"><pre><span></span>$ pelican content -s pelicanconf.py
 </pre></div>
 
 
-<h2>contentのディレクトリ構成</h2>
+<h2 id="content">contentのディレクトリ構成</h2>
 <p>contentにディレクトリを作成するとcategoryとして扱われます。</p>
-<div class="highlight"><pre><span></span>├── content
-│   ├── category1
-│   ├── category2
-│   ├── category3
-│   ├── no_category.md
-│   └── pages
+<div class="highlight"><pre><span></span><span class="err">├──</span> <span class="n">content</span>
+<span class="err">│  </span> <span class="err">├──</span> <span class="n">category1</span>
+<span class="err">│  </span> <span class="err">├──</span> <span class="n">category2</span>
+<span class="err">│  </span> <span class="err">├──</span> <span class="n">category3</span>
+<span class="err">│  </span> <span class="err">├──</span> <span class="n">no_category</span><span class="p">.</span><span class="n">md</span>
+<span class="err">│  </span> <span class="err">└──</span> <span class="n">pages</span>
 </pre></div>
 
 
 <p>ディレクトリでカテゴリ分けをすれば、メタデータにcategoryを書く必要がない+わかりやすいので基本的にカテゴリ分けはディレクトリですれば良いと思います。</p>
 <p>content以下のディレクトリでpagesは特殊なディレクトリ名で、メタデータ不要で書けます。基本的に、AboutやContactなどの独立したページの作成を目的としているのでそのような用途で使用します。</p>
-<h2>GFMぽく使う</h2>
+<h2 id="gfm">GFMぽく使う</h2>
 <p><a href="http://qiita.com/5t111111/items/d745af778969bf00f038" title="PelicanでGitHub Flavored Markdown(GFM)をマジで使いたい！ - Qiita">PelicanでGitHub Flavored Markdown(GFM)をマジで使いたい！ - Qiita</a></p>
 <p>上記の記事を参考にパッケージのインストール、pelicanconf.pyの編集をします。</p>
 <div class="highlight"><pre><span></span>$ pip install mdx_del_ins
@@ -150,16 +152,16 @@ Summary: &lt;summary&gt;
 
 
 <p>pelicanconf.pyにMD_EXTENSIONを追加して、必要な項目を書きます。</p>
-<div class="highlight"><pre><span></span>MD_EXTENSIONS = [&#39;del_ins&#39;, &#39;fenced_code&#39;, &#39;codehilite(css_class=highlight)&#39;, &#39;tables&#39;]
+<div class="highlight"><pre><span></span><span class="n">MD_EXTENSIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;del_ins&#39;</span><span class="p">,</span> <span class="s1">&#39;fenced_code&#39;</span><span class="p">,</span> <span class="s1">&#39;codehilite(css_class=highlight)&#39;</span><span class="p">,</span> <span class="s1">&#39;tables&#39;</span><span class="p">]</span>
 </pre></div>
 
 
 <p>デフォルトのExtensionは以下にまとまっています。</p>
 <p><a href="http://pythonhosted.org/Markdown/extensions/" title="Extensions — Python Markdown">Extensions — Python Markdown</a></p>
-<hr>
+<hr />
 <p>PythonのMarkdownを調べて、おすすめ設定を以下にまとめましたので参考までに。</p>
 <p><a href="http://blog.muuny-blue.info/234e5dc39dc52740524f9d863bec963c.html" title="PythonでMarkdownをGFM的に使う方法">PythonでMarkdownをGFM的に使う方法</a></p>
-<h1>gh-pagesにpushする</h1>
+<h1 id="gh-pagespush">gh-pagesにpushする</h1>
 <p>gh-pagesブランチを作ります。さくっと作るためにghp-importというPythonパッケージをインストールします。ghp-inmportは指定したディレクトリをgh-pagesブランチにしてくれます。</p>
 <div class="highlight"><pre><span></span><span class="err">$</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">ghp</span><span class="o">-</span><span class="kn">import</span>
 <span class="err">$</span> <span class="n">ghp</span><span class="o">-</span><span class="kn">import</span> <span class="nn">output</span>
@@ -177,7 +179,7 @@ Summary: &lt;summary&gt;
 </pre></div>
 
 
-<h1>まとめ</h1>
+<h1 id="_2">まとめ</h1>
 <p>Pythonに慣れているのであれば、reStructuredTextとMarkdown両方使えるPelicanはすごく良い気がする。</p>
 <p>ドキュメントも英語だけど読みやすくて詳しくまとまっていて良い。</p>
 <p><a href="http://docs.getpelican.com/en/3.6.3/index.html" title="Pelican 3.6.3 — Pelican 3.6.3 documentation">Pelican 3.6.3 — Pelican 3.6.3 documentation</a></p>
@@ -301,6 +303,14 @@ Summary: &lt;summary&gt;
         <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
         <ul>
 			    <li>
+                    <p>2019年 6月05日 PM 10:50<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/f571b230f35658c8bd8c6348021e0b53.html">
+                            ParcelではRustをimportして使える
+                        </a>
+                    </p>
+			    </li>
+			    <li>
                     <p>2019年 5月24日 AM 01:41<br />
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
@@ -329,14 +339,6 @@ Summary: &lt;summary&gt;
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
                             Minidoxビルドログ
-                        </a>
-                    </p>
-			    </li>
-			    <li>
-                    <p>2018年 1月16日 AM 10:32<br />
-			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
-                        <a href="https://muunyblue.github.io/520bae6649b42ff5a3c8c58b7fcfc5a9.html">
-                            Neovim/Vim8で快適Vue.js開発(Vue Language Server)
                         </a>
                     </p>
 			    </li>
@@ -372,6 +374,7 @@ Summary: &lt;summary&gt;
                 <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
                 <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/parcel.html">Parcel</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
                 <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
@@ -389,7 +392,7 @@ Summary: &lt;summary&gt;
                 <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
-                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
@@ -408,6 +411,12 @@ Summary: &lt;summary&gt;
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

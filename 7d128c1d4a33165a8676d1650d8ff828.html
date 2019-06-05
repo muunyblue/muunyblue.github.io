@@ -67,23 +67,45 @@
 </footer><!-- /.post-info -->      <p>開発環境を作ってるの楽しい人種なので定期的に開発環境を見直したくなります。</p>
 <p>Dockerを使ってポータブルな開発環境を手に入れたので紹介します。</p>
 <p>開発用コンテナと各種データベースコンテナをdocker-composeを使って構築します。</p>
-<hr>
+<hr />
 <p>✗TOC</p>
-<p>[TOC]</p>
-<h1>Dockerポータブルな開発環境</h1>
-<p><img alt="" src="https://slack-files.com/files-tmb/T02B7Q6RW-F0HAV7659-dfeef9aabc/screenshot_from_2015-12-25_16_17_28_360.png"></p>
+<div class="toc">
+<ul>
+<li><a href="#docker">Dockerポータブルな開発環境</a></li>
+<li><a href="#_1">開発用コンテナ</a><ul>
+<li><a href="#_2">ベース</a></li>
+<li><a href="#_3">各言語</a><ul>
+<li><a href="#ruby-rbenv">Ruby (rbenv)</a></li>
+<li><a href="#python-pyenv">Python (pyenv)</a></li>
+<li><a href="#golang-15">Golang (1.5)</a></li>
+<li><a href="#nodejs-nvm">Node.js (nvm)</a></li>
+</ul>
+</li>
+<li><a href="#_4">データベース</a></li>
+</ul>
+</li>
+<li><a href="#_5">データベースコンテナ</a></li>
+<li><a href="#_6">付録</a><ul>
+<li><a href="#dockerfile">Dockerfile</a></li>
+<li><a href="#docker-composeyml">docker-compose.yml</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<h1 id="docker">Dockerポータブルな開発環境</h1>
+<p><img alt="" src="https://slack-files.com/files-tmb/T02B7Q6RW-F0HAV7659-dfeef9aabc/screenshot_from_2015-12-25_16_17_28_360.png" /></p>
 <p>"docker-compose up -d"で開発環境が出来上がります、すごい。mysqlやredis他も使える、すごい。</p>
 <p>ディレクトリ構成は以下のようになっています。</p>
-<div class="highlight"><pre><span></span>|-- data
-|   |-- mongo
-|   |-- mysql
-|   |-- postgresql
-|   |-- redis
-|   `-- works
-|-- docker-compose.yml
-|-- Dockerfile
-|-- id_rsa
-`-- id_rsa.pub
+<div class="highlight"><pre><span></span><span class="o">|</span><span class="c1">-- data</span>
+<span class="o">|</span>   <span class="o">|</span><span class="c1">-- mongo</span>
+<span class="o">|</span>   <span class="o">|</span><span class="c1">-- mysql</span>
+<span class="o">|</span>   <span class="o">|</span><span class="c1">-- postgresql</span>
+<span class="o">|</span>   <span class="o">|</span><span class="c1">-- redis</span>
+<span class="o">|</span>   <span class="o">`</span><span class="c1">-- works</span>
+<span class="o">|</span><span class="c1">-- docker-compose.yml</span>
+<span class="o">|</span><span class="c1">-- Dockerfile</span>
+<span class="o">|</span><span class="c1">-- id_rsa</span>
+<span class="o">`</span><span class="c1">-- id_rsa.pub</span>
 </pre></div>
 
 
@@ -99,7 +121,7 @@ $ docker-compose up -d
 <p>sshできるようになっているのでホストからsshすればDockerfileに書いてある内容の開発環境が出迎えてくれます。</p>
 <p>これで、どの開発機でもDockerとdocker-composeが入っていれば開発環境が立ち上がる体制が作れました。</p>
 <p>以下に詳しい内容を書いていきます。</p>
-<h1>開発用コンテナ</h1>
+<h1 id="_1">開発用コンテナ</h1>
 <p>Dockerfileにsshで接続できる開発環境を記述します。含まれている内容は以下になります。</p>
 <p>ベース</p>
 <ul>
@@ -138,27 +160,27 @@ $ docker-compose up -d
 </pre></div>
 
 
-<h2>ベース</h2>
+<h2 id="_2">ベース</h2>
 <p>OSはUbuntu 14.04、シェルはzsh、ターミナルマルチプレクサはtmux、エディタはVimです。</p>
 <p>基本的なパッケージもインストールしています。</p>
 <p>普段からTerminal上で開発することが多いのでVimを使っていて、プラグインにまみれているので、Vimはソースコードからビルドします。</p>
-<div class="highlight"><pre><span></span>#vim
-RUN apt-get install git mercurial gettext libncurses5-dev  libperl-dev python-dev python3-dev ruby-dev lua5.2 liblua5.2-dev luajit libluajit-5.1 -y
-RUN cd /tmp \
-    &amp;&amp; git clone https://github.com/vim/vim.git \
-    &amp;&amp; cd /tmp/vim \
-    &amp;&amp; ./configure --with-features=huge --enable-perlinterp --enable-pythoninterp --enable-python3interp --enable-rubyinterp --enable-luainterp --with-luajit --enable-fail-if-missing \
-    &amp;&amp; make \
-    &amp;&amp; make install
+<div class="highlight"><pre><span></span>#<span class="nv">vim</span>
+<span class="nv">RUN</span> <span class="nv">apt</span><span class="o">-</span><span class="nv">get</span> <span class="nv">install</span> <span class="nv">git</span> <span class="nv">mercurial</span> <span class="nv">gettext</span> <span class="nv">libncurses5</span><span class="o">-</span><span class="nv">dev</span>  <span class="nv">libperl</span><span class="o">-</span><span class="nv">dev</span> <span class="nv">python</span><span class="o">-</span><span class="nv">dev</span> <span class="nv">python3</span><span class="o">-</span><span class="nv">dev</span> <span class="nv">ruby</span><span class="o">-</span><span class="nv">dev</span> <span class="nv">lua5</span>.<span class="mi">2</span> <span class="nv">liblua5</span>.<span class="mi">2</span><span class="o">-</span><span class="nv">dev</span> <span class="nv">luajit</span> <span class="nv">libluajit</span><span class="o">-</span><span class="mi">5</span>.<span class="mi">1</span> <span class="o">-</span><span class="nv">y</span>
+<span class="nv">RUN</span> <span class="nv">cd</span> <span class="o">/</span><span class="nv">tmp</span> \
+    <span class="o">&amp;&amp;</span> <span class="nv">git</span> <span class="nv">clone</span> <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">vim</span><span class="o">/</span><span class="nv">vim</span>.<span class="nv">git</span> \
+    <span class="o">&amp;&amp;</span> <span class="nv">cd</span> <span class="o">/</span><span class="nv">tmp</span><span class="o">/</span><span class="nv">vim</span> \
+    <span class="o">&amp;&amp;</span> .<span class="o">/</span><span class="nv">configure</span> <span class="o">--</span><span class="nv">with</span><span class="o">-</span><span class="nv">features</span><span class="o">=</span><span class="nv">huge</span> <span class="o">--</span><span class="nv">enable</span><span class="o">-</span><span class="nv">perlinterp</span> <span class="o">--</span><span class="nv">enable</span><span class="o">-</span><span class="nv">pythoninterp</span> <span class="o">--</span><span class="nv">enable</span><span class="o">-</span><span class="nv">python3interp</span> <span class="o">--</span><span class="nv">enable</span><span class="o">-</span><span class="nv">rubyinterp</span> <span class="o">--</span><span class="nv">enable</span><span class="o">-</span><span class="nv">luainterp</span> <span class="o">--</span><span class="nv">with</span><span class="o">-</span><span class="nv">luajit</span> <span class="o">--</span><span class="nv">enable</span><span class="o">-</span><span class="nv">fail</span><span class="o">-</span><span class="k">if</span><span class="o">-</span><span class="nv">missing</span> \
+    <span class="o">&amp;&amp;</span> <span class="nv">make</span> \
+    <span class="o">&amp;&amp;</span> <span class="nv">make</span> <span class="nv">install</span>
 </pre></div>
 
 
 <p>dotfilesは、各環境ごとにブランチで分けているので、os/ubuntu-dockerに切り替えて、bootstrap.shでブートストラップしてます。dotfilesのエイリアスを貼って、Vimプラグインをインストールしてくれます。</p>
-<div class="highlight"><pre><span></span># dotfiles
-RUN git clone https://github.com/yymm/dotfiles.git ~/dotfiles \
-    &amp;&amp; cd ~/dotfiles \
-    &amp;&amp; git checkout os/ubuntu-docker \
-    &amp;&amp; bash bootstrap.sh
+<div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">dotfiles</span>
+<span class="n">RUN</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">yymm</span><span class="o">/</span><span class="n">dotfiles</span><span class="p">.</span><span class="n">git</span> <span class="o">~/</span><span class="n">dotfiles</span> <span class="err">\</span>
+    <span class="o">&amp;&amp;</span> <span class="n">cd</span> <span class="o">~/</span><span class="n">dotfiles</span> <span class="err">\</span>
+    <span class="o">&amp;&amp;</span> <span class="n">git</span> <span class="n">checkout</span> <span class="n">os</span><span class="o">/</span><span class="n">ubuntu</span><span class="o">-</span><span class="n">docker</span> <span class="err">\</span>
+    <span class="o">&amp;&amp;</span> <span class="n">bash</span> <span class="n">bootstrap</span><span class="p">.</span><span class="n">sh</span>
 </pre></div>
 
 
@@ -167,84 +189,84 @@ RUN git clone https://github.com/yymm/dotfiles.git ~/dotfiles \
 <li><a href="http://qiita.com/mopemope/items/495ab1f74bcbef0f88bb" title="Docker で開発環境も使い捨てにしよう！ - Qiita">Docker で開発環境も使い捨てにしよう！ - Qiita</a></li>
 <li><a href="https://docs.docker.com/engine/examples/running_ssh_service/" title="Dockerizing an SSH service">Dockerizing an SSH service</a></li>
 </ul>
-<h2>各言語</h2>
+<h2 id="_3">各言語</h2>
 <p>言語ごとのバージョンマネージャで使いそうなバージョンをドドっと入れておきます。</p>
 <p>必要なバージョンが増えたらDockerfileに追記してビルドし直します。</p>
-<h3>Ruby (rbenv)</h3>
+<h3 id="ruby-rbenv">Ruby (rbenv)</h3>
 <p>rbenvをインストールして、使うバージョンをインストールします。"rbenv install"するときはまだパスが通っていないので直接叩きます。</p>
-<div class="highlight"><pre><span></span># Ruby (rbenv)
-RUN git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-RUN cd ~/.rbenv &amp;&amp; src/configure &amp;&amp; make -C src
-RUN echo &#39;export PATH=&quot;$HOME/.rbenv/bin:$PATH&quot;&#39; &gt;&gt; ~/.zshrc
-RUN echo &#39;eval &quot;$(rbenv init -)&quot;&#39; &gt;&gt; ~/.zshrc
-RUN git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
-RUN ~/.rbenv/bin/rbenv install 2.2.4
-RUN ~/.rbenv/bin/rbenv install 1.9.3-p551
+<div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">Ruby</span> <span class="p">(</span><span class="n">rbenv</span><span class="p">)</span>
+<span class="n">RUN</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">rbenv</span><span class="o">/</span><span class="n">rbenv</span><span class="p">.</span><span class="n">git</span> <span class="o">~/</span><span class="p">.</span><span class="n">rbenv</span>
+<span class="n">RUN</span> <span class="n">cd</span> <span class="o">~/</span><span class="p">.</span><span class="n">rbenv</span> <span class="o">&amp;&amp;</span> <span class="n">src</span><span class="o">/</span><span class="n">configure</span> <span class="o">&amp;&amp;</span> <span class="n">make</span> <span class="o">-</span><span class="k">C</span> <span class="n">src</span>
+<span class="n">RUN</span> <span class="n">echo</span> <span class="s1">&#39;export PATH=&quot;$HOME/.rbenv/bin:$PATH&quot;&#39;</span> <span class="o">&gt;&gt;</span> <span class="o">~/</span><span class="p">.</span><span class="n">zshrc</span>
+<span class="n">RUN</span> <span class="n">echo</span> <span class="s1">&#39;eval &quot;$(rbenv init -)&quot;&#39;</span> <span class="o">&gt;&gt;</span> <span class="o">~/</span><span class="p">.</span><span class="n">zshrc</span>
+<span class="n">RUN</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">rbenv</span><span class="o">/</span><span class="n">ruby</span><span class="o">-</span><span class="n">build</span><span class="p">.</span><span class="n">git</span> <span class="o">~/</span><span class="p">.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">plugins</span><span class="o">/</span><span class="n">ruby</span><span class="o">-</span><span class="n">build</span>
+<span class="n">RUN</span> <span class="o">~/</span><span class="p">.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">rbenv</span> <span class="n">install</span> <span class="mi">2</span><span class="p">.</span><span class="mi">2</span><span class="p">.</span><span class="mi">4</span>
+<span class="n">RUN</span> <span class="o">~/</span><span class="p">.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">rbenv</span> <span class="n">install</span> <span class="mi">1</span><span class="p">.</span><span class="mi">9</span><span class="p">.</span><span class="mi">3</span><span class="o">-</span><span class="n">p551</span>
 </pre></div>
 
 
-<h3>Python (pyenv)</h3>
+<h3 id="python-pyenv">Python (pyenv)</h3>
 <p>個人的な事情で2系ではvirtualenvを使いたいので、virtualenvもインストールしています。</p>
 <p>pyenvをインストールして、使うバージョンをインストールします。"pyenv install"するときはまだパスが通っていないので直接叩きます。</p>
-<div class="highlight"><pre><span></span># Python (virtualenv)
-USER root
-RUN apt-get install python-pip -y
-RUN pip install virtualenv
-RUN pip install virtualenvwrapper
-USER yymm
-RUN echo &#39;export WORKON_HOME=$HOME/.virtualenvs&#39; &gt;&gt; ~/.zshrc
-RUN echo &#39;source `which virtualenvwrapper.sh`&#39; &gt;&gt; ~/.zshrc
+<div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">Python</span> <span class="p">(</span><span class="n">virtualenv</span><span class="p">)</span>
+<span class="k">USER</span> <span class="n">root</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="k">get</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">pip</span> <span class="o">-</span><span class="n">y</span>
+<span class="n">RUN</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">virtualenv</span>
+<span class="n">RUN</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">virtualenvwrapper</span>
+<span class="k">USER</span> <span class="n">yymm</span>
+<span class="n">RUN</span> <span class="n">echo</span> <span class="s1">&#39;export WORKON_HOME=$HOME/.virtualenvs&#39;</span> <span class="o">&gt;&gt;</span> <span class="o">~/</span><span class="p">.</span><span class="n">zshrc</span>
+<span class="n">RUN</span> <span class="n">echo</span> <span class="s1">&#39;source `which virtualenvwrapper.sh`&#39;</span> <span class="o">&gt;&gt;</span> <span class="o">~/</span><span class="p">.</span><span class="n">zshrc</span>
 
-# Python (pyenv)
-RUN git clone https://github.com/yyuu/pyenv.git ~/.pyenv
-RUN echo &#39;export PYENV_ROOT=&quot;$HOME/.pyenv&quot;&#39; &gt;&gt; ~/.zshrc
-RUN echo &#39;export PATH=&quot;$PYENV_ROOT/bin:$PATH&quot;&#39; &gt;&gt; ~/.zshrc
-RUN echo &#39;eval &quot;$(pyenv init -)&quot;&#39; &gt;&gt; ~/.zshrc
-USER root
-RUN apt-get install libssl-dev openssl -y # need to install python 3.4 later
-USER yymm
-RUN ~/.pyenv/bin/pyenv install 3.5.1
-RUN ~/.pyenv/bin/pyenv install 2.7.11
+<span class="o">#</span> <span class="n">Python</span> <span class="p">(</span><span class="n">pyenv</span><span class="p">)</span>
+<span class="n">RUN</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">yyuu</span><span class="o">/</span><span class="n">pyenv</span><span class="p">.</span><span class="n">git</span> <span class="o">~/</span><span class="p">.</span><span class="n">pyenv</span>
+<span class="n">RUN</span> <span class="n">echo</span> <span class="s1">&#39;export PYENV_ROOT=&quot;$HOME/.pyenv&quot;&#39;</span> <span class="o">&gt;&gt;</span> <span class="o">~/</span><span class="p">.</span><span class="n">zshrc</span>
+<span class="n">RUN</span> <span class="n">echo</span> <span class="s1">&#39;export PATH=&quot;$PYENV_ROOT/bin:$PATH&quot;&#39;</span> <span class="o">&gt;&gt;</span> <span class="o">~/</span><span class="p">.</span><span class="n">zshrc</span>
+<span class="n">RUN</span> <span class="n">echo</span> <span class="s1">&#39;eval &quot;$(pyenv init -)&quot;&#39;</span> <span class="o">&gt;&gt;</span> <span class="o">~/</span><span class="p">.</span><span class="n">zshrc</span>
+<span class="k">USER</span> <span class="n">root</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="k">get</span> <span class="n">install</span> <span class="n">libssl</span><span class="o">-</span><span class="n">dev</span> <span class="n">openssl</span> <span class="o">-</span><span class="n">y</span> <span class="o">#</span> <span class="n">need</span> <span class="k">to</span> <span class="n">install</span> <span class="n">python</span> <span class="mi">3</span><span class="p">.</span><span class="mi">4</span> <span class="n">later</span>
+<span class="k">USER</span> <span class="n">yymm</span>
+<span class="n">RUN</span> <span class="o">~/</span><span class="p">.</span><span class="n">pyenv</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">pyenv</span> <span class="n">install</span> <span class="mi">3</span><span class="p">.</span><span class="mi">5</span><span class="p">.</span><span class="mi">1</span>
+<span class="n">RUN</span> <span class="o">~/</span><span class="p">.</span><span class="n">pyenv</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">pyenv</span> <span class="n">install</span> <span class="mi">2</span><span class="p">.</span><span class="mi">7</span><span class="p">.</span><span class="mi">11</span>
 </pre></div>
 
 
-<h3>Golang (1.5)</h3>
+<h3 id="golang-15">Golang (1.5)</h3>
 <p>gvmはDockerと相性が悪いらしく今のところ使えません。</p>
 <p>しょうがないので、ほしいバージョンを自分で入れるのが今は良いみたいです。</p>
 <p>golangはビルド済みのものをダウンロードすることができるので、ダウンロードして/usr/localに展開、環境変数を設定します。</p>
-<div class="highlight"><pre><span></span># Golang (1.5)
-USER root
-RUN wget https://storage.googleapis.com/golang/go1.5.linux-amd64.tar.gz
-RUN tar -C /usr/local -xzf go1.5.linux-amd64.tar.gz
-RUN rm -f go1.5.linux-amd64.tar.gz
-USER yymm
-RUN echo &#39;export GOROOT=&quot;/usr/local/go&quot;&#39; &gt;&gt; ~/.zshrc
-RUN echo &#39;export PATH=&quot;$GOROOT/bin:$PATH&quot;&#39; &gt;&gt; ~/.zshrc
+<div class="highlight"><pre><span></span><span class="err">#</span><span class="w"> </span><span class="n">Golang</span><span class="w"> </span><span class="p">(</span><span class="mf">1.5</span><span class="p">)</span><span class="w"></span>
+<span class="k">USER</span><span class="w"> </span><span class="n">root</span><span class="w"></span>
+<span class="n">RUN</span><span class="w"> </span><span class="n">wget</span><span class="w"> </span><span class="nl">https</span><span class="p">:</span><span class="o">//</span><span class="n">storage</span><span class="p">.</span><span class="n">googleapis</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">golang</span><span class="o">/</span><span class="n">go1</span><span class="mf">.5</span><span class="p">.</span><span class="n">linux</span><span class="o">-</span><span class="n">amd64</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">gz</span><span class="w"></span>
+<span class="n">RUN</span><span class="w"> </span><span class="n">tar</span><span class="w"> </span><span class="o">-</span><span class="n">C</span><span class="w"> </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="k">local</span><span class="w"> </span><span class="o">-</span><span class="n">xzf</span><span class="w"> </span><span class="n">go1</span><span class="mf">.5</span><span class="p">.</span><span class="n">linux</span><span class="o">-</span><span class="n">amd64</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">gz</span><span class="w"></span>
+<span class="n">RUN</span><span class="w"> </span><span class="n">rm</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="n">go1</span><span class="mf">.5</span><span class="p">.</span><span class="n">linux</span><span class="o">-</span><span class="n">amd64</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">gz</span><span class="w"></span>
+<span class="k">USER</span><span class="w"> </span><span class="n">yymm</span><span class="w"></span>
+<span class="n">RUN</span><span class="w"> </span><span class="n">echo</span><span class="w"> </span><span class="s1">&#39;export GOROOT=&quot;/usr/local/go&quot;&#39;</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">~/</span><span class="p">.</span><span class="n">zshrc</span><span class="w"></span>
+<span class="n">RUN</span><span class="w"> </span><span class="n">echo</span><span class="w"> </span><span class="s1">&#39;export PATH=&quot;$GOROOT/bin:$PATH&quot;&#39;</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">~/</span><span class="p">.</span><span class="n">zshrc</span><span class="w"></span>
 </pre></div>
 
 
-<h3>Node.js (nvm)</h3>
+<h3 id="nodejs-nvm">Node.js (nvm)</h3>
 <p>nvmをインストールして、使うバージョンをインストールします。</p>
 <p>globalで使うnpmパッケージがあるときはここでインストールしておきます。</p>
 <p>"nvm install"するときは、~/.nvm/nvm.shを実行する必要があるのでワンライナーにする必要があります。</p>
-<div class="highlight"><pre><span></span># Node.js (nvm)
-RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh | bash
-ENV NODE_VERSION 5.4.0
-ENV NVM_DIR /home/yymm/.nvm
-RUN . ~/.nvm/nvm.sh &amp;&amp; nvm install $NODE_VERSION &amp;&amp; nvm alias default $NODE_VERSION &amp;&amp; npm install -g gulp yo hubot coffee-script browserify
+<div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">Node</span><span class="p">.</span><span class="n">js</span> <span class="p">(</span><span class="n">nvm</span><span class="p">)</span>
+<span class="n">RUN</span> <span class="n">curl</span> <span class="o">-</span><span class="n">o</span><span class="o">-</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">raw</span><span class="p">.</span><span class="n">githubusercontent</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">creationix</span><span class="o">/</span><span class="n">nvm</span><span class="o">/</span><span class="n">v0</span><span class="p">.</span><span class="mi">29</span><span class="p">.</span><span class="mi">0</span><span class="o">/</span><span class="n">install</span><span class="p">.</span><span class="n">sh</span> <span class="o">|</span> <span class="n">bash</span>
+<span class="n">ENV</span> <span class="n">NODE_VERSION</span> <span class="mi">5</span><span class="p">.</span><span class="mi">4</span><span class="p">.</span><span class="mi">0</span>
+<span class="n">ENV</span> <span class="n">NVM_DIR</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">yymm</span><span class="o">/</span><span class="p">.</span><span class="n">nvm</span>
+<span class="n">RUN</span> <span class="p">.</span> <span class="o">~/</span><span class="p">.</span><span class="n">nvm</span><span class="o">/</span><span class="n">nvm</span><span class="p">.</span><span class="n">sh</span> <span class="o">&amp;&amp;</span> <span class="n">nvm</span> <span class="n">install</span> <span class="err">$</span><span class="n">NODE_VERSION</span> <span class="o">&amp;&amp;</span> <span class="n">nvm</span> <span class="k">alias</span> <span class="k">default</span> <span class="err">$</span><span class="n">NODE_VERSION</span> <span class="o">&amp;&amp;</span> <span class="n">npm</span> <span class="n">install</span> <span class="o">-</span><span class="k">g</span> <span class="n">gulp</span> <span class="n">yo</span> <span class="n">hubot</span> <span class="n">coffee</span><span class="o">-</span><span class="n">script</span> <span class="n">browserify</span>
 </pre></div>
 
 
-<h2>データベース</h2>
+<h2 id="_4">データベース</h2>
 <p>SQLite3は開発コンテナにインストールして、その他のデータベースについてはクライアントを入れておきます。</p>
-<div class="highlight"><pre><span></span># SQLite
-RUN apt-get install sqlite3 libsqlite3-dev -y
-# client
-RUN apt-get install mysql-client redis-tools postgresql-client mongodb-clients -y
+<div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">SQLite</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="k">get</span> <span class="n">install</span> <span class="n">sqlite3</span> <span class="n">libsqlite3</span><span class="o">-</span><span class="n">dev</span> <span class="o">-</span><span class="n">y</span>
+<span class="o">#</span> <span class="n">client</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="k">get</span> <span class="n">install</span> <span class="n">mysql</span><span class="o">-</span><span class="n">client</span> <span class="n">redis</span><span class="o">-</span><span class="n">tools</span> <span class="n">postgresql</span><span class="o">-</span><span class="n">client</span> <span class="n">mongodb</span><span class="o">-</span><span class="n">clients</span> <span class="o">-</span><span class="n">y</span>
 </pre></div>
 
 
-<h1>データベースコンテナ</h1>
+<h1 id="_5">データベースコンテナ</h1>
 <p>docker-composeで開発サーバと連携したデータベースコンテナを立てます。</p>
 <ul>
 <li>mysql</li>
@@ -309,12 +331,20 @@ RUN apt-get install mysql-client redis-tools postgresql-client mongodb-clients -
 
 <p>データベースコンテナについては以前に別の記事にまとめてます。</p>
 <p><a href="http://blog.muuny-blue.info/9f067d8d6df2d4b8c64fb4c084d6c208.html" title="docker-composeでデータベースコンテナを立てるときのTips">docker-composeでデータベースコンテナを立てるときのTips</a></p>
-<h1>付録</h1>
+<h1 id="_6">付録</h1>
 <p>実際に使ってるDockerfileとdocker-compose.ymlです。</p>
-<h2>Dockerfile</h2>
-<p>[https://gist.github.com/yymm/9d8fbbc52de8e500827a:embed]</p>
-<h2>docker-compose.yml</h2>
-<p>[https://gist.github.com/yymm/16cf829939aeecc5132d:embed]</p>
+<h2 id="dockerfile">Dockerfile</h2>
+<p>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js"></script>
+<code data-gist-id="9d8fbbc52de8e500827a"></code>
+</p>
+<h2 id="docker-composeyml">docker-compose.yml</h2>
+<p>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js"></script>
+<code data-gist-id="16cf829939aeecc5132d"></code>
+</p>
     </div><!-- /.entry-content -->
 
     <div class="article-ad">
@@ -435,6 +465,14 @@ RUN apt-get install mysql-client redis-tools postgresql-client mongodb-clients -
         <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
         <ul>
 			    <li>
+                    <p>2019年 6月05日 PM 10:50<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/f571b230f35658c8bd8c6348021e0b53.html">
+                            ParcelではRustをimportして使える
+                        </a>
+                    </p>
+			    </li>
+			    <li>
                     <p>2019年 5月24日 AM 01:41<br />
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
@@ -463,14 +501,6 @@ RUN apt-get install mysql-client redis-tools postgresql-client mongodb-clients -
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
                             Minidoxビルドログ
-                        </a>
-                    </p>
-			    </li>
-			    <li>
-                    <p>2018年 1月16日 AM 10:32<br />
-			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
-                        <a href="https://muunyblue.github.io/520bae6649b42ff5a3c8c58b7fcfc5a9.html">
-                            Neovim/Vim8で快適Vue.js開発(Vue Language Server)
                         </a>
                     </p>
 			    </li>
@@ -506,6 +536,7 @@ RUN apt-get install mysql-client redis-tools postgresql-client mongodb-clients -
                 <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
                 <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/parcel.html">Parcel</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
                 <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
@@ -523,7 +554,7 @@ RUN apt-get install mysql-client redis-tools postgresql-client mongodb-clients -
                 <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
-                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
@@ -542,6 +573,12 @@ RUN apt-get install mysql-client redis-tools postgresql-client mongodb-clients -
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

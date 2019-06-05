@@ -66,180 +66,180 @@
 </ul>
 </footer><!-- /.post-info -->      <p>幾つかLinuxをインストールした経験がないとGentooのインストールは非常に難しいので、前提として多少の知識がある方がインストールをすると思います。</p>
 <p>ので、コマンドと変更したファイルの内容をずらずらと書いていきます。</p>
-<p>~~色気が...ない...~~</p>
+<p><del>色気が...ない...</del></p>
 <p>インストールメディアは前回作成したUSBメモリを使います。</p>
 <p>前回 =&gt; <a href="http://blog.muuny-blue.info/8a2d334536b2f4146af8cf46acd85110.html" title="下準備 &amp; インストールUSB作成(Macで) : Retry Gentoo 1">下準備 &amp; インストールUSB作成(Macで) : Retry Gentoo 1</a></p>
 <p>※ Gentooのインストールは基本的にコマンド入力で行われるのでひたすらコマンド列挙です</p>
 <p>※ プロンプトの表記はインストールしたのときの実際の表示です</p>
-<h1>0. ネットワーク確認</h1>
-<div class="highlight"><pre><span></span>livecd ~ # ifconfig
-livecd ~ # ping -c 3 www.gentoo.org
+<h1 id="0">0. ネットワーク確認</h1>
+<div class="highlight"><pre><span></span><span class="n">livecd</span> <span class="o">~</span> <span class="o">#</span> <span class="n">ifconfig</span>
+<span class="n">livecd</span> <span class="o">~</span> <span class="o">#</span> <span class="n">ping</span> <span class="o">-</span><span class="k">c</span> <span class="mi">3</span> <span class="n">www</span><span class="p">.</span><span class="n">gentoo</span><span class="p">.</span><span class="n">org</span>
 </pre></div>
 
 
 <p>pingが返ってくれば問題なし。</p>
-<h1>1. ディスクの準備</h1>
-<div class="highlight"><pre><span></span>livecd ~ # parted -a optimal /dev/sda
-(parted) print
-(parted) rm 1
-(parted) rm 2
-(parted) rm 3
-(parted) rm 4
-(parted) unit mib
-(parted) mkpart primary 1 3
-(parted) name 1 grub
-(parted) set 1 bios_grub on
-(parted) mkpart primary 3 131
-(parted) name 2 boot
-(parted) mkpart primary 131 1155
-(parted) name 3 swap
-(parted) mkpart primary 1155 -1
-(parted) name 4 rootfs
-(parted) print
-Model: Virtio Block Device (virtblk)
-Disk /dev/sda: 20480MiB
-Sector size (logical/physical): 512B/512B
-Partition Table: gpt
+<h1 id="1">1. ディスクの準備</h1>
+<div class="highlight"><pre><span></span><span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">parted</span> <span class="o">-</span><span class="nv">a</span> <span class="nv">optimal</span> <span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">sda</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">print</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">rm</span> <span class="mi">1</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">rm</span> <span class="mi">2</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">rm</span> <span class="mi">3</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">rm</span> <span class="mi">4</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">unit</span> <span class="nv">mib</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">mkpart</span> <span class="nv">primary</span> <span class="mi">1</span> <span class="mi">3</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">name</span> <span class="mi">1</span> <span class="nv">grub</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">set</span> <span class="mi">1</span> <span class="nv">bios_grub</span> <span class="nv">on</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">mkpart</span> <span class="nv">primary</span> <span class="mi">3</span> <span class="mi">131</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">name</span> <span class="mi">2</span> <span class="nv">boot</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">mkpart</span> <span class="nv">primary</span> <span class="mi">131</span> <span class="mi">1155</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">name</span> <span class="mi">3</span> <span class="nv">swap</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">mkpart</span> <span class="nv">primary</span> <span class="mi">1155</span> <span class="o">-</span><span class="mi">1</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">name</span> <span class="mi">4</span> <span class="nv">rootfs</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">print</span>
+<span class="nv">Model</span>: <span class="nv">Virtio</span> <span class="nv">Block</span> <span class="nv">Device</span> <span class="ss">(</span><span class="nv">virtblk</span><span class="ss">)</span>
+<span class="nv">Disk</span> <span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">sda</span>: <span class="mi">20480</span><span class="nv">MiB</span>
+<span class="nv">Sector</span> <span class="nv">size</span> <span class="ss">(</span><span class="nv">logical</span><span class="o">/</span><span class="nv">physical</span><span class="ss">)</span>: <span class="mi">512</span><span class="nv">B</span><span class="o">/</span><span class="mi">512</span><span class="nv">B</span>
+<span class="nv">Partition</span> <span class="nv">Table</span>: <span class="nv">gpt</span>
 
-Number   Start      End       Size     File system  Name   Flags
- 1       1.00MiB    3.00MiB   2.00MiB               grub   bios_grub
- 2       3.00MiB    131MiB    128MiB                boot
- 3       131MiB     1155MiB   1024MiB               swap
- 4       1155MiB    114472MiB 113317MiB             rootfs
+<span class="nv">Number</span>   <span class="nv">Start</span>      <span class="k">End</span>       <span class="nv">Size</span>     <span class="nv">File</span> <span class="nv">system</span>  <span class="nv">Name</span>   <span class="nv">Flags</span>
+ <span class="mi">1</span>       <span class="mi">1</span>.<span class="mi">00</span><span class="nv">MiB</span>    <span class="mi">3</span>.<span class="mi">00</span><span class="nv">MiB</span>   <span class="mi">2</span>.<span class="mi">00</span><span class="nv">MiB</span>               <span class="nv">grub</span>   <span class="nv">bios_grub</span>
+ <span class="mi">2</span>       <span class="mi">3</span>.<span class="mi">00</span><span class="nv">MiB</span>    <span class="mi">131</span><span class="nv">MiB</span>    <span class="mi">128</span><span class="nv">MiB</span>                <span class="nv">boot</span>
+ <span class="mi">3</span>       <span class="mi">131</span><span class="nv">MiB</span>     <span class="mi">1155</span><span class="nv">MiB</span>   <span class="mi">1024</span><span class="nv">MiB</span>               <span class="nv">swap</span>
+ <span class="mi">4</span>       <span class="mi">1155</span><span class="nv">MiB</span>    <span class="mi">114472</span><span class="nv">MiB</span> <span class="mi">113317</span><span class="nv">MiB</span>             <span class="nv">rootfs</span>
 
-(parted) quit
-livecd ~ # mkfs.ext2 /dev/sda2
-livecd ~ # mkfs.ext4 /dev/sda4
-livecd ~ # mkswap /dev/sda3
-livecd ~ # swapon /dev/sda3
-livecd ~ # mount /dev/sda4 /mnt/gentoo
-livecd ~ # mkdir /mnt/gentoo/boot
-livecd ~ # mount /dev/sda2 /mnt/gentoo/boot
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">quit</span>
+<span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">mkfs</span>.<span class="nv">ext2</span> <span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">sda2</span>
+<span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">mkfs</span>.<span class="nv">ext4</span> <span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">sda4</span>
+<span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">mkswap</span> <span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">sda3</span>
+<span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">swapon</span> <span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">sda3</span>
+<span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">mount</span> <span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">sda4</span> <span class="o">/</span><span class="nv">mnt</span><span class="o">/</span><span class="nv">gentoo</span>
+<span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">mkdir</span> <span class="o">/</span><span class="nv">mnt</span><span class="o">/</span><span class="nv">gentoo</span><span class="o">/</span><span class="nv">boot</span>
+<span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">mount</span> <span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">sda2</span> <span class="o">/</span><span class="nv">mnt</span><span class="o">/</span><span class="nv">gentoo</span><span class="o">/</span><span class="nv">boot</span>
 </pre></div>
 
 
 <p>コマンドの結果はpartedのprintだけ記載しました。</p>
-<h1>2. Kernelの設定/ビルド</h1>
-<div class="highlight"><pre><span></span>livecd ~ # cd /mnt/gentoo
-livecd gentoo # links https://www.gentoo.org/downloads/mirrors/
+<h1 id="2-kernel">2. Kernelの設定/ビルド</h1>
+<div class="highlight"><pre><span></span><span class="n">livecd</span> <span class="o">~</span> <span class="o">#</span> <span class="n">cd</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">gentoo</span>
+<span class="n">livecd</span> <span class="n">gentoo</span> <span class="o">#</span> <span class="n">links</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="p">.</span><span class="n">gentoo</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="n">downloads</span><span class="o">/</span><span class="n">mirrors</span><span class="o">/</span>
 </pre></div>
 
 
 <p>linksコマンドでテキストブラウザが開きます。ここでstage3のtar.bz2をダウンロードします。目的のファイルを見つけたらdボタンでダウンロード、qでブラウザを終了します。</p>
 <p>stage3-i686-20160830.tar.bz2を近いミラーからダウンロードしました。</p>
-<div class="highlight"><pre><span></span>livecd gentoo # tar xvjpf stage3-i686-20160830.tar.bz2 --xattrs
-livecd gentoo # nano -w /mnt/gentoo/etc/portage/make.conf
+<div class="highlight"><pre><span></span><span class="n">livecd</span> <span class="n">gentoo</span> <span class="o">#</span> <span class="n">tar</span> <span class="n">xvjpf</span> <span class="n">stage3</span><span class="o">-</span><span class="n">i686</span><span class="o">-</span><span class="mi">20160830</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">bz2</span> <span class="c1">--xattrs</span>
+<span class="n">livecd</span> <span class="n">gentoo</span> <span class="o">#</span> <span class="n">nano</span> <span class="o">-</span><span class="n">w</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">gentoo</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">portage</span><span class="o">/</span><span class="n">make</span><span class="p">.</span><span class="n">conf</span>
 </pre></div>
 
 
 <p>/mnt/gentoo/etc/portage/make.confにはMAKEOPT="-j5"を追加しました。</p>
-<div class="highlight"><pre><span></span>livecd gentoo # cp -L /etc/resolv.conf /mnt/gentoo/etc/
-livecd gentoo # mount -t proc proc /mnt/gentoo/proc
-livecd gentoo # mount --rbind /sys /mnt/gentoo/sys
-livecd gentoo # mount --rbind /dev /mnt/gentoo/dev
-livecd gentoo # chroot /mnt/gentoo /bin/bash
-livecd / # source /etc/profile
-livecd / # export PS1=&quot;(chroot) $PS1&quot;
-(chroot) livecd / # emerge-webrsync
-(chroot) livecd / # emerge --sync
-(chroot) livecd / # eselect news read
-(chroot) livecd / # eselect profile list
-(chroot) livecd / # eselect profile set 3
-(chroot) livecd / # emerge --ask --update --deep --newuse @world
-(chroot) livecd / # nano -w /etc/portage/make.conf
+<div class="highlight"><pre><span></span><span class="n">livecd</span><span class="w"> </span><span class="n">gentoo</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="n">cp</span><span class="w"> </span><span class="o">-</span><span class="n">L</span><span class="w"> </span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">resolv</span><span class="p">.</span><span class="n">conf</span><span class="w"> </span><span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">gentoo</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="w"></span>
+<span class="n">livecd</span><span class="w"> </span><span class="n">gentoo</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="n">mount</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="k">proc</span><span class="w"> </span><span class="k">proc</span><span class="w"> </span><span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">gentoo</span><span class="o">/</span><span class="k">proc</span><span class="w"></span>
+<span class="n">livecd</span><span class="w"> </span><span class="n">gentoo</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="n">mount</span><span class="w"> </span><span class="c1">--rbind /sys /mnt/gentoo/sys</span>
+<span class="n">livecd</span><span class="w"> </span><span class="n">gentoo</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="n">mount</span><span class="w"> </span><span class="c1">--rbind /dev /mnt/gentoo/dev</span>
+<span class="n">livecd</span><span class="w"> </span><span class="n">gentoo</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="n">chroot</span><span class="w"> </span><span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">gentoo</span><span class="w"> </span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span><span class="w"></span>
+<span class="n">livecd</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="n">source</span><span class="w"> </span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">profile</span><span class="w"></span>
+<span class="n">livecd</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="n">export</span><span class="w"> </span><span class="n">PS1</span><span class="o">=</span><span class="ss">&quot;(chroot) $PS1&quot;</span><span class="w"></span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span><span class="w"> </span><span class="n">livecd</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="n">emerge</span><span class="o">-</span><span class="n">webrsync</span><span class="w"></span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span><span class="w"> </span><span class="n">livecd</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="n">emerge</span><span class="w"> </span><span class="c1">--sync</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span><span class="w"> </span><span class="n">livecd</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="n">eselect</span><span class="w"> </span><span class="n">news</span><span class="w"> </span><span class="k">read</span><span class="w"></span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span><span class="w"> </span><span class="n">livecd</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="n">eselect</span><span class="w"> </span><span class="n">profile</span><span class="w"> </span><span class="n">list</span><span class="w"></span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span><span class="w"> </span><span class="n">livecd</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="n">eselect</span><span class="w"> </span><span class="n">profile</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="mi">3</span><span class="w"></span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span><span class="w"> </span><span class="n">livecd</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="n">emerge</span><span class="w"> </span><span class="c1">--ask --update --deep --newuse @world</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span><span class="w"> </span><span class="n">livecd</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="n">nano</span><span class="w"> </span><span class="o">-</span><span class="n">w</span><span class="w"> </span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">portage</span><span class="o">/</span><span class="n">make</span><span class="p">.</span><span class="n">conf</span><span class="w"></span>
 </pre></div>
 
 
 <p>USEフラグの設定は以下のようにしました。</p>
-<div class="highlight"><pre><span></span>USE=&quot;-a52 -bluetooth -cdda -cdr -dvd -dvdr -fortran wifi networkmanager&quot;
+<div class="highlight"><pre><span></span><span class="n">USE</span><span class="o">=</span><span class="ss">&quot;-a52 -bluetooth -cdda -cdr -dvd -dvdr -fortran wifi networkmanager&quot;</span>
 </pre></div>
 
 
 <p>"emerge --info | grep ^USE"コマンドでUSEフラグを確認後、"/usr/portage/profiles/use.desc"ファイルでUSEの説明を見ながら調整しました。</p>
-<div class="highlight"><pre><span></span>(chroot) livecd / # echo &quot;Asia/Tokyo&quot; &gt; /etc/timezone
-(chroot) livecd / # emerge --config sys-libs/timezone-data
-(chroot) livecd / # nano -w /etc/locale.gen
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="o">#</span> <span class="n">echo</span> <span class="ss">&quot;Asia/Tokyo&quot;</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">timezone</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="o">#</span> <span class="n">emerge</span> <span class="c1">--config sys-libs/timezone-data</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="o">#</span> <span class="n">nano</span> <span class="o">-</span><span class="n">w</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">locale</span><span class="p">.</span><span class="n">gen</span>
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>en_US UTF-8 UTF-8
-ja_JP UTF-8 UTF-8
+<div class="highlight"><pre><span></span><span class="n">en_US</span> <span class="n">UTF</span><span class="o">-</span><span class="mi">8</span> <span class="n">UTF</span><span class="o">-</span><span class="mi">8</span>
+<span class="n">ja_JP</span> <span class="n">UTF</span><span class="o">-</span><span class="mi">8</span> <span class="n">UTF</span><span class="o">-</span><span class="mi">8</span>
 </pre></div>
 
 
 <p>の2つをコメントアウトしました。</p>
-<div class="highlight"><pre><span></span>(chroot) livecd / # locale-gen
-(chroot) livecd / # eselect locale list
-(chroot) livecd / # eselect locale set 3
-(chroot) livecd / # env-update &amp;&amp; source /etc/profile &amp;&amp; export PS1=&quot;(chroot) $PS1&quot;
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="o">#</span> <span class="n">locale</span><span class="o">-</span><span class="n">gen</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="o">#</span> <span class="n">eselect</span> <span class="n">locale</span> <span class="n">list</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="o">#</span> <span class="n">eselect</span> <span class="n">locale</span> <span class="k">set</span> <span class="mi">3</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="o">#</span> <span class="n">env</span><span class="o">-</span><span class="k">update</span> <span class="o">&amp;&amp;</span> <span class="k">source</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">profile</span> <span class="o">&amp;&amp;</span> <span class="n">export</span> <span class="n">PS1</span><span class="o">=</span><span class="ss">&quot;(chroot) $PS1&quot;</span>
 </pre></div>
 
 
 <p>en_US UTF-8 UTF-8に設定しました。</p>
-<div class="highlight"><pre><span></span>(chroot) livecd / # emerge --ask sys-kernel/gentoo-sources
-(chroot) livecd / # cd /usr/src/linux
-(chroot) livecd linux # make menuconfig
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="o">#</span> <span class="n">emerge</span> <span class="c1">--ask sys-kernel/gentoo-sources</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="o">#</span> <span class="n">cd</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">linux</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="n">linux</span> <span class="o">#</span> <span class="n">make</span> <span class="n">menuconfig</span>
 </pre></div>
 
 
 <p>マニュアルコンフィギュレーションでやってみました。</p>
 <p>64bitのチェックを外して、CPUにIntel ATOMを選択。ファイルシステムでext2を追加しました。</p>
-<div class="highlight"><pre><span></span>(chroot) livecd linux # make &amp;&amp; make modules_install
-(chroot) livecd linux # make install
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="n">linux</span> <span class="o">#</span> <span class="n">make</span> <span class="o">&amp;&amp;</span> <span class="n">make</span> <span class="n">modules_install</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="n">linux</span> <span class="o">#</span> <span class="n">make</span> <span class="n">install</span>
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>(chroot) livecd linux # emerge --ask sys-kernel/linux-firmware
-(chroot) livecd linux # nano -w /etc/fstab
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="n">linux</span> <span class="o">#</span> <span class="n">emerge</span> <span class="c1">--ask sys-kernel/linux-firmware</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="n">linux</span> <span class="o">#</span> <span class="n">nano</span> <span class="o">-</span><span class="n">w</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">fstab</span>
 </pre></div>
 
 
-<div class="highlight"><pre><span></span>BOOT =&gt; sda2
-ROOT =&gt; sda4 (ext3をext4に)
-SWAP =&gt; sda3
+<div class="highlight"><pre><span></span><span class="n">BOOT</span> <span class="o">=&gt;</span> <span class="n">sda2</span>
+<span class="n">ROOT</span> <span class="o">=&gt;</span> <span class="n">sda4</span> <span class="p">(</span><span class="n">ext3</span><span class="err">を</span><span class="n">ext4</span><span class="err">に</span><span class="p">)</span>
+<span class="n">SWAP</span> <span class="o">=&gt;</span> <span class="n">sda3</span>
 </pre></div>
 
 
 <p>ネットワークを設定します。</p>
-<div class="highlight"><pre><span></span>(chroot) livecd linux # nano -w /etc/conf.d/hostname
-(chroot) livecd linux # emerge --ask --noreplace net-misc/netifrc
-(chroot) livecd linux # nano -w /etc/conf.d/net
-(chroot) livecd linux # cd /etc/init.d
-(chroot) livecd init.d # ln -s net.lo net.enp4s0
-(chroot) livecd init.d # rc-update add net.enp4s0 default
-(chroot) livecd init.d # nano -w /etc/hosts
-(chroot) livecd init.d # emerge --ask net-misc/dhcpcd
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="n">linux</span> <span class="o">#</span> <span class="n">nano</span> <span class="o">-</span><span class="n">w</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">conf</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">hostname</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="n">linux</span> <span class="o">#</span> <span class="n">emerge</span> <span class="c1">--ask --noreplace net-misc/netifrc</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="n">linux</span> <span class="o">#</span> <span class="n">nano</span> <span class="o">-</span><span class="n">w</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">conf</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">net</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="n">linux</span> <span class="o">#</span> <span class="n">cd</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="p">.</span><span class="n">d</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="n">init</span><span class="p">.</span><span class="n">d</span> <span class="o">#</span> <span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="n">net</span><span class="p">.</span><span class="n">lo</span> <span class="n">net</span><span class="p">.</span><span class="n">enp4s0</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="n">init</span><span class="p">.</span><span class="n">d</span> <span class="o">#</span> <span class="n">rc</span><span class="o">-</span><span class="k">update</span> <span class="k">add</span> <span class="n">net</span><span class="p">.</span><span class="n">enp4s0</span> <span class="k">default</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="n">init</span><span class="p">.</span><span class="n">d</span> <span class="o">#</span> <span class="n">nano</span> <span class="o">-</span><span class="n">w</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">hosts</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="n">init</span><span class="p">.</span><span class="n">d</span> <span class="o">#</span> <span class="n">emerge</span> <span class="c1">--ask net-misc/dhcpcd</span>
 </pre></div>
 
 
 <p>NIC名などはハードによって異なると思いますので、則した名前で設定します。</p>
-<div class="highlight"><pre><span></span>(chroot) livecd init.d # passwd
-(chroot) livecd init.d # emerge --ask app-admin/sysklogd
-(chroot) livecd init.d # rc-update add sysklogd default
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="n">init</span><span class="p">.</span><span class="n">d</span> <span class="o">#</span> <span class="n">passwd</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="n">init</span><span class="p">.</span><span class="n">d</span> <span class="o">#</span> <span class="n">emerge</span> <span class="c1">--ask app-admin/sysklogd</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="n">init</span><span class="p">.</span><span class="n">d</span> <span class="o">#</span> <span class="n">rc</span><span class="o">-</span><span class="k">update</span> <span class="k">add</span> <span class="n">sysklogd</span> <span class="k">default</span>
 </pre></div>
 
 
-<h1>4. grubのインストール、そして再起動</h1>
-<div class="highlight"><pre><span></span>(chroot) livecd init.d # emerge --ask sys-boot/grub:2
-(chroot) livecd init.d # grub-install /dev/sda
-(chroot) livecd init.d # grub-mkconfig -o /boot/grub/grub.cfg
-Generating grub configuration file ...
-Found linux image: /boot/vmlinuz-4.4.6-gentoo
-done
+<h1 id="4-grub">4. grubのインストール、そして再起動</h1>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="n">init</span><span class="p">.</span><span class="n">d</span> <span class="o">#</span> <span class="n">emerge</span> <span class="c1">--ask sys-boot/grub:2</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="n">init</span><span class="p">.</span><span class="n">d</span> <span class="o">#</span> <span class="n">grub</span><span class="o">-</span><span class="n">install</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sda</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="n">init</span><span class="p">.</span><span class="n">d</span> <span class="o">#</span> <span class="n">grub</span><span class="o">-</span><span class="n">mkconfig</span> <span class="o">-</span><span class="n">o</span> <span class="o">/</span><span class="n">boot</span><span class="o">/</span><span class="n">grub</span><span class="o">/</span><span class="n">grub</span><span class="p">.</span><span class="n">cfg</span>
+<span class="n">Generating</span> <span class="n">grub</span> <span class="n">configuration</span> <span class="n">file</span> <span class="p">...</span>
+<span class="k">Found</span> <span class="n">linux</span> <span class="n">image</span><span class="p">:</span> <span class="o">/</span><span class="n">boot</span><span class="o">/</span><span class="n">vmlinuz</span><span class="o">-</span><span class="mi">4</span><span class="p">.</span><span class="mi">4</span><span class="p">.</span><span class="mi">6</span><span class="o">-</span><span class="n">gentoo</span>
+<span class="n">done</span>
 </pre></div>
 
 
 <p>Found linux imageとなっていればokです。</p>
-<div class="highlight"><pre><span></span>(chroot) livecd init.d # exit
-livecd gentoo # cd
-livecd ~ # umount -l /mnt/gentoo/dev{/shm,/pts,}
-livecd ~ # umount /mnt/gentoo{/boot,/sys,/proc,}
-livecd ~ # reboot
+<div class="highlight"><pre><span></span><span class="ss">(</span><span class="nv">chroot</span><span class="ss">)</span> <span class="nv">livecd</span> <span class="nv">init</span>.<span class="nv">d</span> # <span class="k">exit</span>
+<span class="nv">livecd</span> <span class="nv">gentoo</span> # <span class="nv">cd</span>
+<span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">umount</span> <span class="o">-</span><span class="nv">l</span> <span class="o">/</span><span class="nv">mnt</span><span class="o">/</span><span class="nv">gentoo</span><span class="o">/</span><span class="nv">dev</span>{<span class="o">/</span><span class="nv">shm</span>,<span class="o">/</span><span class="nv">pts</span>,}
+<span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">umount</span> <span class="o">/</span><span class="nv">mnt</span><span class="o">/</span><span class="nv">gentoo</span>{<span class="o">/</span><span class="nv">boot</span>,<span class="o">/</span><span class="nv">sys</span>,<span class="o">/</span><span class="nv">proc</span>,}
+<span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">reboot</span>
 </pre></div>
 
 
-<h1>最後に</h1>
-<p><img alt="" src="https://pbs.twimg.com/media/CrkOSHkUEAE7EGl.jpg"></p>
+<h1 id="_1">最後に</h1>
+<p><img alt="" src="https://pbs.twimg.com/media/CrkOSHkUEAE7EGl.jpg" /></p>
 <p>インストールできました！</p>
 <p>しかし、起動時にエラーがｯ...!!?</p>
 <p>...</p>
@@ -367,6 +367,14 @@ livecd ~ # reboot
         <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
         <ul>
 			    <li>
+                    <p>2019年 6月05日 PM 10:50<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/f571b230f35658c8bd8c6348021e0b53.html">
+                            ParcelではRustをimportして使える
+                        </a>
+                    </p>
+			    </li>
+			    <li>
                     <p>2019年 5月24日 AM 01:41<br />
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
@@ -395,14 +403,6 @@ livecd ~ # reboot
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
                             Minidoxビルドログ
-                        </a>
-                    </p>
-			    </li>
-			    <li>
-                    <p>2018年 1月16日 AM 10:32<br />
-			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
-                        <a href="https://muunyblue.github.io/520bae6649b42ff5a3c8c58b7fcfc5a9.html">
-                            Neovim/Vim8で快適Vue.js開発(Vue Language Server)
                         </a>
                     </p>
 			    </li>
@@ -438,6 +438,7 @@ livecd ~ # reboot
                 <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
                 <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/parcel.html">Parcel</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
                 <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
@@ -455,7 +456,7 @@ livecd ~ # reboot
                 <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
-                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
@@ -474,6 +475,12 @@ livecd ~ # reboot
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

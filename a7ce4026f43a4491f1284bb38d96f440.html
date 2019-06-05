@@ -62,9 +62,9 @@
 </ul>
 </footer><!-- /.post-info -->      <p>nvim-typescriptを使用する方法ではできなかったので出来るように頑張りました。</p>
 <p>(他に代替出来る方法を教えていただいたの最後の方で紹介します。)</p>
-<p><img alt="demo" src="https://user-images.githubusercontent.com/1256685/29148673-f6238c3a-7da9-11e7-84ee-f075adba0390.gif"></p>
+<p><img alt="demo" src="https://user-images.githubusercontent.com/1256685/29148673-f6238c3a-7da9-11e7-84ee-f075adba0390.gif" /></p>
 <p>Vueファイル内で、html, typescript, cssの補完が良い感じに効くようになりました。</p>
-<h1>やり方</h1>
+<h1 id="_1">やり方</h1>
 <p>deoplete.vimとcontext_filetype.vim、nvim-typescriptを使用します。</p>
 <p>dein.vimでプラグイン管理をする場合の最小構成は以下です。</p>
 <div class="highlight"><pre><span></span><span class="k">if</span> &amp;<span class="nb">compatible</span>
@@ -96,19 +96,34 @@
 
 
 <p>nvim-typescriptを使うにはまだ"npm i -g typescript"する必要があるのでそこは注意です。</p>
-<h1>やったこと</h1>
+<h1 id="_2">やったこと</h1>
 <p>context_filetype.vimとnvim_typescriptをVue対応させました。</p>
-<p>[https://github.com/Shougo/context_filetype.vim/pull/33:embed]</p>
-<p>[https://github.com/mhartington/nvim-typescript/pull/71:embed]</p>
+<p>
+<a class="embedly-card" href="https://github.com/Shougo/context_filetype.vim/pull/33">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
+<p>
+<a class="embedly-card" href="https://github.com/mhartington/nvim-typescript/pull/71">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>あとはdeoplete.nvim本体もShougoさんに修正した頂きました。</p>
-<p>[https://github.com/Shougo/deoplete.nvim/issues/526:embed]</p>
+<p>
+<a class="embedly-card" href="https://github.com/Shougo/deoplete.nvim/issues/526">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>PRとかIssue出してから反映されるのが素早くて素晴らしかったです、感謝です。</p>
-<h1>他の方法</h1>
+<h1 id="_3">他の方法</h1>
 <p>色々画策しているうちに、この方法以外にもVimでVue + TypeScriptする方法はあると教えていただきました。</p>
-<p>[https://twitter.com/Hchan_mgn/status/894834184195162113:embed]</p>
+<p>
+<a class="embedly-card" href="https://twitter.com/Hchan_mgn/status/894834184195162113">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>LanguageClientを使う方法です、Vue.jsの公式にLanguageServerProtcolの実装があるとは知らなかったのでびっくりでした。</p>
 <p>VeturはVue公式なのでVueに特化した補完が聞きそうなのでこちらのほうが便利かも？</p>
-<p>[https://twitter.com/Quramy/status/894743968147165184:embed]</p>
+<p>
+<a class="embedly-card" href="https://twitter.com/Quramy/status/894743968147165184">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>これはtuquyomiを使う方法です、Vimでも動きそうなのでNeovimが使えない環境ではこちらが良さそう。</p>
     </div><!-- /.entry-content -->
 
@@ -230,6 +245,14 @@
         <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
         <ul>
 			    <li>
+                    <p>2019年 6月05日 PM 10:50<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/f571b230f35658c8bd8c6348021e0b53.html">
+                            ParcelではRustをimportして使える
+                        </a>
+                    </p>
+			    </li>
+			    <li>
                     <p>2019年 5月24日 AM 01:41<br />
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
@@ -258,14 +281,6 @@
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
                             Minidoxビルドログ
-                        </a>
-                    </p>
-			    </li>
-			    <li>
-                    <p>2018年 1月16日 AM 10:32<br />
-			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
-                        <a href="https://muunyblue.github.io/520bae6649b42ff5a3c8c58b7fcfc5a9.html">
-                            Neovim/Vim8で快適Vue.js開発(Vue Language Server)
                         </a>
                     </p>
 			    </li>
@@ -301,6 +316,7 @@
                 <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
                 <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/parcel.html">Parcel</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
                 <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
@@ -318,7 +334,7 @@
                 <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
-                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
@@ -337,6 +353,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

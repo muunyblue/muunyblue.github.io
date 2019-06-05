@@ -72,7 +72,7 @@ docker-compose version <span class="m">1</span>.5.2, build 7240ff3
 </pre></div>
 
 
-<h1>TL;DR</h1>
+<h1 id="tldr">TL;DR</h1>
 <p>Vagrant+VirtualBoxのVM上で動くDockerの話です。ホストでDocker動かしている場合は関係ないかもしれません。</p>
 <p>docker-composeでMySQLのデータ永続化をホストにマウントして使うときは、vagrantユーザーをvboxsfグループに入れておく必要があります。</p>
 <div class="highlight"><pre><span></span>$ sudo gpasswd -a <span class="nv">$USER</span> vboxsf
@@ -80,11 +80,11 @@ docker-compose version <span class="m">1</span>.5.2, build 7240ff3
 
 
 <p>そうしないと、Permissionの問題でエラーが起こることがあるようです。</p>
-<div class="highlight"><pre><span></span>IOError: [Errno 13] Permission denied: &#39;/home/vagrant/Dev/data/mysql/auto.cnf&#39;
+<div class="highlight"><pre><span></span><span class="n">IOError</span><span class="p">:</span> <span class="p">[</span><span class="n">Errno</span> <span class="mi">13</span><span class="p">]</span> <span class="n">Permission</span> <span class="n">denied</span><span class="p">:</span> <span class="s1">&#39;/home/vagrant/Dev/data/mysql/auto.cnf&#39;</span>
 </pre></div>
 
 
-<h1>MySQLコンテナのデータ永続化</h1>
+<h1 id="mysql">MySQLコンテナのデータ永続化</h1>
 <p><a href="https://hub.docker.com/_/mysql/" title="Docker Hub">Docker Hub</a></p>
 <p>ドキュメントに書いてあるのはDockerの起動コマンド</p>
 <div class="highlight"><pre><span></span>$ docker run --name some-mysql -v /my/own/datadir:/var/lib/mysql -e <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span>my-secret-pw -d mysql:tag
@@ -103,64 +103,64 @@ docker-compose version <span class="m">1</span>.5.2, build 7240ff3
 
 
 <p>これでマウントできるので起動して、マウントしたディレクトリをtreeコマンドで見てみると以下のようになります。</p>
-<div class="highlight"><pre><span></span>|-- datadir
-|   |-- auto.cnf
-|   |-- ib_buffer_pool
-|   |-- ibdata1
-|   |-- ib_logfile0
-|   |-- ib_logfile1
-|   |-- ibtmp1
-|   |-- mysql [error opening dir]
-|   |-- performance_schema [error opening dir]
-|   `-- sys [error opening dir]
+<div class="highlight"><pre><span></span><span class="o">|</span><span class="c1">-- datadir</span>
+<span class="o">|</span>   <span class="o">|</span><span class="c1">-- auto.cnf</span>
+<span class="o">|</span>   <span class="o">|</span><span class="c1">-- ib_buffer_pool</span>
+<span class="o">|</span>   <span class="o">|</span><span class="c1">-- ibdata1</span>
+<span class="o">|</span>   <span class="o">|</span><span class="c1">-- ib_logfile0</span>
+<span class="o">|</span>   <span class="o">|</span><span class="c1">-- ib_logfile1</span>
+<span class="o">|</span>   <span class="o">|</span><span class="c1">-- ibtmp1</span>
+<span class="o">|</span>   <span class="o">|</span><span class="c1">-- mysql [error opening dir]</span>
+<span class="o">|</span>   <span class="o">|</span><span class="c1">-- performance_schema [error opening dir]</span>
+<span class="o">|</span>   <span class="o">`</span><span class="c1">-- sys [error opening dir]</span>
 </pre></div>
 
 
 <p>「error opening dir」と不穏な空気です。</p>
-<h1>docker-compose buildするとエラー</h1>
+<h1 id="docker-compose-build">docker-compose buildするとエラー</h1>
 <p>この状態でdocker-compose.yml内にあるbuildが必要なコンテナをビルドするとエラーになります。</p>
-<div class="highlight"><pre><span></span>Traceback (most recent call last):
-  File &quot;/usr/local/bin/docker-compose&quot;, line 9, in &lt;module&gt;
-    load_entry_point(&#39;docker-compose==1.5.2&#39;, &#39;console_scripts&#39;, &#39;docker-compose&#39;)()
-  File &quot;/usr/local/lib/python2.7/dist-packages/compose/cli/main.py&quot;, line 54, in main
-    command.sys_dispatch()
-  File &quot;/usr/local/lib/python2.7/dist-packages/compose/cli/docopt_command.py&quot;, line 23, in sys_dispatch
-    self.dispatch(sys.argv[1:], None)
-  File &quot;/usr/local/lib/python2.7/dist-packages/compose/cli/docopt_command.py&quot;, line 26, in dispatch
-    self.perform_command(*self.parse(argv, global_options))
-  File &quot;/usr/local/lib/python2.7/dist-packages/compose/cli/main.py&quot;, line 171, in perform_command
-    handler(project, command_options)
-  File &quot;/usr/local/lib/python2.7/dist-packages/compose/cli/main.py&quot;, line 192, in build
-    force_rm=bool(options.get(&#39;--force-rm&#39;, False)))
-  File &quot;/usr/local/lib/python2.7/dist-packages/compose/project.py&quot;, line 235, in build
-    service.build(no_cache, pull, force_rm)
-  File &quot;/usr/local/lib/python2.7/dist-packages/compose/service.py&quot;, line 683, in build
-    dockerfile=self.options.get(&#39;dockerfile&#39;, None),
-  File &quot;/usr/local/lib/python2.7/dist-packages/docker/api/build.py&quot;, line 49, in build
-    context = utils.tar(path, exclude=exclude, dockerfile=dockerfile)
-  File &quot;/usr/local/lib/python2.7/dist-packages/docker/utils/utils.py&quot;, line 85, in tar
-    t.add(os.path.join(root, path), arcname=path, recursive=False)
-  File &quot;/usr/lib/python2.7/tarfile.py&quot;, line 1994, in add
-    with bltn_open(name, &quot;rb&quot;) as f:
-IOError: [Errno 13] Permission denied: &#39;/home/vagrant/Dev/data/mysql/auto.cnf&#39;
+<div class="highlight"><pre><span></span><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="k">call</span> <span class="k">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="ss">&quot;/usr/local/bin/docker-compose&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">9</span><span class="p">,</span> <span class="k">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+    <span class="n">load_entry_point</span><span class="p">(</span><span class="s1">&#39;docker-compose==1.5.2&#39;</span><span class="p">,</span> <span class="s1">&#39;console_scripts&#39;</span><span class="p">,</span> <span class="s1">&#39;docker-compose&#39;</span><span class="p">)()</span>
+  <span class="n">File</span> <span class="ss">&quot;/usr/local/lib/python2.7/dist-packages/compose/cli/main.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">54</span><span class="p">,</span> <span class="k">in</span> <span class="n">main</span>
+    <span class="n">command</span><span class="p">.</span><span class="n">sys_dispatch</span><span class="p">()</span>
+  <span class="n">File</span> <span class="ss">&quot;/usr/local/lib/python2.7/dist-packages/compose/cli/docopt_command.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">23</span><span class="p">,</span> <span class="k">in</span> <span class="n">sys_dispatch</span>
+    <span class="k">self</span><span class="p">.</span><span class="k">dispatch</span><span class="p">(</span><span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="k">None</span><span class="p">)</span>
+  <span class="n">File</span> <span class="ss">&quot;/usr/local/lib/python2.7/dist-packages/compose/cli/docopt_command.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">26</span><span class="p">,</span> <span class="k">in</span> <span class="k">dispatch</span>
+    <span class="k">self</span><span class="p">.</span><span class="n">perform_command</span><span class="p">(</span><span class="o">*</span><span class="k">self</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="n">argv</span><span class="p">,</span> <span class="n">global_options</span><span class="p">))</span>
+  <span class="n">File</span> <span class="ss">&quot;/usr/local/lib/python2.7/dist-packages/compose/cli/main.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">171</span><span class="p">,</span> <span class="k">in</span> <span class="n">perform_command</span>
+    <span class="k">handler</span><span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">command_options</span><span class="p">)</span>
+  <span class="n">File</span> <span class="ss">&quot;/usr/local/lib/python2.7/dist-packages/compose/cli/main.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">192</span><span class="p">,</span> <span class="k">in</span> <span class="n">build</span>
+    <span class="n">force_rm</span><span class="o">=</span><span class="n">bool</span><span class="p">(</span><span class="k">options</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="s1">&#39;--force-rm&#39;</span><span class="p">,</span> <span class="k">False</span><span class="p">)))</span>
+  <span class="n">File</span> <span class="ss">&quot;/usr/local/lib/python2.7/dist-packages/compose/project.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">235</span><span class="p">,</span> <span class="k">in</span> <span class="n">build</span>
+    <span class="n">service</span><span class="p">.</span><span class="n">build</span><span class="p">(</span><span class="n">no_cache</span><span class="p">,</span> <span class="n">pull</span><span class="p">,</span> <span class="n">force_rm</span><span class="p">)</span>
+  <span class="n">File</span> <span class="ss">&quot;/usr/local/lib/python2.7/dist-packages/compose/service.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">683</span><span class="p">,</span> <span class="k">in</span> <span class="n">build</span>
+    <span class="n">dockerfile</span><span class="o">=</span><span class="k">self</span><span class="p">.</span><span class="k">options</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="s1">&#39;dockerfile&#39;</span><span class="p">,</span> <span class="k">None</span><span class="p">),</span>
+  <span class="n">File</span> <span class="ss">&quot;/usr/local/lib/python2.7/dist-packages/docker/api/build.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">49</span><span class="p">,</span> <span class="k">in</span> <span class="n">build</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="n">utils</span><span class="p">.</span><span class="n">tar</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="n">exclude</span><span class="p">,</span> <span class="n">dockerfile</span><span class="o">=</span><span class="n">dockerfile</span><span class="p">)</span>
+  <span class="n">File</span> <span class="ss">&quot;/usr/local/lib/python2.7/dist-packages/docker/utils/utils.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">85</span><span class="p">,</span> <span class="k">in</span> <span class="n">tar</span>
+    <span class="n">t</span><span class="p">.</span><span class="k">add</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="k">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">path</span><span class="p">),</span> <span class="n">arcname</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="k">recursive</span><span class="o">=</span><span class="k">False</span><span class="p">)</span>
+  <span class="n">File</span> <span class="ss">&quot;/usr/lib/python2.7/tarfile.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1994</span><span class="p">,</span> <span class="k">in</span> <span class="k">add</span>
+    <span class="k">with</span> <span class="n">bltn_open</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="ss">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="n">IOError</span><span class="p">:</span> <span class="p">[</span><span class="n">Errno</span> <span class="mi">13</span><span class="p">]</span> <span class="n">Permission</span> <span class="n">denied</span><span class="p">:</span> <span class="s1">&#39;/home/vagrant/Dev/data/mysql/auto.cnf&#39;</span>
 </pre></div>
 
 
 <p>やはりPermissionのエラーです。</p>
 <p>ビルド以外の動作でも起こりそうですが確認してません。</p>
-<h1>マウントしたMySQLのディレクトリにアクセスできない</h1>
+<h1 id="mysql_1">マウントしたMySQLのディレクトリにアクセスできない</h1>
 <p>エラーメッセージからPermissionの問題だとわかったので、lsコマンドでdatadirの中を見てみます。</p>
-<div class="highlight"><pre><span></span>drwxrwxr-x 5 vboxadd vboxsf      4096 Jan  7 06:49 .
-drwxrwxr-x 7 vagrant vagrant     4096 Jan  7 07:25 ..
--rw-r----- 1 vboxadd vboxsf        56 Jan  7 05:08 auto.cnf
--rw-r----- 1 vboxadd vboxsf       694 Jan  7 06:19 ib_buffer_pool
--rw-r----- 1 vboxadd vboxsf  50331648 Jan  7 06:49 ib_logfile0
--rw-r----- 1 vboxadd vboxsf  50331648 Jan  7 05:08 ib_logfile1
--rw-r----- 1 vboxadd vboxsf  79691776 Jan  7 06:49 ibdata1
--rw-r----- 1 vboxadd vboxsf  12582912 Jan  7 06:49 ibtmp1
-drwxr-x--- 2 vboxadd vboxsf      4096 Jan  7 05:08 mysql
-drwxr-x--- 2 vboxadd vboxsf      4096 Jan  7 05:08 performance_schema
-drwxr-x--- 2 vboxadd vboxsf     12288 Jan  7 05:08 sys
+<div class="highlight"><pre><span></span><span class="n">drwxrwxr</span><span class="o">-</span><span class="n">x</span> <span class="mi">5</span> <span class="n">vboxadd</span> <span class="n">vboxsf</span>      <span class="mi">4096</span> <span class="n">Jan</span>  <span class="mi">7</span> <span class="mi">06</span><span class="p">:</span><span class="mi">49</span> <span class="p">.</span>
+<span class="n">drwxrwxr</span><span class="o">-</span><span class="n">x</span> <span class="mi">7</span> <span class="n">vagrant</span> <span class="n">vagrant</span>     <span class="mi">4096</span> <span class="n">Jan</span>  <span class="mi">7</span> <span class="mi">07</span><span class="p">:</span><span class="mi">25</span> <span class="p">..</span>
+<span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="c1">----- 1 vboxadd vboxsf        56 Jan  7 05:08 auto.cnf</span>
+<span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="c1">----- 1 vboxadd vboxsf       694 Jan  7 06:19 ib_buffer_pool</span>
+<span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="c1">----- 1 vboxadd vboxsf  50331648 Jan  7 06:49 ib_logfile0</span>
+<span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="c1">----- 1 vboxadd vboxsf  50331648 Jan  7 05:08 ib_logfile1</span>
+<span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="c1">----- 1 vboxadd vboxsf  79691776 Jan  7 06:49 ibdata1</span>
+<span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="c1">----- 1 vboxadd vboxsf  12582912 Jan  7 06:49 ibtmp1</span>
+<span class="n">drwxr</span><span class="o">-</span><span class="n">x</span><span class="c1">--- 2 vboxadd vboxsf      4096 Jan  7 05:08 mysql</span>
+<span class="n">drwxr</span><span class="o">-</span><span class="n">x</span><span class="c1">--- 2 vboxadd vboxsf      4096 Jan  7 05:08 performance_schema</span>
+<span class="n">drwxr</span><span class="o">-</span><span class="n">x</span><span class="c1">--- 2 vboxadd vboxsf     12288 Jan  7 05:08 sys</span>
 </pre></div>
 
 
@@ -291,6 +291,14 @@ drwxr-x--- 2 vboxadd vboxsf     12288 Jan  7 05:08 sys
         <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
         <ul>
 			    <li>
+                    <p>2019年 6月05日 PM 10:50<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/f571b230f35658c8bd8c6348021e0b53.html">
+                            ParcelではRustをimportして使える
+                        </a>
+                    </p>
+			    </li>
+			    <li>
                     <p>2019年 5月24日 AM 01:41<br />
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
@@ -319,14 +327,6 @@ drwxr-x--- 2 vboxadd vboxsf     12288 Jan  7 05:08 sys
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
                             Minidoxビルドログ
-                        </a>
-                    </p>
-			    </li>
-			    <li>
-                    <p>2018年 1月16日 AM 10:32<br />
-			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
-                        <a href="https://muunyblue.github.io/520bae6649b42ff5a3c8c58b7fcfc5a9.html">
-                            Neovim/Vim8で快適Vue.js開発(Vue Language Server)
                         </a>
                     </p>
 			    </li>
@@ -362,6 +362,7 @@ drwxr-x--- 2 vboxadd vboxsf     12288 Jan  7 05:08 sys
                 <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
                 <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/parcel.html">Parcel</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
                 <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
@@ -379,7 +380,7 @@ drwxr-x--- 2 vboxadd vboxsf     12288 Jan  7 05:08 sys
                 <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
-                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
@@ -398,6 +399,12 @@ drwxr-x--- 2 vboxadd vboxsf     12288 Jan  7 05:08 sys
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

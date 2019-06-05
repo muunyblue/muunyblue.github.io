@@ -62,12 +62,15 @@
 </ul>
 </footer><!-- /.post-info -->      <p><a href="https://muunyblue.github.io/8eec1a372e8a99076315db9ea4d24b2c.html">rustifyで簡単WebAssemblyしてみる</a></p>
 <p>続編です、もう少し実践的なライフゲームを作ってみました。</p>
-<p>[https://github.com/yymm/rustify-game-of-life:embed]</p>
-<h1>Demo</h1>
-<p><img alt="emmo" src="https://github.com/yymm/rustify-game-of-life/raw/master/demo.gif"></p>
+<p>
+<a class="embedly-card" href="https://github.com/yymm/rustify-game-of-life">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
+<h1 id="demo">Demo</h1>
+<p><img alt="emmo" src="https://github.com/yymm/rustify-game-of-life/raw/master/demo.gif" /></p>
 <p>Electonで動かしてますが普通にブラウザでも動きます。</p>
 <p>前の記事は試してみただけだったので少し詳しくまとめてみます。</p>
-<h1>rustifyとは</h1>
+<h1 id="rustify">rustifyとは</h1>
 <p>borwserifyのtransformでrustコードをwasmに変換するものです。</p>
 <p>js内にインラインで書いたrustをwasmに変換することもできるので手軽に利用することもできます。</p>
 <p>何をやっているかというと、wasmを生成してwasm-gcを噛ませて元のjsファイルのrustの部分をwasmで置き換えるということをやっています。</p>
@@ -77,10 +80,10 @@
 
 
 <p>実行しているコマンドはこれだけなので、wasmをfetchやfsでreadFileSyncしてもほぼ同じです。</p>
-<h1>rustifyができそうなこと</h1>
+<h1 id="rustify_1">rustifyができそうなこと</h1>
 <p>rustifyはjsのプロジェクトに対して一部分をrust+wasmに置き換えるようなことができそうです。</p>
 <p>webpackなどで行うメインのビルド前に、rustifyで変換をかけてからwebpackビルドに回すみたいなことは簡単にできるので、もともとあるjsプロジェクトの高速化に使えるのでは・・・という感想です。</p>
-<h1>メモリ共有</h1>
+<h1 id="_1">メモリ共有</h1>
 <p>ライフゲームを作るにあたって配列データをwasmとjsで共有する必要があります。emscriptenを使えばModule._mallocを使えるのですがwasm32-unknown-unknownでは使えません。</p>
 <p>正解の方法はわからなかったのでBox\&lt;T>でヒープに確保したarrayの生ポインタを返すことで実現してみました。</p>
 <div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">rust</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rustify&#39;</span><span class="p">)</span>
@@ -119,7 +122,7 @@
 <p>js側で生ポインタから値を取り出す方法がわからなかったのでgetElementしています。</p>
 <p>この方法だとサイズを動的に確保できないのが残念なので時間があれば改良したいです。</p>
 <p>メモリの解放はwasm-gcがやってくれると信じて使います。</p>
-<h1>開発しぐさ</h1>
+<h1 id="_2">開発しぐさ</h1>
 <p>rustのプロジェクトをベースにしてviewディレクトリにnode.jsのプロジェクトを作成して開発しました。</p>
 <div class="highlight"><pre><span></span>.
 ├── Cargo.toml
@@ -151,7 +154,7 @@
 
 
 <p>ロジック部分ができたらダミデータを置き換えて完成です。</p>
-<h1>ライフゲーム本体</h1>
+<h1 id="_3">ライフゲーム本体</h1>
 <div class="highlight"><pre><span></span><span class="k">pub</span><span class="w"> </span><span class="k">struct</span> <span class="nc">Lifegame</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="n">row</span>: <span class="kt">i32</span><span class="p">,</span><span class="w"></span>
 <span class="w">    </span><span class="n">col</span>: <span class="kt">i32</span><span class="p">,</span><span class="w"></span>
@@ -209,7 +212,7 @@
 
 
 <p>Rust結構書きやすいしコンパイラも賢いので本当に好きです。がまだ雰囲気で書いているので間違っているかもしれません。</p>
-<h1>もっと遊びたい</h1>
+<h1 id="_4">もっと遊びたい</h1>
 <p><a href="https://aochagavia.github.io/blog/rocket---a-rust-game-running-on-wasm/">Rocket - A Rust game running on WASM</a></p>
 <p>この記事を見てしゅごいとなったのでもっと遊びたくなりました。</p>
 <p>もともとPistonで作っていたゲームをwasm+canvas(html)で置き換えた話のようです。</p>
@@ -340,6 +343,14 @@
         <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
         <ul>
 			    <li>
+                    <p>2019年 6月05日 PM 10:50<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/f571b230f35658c8bd8c6348021e0b53.html">
+                            ParcelではRustをimportして使える
+                        </a>
+                    </p>
+			    </li>
+			    <li>
                     <p>2019年 5月24日 AM 01:41<br />
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
@@ -368,14 +379,6 @@
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
                             Minidoxビルドログ
-                        </a>
-                    </p>
-			    </li>
-			    <li>
-                    <p>2018年 1月16日 AM 10:32<br />
-			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
-                        <a href="https://muunyblue.github.io/520bae6649b42ff5a3c8c58b7fcfc5a9.html">
-                            Neovim/Vim8で快適Vue.js開発(Vue Language Server)
                         </a>
                     </p>
 			    </li>
@@ -411,6 +414,7 @@
                 <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
                 <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/parcel.html">Parcel</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
                 <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
@@ -428,7 +432,7 @@
                 <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
-                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
@@ -447,6 +451,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

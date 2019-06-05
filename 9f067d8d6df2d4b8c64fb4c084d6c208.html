@@ -66,13 +66,25 @@
 </ul>
 </footer><!-- /.post-info -->      <p>docker-composeを使うと連携する複数のコンテナを割と簡単に構築できます。</p>
 <p>アプリケーションコンテナや開発用コンテナからデータベースコンテナを扱う際に気になったことをまとめてみます。</p>
-<hr>
+<hr />
 <p>✗TOC</p>
-<p>[TOC]</p>
-<h1>データベースの永続化</h1>
+<div class="toc">
+<ul>
+<li><a href="#_1">データベースの永続化</a><ul>
+<li><a href="#redis">redis</a></li>
+<li><a href="#mysql">mysql</a></li>
+<li><a href="#postgres">postgres</a></li>
+<li><a href="#mongo">mongo</a></li>
+</ul>
+</li>
+<li><a href="#_2">データベースを参照する方法</a></li>
+<li><a href="#port">portの指定</a></li>
+</ul>
+</div>
+<h1 id="_1">データベースの永続化</h1>
 <p>データベース内のデータは永続化しないと消えてしまうので、残したい場合は明示的に永続化させておく必要があります。</p>
 <p>公式のイメージの設定例(redis, mysql, postgres, mongo)を書きます、ホストのディレクトリにマウントする方法(data volume)を採用しています。データコンテナを使う方法は書いていません。</p>
-<h2>redis</h2>
+<h2 id="redis">redis</h2>
 <p><a href="https://hub.docker.com/_/redis/" title="Docker Hub">Docker Hub</a></p>
 <p>/dataをマウントすると良いようです。docker-compose.ymlに以下のように記載します。</p>
 <div class="highlight"><pre><span></span><span class="n">redis</span><span class="o">:</span>
@@ -87,14 +99,14 @@
 <p>commandでデフォルトの起動コマンドを書き換えているのがポイントです、--appendonly yesがないとデータが作られないので注意です。</p>
 <p>マウントするホストのディレクトリは任意の場所にするのですが、相対パスが使えます。(Dockerのコマンドではダメだったような・・・)</p>
 <p>例えば、</p>
-<div class="highlight"><pre><span></span>  volumes:
-    - ./data/redis:/data
+<div class="highlight"><pre><span></span>  <span class="n">volumes</span><span class="p">:</span>
+    <span class="o">-</span> <span class="p">.</span><span class="o">/</span><span class="k">data</span><span class="o">/</span><span class="n">redis</span><span class="p">:</span><span class="o">/</span><span class="k">data</span>
 </pre></div>
 
 
 <p>という指定も問題ないです。</p>
 <p>GitLabで使っているsameersbn/redisでは、/var/lib/redisにデータがあり場所が違うのでそちらを使う場合はまた違う設定になるようです。</p>
-<h2>mysql</h2>
+<h2 id="mysql">mysql</h2>
 <p><a href="https://hub.docker.com/_/mysql/" title="Docker Hub">Docker Hub</a></p>
 <p>/var/lib/mysqlをマウントします。</p>
 <div class="highlight"><pre><span></span><span class="n">mysql</span><span class="o">:</span>
@@ -110,7 +122,7 @@
 <p>環境変数にMYSQL_ROOT_PASSWORDを設定するのは必須で、MYSQL_USERやMYSQL_PASSWORDは必要な場合は設定します。</p>
 <p>vagrant+virtualbox上のDockerでmysqlを永続化したときパーミッションの問題が起こったのでそれに関しては以下の記事にまとめてます。</p>
 <p><a href="http://blog.muuny-blue.info/e9074df9d70cb6f30fa378e92edbb490.html" title="docker-composeでmysqlのデータ永続化したときのPermission Deniedの解決方法">docker-composeでmysqlのデータ永続化したときのPermission Deniedの解決方法</a></p>
-<h2>postgres</h2>
+<h2 id="postgres">postgres</h2>
 <p><a href="https://hub.docker.com/_/postgres/" title="Docker Hub">Docker Hub</a></p>
 <p>/var/lib/postgresql/dataをマウントします。</p>
 <div class="highlight"><pre><span></span><span class="n">postgres</span><span class="o">:</span>
@@ -121,7 +133,7 @@
 </pre></div>
 
 
-<h2>mongo</h2>
+<h2 id="mongo">mongo</h2>
 <p><a href="https://hub.docker.com/_/mongo/" title="Docker Hub">Docker Hub</a></p>
 <p>/data/dbをマウントします。</p>
 <div class="highlight"><pre><span></span><span class="n">mongo</span><span class="o">:</span>
@@ -132,7 +144,7 @@
 </pre></div>
 
 
-<h1>データベースを参照する方法</h1>
+<h1 id="_2">データベースを参照する方法</h1>
 <p>参照したいコンテナのdocker-compose.ymlの設定にlinksを追加します。</p>
 <div class="highlight"><pre><span></span><span class="n">application</span><span class="o">:</span>
   <span class="n">restart</span><span class="o">:</span> <span class="n">always</span>
@@ -153,11 +165,11 @@
 </ul>
 <p>複数個指定することもできます。</p>
 <p>linksを書くと、コンテナ内の/etc/hostsに指定したサービス名が追加されます。</p>
-<div class="highlight"><pre><span></span>172.17.0.6      mongodb
-172.17.0.4      mysql
-172.17.0.2      postgresql
-172.17.0.3      redis
-172.17.0.6      mongo
+<div class="highlight"><pre><span></span><span class="mi">172</span><span class="p">.</span><span class="mi">17</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">6</span>      <span class="n">mongodb</span>
+<span class="mi">172</span><span class="p">.</span><span class="mi">17</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">4</span>      <span class="n">mysql</span>
+<span class="mi">172</span><span class="p">.</span><span class="mi">17</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">2</span>      <span class="n">postgresql</span>
+<span class="mi">172</span><span class="p">.</span><span class="mi">17</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">3</span>      <span class="n">redis</span>
+<span class="mi">172</span><span class="p">.</span><span class="mi">17</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">6</span>      <span class="n">mongo</span>
 </pre></div>
 
 
@@ -169,7 +181,7 @@ redis:6379&gt;
 
 
 <p>特に指定がなければデフォルトポートが使用されています。</p>
-<h1>portの指定</h1>
+<h1 id="port">portの指定</h1>
 <p><strong>公式のイメージでは</strong>、portsの記載がなくても勝手にデフォルトポートがポートフォワーディングされるので、書かなくてもいい。</p>
 <p>公式のイメージ以外を使っている場合は明示的に指定する必要があるかもしれないです。</p>
 <p>redisの例だと、docker-compose.yml</p>
@@ -180,9 +192,9 @@ redis:6379&gt;
 
 
 <p>docker-compose psで確認すると</p>
-<div class="highlight"><pre><span></span> Name                    Command               State   Ports
-------------------------------------------------------------------
-postgres_1    /docker-entrypoint.sh postgres   Up      5432/tcp
+<div class="highlight"><pre><span></span> <span class="n">Name</span>                    <span class="n">Command</span>               <span class="k">State</span>   <span class="n">Ports</span>
+<span class="c1">------------------------------------------------------------------</span>
+<span class="n">postgres_1</span>    <span class="o">/</span><span class="n">docker</span><span class="o">-</span><span class="n">entrypoint</span><span class="p">.</span><span class="n">sh</span> <span class="n">postgres</span>   <span class="n">Up</span>      <span class="mi">5432</span><span class="o">/</span><span class="n">tcp</span>
 </pre></div>
 
 
@@ -307,6 +319,14 @@ postgres_1    /docker-entrypoint.sh postgres   Up      5432/tcp
         <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
         <ul>
 			    <li>
+                    <p>2019年 6月05日 PM 10:50<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/f571b230f35658c8bd8c6348021e0b53.html">
+                            ParcelではRustをimportして使える
+                        </a>
+                    </p>
+			    </li>
+			    <li>
                     <p>2019年 5月24日 AM 01:41<br />
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
@@ -335,14 +355,6 @@ postgres_1    /docker-entrypoint.sh postgres   Up      5432/tcp
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
                             Minidoxビルドログ
-                        </a>
-                    </p>
-			    </li>
-			    <li>
-                    <p>2018年 1月16日 AM 10:32<br />
-			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
-                        <a href="https://muunyblue.github.io/520bae6649b42ff5a3c8c58b7fcfc5a9.html">
-                            Neovim/Vim8で快適Vue.js開発(Vue Language Server)
                         </a>
                     </p>
 			    </li>
@@ -378,6 +390,7 @@ postgres_1    /docker-entrypoint.sh postgres   Up      5432/tcp
                 <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
                 <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/parcel.html">Parcel</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
                 <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
@@ -395,7 +408,7 @@ postgres_1    /docker-entrypoint.sh postgres   Up      5432/tcp
                 <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
-                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
@@ -414,6 +427,12 @@ postgres_1    /docker-entrypoint.sh postgres   Up      5432/tcp
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

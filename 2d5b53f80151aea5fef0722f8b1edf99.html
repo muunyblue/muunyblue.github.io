@@ -65,13 +65,13 @@
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
 </footer><!-- /.post-info -->      <p>WindowsでビルドやテストをするようなCIがGitLab CIで簡単に構成できるので紹介します。</p>
-<hr>
+<hr />
 <p><a href="http://blog.muuny-blue.info/015389e74278202135dd6ed947ed32da.html" title="簡単にわかるGitLab CIの仕組み">簡単にわかるGitLab CIの仕組み</a>で書いたように</p>
 <blockquote>
 <p>GitLab RunnerはGitLab本体とは分離して別マシンや別コンテナに配置して、GitLabとGitLab Runner間はAPIで通信する仕組みになっています。</p>
 </blockquote>
 <p>ということなので、ビルド環境のある物理WindowsマシンにGitLab Runnerを設置することでWindows版CI用Runnerを構築できます。</p>
-<h1>Install</h1>
+<h1 id="install">Install</h1>
 <p>GitLab RunnerはGolangで書かれておりシングルバイナリとして配布されており、インストールはバイナリを配置するだけokです。</p>
 <ul>
 <li>x86: https://gitlab-ci-multi-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-ci-multi-runner-windows-386.exe</li>
@@ -80,25 +80,25 @@
 <p>使用しているWindowsに応じてダウンロードします。</p>
 <p>配置する場所に制限はないので好きな場所に配置します。</p>
 <p>この記事ではC:\GitLab-Runnerにamd64のバイナリを配置したとして進めていきます。</p>
-<h1>Setup</h1>
+<h1 id="setup">Setup</h1>
 <p>まず登録する際に入力する情報をGitLabで確認します。</p>
 <p>「CIをするプロジェクトページ &gt; Settings &gt; Runners」を開くと"URL"と"token"が書いてあります。</p>
-<p><img alt="URL &amp; token" src="https://i.gyazo.com/efbc85635d23089c924ee36c8a071f1f.png"></p>
+<p><img alt="URL &amp; token" src="https://i.gyazo.com/efbc85635d23089c924ee36c8a071f1f.png" /></p>
 <p>管理者権限でコマンドプロンプトを開き、先ほどバイナリを配置したフォルダに移動して登録していきます。</p>
-<div class="highlight"><pre><span></span><span class="x">&gt; cd C:\Gitlab-Runner</span>
-<span class="x">&gt; gitlab-ci-multi-runner-windows-amd64.exe register</span>
-<span class="x">Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com/ci):</span>
-<span class="cp">{{</span><span class="err">確認した</span><span class="nv">URL</span><span class="cp">}}</span><span class="x"></span>
-<span class="x">Please enter the gitlab-ci token for this runner:</span>
-<span class="cp">{{</span><span class="err">確認した</span><span class="nv">token</span><span class="cp">}}</span><span class="x"></span>
-<span class="x">Please enter the gitlab-ci description for this runner:</span>
-<span class="x">[&lt;PC名&gt;]: </span><span class="cp">{{</span><span class="nv">Runner</span><span class="err">の説明</span><span class="cp">}}</span><span class="x"></span>
-<span class="x">Please enter the gitlab-ci tags for this runner (comma separated):</span>
-<span class="cp">{{</span><span class="nv">Tag</span><span class="o">(</span><span class="err">任意</span><span class="o">)</span><span class="cp">}}</span><span class="x"></span>
-<span class="x">Registering runner... succeeded                     runner=XXXXXX</span>
-<span class="x">Please enter the executor: virtualbox, docker+machine, docker-ssh+machine, docker, docker-ssh, parallels, shell, ssh:</span>
-<span class="x">shell</span>
-<span class="x">Runner registered successfully. Feel free to start it, but if it&#39;s running already the config should be automatically reloaded!</span>
+<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nv">cd</span> <span class="nv">C</span>:\<span class="nv">Gitlab</span><span class="o">-</span><span class="nv">Runner</span>
+<span class="o">&gt;</span> <span class="nv">gitlab</span><span class="o">-</span><span class="nv">ci</span><span class="o">-</span><span class="nv">multi</span><span class="o">-</span><span class="nv">runner</span><span class="o">-</span><span class="nv">windows</span><span class="o">-</span><span class="nv">amd64</span>.<span class="nv">exe</span> <span class="nv">register</span>
+<span class="nv">Please</span> <span class="nv">enter</span> <span class="nv">the</span> <span class="nv">gitlab</span><span class="o">-</span><span class="nv">ci</span> <span class="nv">coordinator</span> <span class="nv">URL</span> <span class="ss">(</span><span class="nv">e</span>.<span class="nv">g</span>. <span class="nv">https</span>:<span class="o">//</span><span class="nv">gitlab</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">ci</span><span class="ss">)</span>:
+{{確認した<span class="nv">URL</span>}}
+<span class="nv">Please</span> <span class="nv">enter</span> <span class="nv">the</span> <span class="nv">gitlab</span><span class="o">-</span><span class="nv">ci</span> <span class="nv">token</span> <span class="k">for</span> <span class="nv">this</span> <span class="nv">runner</span>:
+{{確認した<span class="nv">token</span>}}
+<span class="nv">Please</span> <span class="nv">enter</span> <span class="nv">the</span> <span class="nv">gitlab</span><span class="o">-</span><span class="nv">ci</span> <span class="nv">description</span> <span class="k">for</span> <span class="nv">this</span> <span class="nv">runner</span>:
+[<span class="o">&lt;</span><span class="nv">PC</span>名<span class="o">&gt;</span>]: {{<span class="nv">Runner</span>の説明}}
+<span class="nv">Please</span> <span class="nv">enter</span> <span class="nv">the</span> <span class="nv">gitlab</span><span class="o">-</span><span class="nv">ci</span> <span class="nv">tags</span> <span class="k">for</span> <span class="nv">this</span> <span class="nv">runner</span> <span class="ss">(</span><span class="nv">comma</span> <span class="nv">separated</span><span class="ss">)</span>:
+{{<span class="nv">Tag</span><span class="ss">(</span>任意<span class="ss">)</span>}}
+<span class="nv">Registering</span> <span class="nv">runner</span>... <span class="nv">succeeded</span>                     <span class="nv">runner</span><span class="o">=</span><span class="nv">XXXXXX</span>
+<span class="nv">Please</span> <span class="nv">enter</span> <span class="nv">the</span> <span class="nv">executor</span>: <span class="nv">virtualbox</span>, <span class="nv">docker</span><span class="o">+</span><span class="nv">machine</span>, <span class="nv">docker</span><span class="o">-</span><span class="nv">ssh</span><span class="o">+</span><span class="nv">machine</span>, <span class="nv">docker</span>, <span class="nv">docker</span><span class="o">-</span><span class="nv">ssh</span>, <span class="nv">parallels</span>, <span class="nv">shell</span>, <span class="nv">ssh</span>:
+<span class="nv">shell</span>
+<span class="nv">Runner</span> <span class="nv">registered</span> <span class="nv">successfully</span>. <span class="nv">Feel</span> <span class="nv">free</span> <span class="nv">to</span> <span class="nv">start</span> <span class="nv">it</span>, <span class="nv">but</span> <span class="k">if</span> <span class="nv">it</span><span class="s1">&#39;</span><span class="s">s running already the config should be automatically reloaded!</span>
 </pre></div>
 
 
@@ -106,25 +106,29 @@
 <p>次にユーザー名とパスワードを設定します。</p>
 <p><a href="http://hr-sano.net/blog/2016/01/25/gitlab-ci-runner-for-windows/" title="まったりlog残し">この方のブログ記事</a>にも書いてありますが、現状ユーザー名を指定するとうまく行きません。</p>
 <p>パスワードの指定だけすると現在ログインしているユーザを自動で認識して設定するようなのでパスワードだけ指定します。</p>
-<div class="highlight"><pre><span></span>&gt; gitlab-ci-multi-runner-windows-amd64.exe install --password ENTER-YOUR-PASSWORD
-&gt; gitlab-ci-multi-runner-windows-amd64.exe start
+<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">gitlab</span><span class="o">-</span><span class="n">ci</span><span class="o">-</span><span class="n">multi</span><span class="o">-</span><span class="n">runner</span><span class="o">-</span><span class="n">windows</span><span class="o">-</span><span class="n">amd64</span><span class="p">.</span><span class="n">exe</span> <span class="n">install</span> <span class="c1">--password ENTER-YOUR-PASSWORD</span>
+<span class="o">&gt;</span> <span class="n">gitlab</span><span class="o">-</span><span class="n">ci</span><span class="o">-</span><span class="n">multi</span><span class="o">-</span><span class="n">runner</span><span class="o">-</span><span class="n">windows</span><span class="o">-</span><span class="n">amd64</span><span class="p">.</span><span class="n">exe</span> <span class="k">start</span>
 </pre></div>
 
 
 <p>パスワードが正しく設定されていればstartできます。</p>
 <p>startに成功していればGitLabのSettings&gt;Runnersに登録したRunnerが表示されているはずです。</p>
-<p>!!! note
-    Windowsにgitがインストールされていないとビルド時にgitがないのが原因で失敗してしまいます。
-    gitがインストールされていない場合は以下の記事を参考にgitをインストールすると良いです。
-    <a href="http://qiita.com/taipon_rock/items/632c117220e57d555099" title="コマンドラインからGitを使う（for Windows） - Qiita">コマンドラインからGitを使う（for Windows） - Qiita</a>
-    gitをインストールしたあとはRunnerをrestartさせる必要があります。
-    &gt; gitlab-ci-multi-runner-windows-amd64.exe restart</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Windowsにgitがインストールされていないとビルド時にgitがないのが原因で失敗してしまいます。<br />
+gitがインストールされていない場合は以下の記事を参考にgitをインストールすると良いです。<br />
+<a href="http://qiita.com/taipon_rock/items/632c117220e57d555099" title="コマンドラインからGitを使う（for Windows） - Qiita">コマンドラインからGitを使う（for Windows） - Qiita</a><br />
+gitをインストールしたあとはRunnerをrestartさせる必要があります。</p>
+<blockquote>
+<p>gitlab-ci-multi-runner-windows-amd64.exe restart</p>
+</blockquote>
+</div>
 <p>あとは.gitlab-ci.ymlを書いてpushすればCIが走ります。</p>
-<p><img alt="Build" src="https://i.gyazo.com/d7c8978ac9d42c284c863ee814384c1a.png"></p>
+<p><img alt="Build" src="https://i.gyazo.com/d7c8978ac9d42c284c863ee814384c1a.png" /></p>
 <p>実際に動かした様子です。</p>
 <p>.gitlab-ci.ymlのtagsを使えば複数環境でCIさせることが可能です、マルチプラットフォームでのCIが必要な場面に便利。</p>
 <p>scriptでバッチファイルを起動するようにすれば手の込んだビルドもできそうなので今後試していく予定です。</p>
-<h1>参考記事</h1>
+<h1 id="_1">参考記事</h1>
 <ul>
 <li><a href="https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/blob/master/docs/install/windows.md" title="docs/install/windows.md · master · GitLab.org / gitlab-ci-multi-runner · GitLab">docs/install/windows.md · master · GitLab.org / gitlab-ci-multi-runner · GitLab</a></li>
 <li><a href="http://hr-sano.net/blog/2016/01/25/gitlab-ci-runner-for-windows/" title="まったりlog残し">まったりlog残し</a></li>
@@ -249,6 +253,14 @@
         <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
         <ul>
 			    <li>
+                    <p>2019年 6月05日 PM 10:50<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/f571b230f35658c8bd8c6348021e0b53.html">
+                            ParcelではRustをimportして使える
+                        </a>
+                    </p>
+			    </li>
+			    <li>
                     <p>2019年 5月24日 AM 01:41<br />
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
@@ -277,14 +289,6 @@
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
                             Minidoxビルドログ
-                        </a>
-                    </p>
-			    </li>
-			    <li>
-                    <p>2018年 1月16日 AM 10:32<br />
-			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
-                        <a href="https://muunyblue.github.io/520bae6649b42ff5a3c8c58b7fcfc5a9.html">
-                            Neovim/Vim8で快適Vue.js開発(Vue Language Server)
                         </a>
                     </p>
 			    </li>
@@ -320,6 +324,7 @@
                 <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
                 <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/parcel.html">Parcel</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
                 <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
@@ -337,7 +342,7 @@
                 <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
-                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
@@ -356,6 +361,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

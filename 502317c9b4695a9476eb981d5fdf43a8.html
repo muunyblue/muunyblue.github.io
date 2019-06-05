@@ -61,16 +61,16 @@
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
 </footer><!-- /.post-info -->      <p>":"に続けて打ち込むと自動で補完してくれるようになります。</p>
-<p><img alt="demo" src="https://gyazo.com/68de503622f29ed4213c201a75b870c1.gif"></p>
+<p><img alt="demo" src="https://gyazo.com/68de503622f29ed4213c201a75b870c1.gif" /></p>
 <p>EmojiリストはGitHub APIから取得しています。</p>
-<h1>必要なパッケージ</h1>
+<h1 id="_1">必要なパッケージ</h1>
 <ul>
 <li>CodeMirror</li>
 <li>show-hint addonのコードを編集するのでソースコードが必要</li>
 <li>Axios</li>
 </ul>
 <p>パッケージの読み込み方法は各自におまかせします(scriptタグでもビルドツールでも構いません)。</p>
-<h1>やり方</h1>
+<h1 id="_2">やり方</h1>
 <div class="highlight"><pre><span></span><span class="c1">// sample data</span>
 <span class="kd">let</span> <span class="nx">emojiList</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;apple:&#39;</span><span class="p">,</span> <span class="s1">&#39;abc:&#39;</span><span class="p">,</span> <span class="s1">&#39;axz:&#39;</span><span class="p">,</span> <span class="s1">&#39;bee:&#39;</span><span class="p">,</span> <span class="s1">&#39;beam:&#39;</span><span class="p">,</span> <span class="s1">&#39;bleach:&#39;</span><span class="p">]</span>
 
@@ -112,7 +112,7 @@
 <p>これで自動的に":"のあとに文字を入れると補完候補が表示されます。</p>
 <p>showHint関数に指定している、completeSingle: falseは必須です。細かい理由はわかりませんがこれがないと無限ループするようです。</p>
 <p>emojiListが末尾に":"が付いて不格好なのは、補完完了時に末尾の":"まで補完されるようにしているからですがこれは回避できます、これは以下の内容で説明します。</p>
-<h2>Emojiのリスト取得</h2>
+<h2 id="emoji">Emojiのリスト取得</h2>
 <p>GitHub APIにEmoji一覧を取得するAPIがあるので利用します。</p>
 <p><a href="https://developer.github.com/v3/emojis/" title="Emojis | GitHub Developer Guide">Emojis | GitHub Developer Guide</a></p>
 <p>先程の例のemojiListをapiで取得したものに置き換えれば完全なリストになります。</p>
@@ -129,7 +129,7 @@
 </pre></div>
 
 
-<h2>Emoji画像の表示</h2>
+<h2 id="emoji_1">Emoji画像の表示</h2>
 <p>show-hint addonの補完候補には文字列しか表示できません。</p>
 <p>実際にCodeMirrorの<a href="https://github.com/codemirror/CodeMirror/blob/master/addon/hint/show-hint.js">addon/hint/show-hint.js</a>を見てみると、文字列リスト or {text: str, displayText: str}のリストを指定する仕様になっています。</p>
 <p>画像を表示させるようにshow-hint.jsを書き換えます。</p>
@@ -159,7 +159,7 @@
 <p>displayTextをGitHub APIで取得した画像を小さくしたもの + Emoji名の形にします。</p>
 <p>これで冒頭のGifキャプチャーのように表示されるようになります。</p>
 <p>かなりの量の画像を取得するのでimgタグにはasyncオプションをつけています。</p>
-<h1>完全なコード</h1>
+<h1 id="_3">完全なコード</h1>
 <p>書き換えたshow-hint.jsを使用する必要があるので注意。</p>
 <div class="highlight"><pre><span></span><span class="kd">let</span> <span class="nx">cm</span> <span class="o">=</span> <span class="nx">CodeMirror</span><span class="p">(</span><span class="cm">/* Dom Element */</span><span class="p">,</span> <span class="p">{</span>
   <span class="c1">// Options</span>
@@ -208,7 +208,7 @@
 </pre></div>
 
 
-<h1>参考記事</h1>
+<h1 id="_4">参考記事</h1>
 <ul>
 <li><a href="http://qiita.com/mizchi/items/15441d0e285f86125b0a" title="CodeMirrorでAutoCompleteする - Qiita">CodeMirrorでAutoCompleteする - Qiita</a></li>
 <li><a href="https://codemirror.net/doc/manual.html#addons" title="CodeMirror: User Manual">CodeMirror: User Manual</a></li>
@@ -335,6 +335,14 @@
         <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
         <ul>
 			    <li>
+                    <p>2019年 6月05日 PM 10:50<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/f571b230f35658c8bd8c6348021e0b53.html">
+                            ParcelではRustをimportして使える
+                        </a>
+                    </p>
+			    </li>
+			    <li>
                     <p>2019年 5月24日 AM 01:41<br />
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
@@ -363,14 +371,6 @@
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
                             Minidoxビルドログ
-                        </a>
-                    </p>
-			    </li>
-			    <li>
-                    <p>2018年 1月16日 AM 10:32<br />
-			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
-                        <a href="https://muunyblue.github.io/520bae6649b42ff5a3c8c58b7fcfc5a9.html">
-                            Neovim/Vim8で快適Vue.js開発(Vue Language Server)
                         </a>
                     </p>
 			    </li>
@@ -406,6 +406,7 @@
                 <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
                 <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/parcel.html">Parcel</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
                 <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
@@ -423,7 +424,7 @@
                 <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
-                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
@@ -442,6 +443,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

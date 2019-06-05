@@ -61,24 +61,24 @@
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
 </footer><!-- /.post-info -->      <p>3,4年前にgentooに挑戦して挫折しましたが、再び挑戦してみます。</p>
-<h1>下準備</h1>
-<h2>資料</h2>
+<h1 id="_1">下準備</h1>
+<h2 id="_2">資料</h2>
 <p>公式のハンドブックが日本語訳もついていて良い感じなのでこれを読みながらインストールを進めていきます。</p>
 <p><a href="https://wiki.gentoo.org/wiki/Handbook:Main_Page/ja" title="ハンドブック:メインページ - Gentoo Wiki">ハンドブック:メインページ - Gentoo Wiki</a></p>
-<p>~~以前やったときより格段にわかりやすい感あるぞ...~~</p>
+<p><del>以前やったときより格段にわかりやすい感あるぞ...</del></p>
 <p>和訳はamd64が充実していますが、今回は後述しますがx86を選ぶことになるので、amd64のハンドブックを参考にしながらx86のインストールをしていきます。</p>
-<h2>PC</h2>
+<h2 id="pc">PC</h2>
 <p><a href="https://www.asus.com/jp/Notebooks/Eee_PC_X101CH/" title="Eee PC X101CH | ノートパソコン | ASUS 日本">ASUS Eee PC X101CH</a></p>
-<div class="highlight"><pre><span></span>Processor Intel® Atom™ Processor N2600 @ 1.60GHz × 4
-Memory    1GB
-Disk(SSD) 120GB
+<div class="highlight"><pre><span></span><span class="n">Processor</span> <span class="n">Intel</span><span class="err">®</span> <span class="n">Atom</span><span class="err">™</span> <span class="n">Processor</span> <span class="n">N2600</span> <span class="o">@</span> <span class="mi">1</span><span class="p">.</span><span class="mi">60</span><span class="n">GHz</span> <span class="err">×</span> <span class="mi">4</span>
+<span class="n">Memory</span>    <span class="mi">1</span><span class="n">GB</span>
+<span class="n">Disk</span><span class="p">(</span><span class="n">SSD</span><span class="p">)</span> <span class="mi">120</span><span class="n">GB</span>
 </pre></div>
 
 
 <p><a href="http://ark.intel.com/products/58916/Intel-Atom-Processor-N2600-%281M-Cache-1_6-GHz%29" title="Intel® Atom™ Processor N2600 (1M Cache, 1.6 GHz) Specifications">Intel® Atom™ Processor N2600 (1M Cache, 1.6 GHz) Specifications</a></p>
 <p>amd64アーキテクチャで構成したいのでintel® 64がサポートされていていけるかと思いましたが、BIOSの設定を見ると有効になっておらず設定を変えることができなかったのでx86を選択します。</p>
 <p>(念のため試してみたamd64のインストールUSBもbootできなかった...)</p>
-<h1>MacでインストールUSB作成</h1>
+<h1 id="macusb">MacでインストールUSB作成</h1>
 <p><a href="https://www.gentoo.org/downloads/" title="Downloads – Gentoo Linux">Downloads – Gentoo Linux</a></p>
 <p>x86のMinimal Installation CDを選んでダウンロードします。</p>
 <p>USBをさしてデバイス名を確認します。</p>
@@ -87,10 +87,10 @@ Disk(SSD) 120GB
 
 
 <p>/dev/disk1だと確認できたのでここに書き込みます。</p>
-<div class="highlight"><pre><span></span><span class="c">% sudo dd if=install-x86-minimal-20160830.iso of=/dev/rdisk1 bs=1m</span>
-<span class="mi">263</span><span class="o">+</span><span class="mi">0</span> <span class="n">records</span> <span class="n">in</span>
-<span class="mi">263</span><span class="o">+</span><span class="mi">0</span> <span class="n">records</span> <span class="n">out</span>
-<span class="mi">275775488</span> <span class="n">bytes</span> <span class="n">transferred</span> <span class="n">in</span> <span class="mf">57.257382</span> <span class="n">secs</span> <span class="p">(</span><span class="mi">4816418</span> <span class="n">bytes</span><span class="o">/</span><span class="nb">sec</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="o">%</span> <span class="nv">sudo</span> <span class="nv">dd</span> <span class="k">if</span><span class="o">=</span><span class="nv">install</span><span class="o">-</span><span class="nv">x86</span><span class="o">-</span><span class="nv">minimal</span><span class="o">-</span><span class="mi">20160830</span>.<span class="nv">iso</span> <span class="nv">of</span><span class="o">=/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">rdisk1</span> <span class="nv">bs</span><span class="o">=</span><span class="mi">1</span><span class="nv">m</span>
+<span class="mi">263</span><span class="o">+</span><span class="mi">0</span> <span class="nv">records</span> <span class="nv">in</span>
+<span class="mi">263</span><span class="o">+</span><span class="mi">0</span> <span class="nv">records</span> <span class="nv">out</span>
+<span class="mi">275775488</span> <span class="nv">bytes</span> <span class="nv">transferred</span> <span class="nv">in</span> <span class="mi">57</span>.<span class="mi">257382</span> <span class="nv">secs</span> <span class="ss">(</span><span class="mi">4816418</span> <span class="nv">bytes</span><span class="o">/</span><span class="nv">sec</span><span class="ss">)</span>
 </pre></div>
 
 
@@ -98,10 +98,10 @@ Disk(SSD) 120GB
 <li><a href="https://forums.gentoo.org/viewtopic-t-928812-start-0.html" title="Gentoo Forums :: View topic - Create USB boot disk in OSX">Gentoo Forums :: View topic - Create USB boot disk in OSX</a></li>
 <li><a href="http://kanonji.info/blog/2013/11/29/dd%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%81%A7sd%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AE%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%B3%E3%82%92%E4%BD%9C%E3%82%8B/" title="ddコマンドでSDカードのクローンを作る | kanonjiのブログ">ddコマンドでSDカードのクローンを作る | kanonjiのブログ</a> &lt;= 書き込みのときのデバイス指定にrをつける理由が書いてありました</li>
 </ul>
-<h1>usb起動</h1>
+<h1 id="usb">usb起動</h1>
 <p>F2を押したまま起動して、BootでUSBの起動順位をSSDより上にします。</p>
 <p>設定を保存して起動すると無事起動しました。</p>
-<p><img alt="Welcome Gentoo" src="https://pbs.twimg.com/media/CrO4NhPVUAAqJn-.jpg"></p>
+<p><img alt="Welcome Gentoo" src="https://pbs.twimg.com/media/CrO4NhPVUAAqJn-.jpg" /></p>
 <p>次回からはインストールをやっていきます。</p>
     </div><!-- /.entry-content -->
 
@@ -223,6 +223,14 @@ Disk(SSD) 120GB
         <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
         <ul>
 			    <li>
+                    <p>2019年 6月05日 PM 10:50<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/f571b230f35658c8bd8c6348021e0b53.html">
+                            ParcelではRustをimportして使える
+                        </a>
+                    </p>
+			    </li>
+			    <li>
                     <p>2019年 5月24日 AM 01:41<br />
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
@@ -251,14 +259,6 @@ Disk(SSD) 120GB
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
                             Minidoxビルドログ
-                        </a>
-                    </p>
-			    </li>
-			    <li>
-                    <p>2018年 1月16日 AM 10:32<br />
-			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
-                        <a href="https://muunyblue.github.io/520bae6649b42ff5a3c8c58b7fcfc5a9.html">
-                            Neovim/Vim8で快適Vue.js開発(Vue Language Server)
                         </a>
                     </p>
 			    </li>
@@ -294,6 +294,7 @@ Disk(SSD) 120GB
                 <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
                 <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/parcel.html">Parcel</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
                 <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
@@ -311,7 +312,7 @@ Disk(SSD) 120GB
                 <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
-                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
@@ -330,6 +331,12 @@ Disk(SSD) 120GB
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

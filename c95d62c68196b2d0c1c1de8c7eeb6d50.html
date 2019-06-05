@@ -64,7 +64,7 @@
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/neovim.html">neovim</a> <a href="https://muunyblue.github.io/tag/vim.html">vim</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
-</footer><!-- /.post-info -->      <p><img alt="" src="https://i.gyazo.com/1089d23c5abf4d0cf038f597d3ee64a5.png"></p>
+</footer><!-- /.post-info -->      <p><img alt="" src="https://i.gyazo.com/1089d23c5abf4d0cf038f597d3ee64a5.png" /></p>
 <p>11月あたりからvim環境を見直して概ねまとまってきたのでメモとして残しておきます。</p>
 <p>概要は</p>
 <ul>
@@ -74,82 +74,105 @@
 </ul>
 <p>になります。</p>
 <p>設定ファイルはGitHubの.dotfilesにあるのでこちらを見ればこの記事は読まなくてもいいかもしれません。</p>
-<p>[https://github.com/yymm/.dotfiles/tree/master/config/nvim:embed]</p>
-<hr>
-<p>[TOC]</p>
-<h1>Neovimはじめました</h1>
+<p>
+<a class="embedly-card" href="https://github.com/yymm/.dotfiles/tree/master/config/nvim">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
+<hr />
+<div class="toc">
+<ul>
+<li><a href="#neovim">Neovimはじめました</a><ul>
+<li><a href="#neovim_1">Neovimのインストールはパッケージマネージャーから</a></li>
+<li><a href="#_1">設定ファイルの場所</a></li>
+</ul>
+</li>
+<li><a href="#nyaovim">Nyaovimもはじめました</a></li>
+<li><a href="#_2">プラグイン整理</a><ul>
+<li><a href="#deinvim">dein.vim</a></li>
+</ul>
+</li>
+<li><a href="#iceberg">iceberg</a></li>
+<li><a href="#neoterm">neoterm</a></li>
+<li><a href="#neomake">neomake</a></li>
+<li><a href="#deopletenvim">deoplete.nvim</a></li>
+<li><a href="#vim-airline">vim-airline</a></li>
+<li><a href="#vimfiler">Vimfiler</a></li>
+<li><a href="#_3">関数内検索</a></li>
+</ul>
+</div>
+<h1 id="neovim">Neovimはじめました</h1>
 <p><a href="https://neovim.io/" title="Home - Neovim">Home - Neovim</a></p>
 <p>Neovimのterminal modeに感動してNeovimをはじめてみることにしました。</p>
 <p>あとVimよりサクサク動いていて、思考の速度に近づいてる気がします。</p>
-<h2>Neovimのインストールはパッケージマネージャーから</h2>
+<h2 id="neovim_1">Neovimのインストールはパッケージマネージャーから</h2>
 <p>OSXとUbuntuでの開発が多いのでパッケージマネージャーを使ってインストールすることにします。</p>
 <p>しかもNeovimの場合パッケージマネージャーを使用して新しいNeovimをインストールすることが可能なので手元でビルドしなくていいのもメリットだと感じています。</p>
 <p>あとPython拡張を使うのでインストールと一緒に有効にしておきます。</p>
 <p>OSXの場合(<a href="https://github.com/neovim/homebrew-neovim/blob/master/README.md" title="homebrew-neovim/README.md at master · neovim/homebrew-neovim">homebrew-neovim/README.md at master · neovim/homebrew-neovim</a>)</p>
-<div class="highlight"><pre><span></span>brew tap neovim/neovim
-brew install --HEAD neovim
-brew install python
-brew install python3
-pip2 install --user --upgrade neovim
-pip3 install --user --upgrade neovim
+<div class="highlight"><pre><span></span><span class="n">brew</span> <span class="n">tap</span> <span class="n">neovim</span><span class="o">/</span><span class="n">neovim</span>
+<span class="n">brew</span> <span class="n">install</span> <span class="c1">--HEAD neovim</span>
+<span class="n">brew</span> <span class="n">install</span> <span class="n">python</span>
+<span class="n">brew</span> <span class="n">install</span> <span class="n">python3</span>
+<span class="n">pip2</span> <span class="n">install</span> <span class="c1">--user --upgrade neovim</span>
+<span class="n">pip3</span> <span class="n">install</span> <span class="c1">--user --upgrade neovim</span>
 </pre></div>
 
 
 <p>Ubuntuの場合(<a href="https://github.com/neovim/neovim/wiki/Installing-Neovim#ubuntu" title="Installing Neovim · neovim/neovim Wiki">Installing Neovim · neovim/neovim Wiki</a>)</p>
-<div class="highlight"><pre><span></span>sudo apt-get install software-properties-common
-sudo add-apt-repository ppa:neovim-ppa/unstable
-sudo apt-get update
-sudo apt-get install neovim
-sudo apt-get install python-dev python-pip python3-dev python3-pip
-sudo pip2 install --user --upgrade neovim
-sudo pip3 install --user --upgrade neovim
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="k">get</span> <span class="n">install</span> <span class="n">software</span><span class="o">-</span><span class="n">properties</span><span class="o">-</span><span class="n">common</span>
+<span class="n">sudo</span> <span class="k">add</span><span class="o">-</span><span class="n">apt</span><span class="o">-</span><span class="n">repository</span> <span class="n">ppa</span><span class="p">:</span><span class="n">neovim</span><span class="o">-</span><span class="n">ppa</span><span class="o">/</span><span class="n">unstable</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="k">get</span> <span class="k">update</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="k">get</span> <span class="n">install</span> <span class="n">neovim</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="k">get</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">dev</span> <span class="n">python</span><span class="o">-</span><span class="n">pip</span> <span class="n">python3</span><span class="o">-</span><span class="n">dev</span> <span class="n">python3</span><span class="o">-</span><span class="n">pip</span>
+<span class="n">sudo</span> <span class="n">pip2</span> <span class="n">install</span> <span class="c1">--user --upgrade neovim</span>
+<span class="n">sudo</span> <span class="n">pip3</span> <span class="n">install</span> <span class="c1">--user --upgrade neovim</span>
 </pre></div>
 
 
 <p>手元でビルドする場合、<a href="https://github.com/neovim/neovim/wiki/Building-Neovim#build-prerequisites" title="Building Neovim · neovim/neovim Wiki">CentOS6以前などではビルドに必要なツールをビルドする必要があったりする</a>ので、自分の場合は環境によってはNeovimは諦めてVimも併用で使うようにしています。</p>
-<h2>設定ファイルの場所</h2>
+<h2 id="_1">設定ファイルの場所</h2>
 <p>デフォルトでは"~/.config/nvim/init.vim"がVimで言う"~/.vimrc"になります。</p>
 <p>環境変数"$XDG_CONFIG_HOME"を変更することで、デフォルトの"~/.config"部分を変更できます。</p>
 <p>今後Neovimメインで使っていくような気がしているので、.vimrcへのシンボリックリンクを作成することでVimも同じ設定で使えるようにしています。</p>
-<h1>Nyaovimもはじめました</h1>
-<p><img alt="" src="https://i.gyazo.com/dafd85baa0a464ccffb2ceeff43c4d46.gif"></p>
+<h1 id="nyaovim">Nyaovimもはじめました</h1>
+<p><img alt="" src="https://i.gyazo.com/dafd85baa0a464ccffb2ceeff43c4d46.gif" /></p>
 <p>MiniBrowserプラグインを使って、Web開発のプレビューを横に出しながらプログラミングできて楽しいです。</p>
 <p>Markdownプレビューも最高です。</p>
 <p>設定ファイル(~/.config/nyaovim/nyaovimrc.html)</p>
-<div class="highlight"><pre><span></span><span class="nt">&lt;dom-module</span> <span class="na">id=</span><span class="s">&quot;nyaovim-app&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;template&gt;</span>
-    <span class="nt">&lt;style&gt;</span>
-      /* CSS configurations here */
-      .horizontal {
-         display: flex;
-         width: 100%;
-         height: 100%;
+<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="nv">dom</span><span class="o">-</span><span class="nv">module</span> <span class="nv">id</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">nyaovim-app</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nv">template</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nv">style</span><span class="o">&gt;</span>
+      <span class="cm">/* CSS configurations here */</span>
+      .<span class="nv">horizontal</span> {
+         <span class="nv">display</span>: <span class="nv">flex</span><span class="c1">;</span>
+         <span class="nv">width</span>: <span class="mi">100</span><span class="o">%</span><span class="c1">;</span>
+         <span class="nv">height</span>: <span class="mi">100</span><span class="o">%</span><span class="c1">;</span>
        }
-       neovim-editor {
-         width: 100%;
-         height: 100%;
+       <span class="nv">neovim</span><span class="o">-</span><span class="nv">editor</span> {
+         <span class="nv">width</span>: <span class="mi">100</span><span class="o">%</span><span class="c1">;</span>
+         <span class="nv">height</span>: <span class="mi">100</span><span class="o">%</span><span class="c1">;</span>
        }
-    <span class="nt">&lt;/style&gt;</span>
+    <span class="o">&lt;/</span><span class="nv">style</span><span class="o">&gt;</span>
 
-    <span class="c">&lt;!-- Component tags here --&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;horizontal&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;neovim-editor</span>
-        <span class="na">id=</span><span class="s">&quot;nyaovim-editor&quot;</span>
-        <span class="na">argv=</span><span class="s">&quot;[[argv]]&quot;</span>
-        <span class="na">font-size=</span><span class="s">&quot;16&quot;</span>
-        <span class="na">font=</span><span class="s">&quot;Meslo LG M DZ for Powerline&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;/neovim-editor&gt;</span>
-      <span class="nt">&lt;markdown-preview</span> <span class="na">editor=</span><span class="s">&quot;[[editor]]&quot;</span><span class="nt">&gt;&lt;/markdown-preview&gt;</span>
-      <span class="nt">&lt;mini-browser</span> <span class="na">url=</span><span class="s">&quot;https://google.com&quot;</span> <span class="na">editor=</span><span class="s">&quot;[[editor]]&quot;</span><span class="nt">&gt;&lt;/mini-browser&gt;</span>
-    <span class="nt">&lt;/div&gt;</span>
-    <span class="nt">&lt;popup-tooltip</span> <span class="na">editor=</span><span class="s">&quot;[[editor]]&quot;</span><span class="nt">&gt;&lt;/popup-tooltip&gt;</span>
-  <span class="nt">&lt;/template&gt;</span>
-<span class="nt">&lt;/dom-module&gt;</span>
+    <span class="o">&lt;!--</span> <span class="nv">Component</span> <span class="nv">tags</span> <span class="nv">here</span> <span class="o">--&gt;</span>
+    <span class="o">&lt;</span><span class="nv">div</span> <span class="nv">class</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">horizontal</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nv">neovim</span><span class="o">-</span><span class="nv">editor</span>
+        <span class="nv">id</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">nyaovim-editor</span><span class="s2">&quot;</span>
+        <span class="nv">argv</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">[[argv]]</span><span class="s2">&quot;</span>
+        <span class="nv">font</span><span class="o">-</span><span class="nv">size</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">16</span><span class="s2">&quot;</span>
+        <span class="nv">font</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">Meslo LG M DZ for Powerline</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+      <span class="o">&lt;/</span><span class="nv">neovim</span><span class="o">-</span><span class="nv">editor</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nv">markdown</span><span class="o">-</span><span class="nv">preview</span> <span class="nv">editor</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">[[editor]]</span><span class="s2">&quot;</span><span class="o">&gt;&lt;/</span><span class="nv">markdown</span><span class="o">-</span><span class="nv">preview</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nv">mini</span><span class="o">-</span><span class="nv">browser</span> <span class="nv">url</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">https://google.com</span><span class="s2">&quot;</span> <span class="nv">editor</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">[[editor]]</span><span class="s2">&quot;</span><span class="o">&gt;&lt;/</span><span class="nv">mini</span><span class="o">-</span><span class="nv">browser</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="nv">div</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nv">popup</span><span class="o">-</span><span class="nv">tooltip</span> <span class="nv">editor</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">[[editor]]</span><span class="s2">&quot;</span><span class="o">&gt;&lt;/</span><span class="nv">popup</span><span class="o">-</span><span class="nv">tooltip</span><span class="o">&gt;</span>
+  <span class="o">&lt;/</span><span class="nv">template</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="nv">dom</span><span class="o">-</span><span class="nv">module</span><span class="o">&gt;</span>
 </pre></div>
 
 
 <p>Nyaovimプラグインもdein.vimで読み込むのですが、"if exists('g:nyaovim_version')"を使うことでNyaovim固有の設定を記述します。</p>
-<h1>プラグイン整理</h1>
+<h1 id="_2">プラグイン整理</h1>
 <p>今までの構成を大幅に変更してみました。dein.vimによる影響が大きいですが以下の点が今までと大きく変わりました。</p>
 <ul>
 <li>cacheの利用</li>
@@ -159,29 +182,29 @@ sudo pip3 install --user --upgrade neovim
 <li>NeovimとVimとNyaovimで使用するプラグインも使い分かる</li>
 </ul>
 <p>Neovimをメインに据えていくのでルートディレクトリは"~/.config/nvim"で、ディレクトリ構成は以下のようになっています。</p>
-<div class="highlight"><pre><span></span>~/.config/nvim
-├── dein.toml
-├── deinlazy.toml
-├── init.vim
-├── keymap.rc.vim
-├── options.rc.vim
-└── plugins
-    ├── airline.rc.vim
-    ├── anzu.rc.vim
-    ├── deoplete.rc.vim
-    ├── iceberg.rc.vim
-    ├── neocomplete.rc.vim
-    ├── neomake.rc.vim
-    ├── neoterm.rc.vim
-    ├── nerdcomenter.rc.vim
-    ├── syntastic.rc.vim
-    ├── vimfiler.rc.vim
-    ├── vimshell.rc.vim
-    └── yankround.rc.vim
+<div class="highlight"><pre><span></span><span class="o">~/</span><span class="p">.</span><span class="n">config</span><span class="o">/</span><span class="n">nvim</span>
+<span class="err">├──</span> <span class="n">dein</span><span class="p">.</span><span class="n">toml</span>
+<span class="err">├──</span> <span class="n">deinlazy</span><span class="p">.</span><span class="n">toml</span>
+<span class="err">├──</span> <span class="n">init</span><span class="p">.</span><span class="n">vim</span>
+<span class="err">├──</span> <span class="n">keymap</span><span class="p">.</span><span class="n">rc</span><span class="p">.</span><span class="n">vim</span>
+<span class="err">├──</span> <span class="k">options</span><span class="p">.</span><span class="n">rc</span><span class="p">.</span><span class="n">vim</span>
+<span class="err">└──</span> <span class="n">plugins</span>
+    <span class="err">├──</span> <span class="n">airline</span><span class="p">.</span><span class="n">rc</span><span class="p">.</span><span class="n">vim</span>
+    <span class="err">├──</span> <span class="n">anzu</span><span class="p">.</span><span class="n">rc</span><span class="p">.</span><span class="n">vim</span>
+    <span class="err">├──</span> <span class="n">deoplete</span><span class="p">.</span><span class="n">rc</span><span class="p">.</span><span class="n">vim</span>
+    <span class="err">├──</span> <span class="n">iceberg</span><span class="p">.</span><span class="n">rc</span><span class="p">.</span><span class="n">vim</span>
+    <span class="err">├──</span> <span class="n">neocomplete</span><span class="p">.</span><span class="n">rc</span><span class="p">.</span><span class="n">vim</span>
+    <span class="err">├──</span> <span class="n">neomake</span><span class="p">.</span><span class="n">rc</span><span class="p">.</span><span class="n">vim</span>
+    <span class="err">├──</span> <span class="n">neoterm</span><span class="p">.</span><span class="n">rc</span><span class="p">.</span><span class="n">vim</span>
+    <span class="err">├──</span> <span class="n">nerdcomenter</span><span class="p">.</span><span class="n">rc</span><span class="p">.</span><span class="n">vim</span>
+    <span class="err">├──</span> <span class="n">syntastic</span><span class="p">.</span><span class="n">rc</span><span class="p">.</span><span class="n">vim</span>
+    <span class="err">├──</span> <span class="n">vimfiler</span><span class="p">.</span><span class="n">rc</span><span class="p">.</span><span class="n">vim</span>
+    <span class="err">├──</span> <span class="n">vimshell</span><span class="p">.</span><span class="n">rc</span><span class="p">.</span><span class="n">vim</span>
+    <span class="err">└──</span> <span class="n">yankround</span><span class="p">.</span><span class="n">rc</span><span class="p">.</span><span class="n">vim</span>
 </pre></div>
 
 
-<h2>dein.vim</h2>
+<h2 id="deinvim">dein.vim</h2>
 <p>Shougo氏がdein.vimという新しいプラグインマネージャを作っていたのでそちらに移行しました。</p>
 <p>基本的にShougo氏の<a href="https://github.com/Shougo/shougo-s-github/tree/master/vim/rc" title="shougo-s-github/vim/rc at master · Shougo/shougo-s-github">vimrc</a>を参考にして作ってみました。</p>
 <ul>
@@ -313,9 +336,9 @@ runtime<span class="p">!</span> <span class="nb">keymap</span>.rc.<span class="k
 <li><a href="http://thinca.hatenablog.com/entry/20100205/1265307642" title="vimrc基礎文法最速マスター - 永遠に未完成">vimrc基礎文法最速マスター - 永遠に未完成</a></li>
 <li><a href="http://thinca.hatenablog.com/entry/20100201/1265009821" title="Vimスクリプト基礎文法最速マスター - 永遠に未完成">Vimスクリプト基礎文法最速マスター - 永遠に未完成</a></li>
 </ul>
-<hr>
+<hr />
 <p>残りは気になった個別のプラグインについて書いていきます。</p>
-<h1>iceberg</h1>
+<h1 id="iceberg">iceberg</h1>
 <p><a href="http://cocopon.me/app/vim-iceberg/" title="Iceberg - dark color scheme for Vim">Iceberg - dark color scheme for Vim</a></p>
 <p>目に優しそうでカッコいいカラースキームです。</p>
 <p>visual modeを結構多用するのですが、モニターのブルーライトカットが効きすぎているのか色が分かりづらかったのでオレンジ色に変えてあります。</p>
@@ -336,7 +359,7 @@ runtime<span class="p">!</span> <span class="nb">keymap</span>.rc.<span class="k
 <li><a href="http://qiita.com/kawaz/items/ee725f6214f91337b42b" title="dein.vimによるプラグイン管理のマイベストプラクティス - Qiita">dein.vimによるプラグイン管理のマイベストプラクティス - Qiita</a></li>
 <li><a href="http://qiita.com/s_of_p/items/87a9d787ff5506edab8e" title="端末上の Vim で colorscheme の背景を透過する - Qiita">端末上の Vim で colorscheme の背景を透過する - Qiita</a></li>
 </ul>
-<h1>neoterm</h1>
+<h1 id="neoterm">neoterm</h1>
 <p>neovimのterminal modeが便利すぎてやばいです。</p>
 <p>とりあえずいつもどおりにノーマルモードを使用するために以下の設定をします。</p>
 <div class="highlight"><pre><span></span><span class="k">if</span> has<span class="p">(</span><span class="s1">&#39;nvim&#39;</span><span class="p">)</span>
@@ -369,7 +392,10 @@ runtime<span class="p">!</span> <span class="nb">keymap</span>.rc.<span class="k
 
 
 <p>shellを指定している方を多く見ましたが、自分の環境では$SHELLが開いている感じがしたので設定していません。</p>
-<p>[https://twitter.com/y_y_m_m/status/799147443942105088:embed]</p>
+<p>
+<a class="embedly-card" href="https://twitter.com/y_y_m_m/status/799147443942105088">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>とは言いましたが、Vimではterminal modeは使えないのでVimShellを使うように設定しています。</p>
 <div class="highlight"><pre><span></span><span class="k">[[plugins]]</span>
 <span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;kassio/neoterm&#39;</span>
@@ -392,7 +418,7 @@ runtime<span class="p">!</span> <span class="nb">keymap</span>.rc.<span class="k
 </pre></div>
 
 
-<h1>neomake</h1>
+<h1 id="neomake">neomake</h1>
 <p>非同期でmakeやlintを実行するsyntasticの非同期版のようなプラグインです。</p>
 <p>READMEは最低限の内容のみとなっているので、helpを読みながら設定していきます。</p>
 <p>まず、見た目の設定です。</p>
@@ -417,7 +443,7 @@ autocmd<span class="p">!</span> <span class="nb">BufWritePost</span> * Neomake
 
 
 <p>基本的に<a href="https://github.com/neomake/neomake/tree/master/autoload/neomake/makers" title="neomake/autoload/neomake/makers at master · neomake/neomake">ここ</a>にあるmakerは使えます。有効にする際は以下のように書きます。</p>
-<div class="highlight"><pre><span></span>let g:neomake_&lt;lang&gt;_enabled_makers = [&#39;&lt;maker&gt;&#39;, &#39;&lt;maker&gt;&#39;]
+<div class="highlight"><pre><span></span><span class="n">let</span> <span class="k">g</span><span class="p">:</span><span class="n">neomake_</span><span class="o">&lt;</span><span class="n">lang</span><span class="o">&gt;</span><span class="n">_enabled_makers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&lt;maker&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;maker&gt;&#39;</span><span class="p">]</span>
 </pre></div>
 
 
@@ -465,7 +491,7 @@ autocmd<span class="p">!</span> <span class="nb">BufWritePost</span> * Neomake
 </pre></div>
 
 
-<h1>deoplete.nvim</h1>
+<h1 id="deopletenvim">deoplete.nvim</h1>
 <p>neocompleteに次ぐ補完プラグインです。</p>
 <p>deinlazyに追加します。</p>
 <div class="highlight"><pre><span></span><span class="k">[[plugins]]</span>
@@ -512,7 +538,7 @@ autocmd<span class="p">!</span> <span class="nb">BufWritePost</span> * Neomake
 
 <p><a href="https://github.com/Shougo/deoplete.nvim/blob/master/doc/deoplete.txt#L887" title="deoplete.nvim/deoplete.txt at master · Shougo/deoplete.nvim">deoplete.nvim/deoplete.txt at master · Shougo/deoplete.nvim</a></p>
 <p>ドキュメントを見ると言語ごとにEXTERNAL SOURCESがあるので、開発する言語を中心にプラグインを適宜追加していけば良さそうです。</p>
-<h1>vim-airline</h1>
+<h1 id="vim-airline">vim-airline</h1>
 <p>airlineは対応しているプラグインも多く設定も少なくて済むので、とても好きなpowerlineです。</p>
 <p>dein.vimは依存関係を書けるので設定ファイルがわかりやすくなって良いです。</p>
 <div class="highlight"><pre><span></span><span class="k">[[plugins]]</span>
@@ -554,7 +580,7 @@ autocmd<span class="p">!</span> <span class="nb">BufWritePost</span> * Neomake
 
 <p>NyaovimでPowerlineFontが崩れてしまったのでNyaovimでは無効にしています。</p>
 <p>mixed_indentがうざかったりしますがドキュメントを読むとアルゴリズムを変更できるので賢めのアルゴリズムに変更しています。</p>
-<h1>Vimfiler</h1>
+<h1 id="vimfiler">Vimfiler</h1>
 <p><a href="https://github.com/Shougo/vimfiler.vim" title="Shougo/vimfiler.vim: Powerful file explorer implemented by Vim script">Shougo/vimfiler.vim: Powerful file explorer implemented by Vim script</a></p>
 <p>便利すぎて手放せないプラグインです。</p>
 <div class="highlight"><pre><span></span><span class="k">[[plugins]]</span>
@@ -600,7 +626,7 @@ autocmd MyAutoCmd <span class="nb">FileType</span> vimfiler <span class="k">call
 </pre></div>
 
 
-<h1>関数内検索</h1>
+<h1 id="_3">関数内検索</h1>
 <p>1000行くらいの長い関数がひしめき合ってるコードと向かい合うとき関数内検索があるとかなり便利なので下記の情報を元にできるようにしました。かなり便利です。</p>
 <ul>
 <li><a href="http://qiita.com/kentaro/items/dd981f7d1337d2fd8e94" title="Vimで、特定の範囲内(textobj)で検索する - Qiita">Vimで、特定の範囲内(textobj)で検索する - Qiita</a></li>
@@ -745,6 +771,14 @@ autocmd MyAutoCmd <span class="nb">FileType</span> vimfiler <span class="k">call
         <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
         <ul>
 			    <li>
+                    <p>2019年 6月05日 PM 10:50<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/f571b230f35658c8bd8c6348021e0b53.html">
+                            ParcelではRustをimportして使える
+                        </a>
+                    </p>
+			    </li>
+			    <li>
                     <p>2019年 5月24日 AM 01:41<br />
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
@@ -773,14 +807,6 @@ autocmd MyAutoCmd <span class="nb">FileType</span> vimfiler <span class="k">call
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
                             Minidoxビルドログ
-                        </a>
-                    </p>
-			    </li>
-			    <li>
-                    <p>2018年 1月16日 AM 10:32<br />
-			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
-                        <a href="https://muunyblue.github.io/520bae6649b42ff5a3c8c58b7fcfc5a9.html">
-                            Neovim/Vim8で快適Vue.js開発(Vue Language Server)
                         </a>
                     </p>
 			    </li>
@@ -816,6 +842,7 @@ autocmd MyAutoCmd <span class="nb">FileType</span> vimfiler <span class="k">call
                 <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
                 <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/parcel.html">Parcel</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
                 <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
@@ -833,7 +860,7 @@ autocmd MyAutoCmd <span class="nb">FileType</span> vimfiler <span class="k">call
                 <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
-                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
@@ -852,6 +879,12 @@ autocmd MyAutoCmd <span class="nb">FileType</span> vimfiler <span class="k">call
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

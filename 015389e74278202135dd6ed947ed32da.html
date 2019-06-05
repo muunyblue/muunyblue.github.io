@@ -67,10 +67,10 @@
 </footer><!-- /.post-info -->      <p><a href="http://docs.gitlab.com/ce/ci/quick_start/README.html" title="GitLab Documentation">GitLab CIのquick start</a>を読んでもしっくり来なかった人向けにGitLab CIの仕組みをまとめました。</p>
 <p>特に「Runnerって何?」ってなった人向けです。</p>
 <p>(※GitLab CIの導入方法や使い方については触れていません)</p>
-<h1>GitLab CIの仕組み</h1>
+<h1 id="gitlab-ci">GitLab CIの仕組み</h1>
 <p><a href="https://about.gitlab.com/gitlab-ci/#gitlab-runner" title="GitLab Continuous Integration | GitLab">GitLab Continuous Integration | GitLab</a></p>
 <p>上のページのArchitectureの図がとてもわかり易いです。</p>
-<p><img alt="" src="https://about.gitlab.com/images/ci/arch-1.jpg"></p>
+<p><img alt="" src="https://about.gitlab.com/images/ci/arch-1.jpg" /></p>
 <blockquote>
 <p>GitLab CI is a part of GitLab, a web application with an API that stores its state in a database. It manages projects/builds and provides a nice user interface, besides all the features of GitLab.</p>
 </blockquote>
@@ -79,10 +79,10 @@
 <p>GitLab Runner is an application which processes builds. It can be deployed separately and works with GitLab CI through an API.</p>
 </blockquote>
 <p>GitLab Runnerはビルドのための一つのアプリケーションで、別々の場所で動かすことができ、APIを通してGitLab CIと連携できます。</p>
-<hr>
+<hr />
 <p>図を見て分かるように、GitLab RunnerはGitLab本体とは分離して別マシンや別コンテナに配置して、GitLabとGitLab Runner間はAPIで通信する仕組みになっています。</p>
 <p>とてもシンプル。</p>
-<h1>GitLab Runnerの詳細</h1>
+<h1 id="gitlab-runner">GitLab Runnerの詳細</h1>
 <p>GitLab RunnerについてはリポジトリのREADMEがわかりやすいです。</p>
 <p><a href="https://gitlab.com/gitlab-org/gitlab-ci-multi-runner" title="GitLab.org / gitlab-ci-multi-runner · GitLab">GitLab.org / gitlab-ci-multi-runner · GitLab</a></p>
 <p>簡単にまとめると</p>
@@ -96,7 +96,7 @@
 <p>OSXに関してもバイナリをcurlでダウンロードして配置、Linuxに関してはリポジトリと追加してパッケージマネージャでインストールできます。</p>
 <p>Dockerの場合はgitlab/gitlab-runnerというイメージが配布されているのでそちらをインストールして利用できます、基本的にUbuntu14.04のようですが、Aplineも使えるようです(gitlab/gitlab-runner:alpine)</p>
 <p>GitLab Runnerという名前についてですが、プロジェクトの名前はGitLab CI Multi Runnerで、GitLab CI Runnerと呼ばれていることが多いですが、今は"GitLab Runner"と呼んで欲しいみたいです。</p>
-<h1>まとめ</h1>
+<h1 id="_1">まとめ</h1>
 <p>ArchitectureもシンプルでGitLab CI良いなぁとなりました。</p>
 <p>Runnerについてのさらに詳しいことやわからないことは、<a href="https://gitlab.com/gitlab-org/gitlab-ci-multi-runner" title="GitLab.org / gitlab-ci-multi-runner · GitLab">GitLab Runnerの公式リポジトリ</a>を見てみると良いと思います。</p>
 <p>個人的にはWindowsでのCIに悩んでいたので、Jenkinsに手を出さないでGitLab CIだけで全て収まりそうなのでテンション上がっています。</p>
@@ -220,6 +220,14 @@
         <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
         <ul>
 			    <li>
+                    <p>2019年 6月05日 PM 10:50<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/f571b230f35658c8bd8c6348021e0b53.html">
+                            ParcelではRustをimportして使える
+                        </a>
+                    </p>
+			    </li>
+			    <li>
                     <p>2019年 5月24日 AM 01:41<br />
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
@@ -248,14 +256,6 @@
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
                             Minidoxビルドログ
-                        </a>
-                    </p>
-			    </li>
-			    <li>
-                    <p>2018年 1月16日 AM 10:32<br />
-			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
-                        <a href="https://muunyblue.github.io/520bae6649b42ff5a3c8c58b7fcfc5a9.html">
-                            Neovim/Vim8で快適Vue.js開発(Vue Language Server)
                         </a>
                     </p>
 			    </li>
@@ -291,6 +291,7 @@
                 <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
                 <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/parcel.html">Parcel</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
                 <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
@@ -308,7 +309,7 @@
                 <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
-                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
@@ -327,6 +328,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

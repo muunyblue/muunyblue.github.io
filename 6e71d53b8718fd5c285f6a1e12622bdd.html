@@ -62,14 +62,16 @@
 </ul>
 </footer><!-- /.post-info -->      <p>Cppcheckはとても優れたツールですが、Windowsで使用する場合はSetupがありますが、Linuxで使用する場合は手動でのインストールになります。</p>
 <p>ソースコードをダウンロードしてビルドすれば良いのですが、ビルドするツールをインストールできない場合などビルド困難な場合がありますので、RPMパッケージをインストールする方法を紹介します。</p>
-<p>!!! note
-    1つ注意なのは、RPMパッケージでインストールするため必ずしも最新版のCppcheckを使えるわけではありません、新しいCppcheckがどうしても使いたい場合はソースコードからビルドしましょう。</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>1つ注意なのは、RPMパッケージでインストールするため必ずしも最新版のCppcheckを使えるわけではありません、新しいCppcheckがどうしても使いたい場合はソースコードからビルドしましょう。</p>
+</div>
 <p>紹介する方法はCentOS6を対象にしますが、別バージョンのCentOSに関しても目的のバージョンに置き換えればインストール可能だと思います。</p>
-<h1>How to Install</h1>
+<h1 id="how-to-install">How to Install</h1>
 <p><a href="https://pkgs.org/download/cppcheck" title="cppcheck Download (DEB, RPM, TXZ)">cppcheck Download (DEB, RPM, TXZ)</a></p>
 <p>上記のリンクから目的のCppcheckのRPMパッケージを探します。</p>
 <p>CentOS6のx86_64のCppcheckを選択するとパッケージの詳細ページに行きます、下の方にDownloadという項目があります。</p>
-<p><img alt="" src="https://i.gyazo.com/576a77cae5ff94458f59477416cadfda.png"></p>
+<p><img alt="" src="https://i.gyazo.com/576a77cae5ff94458f59477416cadfda.png" /></p>
 <p>DownloadアイコンをクリックするとRPMパッケージへのリンクがあるページに行きますので、"Binary package"のリンクをコピーして、CppcheckをインストールするCentOS上でwgetします。</p>
 <div class="highlight"><pre><span></span>$ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/cppcheck-1.63-2.el6.x86_64.rpm
 </pre></div>
@@ -103,13 +105,13 @@ $ sudo rpm -ivh tinyxml2-1.0.11-4.20130805git0323851.el6.x86_64.rpm
 
 
 <p>エラーがでなければインストール完了です。</p>
-<hr>
+<hr />
 <p>新しいバージョンをビルドしてインストールしたいなどで、パッケージをアンインストールする際には以下のようにアンインストールします。</p>
 <div class="highlight"><pre><span></span>$ sudo npm -e cppcheck-1.63-2
 </pre></div>
 
 
-<h1>まとめ</h1>
+<h1 id="_1">まとめ</h1>
 <p>RPMパッケージを直接インストールすることで、リポジトリの追加やビルドツールのインストールなどが省けるメリットがあります。デメリットはバージョンが固定なことです。</p>
 <p>状況に応じてインストール方法を選択していくことになると思いますが、RPMでのインストールは簡単だったので割りとおすすめです。</p>
     </div><!-- /.entry-content -->
@@ -232,6 +234,14 @@ $ sudo rpm -ivh tinyxml2-1.0.11-4.20130805git0323851.el6.x86_64.rpm
         <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
         <ul>
 			    <li>
+                    <p>2019年 6月05日 PM 10:50<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/f571b230f35658c8bd8c6348021e0b53.html">
+                            ParcelではRustをimportして使える
+                        </a>
+                    </p>
+			    </li>
+			    <li>
                     <p>2019年 5月24日 AM 01:41<br />
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
@@ -260,14 +270,6 @@ $ sudo rpm -ivh tinyxml2-1.0.11-4.20130805git0323851.el6.x86_64.rpm
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
                             Minidoxビルドログ
-                        </a>
-                    </p>
-			    </li>
-			    <li>
-                    <p>2018年 1月16日 AM 10:32<br />
-			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
-                        <a href="https://muunyblue.github.io/520bae6649b42ff5a3c8c58b7fcfc5a9.html">
-                            Neovim/Vim8で快適Vue.js開発(Vue Language Server)
                         </a>
                     </p>
 			    </li>
@@ -303,6 +305,7 @@ $ sudo rpm -ivh tinyxml2-1.0.11-4.20130805git0323851.el6.x86_64.rpm
                 <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
                 <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/parcel.html">Parcel</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
                 <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
@@ -320,7 +323,7 @@ $ sudo rpm -ivh tinyxml2-1.0.11-4.20130805git0323851.el6.x86_64.rpm
                 <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
-                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
@@ -339,6 +342,12 @@ $ sudo rpm -ivh tinyxml2-1.0.11-4.20130805git0323851.el6.x86_64.rpm
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

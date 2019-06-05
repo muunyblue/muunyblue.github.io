@@ -63,8 +63,11 @@
 </footer><!-- /.post-info -->      <p>WebAssembly(以下WASM)には興味があって遊んでみたいと思っていたら、rustifyという便利な魔法が先日GitHubに現れたので使ってみました。</p>
 <p>続編のほうが詳しいです =&gt; <a href="https://muunyblue.github.io/35d58f24d7a7701719c983a1ef1979b1.html">rustifyでWebAssembly - ライフゲームを作る</a></p>
 <p>ElectronでWASMを使ってランダムウォークをしてみます。</p>
-<p>[https://github.com/yymm/rustify-random-walk:embed]</p>
-<h1>準備</h1>
+<p>
+<a class="embedly-card" href="https://github.com/yymm/rustify-random-walk">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
+<h1 id="_1">準備</h1>
 <p>Node.js環境をnvmで、Rust環境をrustupで準備します。</p>
 <div class="highlight"><pre><span></span>% nvm install --lts
 % rustup update
@@ -94,7 +97,7 @@
 </pre></div>
 
 
-<h1>サンプル動作</h1>
+<h1 id="_2">サンプル動作</h1>
 <p>まずElectronの準備をします。</p>
 <p>https://github.com/electron/electron/blob/master/docs/tutorial/quick-start.md</p>
 <p>ここを参考にindex.htmlとmain.jsを作ります。</p>
@@ -147,7 +150,7 @@
 
 
 <p>DevToolsに42と69が表示されていれば成功。</p>
-<h1>ランダムウォークを作る</h1>
+<h1 id="_3">ランダムウォークを作る</h1>
 <p>必要なのは乱数だけです。</p>
 <p>Rustの乱数はrandクレートですが、extern crateするとrustifyでエラーが出てしまったので実装します。</p>
 <p>手軽なのはXorShiftなので検索してｽｯと実装します。</p>
@@ -243,7 +246,7 @@
 </pre></div>
 
 
-<p><img alt="random walk" src="https://gyazo.com/5667e89638de43bb3825fc5eab2581ac.png"></p>
+<p><img alt="random walk" src="https://gyazo.com/5667e89638de43bb3825fc5eab2581ac.png" /></p>
 <p>ぽちぽち動いていれば完成。</p>
 <p>rustify、らくらくwasm体験できるのでもう少し遊んでみたさが高まりました。</p>
     </div><!-- /.entry-content -->
@@ -366,6 +369,14 @@
         <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
         <ul>
 			    <li>
+                    <p>2019年 6月05日 PM 10:50<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/f571b230f35658c8bd8c6348021e0b53.html">
+                            ParcelではRustをimportして使える
+                        </a>
+                    </p>
+			    </li>
+			    <li>
                     <p>2019年 5月24日 AM 01:41<br />
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
@@ -394,14 +405,6 @@
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
                             Minidoxビルドログ
-                        </a>
-                    </p>
-			    </li>
-			    <li>
-                    <p>2018年 1月16日 AM 10:32<br />
-			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
-                        <a href="https://muunyblue.github.io/520bae6649b42ff5a3c8c58b7fcfc5a9.html">
-                            Neovim/Vim8で快適Vue.js開発(Vue Language Server)
                         </a>
                     </p>
 			    </li>
@@ -437,6 +440,7 @@
                 <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
                 <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/parcel.html">Parcel</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
                 <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
@@ -454,7 +458,7 @@
                 <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
-                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
@@ -473,6 +477,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

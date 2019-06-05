@@ -64,7 +64,7 @@
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/idcf.html">IDCF</a> <a href="https://muunyblue.github.io/tag/vps.html">VPS</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
-</footer><!-- /.post-info -->      <h1>経緯</h1>
+</footer><!-- /.post-info -->      <h1 id="_1">経緯</h1>
 <p>今までGehirnを使っていたけど、<a href="https://www.gehirn.jp/gis/rs2plan.html">Gehirnの料金体制の変更</a>に伴い、VPSを変更することにしました。</p>
 <p>自分の場合、個人用途なのでアクセスも主に自分くらいしかないようなサービスしか動かさないのでとにかく安いVPSを探して使っています。</p>
 <p>旧Gehirnは300円(税抜) per monthという遠足のお菓子くらいの価格なので選択していましたが、料金体制が40円 per dayになるのでもっと安いのにしたいので乗り換えることにしました。</p>
@@ -76,7 +76,7 @@
 <p>が500円くらい。</p>
 <p>DigitalOceanがあるが為替が安定しないので辞めて、IDCFクラウドにしました。</p>
 <p>IDCFクラウドは、2015/7/31までに申し込めば使える3000円クーポンがあったのが決め手。</p>
-<h1>申し込み</h1>
+<h1 id="_2">申し込み</h1>
 <p><a href="http://www.idcf.jp/cloud/?cl=top_cloud" title="IDCFクラウド -使いやすく、パワフル｜IDCフロンティア">IDCFクラウド -使いやすく、パワフル｜IDCフロンティア</a></p>
 <ol>
 <li>「無料で始める」からユーザーの登録をします</li>
@@ -87,16 +87,16 @@
 <p>初期費用もなくサーバもすぐに立ち上がります。すごい良さ。</p>
 <p>管理画面もわかりやすくて、すごい良さです。</p>
 <p>IDCFクラウド、良いです。</p>
-<h1>サーバを立てる</h1>
+<h1 id="_3">サーバを立てる</h1>
 <p>light.S1の追加ストレージなしをUbuntu14.04LTSで立てました。</p>
-<p><img alt="" src="http://i.gyazo.com/def8832573d5be0803aeacde516d1487.png"></p>
+<p><img alt="" src="http://i.gyazo.com/def8832573d5be0803aeacde516d1487.png" /></p>
 <p>このとき、あとでSSHするのでSSH keyも登録しておきます。</p>
-<h1>SSHの設定</h1>
+<h1 id="ssh">SSHの設定</h1>
 <p>サーバを立てましたが、プライベートネットワークで構成されているので、グローバルIPでサーバの必要なポートにアクセスできるように設定します。</p>
-<p><img alt="IDCFクラウドのイメージ" src="http://i.gyazo.com/e84703268212c03dc9b627c5341f888b.png"></p>
+<p><img alt="IDCFクラウドのイメージ" src="http://i.gyazo.com/e84703268212c03dc9b627c5341f888b.png" /></p>
 <p>こんな感じのイメージ(イメージなので正しくないかもしれません)なので、FirewallとPort forwardingの設定をします。</p>
 <p>管理コンソールのIPアドレスにある、もらってるIPのところで設定ができます。</p>
-<p><img alt="FirewallとPort forwardの設定ボタン" src="http://i.gyazo.com/c08a33d300fbe9a840276e77ee32f40e.png"></p>
+<p><img alt="FirewallとPort forwardの設定ボタン" src="http://i.gyazo.com/c08a33d300fbe9a840276e77ee32f40e.png" /></p>
 <p>ポートフォワードでプレイベートポートにSSH(22番ポート)、パブリックポートに22ポートを指定します。</p>
 <p>次にFirewallで、さきほどパブリックポートに指定したポートに対して、ソースCIDRにMy IP、タイプにCustom TCPを設定します。</p>
 <p>(セキュリティ的に、ポートフォワードのパブリックのSSHのポートを変えたほうがいいですが、ここでは、FirewallのソースCIDRでIPを制限することにしています。)</p>
@@ -107,8 +107,8 @@
 
 
 <p>Ubuntuの場合、ログインできたら以下のようになりました。</p>
-<p><img alt="" src="http://i.gyazo.com/77ab6842dfbb6fca19fa225f17a5500e.png"></p>
-<h1>swap領域の設定</h1>
+<p><img alt="" src="http://i.gyazo.com/77ab6842dfbb6fca19fa225f17a5500e.png" /></p>
+<h1 id="swap">swap領域の設定</h1>
 <p>デフォルトでswap領域は作られていないので作っておきます。(Docker使うのでswapを作っておいたほうが良さそうでした)</p>
 <ul>
 <li><a href="https://www.digitalocean.com/community/tutorials/how-to-add-swap-on-ubuntu-12-04" title="How To Add Swap on Ubuntu 12.04 | DigitalOcean">How To Add Swap on Ubuntu 12.04 | DigitalOcean</a></li>
@@ -122,17 +122,17 @@
 </blockquote>
 <p>1Gにするなら、bs=1024 count=1024kで1G、bs=1M count=1024で1G。</p>
 <p>/.swapfileに作る。</p>
-<div class="highlight"><pre><span></span>$ sudo dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/.swapfile <span class="nv">bs</span><span class="o">=</span>1M <span class="nv">count</span><span class="o">=</span><span class="m">1024</span>
-$ sudo mkswap /.swapfile
-$ sudo swapon /.swapfile
-$ sudo vi /etc/fstab
-/.swapfile       none    swap    sw      <span class="m">0</span>       <span class="m">0</span>
-$ sudo chown root:root /.swapfile
-$ sudo chmod <span class="m">0600</span> /.swapfile
+<div class="highlight"><pre><span></span>$ <span class="nv">sudo</span> <span class="nv">dd</span> <span class="k">if</span><span class="o">=/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">zero</span> <span class="nv">of</span><span class="o">=/</span>.<span class="nv">swapfile</span> <span class="nv">bs</span><span class="o">=</span><span class="mi">1</span><span class="nv">M</span> <span class="nv">count</span><span class="o">=</span><span class="mi">1024</span>
+$ <span class="nv">sudo</span> <span class="nv">mkswap</span> <span class="o">/</span>.<span class="nv">swapfile</span>
+$ <span class="nv">sudo</span> <span class="nv">swapon</span> <span class="o">/</span>.<span class="nv">swapfile</span>
+$ <span class="nv">sudo</span> <span class="nv">vi</span> <span class="o">/</span><span class="nv">etc</span><span class="o">/</span><span class="nv">fstab</span>
+<span class="o">/</span>.<span class="nv">swapfile</span>       <span class="nv">none</span>    <span class="nv">swap</span>    <span class="nv">sw</span>      <span class="mi">0</span>       <span class="mi">0</span>
+$ <span class="nv">sudo</span> <span class="nv">chown</span> <span class="nv">root</span>:<span class="nv">root</span> <span class="o">/</span>.<span class="nv">swapfile</span>
+$ <span class="nv">sudo</span> <span class="nv">chmod</span> <span class="mi">0600</span> <span class="o">/</span>.<span class="nv">swapfile</span>
 </pre></div>
 
 
-<h1>userの追加</h1>
+<h1 id="user">userの追加</h1>
 <p>rootユーザーしかいないので、セキュリティ的にrootでSSH出来ないようにして、root権限を持つユーザーで操作するように設定します。</p>
 <div class="highlight"><pre><span></span>$ adduser <span class="nv">$USER</span>
 $ visudo
@@ -154,16 +154,16 @@ PermitRootLogin no
 
 
 <p>sshd_configは以下の項目も確認。</p>
-<div class="highlight"><pre><span></span>PubkeyAuthentication yes
-PasswordAuthentication no
+<div class="highlight"><pre><span></span><span class="n">PubkeyAuthentication</span> <span class="n">yes</span>
+<span class="n">PasswordAuthentication</span> <span class="k">no</span>
 </pre></div>
 
 
-<h1>Mackerelを使う</h1>
+<h1 id="mackerel">Mackerelを使う</h1>
 <p>IDCFクラウドは、サーバの状態を見たりするUIがなさそうなので、Mackarelで監視してみました。</p>
 <p>IDCFクラウドはMackerel対応していて、OAuthしてMackarel使えるみたいでしたが、同じメールアドレスでMackerelのユーザー持ってたので、もったいないですが既存のユーザーで行いました。</p>
 <p>Ubuntuにしたので、debパッケージでのインストール方法を参考にインストール、追加でサービスの設定等はしていませんが、Mackerelでの監視はさくっとできました。</p>
-<h1>今後</h1>
+<h1 id="_4">今後</h1>
 <p>Dokkuを動かしたいなぁという感じです。</p>
     </div><!-- /.entry-content -->
 
@@ -285,6 +285,14 @@ PasswordAuthentication no
         <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
         <ul>
 			    <li>
+                    <p>2019年 6月05日 PM 10:50<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/f571b230f35658c8bd8c6348021e0b53.html">
+                            ParcelではRustをimportして使える
+                        </a>
+                    </p>
+			    </li>
+			    <li>
                     <p>2019年 5月24日 AM 01:41<br />
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
@@ -313,14 +321,6 @@ PasswordAuthentication no
 			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
                         <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
                             Minidoxビルドログ
-                        </a>
-                    </p>
-			    </li>
-			    <li>
-                    <p>2018年 1月16日 AM 10:32<br />
-			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
-                        <a href="https://muunyblue.github.io/520bae6649b42ff5a3c8c58b7fcfc5a9.html">
-                            Neovim/Vim8で快適Vue.js開発(Vue Language Server)
                         </a>
                     </p>
 			    </li>
@@ -356,6 +356,7 @@ PasswordAuthentication no
                 <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
                 <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/parcel.html">Parcel</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
                 <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
@@ -373,7 +374,7 @@ PasswordAuthentication no
                 <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
-                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
@@ -392,6 +393,12 @@ PasswordAuthentication no
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->
