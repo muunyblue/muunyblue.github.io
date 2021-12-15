@@ -54,24 +54,24 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2016-08-16T05:19:04+09:00">
+    <li class="published" title="2016-08-16T05:19:04">
         <span>Date:</span>2016-08-16 火 (午前 05:19:04)
     </li>
         <!--<br />-->
-        <li class="modified" title="2016-08-16T05:20:26+09:00">
+        <li class="modified" title="2016-08-16T05:20:26">
             <span>Updated:</span>2016-08-16 火 (午前 05:20:26)
         </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/gitlab.html">GitLab</a> <a href="https://muunyblue.github.io/tag/ci.html">CI</a> <a href="https://muunyblue.github.io/tag/windows.html">Windows</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
 </footer><!-- /.post-info -->      <p>WindowsでビルドやテストをするようなCIがGitLab CIで簡単に構成できるので紹介します。</p>
-<hr>
+<hr />
 <p><a href="http://blog.muuny-blue.info/015389e74278202135dd6ed947ed32da.html" title="簡単にわかるGitLab CIの仕組み">簡単にわかるGitLab CIの仕組み</a>で書いたように</p>
 <blockquote>
 <p>GitLab RunnerはGitLab本体とは分離して別マシンや別コンテナに配置して、GitLabとGitLab Runner間はAPIで通信する仕組みになっています。</p>
 </blockquote>
 <p>ということなので、ビルド環境のある物理WindowsマシンにGitLab Runnerを設置することでWindows版CI用Runnerを構築できます。</p>
-<h1>Install</h1>
+<h1 id="install">Install</h1>
 <p>GitLab RunnerはGolangで書かれておりシングルバイナリとして配布されており、インストールはバイナリを配置するだけokです。</p>
 <ul>
 <li>x86: https://gitlab-ci-multi-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-ci-multi-runner-windows-386.exe</li>
@@ -80,12 +80,12 @@
 <p>使用しているWindowsに応じてダウンロードします。</p>
 <p>配置する場所に制限はないので好きな場所に配置します。</p>
 <p>この記事ではC:\GitLab-Runnerにamd64のバイナリを配置したとして進めていきます。</p>
-<h1>Setup</h1>
+<h1 id="setup">Setup</h1>
 <p>まず登録する際に入力する情報をGitLabで確認します。</p>
 <p>「CIをするプロジェクトページ &gt; Settings &gt; Runners」を開くと"URL"と"token"が書いてあります。</p>
-<p><img alt="URL &amp; token" src="https://i.gyazo.com/efbc85635d23089c924ee36c8a071f1f.png"></p>
+<p><img alt="URL &amp; token" src="https://i.gyazo.com/efbc85635d23089c924ee36c8a071f1f.png" /></p>
 <p>管理者権限でコマンドプロンプトを開き、先ほどバイナリを配置したフォルダに移動して登録していきます。</p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="n">cd</span> <span class="n">C</span><span class="p">:</span>\<span class="n">Gitlab</span><span class="o">-</span><span class="n">Runner</span>
+<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">cd</span> <span class="n">C</span><span class="p">:</span>\<span class="n">Gitlab</span><span class="o">-</span><span class="n">Runner</span>
 <span class="o">&gt;</span> <span class="n">gitlab</span><span class="o">-</span><span class="n">ci</span><span class="o">-</span><span class="n">multi</span><span class="o">-</span><span class="n">runner</span><span class="o">-</span><span class="n">windows</span><span class="o">-</span><span class="n">amd64</span><span class="o">.</span><span class="n">exe</span> <span class="n">register</span>
 <span class="n">Please</span> <span class="n">enter</span> <span class="n">the</span> <span class="n">gitlab</span><span class="o">-</span><span class="n">ci</span> <span class="n">coordinator</span> <span class="n">URL</span> <span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">g</span><span class="o">.</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">gitlab</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">ci</span><span class="p">):</span>
 <span class="p">{{</span><span class="err">確認した</span><span class="n">URL</span><span class="p">}}</span>
@@ -99,30 +99,36 @@
 <span class="n">Please</span> <span class="n">enter</span> <span class="n">the</span> <span class="n">executor</span><span class="p">:</span> <span class="n">virtualbox</span><span class="p">,</span> <span class="n">docker</span><span class="o">+</span><span class="n">machine</span><span class="p">,</span> <span class="n">docker</span><span class="o">-</span><span class="n">ssh</span><span class="o">+</span><span class="n">machine</span><span class="p">,</span> <span class="n">docker</span><span class="p">,</span> <span class="n">docker</span><span class="o">-</span><span class="n">ssh</span><span class="p">,</span> <span class="n">parallels</span><span class="p">,</span> <span class="n">shell</span><span class="p">,</span> <span class="n">ssh</span><span class="p">:</span>
 <span class="n">shell</span>
 <span class="n">Runner</span> <span class="n">registered</span> <span class="n">successfully</span><span class="o">.</span> <span class="n">Feel</span> <span class="n">free</span> <span class="n">to</span> <span class="n">start</span> <span class="n">it</span><span class="p">,</span> <span class="n">but</span> <span class="k">if</span> <span class="n">it</span><span class="s1">&#39;s running already the config should be automatically reloaded!</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>executerにはshellを選択してコマンドプロンプトでビルドするように指定しました。</p>
 <p>次にユーザー名とパスワードを設定します。</p>
 <p><a href="http://hr-sano.net/blog/2016/01/25/gitlab-ci-runner-for-windows/" title="まったりlog残し">この方のブログ記事</a>にも書いてありますが、現状ユーザー名を指定するとうまく行きません。</p>
 <p>パスワードの指定だけすると現在ログインしているユーザを自動で認識して設定するようなのでパスワードだけ指定します。</p>
-<div class="highlight"><pre><span></span><code>&gt; gitlab-ci-multi-runner-windows-amd64.exe install --password ENTER-YOUR-PASSWORD
+<div class="highlight"><pre><span></span>&gt; gitlab-ci-multi-runner-windows-amd64.exe install --password ENTER-YOUR-PASSWORD
 &gt; gitlab-ci-multi-runner-windows-amd64.exe start
-</code></pre></div>
+</pre></div>
+
 
 <p>パスワードが正しく設定されていればstartできます。</p>
 <p>startに成功していればGitLabのSettings&gt;Runnersに登録したRunnerが表示されているはずです。</p>
-<p>!!! note
-    Windowsにgitがインストールされていないとビルド時にgitがないのが原因で失敗してしまいます。
-    gitがインストールされていない場合は以下の記事を参考にgitをインストールすると良いです。
-    <a href="http://qiita.com/taipon_rock/items/632c117220e57d555099" title="コマンドラインからGitを使う（for Windows） - Qiita">コマンドラインからGitを使う（for Windows） - Qiita</a>
-    gitをインストールしたあとはRunnerをrestartさせる必要があります。
-    &gt; gitlab-ci-multi-runner-windows-amd64.exe restart</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Windowsにgitがインストールされていないとビルド時にgitがないのが原因で失敗してしまいます。<br />
+gitがインストールされていない場合は以下の記事を参考にgitをインストールすると良いです。<br />
+<a href="http://qiita.com/taipon_rock/items/632c117220e57d555099" title="コマンドラインからGitを使う（for Windows） - Qiita">コマンドラインからGitを使う（for Windows） - Qiita</a><br />
+gitをインストールしたあとはRunnerをrestartさせる必要があります。</p>
+<blockquote>
+<p>gitlab-ci-multi-runner-windows-amd64.exe restart</p>
+</blockquote>
+</div>
 <p>あとは.gitlab-ci.ymlを書いてpushすればCIが走ります。</p>
-<p><img alt="Build" src="https://i.gyazo.com/d7c8978ac9d42c284c863ee814384c1a.png"></p>
+<p><img alt="Build" src="https://i.gyazo.com/d7c8978ac9d42c284c863ee814384c1a.png" /></p>
 <p>実際に動かした様子です。</p>
 <p>.gitlab-ci.ymlのtagsを使えば複数環境でCIさせることが可能です、マルチプラットフォームでのCIが必要な場面に便利。</p>
 <p>scriptでバッチファイルを起動するようにすれば手の込んだビルドもできそうなので今後試していく予定です。</p>
-<h1>参考記事</h1>
+<h1 id="_1">参考記事</h1>
 <ul>
 <li><a href="https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/blob/master/docs/install/windows.md" title="docs/install/windows.md · master · GitLab.org / gitlab-ci-multi-runner · GitLab">docs/install/windows.md · master · GitLab.org / gitlab-ci-multi-runner · GitLab</a></li>
 <li><a href="http://hr-sano.net/blog/2016/01/25/gitlab-ci-runner-for-windows/" title="まったりlog残し">まったりlog残し</a></li>
@@ -301,7 +307,7 @@
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -324,7 +330,7 @@
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -354,6 +360,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

@@ -54,57 +54,62 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2017-01-16T01:38:38+09:00">
+    <li class="published" title="2017-01-16T01:38:38">
         <span>Date:</span>2017-01-16 月 (午前 01:38:38)
     </li>
         <!--<br />-->
-        <li class="modified" title="2017-01-16T01:41:57+09:00">
+        <li class="modified" title="2017-01-16T01:41:57">
             <span>Updated:</span>2017-01-16 月 (午前 01:41:57)
         </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/fish.html">fish</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
 </footer><!-- /.post-info -->      <p>込み入った設定をしないでｽｯと移行することを目的にしています。</p>
-<h1>.zshrcを投げ捨ててます。</h1>
+<h1 id="zshrc">.zshrcを投げ捨ててます。</h1>
 <p>自分の場合、zshrcの設定内容にコピー&amp;ペーストが多かったので気持ち的に楽に投げ捨てられました。</p>
-<h1>fishのインストール</h1>
+<h1 id="fish">fishのインストール</h1>
 <p>主要なOSのパッケージマネージャーでインストール可能なのでｽｯとインストールします。</p>
-<h1>fishermanを導入</h1>
+<h1 id="fisherman">fishermanを導入</h1>
 <p>fishのプラグインマネージャーです。<a href="https://github.com/fisherman/fisherman/wiki/Oh-My-Fish-Plugins---Known-Issues" title="Oh My Fish Plugins Known Issues · fisherman/fisherman Wiki">oh-my-fishとも互換性があります。</a></p>
 <p><a href="https://github.com/fisherman/fisherman/wiki/%E6%97%A5%E6%9C%AC%E8%AA%9E" title="日本語 · fisherman/fisherman Wiki">日本語 · fisherman/fisherman Wiki</a>を参考にインストールします。</p>
-<div class="highlight"><pre><span></span><code>$ curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs git.io/fisher
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ curl -Lo ~/.config/fish/functions/fisher.fish --create-dirs git.io/fisher
+</pre></div>
+
 
 <p>インストールできるプラグイン一覧は以下のコマンドで確認できます。</p>
-<div class="highlight"><pre><span></span><code>$ fisher ls-remote
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ fisher ls-remote
+</pre></div>
+
 
 <p>手始めにthemeをインストールします。</p>
-<div class="highlight"><pre><span></span><code>$ fisher install omf/theme-bobthefish
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ fisher install omf/theme-bobthefish
+</pre></div>
 
-<h1>設定</h1>
+
+<h1 id="_1">設定</h1>
 <p>設定は~/.config/fish/config.fishに書きます。</p>
 <p>欲しかったものはほとんどデフォルトとfishermanがやってくれるので環境変数の設定を主に書いていくことになります。</p>
 <p>fishではexportはなくset -xで環境変数を設定します。</p>
-<div class="highlight"><pre><span></span><code><span class="k">set</span><span class="w"> </span><span class="o">-</span><span class="n">x</span><span class="w"> </span><span class="n">XDG_CONFIG_HOME</span><span class="w"> </span><span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="p">.</span><span class="n">config</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="k">set</span><span class="w"> </span><span class="o">-</span><span class="n">x</span><span class="w"> </span><span class="n">XDG_CONFIG_HOME</span><span class="w"> </span><span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="p">.</span><span class="n">config</span><span class="w"></span>
 <span class="k">set</span><span class="w"> </span><span class="o">-</span><span class="n">x</span><span class="w"> </span><span class="n">GOPATH</span><span class="w"> </span><span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="k">Go</span><span class="w"></span>
 <span class="k">set</span><span class="w"> </span><span class="o">-</span><span class="n">x</span><span class="w"> </span><span class="k">PATH</span><span class="w"> </span><span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="p">.</span><span class="n">cargo</span><span class="o">/</span><span class="n">bin</span><span class="w"> </span><span class="err">$</span><span class="k">PATH</span><span class="w"></span>
 <span class="k">set</span><span class="w"> </span><span class="o">-</span><span class="n">x</span><span class="w"> </span><span class="n">RUST_SRC_PATH</span><span class="w"> </span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="k">local</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">rust</span><span class="o">/</span><span class="n">src</span><span class="w"></span>
 <span class="k">set</span><span class="w"> </span><span class="o">-</span><span class="n">g</span><span class="w"> </span><span class="n">theme_color_scheme</span><span class="w"> </span><span class="n">zenburn</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>現状config.fishはこの5行です、すっきり。</p>
-<h2>nvm</h2>
-<div class="highlight"><pre><span></span><code>$ fisher install nvm
-</code></pre></div>
+<h2 id="nvm">nvm</h2>
+<div class="highlight"><pre><span></span>$ fisher install nvm
+</pre></div>
+
 
 <p>fishでもnvmを使ってnodejs開発できます。</p>
 <p>bash互換のスクリプトを使ったツールが使えなくなることが多いですが有名所はプラグインで解決できそうです。</p>
 <p>bassというbashスクリプト動かせるプラグインがあるので、困り果てたら自前で書いてしまっても良さそうです。</p>
-<h2>デフォルトシェル設定</h2>
+<h2 id="_2">デフォルトシェル設定</h2>
 <p>/etc/shellsに"which fish"コマンドの結果を足してから、chshします。</p>
-<h1>ref</h1>
+<h1 id="ref">ref</h1>
 <ul>
 <li><a href="https://fishshell.com/" title="fish shell">fish shell</a></li>
 <li><a href="http://qiita.com/nutsinshell/items/37d9129c52b4abe6184f" title="Fish-ShellのDesign document読んでみたり、プラグイン試してみたり - Qiita">Fish-ShellのDesign document読んでみたり、プラグイン試してみたり - Qiita</a></li>
@@ -286,7 +291,7 @@
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -309,7 +314,7 @@
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -339,6 +344,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

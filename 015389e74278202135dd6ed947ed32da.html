@@ -54,11 +54,11 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2016-08-09T01:52:39+09:00">
+    <li class="published" title="2016-08-09T01:52:39">
         <span>Date:</span>2016-08-09 火 (午前 01:52:39)
     </li>
         <!--<br />-->
-        <li class="modified" title="2016-10-28T09:01:28+09:00">
+        <li class="modified" title="2016-10-28T09:01:28">
             <span>Updated:</span>2016-10-28 金 (午前 09:01:28)
         </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/gitlab.html">GitLab</a> <a href="https://muunyblue.github.io/tag/ci.html">CI</a> </li>
@@ -67,10 +67,10 @@
 </footer><!-- /.post-info -->      <p><a href="http://docs.gitlab.com/ce/ci/quick_start/README.html" title="GitLab Documentation">GitLab CIのquick start</a>を読んでもしっくり来なかった人向けにGitLab CIの仕組みをまとめました。</p>
 <p>特に「Runnerって何?」ってなった人向けです。</p>
 <p>(※GitLab CIの導入方法や使い方については触れていません)</p>
-<h1>GitLab CIの仕組み</h1>
+<h1 id="gitlab-ci">GitLab CIの仕組み</h1>
 <p><a href="https://about.gitlab.com/gitlab-ci/#gitlab-runner" title="GitLab Continuous Integration | GitLab">GitLab Continuous Integration | GitLab</a></p>
 <p>上のページのArchitectureの図がとてもわかり易いです。</p>
-<p><img alt="" src="https://about.gitlab.com/images/ci/arch-1.jpg"></p>
+<p><img alt="" src="https://about.gitlab.com/images/ci/arch-1.jpg" /></p>
 <blockquote>
 <p>GitLab CI is a part of GitLab, a web application with an API that stores its state in a database. It manages projects/builds and provides a nice user interface, besides all the features of GitLab.</p>
 </blockquote>
@@ -79,10 +79,10 @@
 <p>GitLab Runner is an application which processes builds. It can be deployed separately and works with GitLab CI through an API.</p>
 </blockquote>
 <p>GitLab Runnerはビルドのための一つのアプリケーションで、別々の場所で動かすことができ、APIを通してGitLab CIと連携できます。</p>
-<hr>
+<hr />
 <p>図を見て分かるように、GitLab RunnerはGitLab本体とは分離して別マシンや別コンテナに配置して、GitLabとGitLab Runner間はAPIで通信する仕組みになっています。</p>
 <p>とてもシンプル。</p>
-<h1>GitLab Runnerの詳細</h1>
+<h1 id="gitlab-runner">GitLab Runnerの詳細</h1>
 <p>GitLab RunnerについてはリポジトリのREADMEがわかりやすいです。</p>
 <p><a href="https://gitlab.com/gitlab-org/gitlab-ci-multi-runner" title="GitLab.org / gitlab-ci-multi-runner · GitLab">GitLab.org / gitlab-ci-multi-runner · GitLab</a></p>
 <p>簡単にまとめると</p>
@@ -96,7 +96,7 @@
 <p>OSXに関してもバイナリをcurlでダウンロードして配置、Linuxに関してはリポジトリと追加してパッケージマネージャでインストールできます。</p>
 <p>Dockerの場合はgitlab/gitlab-runnerというイメージが配布されているのでそちらをインストールして利用できます、基本的にUbuntu14.04のようですが、Aplineも使えるようです(gitlab/gitlab-runner:alpine)</p>
 <p>GitLab Runnerという名前についてですが、プロジェクトの名前はGitLab CI Multi Runnerで、GitLab CI Runnerと呼ばれていることが多いですが、今は"GitLab Runner"と呼んで欲しいみたいです。</p>
-<h1>まとめ</h1>
+<h1 id="_1">まとめ</h1>
 <p>ArchitectureもシンプルでGitLab CI良いなぁとなりました。</p>
 <p>Runnerについてのさらに詳しいことやわからないことは、<a href="https://gitlab.com/gitlab-org/gitlab-ci-multi-runner" title="GitLab.org / gitlab-ci-multi-runner · GitLab">GitLab Runnerの公式リポジトリ</a>を見てみると良いと思います。</p>
 <p>個人的にはWindowsでのCIに悩んでいたので、Jenkinsに手を出さないでGitLab CIだけで全て収まりそうなのでテンション上がっています。</p>
@@ -274,7 +274,7 @@
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -297,7 +297,7 @@
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -327,6 +327,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

@@ -54,19 +54,19 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2016-09-14T05:30:51+09:00">
+    <li class="published" title="2016-09-14T05:30:51">
         <span>Date:</span>2016-09-14 水 (午前 05:30:51)
     </li>
         <!--<br />-->
-        <li class="modified" title="2016-12-08T08:05:12+09:00">
+        <li class="modified" title="2016-12-08T08:05:12">
             <span>Updated:</span>2016-12-08 木 (午前 08:05:12)
         </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
 </footer><!-- /.post-info -->      <p>Vimに比べるとVSCodeのほうが引き継ぎのときに楽なのではと思い立ちVSCodeをはじめてみます。</p>
-<h1>エディタに求めていること</h1>
-<p><img alt="" src="https://i.gyazo.com/307d663020d4557260bbbc6bfe45de13.png"></p>
+<h1 id="_1">エディタに求めていること</h1>
+<p><img alt="" src="https://i.gyazo.com/307d663020d4557260bbbc6bfe45de13.png" /></p>
 <p>素VSCodeを眺めて普段エディタに求めている最低限のことについて考えてみます。</p>
 <p>基礎として理解しておきたい部分</p>
 <ul>
@@ -85,36 +85,37 @@
 </ul>
 <p>しかし大事なのは余り複雑にしないことかもしれない。</p>
 <p>(後述しますがIntegrated Terminalを使うことでgitコマンドやmakeなど普段Terminalで実行しているコマンドは全て実行することができます)</p>
-<h1>基本設定</h1>
+<h1 id="_2">基本設定</h1>
 <ul>
 <li>ユーザー設定でフォントを14pxに設定</li>
 <li>配色テーマをMonokai Dimmedに設定</li>
 <li>File Icon ThemeをSetiに設定</li>
 </ul>
-<h1>プラグイン機構/設定</h1>
+<h1 id="_3">プラグイン機構/設定</h1>
 <p>サイドバーの一番下のアイコンが拡張機能になっていて、ここからプラグインを追加できます。</p>
 <p>設定は、メニューからユーザー設定を開くとjsonの設定ファイルが開きここで色々設定できます、見たところプラグインに関する設定もここに追加していくことになりそうです(今のところまだ込み入った設定はしていません)</p>
 <p>キーボードショートカットもメニューから設定できて独自のキー設定ができます(これもjson)</p>
-<h1>Vimプラグイン</h1>
+<h1 id="vim">Vimプラグイン</h1>
 <p>公式のVimプラグインを使います。拡張機能でVimで検索して一番上に出てくるものです。</p>
 <p>基本的なtext object操作と、:wで保存、:qで閉じる、:%s...で置換、/で検索、Ctrl+w+h/j/k/lでウィンドウ間移動、tnでタブ間移動など割りと動くなぁという感じです。</p>
-<h1>Integrated Terminalが最高</h1>
+<h1 id="integrated-terminal">Integrated Terminalが最高</h1>
 <p>Termialがエミュレートされます。$SHELLを使っていてプロファイルも全て読み込まれています。なんとtmuxも動きます。</p>
 <p>なんとtmuxも動きます。</p>
 <p>大事なことなので二回言いました。</p>
 <p>ビルドや開発サーバなどの起動、git操作などをここでできるのでもともとTerminalユーザの人には大変便利。</p>
 <p>ショートカットキーでトグルすると便利なのでキーボードショートカットに設定します。</p>
-<div class="highlight"><pre><span></span><code>{
+<div class="highlight"><pre><span></span>{
     &quot;key&quot;: &quot;shift+h&quot;,
     &quot;command&quot;: &quot;workbench.action.terminal.toggleTerminal&quot;
 }
-</code></pre></div>
+</pre></div>
 
-<h1>キーボードショートカット</h1>
+
+<h1 id="_4">キーボードショートカット</h1>
 <p><a href="https://code.visualstudio.com/docs/customization/keybindings" title="Visual Studio Code Key Bindings">Visual Studio Code Key Bindings</a></p>
 <p>ドキュメントに詳しくまとまっているので必要なところを変更します。</p>
 <p>自分の場合(できるだけ普段のVimに寄せていってます)</p>
-<div class="highlight"><pre><span></span><code>[
+<div class="highlight"><pre><span></span>[
 {
     &quot;key&quot;: &quot;shift+h&quot;,
     &quot;command&quot;: &quot;workbench.action.terminal.toggleTerminal&quot;
@@ -123,10 +124,11 @@
 { &quot;key&quot;: &quot;ctrl+l&quot;,       &quot;command&quot;: &quot;workbench.action.focusNextGroup&quot; },
 { &quot;key&quot;: &quot;ctrl+h&quot;,       &quot;command&quot;: &quot;workbench.action.focusPreviousGroup&quot; }
 ]
-</code></pre></div>
+</pre></div>
 
-<h1>完成</h1>
-<p><img alt="" src="https://i.gyazo.com/ae0949b4791e3021372c909fbdb5059a.png"></p>
+
+<h1 id="_5">完成</h1>
+<p><img alt="" src="https://i.gyazo.com/ae0949b4791e3021372c909fbdb5059a.png" /></p>
 <p>Integrated Terminalでwebpackのプロセスとかを上げたままにできて便利！</p>
 <p>tmuxも使えるので他の開発サーバも普段と同じ感覚立ち上げられます。</p>
 <p>補完もデフォルトで効くので便利です。</p>
@@ -307,7 +309,7 @@
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -330,7 +332,7 @@
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -360,6 +362,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

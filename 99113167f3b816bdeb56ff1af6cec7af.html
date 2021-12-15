@@ -54,11 +54,11 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2016-09-15T04:19:10+09:00">
+    <li class="published" title="2016-09-15T04:19:10">
         <span>Date:</span>2016-09-15 木 (午前 04:19:10)
     </li>
         <!--<br />-->
-        <li class="modified" title="2016-09-15T04:25:01+09:00">
+        <li class="modified" title="2016-09-15T04:25:01">
             <span>Updated:</span>2016-09-15 木 (午前 04:25:01)
         </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> </li>
@@ -68,67 +68,85 @@
 <p>Xubuntuは軽量デスクトップのXfce4を使っていてマシンスペックの低いPC向けで、使ってみた感じ欲しい設定は一通りそろっていて使いやすい印象があります。</p>
 <p>この記事では見た目や最低限使うための設定について書きます。</p>
 <p>これ以外に開発用にTerminalで設定している項目がありますがVimだけにとどめてあります。</p>
-<hr>
+<hr />
 <p>目次</p>
-<p>[TOC]</p>
-<h1>sudo apt-get update</h1>
+<div class="toc">
+<ul>
+<li><a href="#sudo-apt-get-update">sudo apt-get update</a></li>
+<li><a href="#_1">日本語入力</a></li>
+<li><a href="#caps-to-ctl">caps to ctl</a></li>
+<li><a href="#synapse">Synapse</a></li>
+<li><a href="#gyazo">Gyazo</a></li>
+<li><a href="#panel">Panelの設定</a></li>
+<li><a href="#workspaces">Workspaces</a></li>
+<li><a href="#_2">不要なデスクトップアイコン削除</a></li>
+<li><a href="#_3">キーリピート速度設定</a></li>
+<li><a href="#vim">Vim</a></li>
+</ul>
+</div>
+<h1 id="sudo-apt-get-update">sudo apt-get update</h1>
 <p>リポジトリが古いので更新します。</p>
 <p>updateしないとgitもインストールできないので最初にやると良いです。</p>
-<h1>日本語入力</h1>
-<p>[http://blog.muuny-blue.info/3faf3b08de6c7c130e63c0e38e5553a8.html:embed]</p>
-<h1>caps to ctl</h1>
+<h1 id="_1">日本語入力</h1>
+<p>
+<a class="embedly-card" href="http://blog.muuny-blue.info/3faf3b08de6c7c130e63c0e38e5553a8.html">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
+<h1 id="caps-to-ctl">caps to ctl</h1>
 <p><a href="http://askubuntu.com/questions/149971/how-do-you-remap-a-key-to-the-caps-lock-key-in-xubuntu/223674" title="How do you remap a key to the Caps Lock key in Xubuntu? - Ask Ubuntu">How do you remap a key to the Caps Lock key in Xubuntu? - Ask Ubuntu</a></p>
 <p>これを参考に以下の設定をします。</p>
-<div class="highlight"><pre><span></span><code>$ sudo vi /etc/default/keyboard
+<div class="highlight"><pre><span></span>$ sudo vi /etc/default/keyboard
 <span class="nv">XKBOPTIONS</span><span class="o">=</span><span class="s2">&quot;ctrl:nocaps&quot;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>再起動後に結講になります。</p>
-<h1>Synapse</h1>
+<h1 id="synapse">Synapse</h1>
 <p>Synapseはランチャーです、個人的にすごい気に入って使っています。</p>
 <p>Softwareというアプリからインストールします。起動して検索窓にSynapseと入力すると出てくるのでインストールします。</p>
-<p><img alt="" src="https://i.gyazo.com/c6ed3670102891d306e21b85ba18a482.png"></p>
+<p><img alt="" src="https://i.gyazo.com/c6ed3670102891d306e21b85ba18a482.png" /></p>
 <p>ThemeをSide Doishにしたのが以下です。</p>
-<p><img alt="" src="https://i.gyazo.com/3854b6b5aee86c12500875e0951b645f.png"></p>
+<p><img alt="" src="https://i.gyazo.com/3854b6b5aee86c12500875e0951b645f.png" /></p>
 <p>Xfce4だと青くなるぽいです、見た目が綺麗です。</p>
-<h1>Gyazo</h1>
+<h1 id="gyazo">Gyazo</h1>
 <p><a href="https://github.com/gyazo/Gyazo-for-Linux" title="gyazo/Gyazo-for-Linux: Gyazo for Linux">gyazo/Gyazo-for-Linux: Gyazo for Linux</a></p>
 <p>公式リポジトリの通りにインストールします。</p>
-<div class="highlight"><pre><span></span><code>$ curl -s https://packagecloud.io/install/repositories/gyazo/gyazo-for-linux/script.deb.sh <span class="p">|</span> sudo bash
+<div class="highlight"><pre><span></span>$ curl -s https://packagecloud.io/install/repositories/gyazo/gyazo-for-linux/script.deb.sh <span class="p">|</span> sudo bash
 $ sudo apt-get install gyazo
-</code></pre></div>
+</pre></div>
 
-<h1>Panelの設定</h1>
-<p><img alt="" src="https://i.gyazo.com/ec625a96ccb251fa4ade65d17738fcb1.png"></p>
+
+<h1 id="panel">Panelの設定</h1>
+<p><img alt="" src="https://i.gyazo.com/ec625a96ccb251fa4ade65d17738fcb1.png" /></p>
 <p>デスクトップの上または横にあるbarをPanelと言います。縦の解像度が厳しいPCなのでModeを横に配置している画像です。</p>
 <p>barを右クリックして"Panel&gt;Panel Preferense"から設定を変更できます。</p>
-<p><img alt="" src="https://i.gyazo.com/8efced66e9e11e6b8faf605ace666a31.png"></p>
+<p><img alt="" src="https://i.gyazo.com/8efced66e9e11e6b8faf605ace666a31.png" /></p>
 <p>幅や長さも変更できてPanelのカスタマイズ性がとても高いです。</p>
 <p>Itemsで表示するItemを選択できるのですが割と欲しいものがそろっています。</p>
-<p><img alt="" src="https://i.gyazo.com/a4d54300c505f2db60f370fb66e82c6f.png"></p>
+<p><img alt="" src="https://i.gyazo.com/a4d54300c505f2db60f370fb66e82c6f.png" /></p>
 <p>設定後</p>
-<p><img alt="" src="https://i.gyazo.com/6227d3f45f7a20051d0009fbbb45b4d6.png"></p>
-<h1>Workspaces</h1>
+<p><img alt="" src="https://i.gyazo.com/6227d3f45f7a20051d0009fbbb45b4d6.png" /></p>
+<h1 id="workspaces">Workspaces</h1>
 <p>"Settings&gt;Workspaces"で設定できます。</p>
 <p>Xfce4の場合は横にどんどん増えていきます。2画面あると便利なので2に設定しました。</p>
 <p>切り替えはデフォルトでCtrl+Alt+十字キーです、Ctｒｌ＋Fn+Alt+十字キーでウィンドウの移動ができます。</p>
-<h1>不要なデスクトップアイコン削除</h1>
+<h1 id="_2">不要なデスクトップアイコン削除</h1>
 <p>"Settings&gt;Desktop"の"Icons&gt;Default Icons"で設定できます。</p>
 <p>いらないので全部チェックを外しました。</p>
-<h1>キーリピート速度設定</h1>
+<h1 id="_3">キーリピート速度設定</h1>
 <p>"Settings&gt;Keyboard"のRepeat Delay"と"Repeat Speed"を変更します。</p>
 <p>250と55に設定しました(デフォルト500と20)</p>
-<h1>Vim</h1>
+<h1 id="vim">Vim</h1>
 <p>※ Vimerのみ</p>
 <p>Vimはビルドしてインストールします。</p>
-<div class="highlight"><pre><span></span><code><span class="o">$</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">git</span> <span class="n">gettext</span> <span class="n">libncurses5</span><span class="o">-</span><span class="n">dev</span> <span class="n">libacl1</span><span class="o">-</span><span class="n">dev</span> <span class="n">libgpm</span><span class="o">-</span><span class="n">dev</span> <span class="n">libxmu</span><span class="o">-</span><span class="n">dev</span> <span class="n">libgtk2</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">dev</span> <span class="n">libxpm</span><span class="o">-</span><span class="n">dev</span> <span class="n">libperl</span><span class="o">-</span><span class="n">dev</span> <span class="n">python</span><span class="o">-</span><span class="n">dev</span> <span class="n">python3</span><span class="o">-</span><span class="n">dev</span> <span class="n">ruby</span><span class="o">-</span><span class="n">dev</span> <span class="n">lua5</span><span class="o">.</span><span class="mi">2</span> <span class="n">liblua5</span><span class="o">.</span><span class="mi">2</span><span class="o">-</span><span class="n">dev</span>
+<div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">git</span> <span class="n">gettext</span> <span class="n">libncurses5</span><span class="o">-</span><span class="n">dev</span> <span class="n">libacl1</span><span class="o">-</span><span class="n">dev</span> <span class="n">libgpm</span><span class="o">-</span><span class="n">dev</span> <span class="n">libxmu</span><span class="o">-</span><span class="n">dev</span> <span class="n">libgtk2</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">dev</span> <span class="n">libxpm</span><span class="o">-</span><span class="n">dev</span> <span class="n">libperl</span><span class="o">-</span><span class="n">dev</span> <span class="n">python</span><span class="o">-</span><span class="n">dev</span> <span class="n">python3</span><span class="o">-</span><span class="n">dev</span> <span class="n">ruby</span><span class="o">-</span><span class="n">dev</span> <span class="n">lua5</span><span class="o">.</span><span class="mi">2</span> <span class="n">liblua5</span><span class="o">.</span><span class="mi">2</span><span class="o">-</span><span class="n">dev</span>
 <span class="o">$</span> <span class="n">cd</span> <span class="n">Downloads</span>
 <span class="o">$</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">vim</span><span class="o">/</span><span class="n">vim</span><span class="o">.</span><span class="n">git</span>
 <span class="o">$</span> <span class="n">cd</span> <span class="n">vim</span>
 <span class="o">$</span> <span class="o">./</span><span class="n">configure</span> <span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">features</span><span class="o">=</span><span class="n">huge</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">gui</span><span class="o">=</span><span class="n">gtk2</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">perlinterp</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">pythoninterp</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">python3interp</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">rubyinterp</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">luainterp</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">fail</span><span class="o">-</span><span class="k">if</span><span class="o">-</span><span class="n">missing</span>
 <span class="o">$</span> <span class="n">make</span>
 <span class="o">$</span> <span class="n">sudo</span> <span class="n">make</span> <span class="n">install</span>
-</code></pre></div>
+</pre></div>
     </div><!-- /.entry-content -->
 
     <div class="article-ad">
@@ -303,7 +321,7 @@ $ sudo apt-get install gyazo
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -326,7 +344,7 @@ $ sudo apt-get install gyazo
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -356,6 +374,12 @@ $ sudo apt-get install gyazo
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

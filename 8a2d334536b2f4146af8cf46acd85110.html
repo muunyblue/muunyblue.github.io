@@ -54,51 +54,54 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2016-09-02T03:49:19+09:00">
+    <li class="published" title="2016-09-02T03:49:19">
         <span>Date:</span>2016-09-02 金 (午前 03:49:19)
     </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
 </footer><!-- /.post-info -->      <p>3,4年前にgentooに挑戦して挫折しましたが、再び挑戦してみます。</p>
-<h1>下準備</h1>
-<h2>資料</h2>
+<h1 id="_1">下準備</h1>
+<h2 id="_2">資料</h2>
 <p>公式のハンドブックが日本語訳もついていて良い感じなのでこれを読みながらインストールを進めていきます。</p>
 <p><a href="https://wiki.gentoo.org/wiki/Handbook:Main_Page/ja" title="ハンドブック:メインページ - Gentoo Wiki">ハンドブック:メインページ - Gentoo Wiki</a></p>
-<p>~~以前やったときより格段にわかりやすい感あるぞ...~~</p>
+<p><del>以前やったときより格段にわかりやすい感あるぞ...</del></p>
 <p>和訳はamd64が充実していますが、今回は後述しますがx86を選ぶことになるので、amd64のハンドブックを参考にしながらx86のインストールをしていきます。</p>
-<h2>PC</h2>
+<h2 id="pc">PC</h2>
 <p><a href="https://www.asus.com/jp/Notebooks/Eee_PC_X101CH/" title="Eee PC X101CH | ノートパソコン | ASUS 日本">ASUS Eee PC X101CH</a></p>
-<div class="highlight"><pre><span></span><code><span class="k">Proc</span><span class="nb">es</span><span class="nv">sor</span> <span class="nv">Intel</span><span class="err">®</span> <span class="nv">Atom</span><span class="err">™</span> <span class="nv">Processor</span> <span class="nv">N2600</span> <span class="nv">@</span> <span class="mf">1.60</span><span class="nv">GHz</span> <span class="err">×</span> <span class="mi">4</span>
+<div class="highlight"><pre><span></span><span class="k">Proc</span><span class="nb">es</span><span class="nv">sor</span> <span class="nv">Intel</span><span class="err">®</span> <span class="nv">Atom</span><span class="err">™</span> <span class="nv">Processor</span> <span class="nv">N2600</span> <span class="nv">@</span> <span class="mf">1.60</span><span class="nv">GHz</span> <span class="err">×</span> <span class="mi">4</span>
 <span class="nf">Memory</span>    <span class="mi">1</span><span class="nv">GB</span>
 <span class="nf">Disk</span><span class="p">(</span><span class="nb">SS</span><span class="nv">D</span><span class="p">)</span> <span class="mi">120</span><span class="nv">GB</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><a href="http://ark.intel.com/products/58916/Intel-Atom-Processor-N2600-%281M-Cache-1_6-GHz%29" title="Intel® Atom™ Processor N2600 (1M Cache, 1.6 GHz) Specifications">Intel® Atom™ Processor N2600 (1M Cache, 1.6 GHz) Specifications</a></p>
 <p>amd64アーキテクチャで構成したいのでintel® 64がサポートされていていけるかと思いましたが、BIOSの設定を見ると有効になっておらず設定を変えることができなかったのでx86を選択します。</p>
 <p>(念のため試してみたamd64のインストールUSBもbootできなかった...)</p>
-<h1>MacでインストールUSB作成</h1>
+<h1 id="macusb">MacでインストールUSB作成</h1>
 <p><a href="https://www.gentoo.org/downloads/" title="Downloads – Gentoo Linux">Downloads – Gentoo Linux</a></p>
 <p>x86のMinimal Installation CDを選んでダウンロードします。</p>
 <p>USBをさしてデバイス名を確認します。</p>
-<div class="highlight"><pre><span></span><code><span class="c">% diskutil list</span><span class="w"></span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="c">% diskutil list</span><span class="w"></span>
+</pre></div>
+
 
 <p>/dev/disk1だと確認できたのでここに書き込みます。</p>
-<div class="highlight"><pre><span></span><code><span class="c">% sudo dd if=install-x86-minimal-20160830.iso of=/dev/rdisk1 bs=1m</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="c">% sudo dd if=install-x86-minimal-20160830.iso of=/dev/rdisk1 bs=1m</span><span class="w"></span>
 <span class="mi">263</span><span class="o">+</span><span class="mi">0</span><span class="w"> </span><span class="n">records</span><span class="w"> </span><span class="n">in</span><span class="w"></span>
 <span class="mi">263</span><span class="o">+</span><span class="mi">0</span><span class="w"> </span><span class="n">records</span><span class="w"> </span><span class="n">out</span><span class="w"></span>
 <span class="n">275775488</span><span class="w"> </span><span class="s">bytes</span><span class="w"> </span><span class="s">transferred</span><span class="w"> </span><span class="s">in</span><span class="w"> </span><span class="s">57.257382</span><span class="w"> </span><span class="s">secs</span><span class="w"> </span><span class="s">(4816418</span><span class="w"> </span><span class="s">bytes/sec)</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
+
 
 <ul>
 <li><a href="https://forums.gentoo.org/viewtopic-t-928812-start-0.html" title="Gentoo Forums :: View topic - Create USB boot disk in OSX">Gentoo Forums :: View topic - Create USB boot disk in OSX</a></li>
 <li><a href="http://kanonji.info/blog/2013/11/29/dd%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%81%A7sd%E3%82%AB%E3%83%BC%E3%83%89%E3%81%AE%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%B3%E3%82%92%E4%BD%9C%E3%82%8B/" title="ddコマンドでSDカードのクローンを作る | kanonjiのブログ">ddコマンドでSDカードのクローンを作る | kanonjiのブログ</a> &lt;= 書き込みのときのデバイス指定にrをつける理由が書いてありました</li>
 </ul>
-<h1>usb起動</h1>
+<h1 id="usb">usb起動</h1>
 <p>F2を押したまま起動して、BootでUSBの起動順位をSSDより上にします。</p>
 <p>設定を保存して起動すると無事起動しました。</p>
-<p><img alt="Welcome Gentoo" src="https://pbs.twimg.com/media/CrO4NhPVUAAqJn-.jpg"></p>
+<p><img alt="Welcome Gentoo" src="https://pbs.twimg.com/media/CrO4NhPVUAAqJn-.jpg" /></p>
 <p>次回からはインストールをやっていきます。</p>
     </div><!-- /.entry-content -->
 
@@ -274,7 +277,7 @@
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -297,7 +300,7 @@
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -327,6 +330,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

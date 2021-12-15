@@ -54,24 +54,24 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2018-01-16T10:32:01+09:00">
+    <li class="published" title="2018-01-16T10:32:01">
         <span>Date:</span>2018-01-16 火 (午前 10:32:01)
     </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/vim.html">Vim</a> <a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> <a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
 </footer><!-- /.post-info -->      <p><a href="https://muunyblue.github.io/48dd34fa4a5fc8e0045aba1952e1818e.html">VimでLanguage Serverを活用する(Rust, Vue.js)</a>で中途半端にしていたVue.js開発がほぼ完成したのでまとめます。</p>
-<p><img alt="vls" src="images/vls.gif"></p>
+<p><img alt="vls" src="images/vls.gif" /></p>
 <p>これでVSCode+Veturと同等にVue.js開発ができます。</p>
-<h1>LanguageClient-neovim</h1>
+<h1 id="languageclient-neovim">LanguageClient-neovim</h1>
 <p><a href="https://github.com/autozimu/LanguageClient-neovim">autozimu/LanguageClient-neovim</a></p>
-<p>LSPのクライアントにはこれを使います。
-最近ずっと更新を追っていますが<a href="https://github.com/autozimu/LanguageClient-neovim/issues/35#issuecomment-350525383">去年の12月</a>にPythonからRust化しています。
-そこからはnextブランチで活発に開発(2,3日でリリース)が進んでいます。
+<p>LSPのクライアントにはこれを使います。<br />
+最近ずっと更新を追っていますが<a href="https://github.com/autozimu/LanguageClient-neovim/issues/35#issuecomment-350525383">去年の12月</a>にPythonからRust化しています。<br />
+そこからはnextブランチで活発に開発(2,3日でリリース)が進んでいます。<br />
 なので割と不安定でupdateするとうまく動かなかったりします。が次のバージョンで治ることが多いので2,3日待つと良いです。</p>
 <p>(20180117現在最新ではうまく動かなくてv0.1.27 7d0a5ccを使っています。vim-plugなら'commit': '7d0a5cc', dein.vimなら'rev': '7d0a5cc'を指定しています。)</p>
-<p>Rustで生成されたバイナリはCIで回しているdocker上で生成されていてそれぞれの環境用のバイナリがtagに追加される仕組みになっています。
-install.shでそれぞれの環境にあったバイナリがインストールされる仕組みになっています。
+<p>Rustで生成されたバイナリはCIで回しているdocker上で生成されていてそれぞれの環境用のバイナリがtagに追加される仕組みになっています。<br />
+install.shでそれぞれの環境にあったバイナリがインストールされる仕組みになっています。<br />
 今日もTravis CIが遅いからかCircle CIを使うようにしていたりしていて開発は活発です。</p>
 <p>特徴は以下の通り</p>
 <ul>
@@ -80,12 +80,12 @@ install.shでそれぞれの環境にあったバイナリがインストール�
 <li>deoplete.nvim or nvim-completion-managerによる補完</li>
 <li>Vim8サポート(vim-hug-neovim-rpcを利用)</li>
 </ul>
-<h1>最小構成</h1>
+<h1 id="_1">最小構成</h1>
 <p>この最小構成は割と汎用的でLSPの部分と各言語用のプラグイン部分を置き換えれば他のLanguage Serverを持つ言語の開発にも使えます。</p>
-<h2>vim-plug</h2>
+<h2 id="vim-plug">vim-plug</h2>
 <p><a href="https://github.com/junegunn/vim-plug">junegunn/vim-plug</a></p>
 <p>vim-plug自体のインストール方法はREADMEにあります。</p>
-<div class="highlight"><pre><span></span><code><span class="k">call</span> plug#begin<span class="p">(</span><span class="s1">&#39;~/.vim/plugged&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="k">call</span> plug#begin<span class="p">(</span><span class="s1">&#39;~/.vim/plugged&#39;</span><span class="p">)</span>
 Plug <span class="s1">&#39;autozimu/LanguageClient-neovim&#39;</span><span class="p">,</span> {
     \ <span class="s1">&#39;branch&#39;</span>: <span class="s1">&#39;next&#39;</span><span class="p">,</span>
     \ <span class="s1">&#39;do&#39;</span>: <span class="s1">&#39;bash install.sh&#39;</span><span class="p">,</span>
@@ -105,13 +105,14 @@ Plug <span class="s1">&#39;posva/vim-vue&#39;</span>
 <span class="c">&quot; not stop completion $ &amp; /</span>
 <span class="k">setlocal</span> <span class="nb">iskeyword</span><span class="p">+=</span>$
 <span class="k">setlocal</span> <span class="nb">iskeyword</span><span class="p">+=-</span>
-</code></pre></div>
+</pre></div>
 
-<h2>dein.vim</h2>
+
+<h2 id="deinvim">dein.vim</h2>
 <p><a href="https://github.com/Shougo/dein.vim">Shougo/dein.vim</a></p>
-<p>こちらもREADMEにインストール方法が書いてあります。
+<p>こちらもREADMEにインストール方法が書いてあります。<br />
 installer.shの引数に、'~/.vim/bundle'を指定しています。</p>
-<div class="highlight"><pre><span></span><code><span class="k">if</span> &amp;<span class="nb">compatible</span>
+<div class="highlight"><pre><span></span><span class="k">if</span> &amp;<span class="nb">compatible</span>
   <span class="k">set</span> <span class="nb">nocompatible</span>
 <span class="k">endif</span>
 <span class="k">set</span> <span class="nb">runtimepath</span><span class="p">+=~</span><span class="sr">/.vim/</span>bundle<span class="sr">/repos/</span>github.<span class="k">com</span><span class="sr">/Shougo/</span>dein.<span class="k">vim</span>
@@ -145,53 +146,62 @@ installer.shの引数に、'~/.vim/bundle'を指定しています。</p>
 <span class="c">&quot; not stop completion $ &amp; /</span>
 <span class="k">setlocal</span> <span class="nb">iskeyword</span><span class="p">+=</span>$
 <span class="k">setlocal</span> <span class="nb">iskeyword</span><span class="p">+=-</span>
-</code></pre></div>
+</pre></div>
 
-<hr>
+
+<hr />
 <p>私の設定は以下になります、dein.vimでtomlファイルでプラグインをロードする構成になっています。</p>
-<p>[https://github.com/yymm/.dotfiles/tree/master/config/nvim:embed]</p>
-<h1>vue-language-server (VLS)</h1>
-<div class="highlight"><pre><span></span><code>$ npm install -g vue-language-server
-</code></pre></div>
+<p>
+<a class="embedly-card" href="https://github.com/yymm/.dotfiles/tree/master/config/nvim">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
+<h1 id="vue-language-server-vls">vue-language-server (VLS)</h1>
+<div class="highlight"><pre><span></span>$ npm install -g vue-language-server
+</pre></div>
+
 
 <p>これでNeovimでVueファイルを編集すれば、冒頭にあるgifのような補完やLintができるようになります。</p>
-<h1>Optional: Snippet</h1>
-<p>LanguageClientのSnippetはdeopleteの普通の補完候補に回ってしまいうまくいきません。
+<h1 id="optional-snippet">Optional: Snippet</h1>
+<p>LanguageClientのSnippetはdeopleteの普通の補完候補に回ってしまいうまくいきません。<br />
 neosnippetを使用します。</p>
-<div class="highlight"><pre><span></span><code><span class="c">&quot; vim-plug</span>
+<div class="highlight"><pre><span></span><span class="c">&quot; vim-plug</span>
 Plug <span class="s1">&#39;Shougo/neosnippet.vim&#39;</span>
 Plug <span class="s1">&#39;Shougo/neosnippet-snippets&#39;</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="c">&quot; dein.vim</span>
+
+<div class="highlight"><pre><span></span><span class="c">&quot; dein.vim</span>
 <span class="k">call</span> dein#add<span class="p">(</span><span class="s1">&#39;Shougo/neosnippet.vim&#39;</span><span class="p">)</span>
 <span class="k">call</span> dein#add<span class="p">(</span><span class="s1">&#39;Shougo/neosnippet-snippets&#39;</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<p><img alt="vue-snippet" src="images/vue-snippet.gif"></p>
+
+<p><img alt="vue-snippet" src="images/vue-snippet.gif" /></p>
 <p>最近のPRで対応したので補完されなかったらアップデートすると良いです。</p>
-<h1>Optional: Vim8対応</h1>
-<p>Vim8のときだけ<a href="https://github.com/roxma/vim-hug-neovim-rpc">roxma/vim-hug-neovim-rpc</a>を使います。
+<h1 id="optional-vim8">Optional: Vim8対応</h1>
+<p>Vim8のときだけ<a href="https://github.com/roxma/vim-hug-neovim-rpc">roxma/vim-hug-neovim-rpc</a>を使います。<br />
 <a href="https://github.com/roxma/vim-yarp">roxma/vim-yarp</a>はdeoplete用です。</p>
-<div class="highlight"><pre><span></span><code><span class="c">&quot; vim-plug</span>
+<div class="highlight"><pre><span></span><span class="c">&quot; vim-plug</span>
 <span class="k">if</span> <span class="p">!</span>has<span class="p">(</span><span class="s1">&#39;nvim&#39;</span><span class="p">)</span>
   <span class="k">call</span> dein#add<span class="p">(</span><span class="s1">&#39;roxma/nvim-yarp&#39;</span><span class="p">)</span>
   <span class="k">call</span> dein#add<span class="p">(</span><span class="s1">&#39;roxma/vim-hug-neovim-rpc&#39;</span><span class="p">)</span>
 <span class="k">endif</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="c">&quot; dein.vim</span>
+
+<div class="highlight"><pre><span></span><span class="c">&quot; dein.vim</span>
 <span class="k">if</span> <span class="p">!</span>has<span class="p">(</span><span class="s1">&#39;nvim&#39;</span><span class="p">)</span>
   Plug <span class="s1">&#39;roxma/nvim-yarp&#39;</span>
   Plug <span class="s1">&#39;roxma/vim-hug-neovim-rpc&#39;</span>
 <span class="k">endif</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><a href="https://github.com/roxma/vim-hug-neovim-rpc">vim-hug-neovim-rpc</a>はリポジトリを見てわかるようにEXPERIMENTALなので使うか否かは個人の判断に委ねます。</p>
-<h1>Optional: Additional setting</h1>
+<h1 id="optional-additional-setting">Optional: Additional setting</h1>
 <p>deopleteとneosnippet、LanguageClient-neovimの設定です。</p>
 <p>tab補完とC-kでSnippet補完ができます。</p>
-<div class="highlight"><pre><span></span><code><span class="c">&quot; deoplete.vim</span>
+<div class="highlight"><pre><span></span><span class="c">&quot; deoplete.vim</span>
 <span class="k">let</span> <span class="k">g</span>:deoplete#enable_at_startup <span class="p">=</span> <span class="m">1</span>
 <span class="c">&quot; &lt;TAB&gt;: completion.</span>
 <span class="nb">inoremap</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;&lt;</span>expr<span class="p">&gt;</span> <span class="p">&lt;</span>TAB<span class="p">&gt;</span>
@@ -231,27 +241,29 @@ xmap <span class="p">&lt;</span>C<span class="p">-</span><span class="k">k</span
 <span class="nb">nnoremap</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> K :<span class="k">call</span> LanguageClient_textDocument_hover<span class="p">()&lt;</span>CR<span class="p">&gt;</span>
 <span class="nb">nnoremap</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="nb">gd</span> :<span class="k">call</span> LanguageClient_textDocument_definition<span class="p">()&lt;</span>CR<span class="p">&gt;</span>
 <span class="nb">nnoremap</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span>F2<span class="p">&gt;</span> :<span class="k">call</span> LanguageClient_textDocument_rename<span class="p">()&lt;</span>CR<span class="p">&gt;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>Vim自体の設定は各人にお任せしますが一応設定例を紹介します =&gt; <a href="https://github.com/yymm/.dotfiles/blob/master/config/nvim/options.rc.vim">options.rc.vim</a></p>
-<h1>Optional: context_filetype.vim</h1>
-<p>context_filetype.vimを使用するとLC以外の本来deopleteが出す補完候補もでるようになりますが
+<h1 id="optional-context_filetypevim">Optional: context_filetype.vim</h1>
+<p>context_filetype.vimを使用するとLC以外の本来deopleteが出す補完候補もでるようになりますが<br />
 併用する補完する場合、少しトリッキーなことをしなければなりません。</p>
-<div class="highlight"><pre><span></span><code><span class="k">let</span> <span class="k">g</span>:LanguageClient_serverCommands <span class="p">=</span> {
+<div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">g</span>:LanguageClient_serverCommands <span class="p">=</span> {
     \ <span class="s1">&#39;vue&#39;</span>: [<span class="s1">&#39;vls&#39;</span>]<span class="p">,</span>
     \ <span class="s1">&#39;html&#39;</span>: []<span class="p">,</span>
     \ <span class="s1">&#39;javascript&#39;</span>: []<span class="p">,</span>
     \ <span class="s1">&#39;css&#39;</span>: []<span class="p">,</span>
     \ }
-</code></pre></div>
+</pre></div>
 
-<p>空の設定を追加することでcontext_filetype.vimと併用できます。
+
+<p>空の設定を追加することでcontext_filetype.vimと併用できます。<br />
 補完候補が二重になるケースもありますが、Snippet補完などが出るので便利な場面もあります。</p>
 <p>Ref: <a href="https://github.com/Shougo/deoplete.nvim/issues/609">https://github.com/Shougo/deoplete.nvim/issues/609</a></p>
-<hr>
-<p>かなりトリッキーですが、javascript部分に別のLanguage Serverから補完を流しこんだりもできました。
+<hr />
+<p>かなりトリッキーですが、javascript部分に別のLanguage Serverから補完を流しこんだりもできました。<br />
 context_filetypeすごい・・・</p>
-<div class="highlight"><pre><span></span><code><span class="k">set</span> <span class="nb">hidden</span>
+<div class="highlight"><pre><span></span><span class="k">set</span> <span class="nb">hidden</span>
 <span class="k">let</span> <span class="k">g</span>:LanguageClient_serverCommands <span class="p">=</span> {
     \ <span class="s1">&#39;vue&#39;</span>: [<span class="s1">&#39;vls&#39;</span>]<span class="p">,</span>
     \ <span class="s1">&#39;html&#39;</span>: []<span class="p">,</span>
@@ -259,12 +271,13 @@ context_filetypeすごい・・・</p>
     \ <span class="s1">&#39;javascript&#39;</span>: [<span class="s1">&#39;javascript-typescript-stdio&#39;</span>]<span class="p">,</span>
     \ <span class="s1">&#39;typescript&#39;</span>: [<span class="s1">&#39;javascript-typescript-stdio&#39;</span>]<span class="p">,</span>
     \ }
-</code></pre></div>
+</pre></div>
+
 
 <p>こうすると、scriptの部分に<a href="https://github.com/sourcegraph/javascript-typescript-langserver">javascript-typescript-langserver</a>の補完を効かせることもできます。</p>
 <p>本来意図している使い方ではない気しかしないので動作の保証はできませんが動いています。。。</p>
 <p>あと地味に同時に編集するjavascriptファイルやtypescriptファイルにもLanguageClientが適用されるので地味に便利です。</p>
-<p><img alt="context_filetype.vim" src="images/context.gif"></p>
+<p><img alt="context_filetype.vim" src="images/context.gif" /></p>
     </div><!-- /.entry-content -->
 
     <div class="article-ad">
@@ -439,7 +452,7 @@ context_filetypeすごい・・・</p>
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -462,7 +475,7 @@ context_filetypeすごい・・・</p>
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -492,6 +505,12 @@ context_filetypeすごい・・・</p>
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

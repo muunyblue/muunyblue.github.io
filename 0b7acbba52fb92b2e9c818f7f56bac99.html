@@ -54,22 +54,22 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2017-10-01T15:45:59+09:00">
+    <li class="published" title="2017-10-01T15:45:59">
         <span>Date:</span>2017-10-01 日 (午後 03:45:59)
     </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/python.html">Python</a> <a href="https://muunyblue.github.io/tag/flask.html">Flask</a> <a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
-</footer><!-- /.post-info -->      <p><a href="https://flaskvuejs.herokuapp.com/"><img alt="" src="https://gyazo.com/e4eef5fccd7dd141ad7955fadd873e8b.png"></a></p>
+</footer><!-- /.post-info -->      <p><a href="https://flaskvuejs.herokuapp.com/"><img alt="" src="https://gyazo.com/e4eef5fccd7dd141ad7955fadd873e8b.png" /></a></p>
 <p><a href="https://flaskvuejs.herokuapp.com/" title="flask-vue.js demo">flask-vue.js demo</a></p>
 <p><a href="https://github.com/yymm/flask-vuejs" title="yymm/flask-vuejs: Example &amp; Tips, Flask with Vue.js.">yymm/flask-vuejs: Example &amp; Tips, Flask with Vue.js.</a></p>
 <p>FlaskとVue.jsを組み合わせて使うサンプルリポジトリを作っています。</p>
 <p>Vue.jsは小さく始めることが出来るので、サーバサイドのテンプレートエンジンと抱き合わせて使うことも可能です。</p>
 <p>巷ではSPAやSSRが流行っていますが個人的にはシンプルで好きです。</p>
-<h1>Delimiterの変更</h1>
+<h1 id="delimiter">Delimiterの変更</h1>
 <p>デフォルトではFlaskのテンプレートエンジンJinja2とVue.jsのDelimiterは同じものを使用していて上手く動かせません。</p>
 <p>ですが、FlaskもVue.jsもDelimiterを変更できます。</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
 
 <span class="k">class</span> <span class="nc">CustomFlask</span><span class="p">(</span><span class="n">Flask</span><span class="p">):</span>
   <span class="n">jinja_options</span> <span class="o">=</span> <span class="n">Flask</span><span class="o">.</span><span class="n">jinja_options</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -83,20 +83,22 @@
   <span class="p">))</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">CustomFlask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">Vue</span><span class="p">({</span>
+
+<div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">Vue</span><span class="p">({</span>
   <span class="nx">el</span><span class="o">:</span> <span class="s2">&quot;#app&quot;</span><span class="p">,</span>
   <span class="nx">delimiters</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;[[&quot;</span><span class="p">,</span> <span class="s2">&quot;]]&quot;</span><span class="p">],</span>
   <span class="nx">data</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">message</span><span class="o">:</span> <span class="s2">&quot;Hello Vue!&quot;</span>
   <span class="p">}</span>
 <span class="p">})</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>こうすると、FlaskとVue.jsを共存させることができます。</p>
 <p>具体的には以下のようなHTML(Jinja2テンプレート)になります。</p>
-<div class="highlight"><pre><span></span><code><span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;layout.html&quot;</span> <span class="cp">%}</span><span class="x"></span>
+<div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;layout.html&quot;</span> <span class="cp">%}</span><span class="x"></span>
 
 <span class="cp">{%</span> <span class="k">block</span> <span class="nv">script</span> <span class="cp">%}</span><span class="x"></span>
 <span class="x">&lt;script src=&quot;https://unpkg.com/vue/dist/vue.js&quot;&gt;&lt;/script&gt;</span>
@@ -119,19 +121,20 @@
 <span class="x">})</span>
 <span class="x">&lt;/script&gt;</span>
 <span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="x"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p><a href="https://github.com/yymm/flask-vuejs/blob/master/templates/layout.html" title="flask-vuejs/layout.html at master · yymm/flask-vuejs">layout.html</a>はこちら。</p>
 <p>わりと簡単に共存できます。</p>
 <p>実際にアプリを作ってみると、どのデータをサーバサイドにレンダリングさせるかVue.jsでレンダリングさせるかの判断がなかなか難しいです。</p>
 <p>フロントエンドフレームワークのSSRを使用すればそれで悩む心配はなさそうですが、構成が大袈裟になりがちなのでこういうシンプルな土台を使うのも一考かもしれません。</p>
-<h1>Delimiterを変更しなくてもSingle File Componentsを使えば解決</h1>
+<h1 id="delimitersingle-file-components">Delimiterを変更しなくてもSingle File Componentsを使えば解決</h1>
 <p>Single File Componentsを使えばVue.jsの管理するDOMをvueファイル内に押し込めるのでわざわざDelimiterを変更することなく共存できます。</p>
 <p>しかしただとはいきません。</p>
 <p>Single File Componentsを使うにはコンパイル(Webpackなど)が必要になります。</p>
 <p>Delimiterを変更する場合では、cdnやコンパイル済みvue.jsをscriptタグで読んで使っていますがこれができなくなります。</p>
 <p>フロントエンドをコンパイルする労力を割くかどうかは時と場合によると思いますが、他のVue.jsプラグインやnpmパッケージを使うときなどはフロントエンドをコンパイルする構成にしても良いのかもしれません。</p>
-<hr>
+<hr />
 <p>SPAやSSRが流行っている中この構成は時代を逆行している感がありますが、このまえIssueがきてnuxt.jsの話もでていて少なからずこういう構成も検討されるケースがあるのだなと思いブログに書いてみました。</p>
 <p>もともとVue0時代に自分のために作ったリポジトリなのですが、ポチポチと星がついてVue2対応したらIssueも来たりしてVue.js人気を感じました。</p>
 <p>Vue2.5が出たらTypeScriptにも対応する予定なので、誰かの役に立てばいいなぁと思います。</p>
@@ -310,7 +313,7 @@
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -333,7 +336,7 @@
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -363,6 +366,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

@@ -54,51 +54,56 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2016-01-07T07:58:26+09:00">
+    <li class="published" title="2016-01-07T07:58:26">
         <span>Date:</span>2016-01-07 木 (午前 07:58:26)
     </li>
         <!--<br />-->
-        <li class="modified" title="2016-01-08T01:18:21+09:00">
+        <li class="modified" title="2016-01-08T01:18:21">
             <span>Updated:</span>2016-01-08 金 (午前 01:18:21)
         </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> <a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
 </footer><!-- /.post-info -->      <p>vagrant+VirtualBox上(Ubuntu)で、公式のmysqlイメージを使って、コンテナを立ててデータを永続化(ホストにマウント(data volume))したときのマイナートラブルです。</p>
-<div class="highlight"><pre><span></span><code>$ docker --version
+<div class="highlight"><pre><span></span>$ docker --version
 Docker version <span class="m">1</span>.9.1, build a34a1d5
 $ docker-compose --version
 docker-compose version <span class="m">1</span>.5.2, build 7240ff3
-</code></pre></div>
+</pre></div>
 
-<h1>TL;DR</h1>
+
+<h1 id="tldr">TL;DR</h1>
 <p>Vagrant+VirtualBoxのVM上で動くDockerの話です。ホストでDocker動かしている場合は関係ないかもしれません。</p>
 <p>docker-composeでMySQLのデータ永続化をホストにマウントして使うときは、vagrantユーザーをvboxsfグループに入れておく必要があります。</p>
-<div class="highlight"><pre><span></span><code>$ sudo gpasswd -a <span class="nv">$USER</span> vboxsf
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ sudo gpasswd -a <span class="nv">$USER</span> vboxsf
+</pre></div>
+
 
 <p>そうしないと、Permissionの問題でエラーが起こることがあるようです。</p>
-<div class="highlight"><pre><span></span><code>IOError: [Errno 13] Permission denied: &#39;/home/vagrant/Dev/data/mysql/auto.cnf&#39;
-</code></pre></div>
+<div class="highlight"><pre><span></span>IOError: [Errno 13] Permission denied: &#39;/home/vagrant/Dev/data/mysql/auto.cnf&#39;
+</pre></div>
 
-<h1>MySQLコンテナのデータ永続化</h1>
+
+<h1 id="mysql">MySQLコンテナのデータ永続化</h1>
 <p><a href="https://hub.docker.com/_/mysql/" title="Docker Hub">Docker Hub</a></p>
 <p>ドキュメントに書いてあるのはDockerの起動コマンド</p>
-<div class="highlight"><pre><span></span><code>$ docker run --name some-mysql -v /my/own/datadir:/var/lib/mysql -e <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span>my-secret-pw -d mysql:tag
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ docker run --name some-mysql -v /my/own/datadir:/var/lib/mysql -e <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span>my-secret-pw -d mysql:tag
+</pre></div>
+
 
 <p>これを、docker-composeのyamlに書き直すと下のようになります。</p>
-<div class="highlight"><pre><span></span><code><span class="n">mysql</span><span class="o">:</span>
+<div class="highlight"><pre><span></span><span class="n">mysql</span><span class="o">:</span>
   <span class="n">restart</span><span class="o">:</span> <span class="n">always</span>
   <span class="n">image</span><span class="o">:</span> <span class="n">mysql</span>
   <span class="n">volumes</span><span class="o">:</span>
     <span class="o">-</span> <span class="sr">/my/own/datadir:/var/lib/</span><span class="n">mysql</span>
   <span class="n">environment</span><span class="o">:</span>
     <span class="o">-</span> <span class="n">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="n">my</span><span class="o">-</span><span class="n">secret</span><span class="o">-</span><span class="n">pw</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>これでマウントできるので起動して、マウントしたディレクトリをtreeコマンドで見てみると以下のようになります。</p>
-<div class="highlight"><pre><span></span><code>|-- datadir
+<div class="highlight"><pre><span></span>|-- datadir
 |   |-- auto.cnf
 |   |-- ib_buffer_pool
 |   |-- ibdata1
@@ -108,12 +113,13 @@ docker-compose version <span class="m">1</span>.5.2, build 7240ff3
 |   |-- mysql [error opening dir]
 |   |-- performance_schema [error opening dir]
 |   `-- sys [error opening dir]
-</code></pre></div>
+</pre></div>
+
 
 <p>「error opening dir」と不穏な空気です。</p>
-<h1>docker-compose buildするとエラー</h1>
+<h1 id="docker-compose-build">docker-compose buildするとエラー</h1>
 <p>この状態でdocker-compose.yml内にあるbuildが必要なコンテナをビルドするとエラーになります。</p>
-<div class="highlight"><pre><span></span><code><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
   <span class="n">File</span> <span class="s2">&quot;/usr/local/bin/docker-compose&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">9</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
     <span class="n">load_entry_point</span><span class="p">(</span><span class="s1">&#39;docker-compose==1.5.2&#39;</span><span class="p">,</span> <span class="s1">&#39;console_scripts&#39;</span><span class="p">,</span> <span class="s1">&#39;docker-compose&#39;</span><span class="p">)()</span>
   <span class="n">File</span> <span class="s2">&quot;/usr/local/lib/python2.7/dist-packages/compose/cli/main.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">54</span><span class="p">,</span> <span class="ow">in</span> <span class="n">main</span>
@@ -137,13 +143,14 @@ docker-compose version <span class="m">1</span>.5.2, build 7240ff3
   <span class="n">File</span> <span class="s2">&quot;/usr/lib/python2.7/tarfile.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1994</span><span class="p">,</span> <span class="ow">in</span> <span class="n">add</span>
     <span class="n">with</span> <span class="n">bltn_open</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 <span class="n">IOError</span><span class="p">:</span> <span class="p">[</span><span class="n">Errno</span> <span class="mi">13</span><span class="p">]</span> <span class="n">Permission</span> <span class="n">denied</span><span class="p">:</span> <span class="s1">&#39;/home/vagrant/Dev/data/mysql/auto.cnf&#39;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>やはりPermissionのエラーです。</p>
 <p>ビルド以外の動作でも起こりそうですが確認してません。</p>
-<h1>マウントしたMySQLのディレクトリにアクセスできない</h1>
+<h1 id="mysql_1">マウントしたMySQLのディレクトリにアクセスできない</h1>
 <p>エラーメッセージからPermissionの問題だとわかったので、lsコマンドでdatadirの中を見てみます。</p>
-<div class="highlight"><pre><span></span><code>drwxrwxr-x 5 vboxadd vboxsf      4096 Jan  7 06:49 .
+<div class="highlight"><pre><span></span>drwxrwxr-x 5 vboxadd vboxsf      4096 Jan  7 06:49 .
 drwxrwxr-x 7 vagrant vagrant     4096 Jan  7 07:25 ..
 -rw-r----- 1 vboxadd vboxsf        56 Jan  7 05:08 auto.cnf
 -rw-r----- 1 vboxadd vboxsf       694 Jan  7 06:19 ib_buffer_pool
@@ -154,11 +161,13 @@ drwxrwxr-x 7 vagrant vagrant     4096 Jan  7 07:25 ..
 drwxr-x--- 2 vboxadd vboxsf      4096 Jan  7 05:08 mysql
 drwxr-x--- 2 vboxadd vboxsf      4096 Jan  7 05:08 performance_schema
 drwxr-x--- 2 vboxadd vboxsf     12288 Jan  7 05:08 sys
-</code></pre></div>
+</pre></div>
+
 
 <p>vboxsfグループである必要がありそうだとわかりましたので、現行のユーザー(vagrant)をvboxsfグループに追加します。</p>
-<div class="highlight"><pre><span></span><code>$ sudo gpasswd -a <span class="nv">$USER</span> vboxsf
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ sudo gpasswd -a <span class="nv">$USER</span> vboxsf
+</pre></div>
+
 
 <p>これで、中身も見えて、ビルドも通ります。</p>
 <p>Vagrant+VirtualBox特有の問題な気がしますが、ホストで試した時もパーミッションの問題が起こった時はグループ足してあげれば治りそう。</p>
@@ -336,7 +345,7 @@ drwxr-x--- 2 vboxadd vboxsf     12288 Jan  7 05:08 sys
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -359,7 +368,7 @@ drwxr-x--- 2 vboxadd vboxsf     12288 Jan  7 05:08 sys
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -389,6 +398,12 @@ drwxr-x--- 2 vboxadd vboxsf     12288 Jan  7 05:08 sys
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

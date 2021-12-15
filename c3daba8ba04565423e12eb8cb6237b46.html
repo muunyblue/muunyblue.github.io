@@ -54,11 +54,11 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2015-11-15T06:11:54+09:00">
+    <li class="published" title="2015-11-15T06:11:54">
         <span>Date:</span>2015-11-15 日 (午前 06:11:54)
     </li>
         <!--<br />-->
-        <li class="modified" title="2015-11-15T06:43:38+09:00">
+        <li class="modified" title="2015-11-15T06:43:38">
             <span>Updated:</span>2015-11-15 日 (午前 06:43:38)
         </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/idcf.html">IDCF</a> <a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> </li>
@@ -68,8 +68,8 @@
 <p>この間からIDCFクラウドの最小インスタンスを借りて日々便利しています。</p>
 <p>個人用途で使っていたHerokuに乗せていたアプリをことごとくIDCFクラウドにのせ替えたので紹介します。個人用途なら最小インスタンスでも割りと快適です。</p>
 <p>その前に私の感じるIDCFの良さを紹介します。</p>
-<h1>IDCFの良さ</h1>
-<h2>選んだ理由</h2>
+<h1 id="idcf">IDCFの良さ</h1>
+<h2 id="_1">選んだ理由</h2>
 <p>子供のお小遣いで済みそうなくらい安いVPSを探していて最終的に、DigitalOceanとIDCFで迷っていました。</p>
 <table>
 <thead>
@@ -112,7 +112,7 @@
 <p>逆にDigitalOceanのメリットは選べるOSが充実しているところで、CoreOSを使えるのは面白いと思いました。</p>
 <p>結局IDCFにしたのですが、決め手はサーバが日本あるのでアクセスが速いことでした。</p>
 <p>用途が個人利用のアプリの運用や試運転なのでSSHでログインして作業することが多いのでコマンド１つ１つにいちいち遅延があるとすごくストレスなので、そういう場合サーバが日本にあるのはかなりメリットだと思いました。</p>
-<h2>使ってて良さを感じる点</h2>
+<h2 id="_2">使ってて良さを感じる点</h2>
 <ul>
 <li>インスタンスが速攻で立ち上がる</li>
 <li>管理コンソールがわかりやすい</li>
@@ -120,37 +120,43 @@
 <li>ロードバランサが使える</li>
 <li>Mackerelに公式対応</li>
 </ul>
-<h1>自分だけのHeroku構築</h1>
+<h1 id="heroku">自分だけのHeroku構築</h1>
 <p>DokkuというOSSを使えば、IDCFでHerokuライクなPaaSを構築することができ、デプロイ先をHerokuからDokkuに変えるだけで手軽に移行できます。</p>
-<h2>Dokku</h2>
-<p>[https://github.com/progrium/dokku:embed]</p>
+<h2 id="dokku">Dokku</h2>
+<p>
+<a class="embedly-card" href="https://github.com/progrium/dokku">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>Dokkuはmini-herokuと書いてある通り、HerokuライクなPaaSエンジンです。</p>
 <p>Dockerを使っていて、アプリのビルドにはherokuishを使っているのでHerokuで動かしていたアプリは割りとすんなり動きます。</p>
 <p>しかし、miniというだけあってできないこともあるので、用法用量を守るのが大事です。</p>
-<h2>準備</h2>
+<h2 id="_3">準備</h2>
 <p>IDCFの最小インスタンスでUbuntu14.04を立てます。</p>
-<h2>インストール</h2>
-<div class="highlight"><pre><span></span><code>$ wget https://raw.githubusercontent.com/progrium/dokku/v0.4.4/bootstrap.sh
+<h2 id="_4">インストール</h2>
+<div class="highlight"><pre><span></span>$ wget https://raw.githubusercontent.com/progrium/dokku/v0.4.4/bootstrap.sh
 $ sudo <span class="nv">DOKKU_TAG</span><span class="o">=</span>v0.4.4 bash bootstrap.sh
-</code></pre></div>
+</pre></div>
+
 
 <p>これで必要なパッケージ(dockerやnginxなど)も一緒にインストールされます。</p>
-<h2>設定</h2>
+<h2 id="_5">設定</h2>
 <p>ホスト名とSSH公開鍵の設定をします。foo.barと<name>は適宜置き換えてください。</p>
-<div class="highlight"><pre><span></span><code># echo &quot;foo.bar&quot; &gt; /home/dokku/VHOST
+<div class="highlight"><pre><span></span># echo &quot;foo.bar&quot; &gt; /home/dokku/VHOST
 # echo &quot;foo.bar&quot; &gt; /home/dokku/HOSTNAME
 # cat ~/.ssh/id_rsa.pub | sudo sshcommand acl-add dokku &lt;name&gt;
-</code></pre></div>
+</pre></div>
+
 
 <p>ホスト名は使っているDNSサーバ側でAレコードの設定が必要です。</p>
 <p>IDCFクラウドの管理コンソールでファイアウォールとポートフォワーディングで22portを開けておきます。(22portをフルで開けるのは怖いのでファイアウォールでIPを制限すると良いです。)</p>
-<h2>使い方</h2>
+<h2 id="_6">使い方</h2>
 <p>Herokuにデプロイしていたアプリのgitリポジトリのremoteにdokkuを追加します。foo.barと<project>は適宜置き換えてください。</p>
-<div class="highlight"><pre><span></span><code>$ git remote add dokku dokku@foo.bar:&lt;project&gt;
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ git remote add dokku dokku@foo.bar:&lt;project&gt;
+</pre></div>
+
 
 <p>"git push dokku"するとdokkuにデプロイが始まり、Herokuで見たことあるような出力が返ってきます。</p>
-<div class="highlight"><pre><span></span><code><span class="n">$</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="n">push</span><span class="w"> </span><span class="n">dokku</span><span class="w"> </span><span class="n">master</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="n">$</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="n">push</span><span class="w"> </span><span class="n">dokku</span><span class="w"> </span><span class="n">master</span><span class="w"></span>
 <span class="n">Counting</span><span class="w"> </span><span class="nl">objects</span><span class="p">:</span><span class="w"> </span><span class="mi">21</span><span class="p">,</span><span class="w"> </span><span class="n">done</span><span class="p">.</span><span class="w"></span>
 <span class="n">Delta</span><span class="w"> </span><span class="n">compression</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="n">up</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="n">threads</span><span class="p">.</span><span class="w"></span>
 <span class="n">Compressing</span><span class="w"> </span><span class="nl">objects</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="o">%</span><span class="w"> </span><span class="p">(</span><span class="mi">17</span><span class="o">/</span><span class="mi">17</span><span class="p">),</span><span class="w"> </span><span class="n">done</span><span class="p">.</span><span class="w"></span>
@@ -191,15 +197,16 @@ $ sudo <span class="nv">DOKKU_TAG</span><span class="o">=</span>v0.4.4 bash boot
 
 <span class="n">To</span><span class="w"> </span><span class="n">dokku</span><span class="p">@</span><span class="n">foo</span><span class="p">.</span><span class="nl">bar</span><span class="p">:</span><span class="o">&lt;</span><span class="n">project</span><span class="o">&gt;</span><span class="w"></span>
 <span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">[</span><span class="n">new</span><span class="w"> </span><span class="n">branch</span><span class="p">]</span><span class="w">      </span><span class="n">master</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">master</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
 
-<h2>さらに詳しくは</h2>
+
+<h2 id="_7">さらに詳しくは</h2>
 <p>以前にブログにまとめたものがあります。</p>
 <p><a href="http://blog.muuny-blue.info/9375084629cd055e6b819053bc9714de.html" title="IDCFクラウドの一番安いのでDokkuを使う">IDCFクラウドの一番安いのでDokkuを使う</a></p>
 <p>IDCF + お名前.com + Dokkuの構成を作っています。</p>
 <p>あと、Dokkuを構築する際にDockerを使っているのでSwap領域を作っておいたほうがいいです、そのへんの基本的な設定も以前にブログにまとめたので参考にどうぞ。</p>
 <p><a href="http://blog.muuny-blue.info/50982fb2f2cfa186d335310461dfa2be.html" title="IDCFクラウド借りました">IDCFクラウド借りました</a></p>
-<h1>まとめ</h1>
+<h1 id="_8">まとめ</h1>
 <p>HerokuからIDCF+Dokkuにいくつかのアプリをのせ替えて使っていますが、今のところ快適に動いていますのでおすすめできるかなと思います。</p>
 <p>しかし、HerokuのAddonをガッツリ使っていたりなど、Dokkuではどうしようもない部分もあるので、Herokuを捨てられる銀の弾丸ではないのでご注意を。</p>
     </div><!-- /.entry-content -->
@@ -376,7 +383,7 @@ $ sudo <span class="nv">DOKKU_TAG</span><span class="o">=</span>v0.4.4 bash boot
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -399,7 +406,7 @@ $ sudo <span class="nv">DOKKU_TAG</span><span class="o">=</span>v0.4.4 bash boot
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -429,6 +436,12 @@ $ sudo <span class="nv">DOKKU_TAG</span><span class="o">=</span>v0.4.4 bash boot
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

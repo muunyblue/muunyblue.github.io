@@ -54,46 +54,51 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2016-01-15T06:52:47+09:00">
+    <li class="published" title="2016-01-15T06:52:47">
         <span>Date:</span>2016-01-15 金 (午前 06:52:47)
     </li>
         <!--<br />-->
-        <li class="modified" title="2016-01-15T06:55:50+09:00">
+        <li class="modified" title="2016-01-15T06:55:50">
             <span>Updated:</span>2016-01-15 金 (午前 06:55:50)
         </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/vim.html">Vim</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
-</footer><!-- /.post-info -->      <p><img alt="" src="https://i.gyazo.com/a91ba956cc612c7f2098d342e029cdc4.png"></p>
+</footer><!-- /.post-info -->      <p><img alt="" src="https://i.gyazo.com/a91ba956cc612c7f2098d342e029cdc4.png" /></p>
 <p>ググるとプラグインを使う方法ばっかり出てきて、とりあえずプラグインを入れたけど、プラグインに依存しないでもそれなりにかっこよくできるのでそっちでいいやという話です。</p>
-<hr>
+<hr />
 <p>タブなどの見えない文字の可視化はlistを使うとできます。</p>
-<div class="highlight"><pre><span></span><code><span class="k">set</span> <span class="nb">list</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="k">set</span> <span class="nb">list</span>
+</pre></div>
+
 
 <p>でひとまず見えますが、インデントは"^I"になって微妙です。インデント以外にもいろいろ可視化されて邪魔です。</p>
 <p>書式設定をするには、listcharを使います。</p>
-<div class="highlight"><pre><span></span><code><span class="k">set</span> <span class="nb">list</span> <span class="nb">listchars</span><span class="p">=</span><span class="k">tab</span>:<span class="p">|</span>_
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="k">set</span> <span class="nb">list</span> <span class="nb">listchars</span><span class="p">=</span><span class="k">tab</span>:<span class="p">|</span>_
+</pre></div>
+
 
 <p>"| ¦ ┆ │ » ▸ &gt;"あたりが使えそうです。</p>
 <p>色はSpecialKeyを設定することで変更できます。</p>
-<div class="highlight"><pre><span></span><code><span class="k">hi</span> SpecialKey ctremfg<span class="p">=</span>darkmagenta
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="k">hi</span> SpecialKey ctremfg<span class="p">=</span>darkmagenta
+</pre></div>
+
 
 <p>Ubuntu 14.04のgnome-terminalを使っていてあまり目立ちすぎても邪魔なのでdarkmagentaに設定して使っています。お好みの色で使うと良いです。</p>
 <p>自分はvimrcに以下の設定を書いて使ってます。</p>
-<div class="highlight"><pre><span></span><code><span class="k">hi</span> SpecialKey ctermfg<span class="p">=</span>darkmagenta
+<div class="highlight"><pre><span></span><span class="k">hi</span> SpecialKey ctermfg<span class="p">=</span>darkmagenta
 <span class="k">set</span> <span class="nb">list</span> <span class="nb">listchars</span><span class="p">=</span><span class="k">tab</span>:¦_
-</code></pre></div>
+</pre></div>
+
 
 <p>プラグイン入れるよりお手軽でいい感じです。</p>
 <p>消したい時もあると思うのでトグルするときは</p>
-<div class="highlight"><pre><span></span><code><span class="k">set</span> <span class="nb">list</span><span class="p">!</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="k">set</span> <span class="nb">list</span><span class="p">!</span>
+</pre></div>
+
 
 <p>でトグルできます、何かしらのキーにマッピングしておいてもいいかもです。</p>
-<h3>参考記事</h3>
+<h3 id="_1">参考記事</h3>
 <ul>
 <li><a href="http://stackoverflow.com/questions/2158305/is-it-possible-to-display-indentation-guides-in-vim" title="plugins - Is it possible to display Indentation guides in Vim? - Stack Overflow">plugins - Is it possible to display Indentation guides in Vim? - Stack Overflow</a></li>
 <li><a href="http://usevim.com/2013/02/27/understanding-listchars/" title="Understanding 'listchars'">Understanding 'listchars'</a></li>
@@ -273,7 +278,7 @@
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -296,7 +301,7 @@
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -326,6 +331,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

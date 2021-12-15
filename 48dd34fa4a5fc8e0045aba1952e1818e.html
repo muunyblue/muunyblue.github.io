@@ -54,7 +54,7 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2017-12-23T00:56:58+09:00">
+    <li class="published" title="2017-12-23T00:56:58">
         <span>Date:</span>2017-12-23 土 (午前 12:56:58)
     </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/vim.html">Vim</a> <a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> <a href="https://muunyblue.github.io/tag/rust.html">Rust</a> <a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> </li>
@@ -65,7 +65,7 @@
 <p>実際に最近使っているRustとVue.jsの例を紹介をします。</p>
 <p>2018/01 Vue.jsのほうをまとめ直しました =&gt; <a href="https://muunyblue.github.io/520bae6649b42ff5a3c8c58b7fcfc5a9.html">Neovim/Vim8で快適Vue.js開発(Vue Language Server)</a></p>
 <p>※ Neovimでしか動作検証してません・・・使っているプラグインはVim対応してるので多分Vimでも動きます</p>
-<h1>プラグイン構成</h1>
+<h1 id="_1">プラグイン構成</h1>
 <p>補完とLinterが欲しいので以下のプラグインを入れます。</p>
 <ul>
 <li>LanguageClient-neovim</li>
@@ -74,7 +74,7 @@
 <li>ale</li>
 </ul>
 <p>プラグインマネージャーなお好きなものを使うと良いですが、dein.vimでtomlで設定を読んでいる場合以下のようになります。</p>
-<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<div class="highlight"><pre><span></span><span class="k">[[plugins]]</span>
 <span class="n">repo</span> <span class="o">=</span> <span class="s">&#39;Shougo/context_filetype.vim&#39;</span>
 
 <span class="k">[[plugins]]</span>
@@ -110,11 +110,15 @@
 
 <span class="k">[[plugins]]</span>
 <span class="n">repo</span> <span class="o">=</span> <span class="s">&#39;w0rp/ale&#39;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>今回の話に無関係な設定は消してあります、全設定が知りたい人は↓</p>
-<p>[https://github.com/yymm/.dotfiles/tree/master/config/nvim:embed]</p>
-<h1>LanguageClient-neovim</h1>
+<p>
+<a class="embedly-card" href="https://github.com/yymm/.dotfiles/tree/master/config/nvim">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
+<h1 id="languageclient-neovim">LanguageClient-neovim</h1>
 <p>あまりVimでLSPを使っている人を見たことがないのでデファクトがわからないのですが、勝手にこれをデファクトだと思って使っています。</p>
 <ul>
 <li><a href="https://langserver.org/">Langserver.org</a>で紹介されていて全チェック入ってるので全機能使える</li>
@@ -123,33 +127,36 @@
 <li>あと多くの部分がRustで書かれていてｶｯｺｲｲ・・・</li>
 </ul>
 <p>同様のプラグインにvim-lspやvim-lscもありますが試していないので、ユーザーの方いたら意見を聞いてみたいです。</p>
-<h1>Rust</h1>
+<h1 id="rust">Rust</h1>
 <p><a href="https://github.com/rust-lang-nursery/rls">RLS</a>を使います。</p>
 <p>完全に便利なのでvim-racerから完全に乗り換えました。</p>
 <p>以下RLSのインストール方法です。</p>
-<div class="highlight"><pre><span></span><code>% rustup update
+<div class="highlight"><pre><span></span>% rustup update
 % rustup component add rls-preview --toolchain nightly
 % rustup component add rust-analysis --toolchain nightly
 % rustup component add rust-src --toolchain nightly
-</code></pre></div>
+</pre></div>
+
 
 <p>rustupが入っていない場合は<a href="https://www.rustup.rs/">ここ</a>にあるコマンドでインストールします。</p>
 <p>LSPの前にRustを書くときはrust.vimを入れておく必要があります。</p>
-<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<div class="highlight"><pre><span></span><span class="k">[[plugins]]</span>
 <span class="n">repo</span> <span class="o">=</span> <span class="s">&#39;rust-lang/rust.vim&#39;</span>
 <span class="n">on_ft</span> <span class="o">=</span> <span class="s">&#39;rust&#39;</span>
 <span class="n">hook_source</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="err">&#39;</span>
 <span class="n">let</span> <span class="n">g</span><span class="p">:</span><span class="n">rustfmt_autosave</span> <span class="o">=</span> <span class="mi">1</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>rustfmtを入れて自動で整形するのがおすすめです。</p>
 <p>これでVimを起動すると最高のRust開発環境が待っています。</p>
-<h1>Vue.js</h1>
+<h1 id="vuejs">Vue.js</h1>
 <p><a href="https://github.com/vuejs/vetur/tree/master/server">VLS</a>を使います。</p>
 <p>VLSはVSCodeでVue.js書いたことがある人ならお世話になっているVetur内部のLanguage Serverです。</p>
 <p>単体でインストールできるので下記のコマンドで導入します。</p>
-<div class="highlight"><pre><span></span><code>$ npm install vue-language-server -g
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ npm install vue-language-server -g
+</pre></div>
+
 
 <p>deoplete.nvimでvueファイルのような複数言語の混ざったファイルはcontext/_filetype.vimで判定して補完しています。</p>
 <p>vueファイルには対応していなかったので<a href="https://github.com/Shougo/context_filetype.vim/pull/33">PR</a>を出して対応しました。</p>
@@ -158,7 +165,7 @@
 <p>補完がうまく効いていないのが現状です。aleはちゃんと効きます。deoplete.nvimの本来の補完(html,js,css)は効くのでなんとか開発はできます。</p>
 <p>せっかくのアドベントカレンダーでうまく動かない...では残念なので<a href="https://github.com/roxma/nvim-completion-manager">nvim-completion-manager</a>を使ってみました。</p>
 <p>deoplete.nvimの部分をnvim-completion-manager(ncm)に置き換えます。</p>
-<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<div class="highlight"><pre><span></span><span class="k">[[plugins]]</span>
 <span class="n">repo</span> <span class="o">=</span> <span class="s">&#39;roxma/nvim-completion-manager&#39;</span>
 <span class="n">on_ft</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;vue&#39;</span><span class="p">]</span>
 <span class="n">on_i</span> <span class="o">=</span> <span class="kc">true</span>
@@ -170,17 +177,27 @@
 <span class="s">inoremap &lt;expr&gt; &lt;Tab&gt; pumvisible() ? &quot;\&lt;C-n&gt;&quot; : &quot;\&lt;Tab&gt;&quot;</span>
 <span class="s">inoremap &lt;expr&gt; &lt;S-Tab&gt; pumvisible() ? &quot;\&lt;C-p&gt;&quot; : &quot;\&lt;S-Tab&gt;&quot;</span>
 <span class="s">&#39;&#39;&#39;</span>
-</code></pre></div>
+</pre></div>
 
-<p>[https://twitter.com/y_y_m_m/status/944042507662323712:embed]</p>
+
+<p>
+<a class="embedly-card" href="https://twitter.com/y_y_m_m/status/944042507662323712">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>scaffoldやjs補完は効いています。ただ、ncmのcontextの解釈が完全でないためHTML部分で効く補完が弱いです。</p>
 <p>この記事を書きながらncmでは動くなとつぶやいていたらShougoさんがやってきました。</p>
-<p>[https://twitter.com/ShougoMatsu/status/944043865811574784:embed]</p>
-<p>[https://twitter.com/ShougoMatsu/status/944048033393553409:embed]</p>
+<p>
+<a class="embedly-card" href="https://twitter.com/ShougoMatsu/status/944043865811574784">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
+<p>
+<a class="embedly-card" href="https://twitter.com/ShougoMatsu/status/944048033393553409">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>Issueあげるアドバイスをもらったので近日中に時間を作ってやります。</p>
 <p>正直deoplete.nvimが好きなのでncmに乗り換えるより、deoplete.nvimで最高のVue.js開発環境にしていきたいので頑張りたいです。</p>
 <p>Vimが最高のVue.js開発環境になったらまた記事を書こうと思います。</p>
-<hr>
+<hr />
 <p>Language Server Protcolは補完やLint以外にもrenameや定義参照など便利な機能があるので他の言語も積極的に導入を試みたいと思っています。</p>
     </div><!-- /.entry-content -->
 
@@ -356,7 +373,7 @@
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -379,7 +396,7 @@
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -409,6 +426,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

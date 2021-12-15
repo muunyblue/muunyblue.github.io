@@ -54,7 +54,7 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2015-09-29T00:27:49+09:00">
+    <li class="published" title="2015-09-29T00:27:49">
         <span>Date:</span>2015-09-29 火 (午前 12:27:49)
     </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> </li>
@@ -62,9 +62,9 @@
 </ul>
 </footer><!-- /.post-info -->      <p><a href="http://blog.muuny-blue.info/f5cfbc876972bd0d031c8abc37344c28.html" title="プログラミング言語を作る前知識">前の記事(プログラミング言語を作る前知識)</a>でプログラミング言語少し作れる気がしてきたので、lexとyaccに軽く触れてみた。</p>
 <p>実際はflexとbisonを使っている。</p>
-<h1>lexの書き方</h1>
+<h1 id="lex">lexの書き方</h1>
 <p>lexのファイルには3つのブロックがあって、%%で区切って記述します。</p>
-<div class="highlight"><pre><span></span><code><span class="c"> </span><span class="nb">-------------------------------------------------------</span><span class="c"></span>
+<div class="highlight"><pre><span></span><span class="c"> </span><span class="nb">-------------------------------------------------------</span><span class="c"></span>
 <span class="c">| 定義部</span>
 <span class="c">| オプションやincludeや変数宣言、マクロなどを記述します。</span>
 <span class="c">| includeや変数宣言は%{</span><span class="nt">...</span><span class="c">%}で囲って書きます。</span>
@@ -90,21 +90,23 @@
 <span class="c">| yaccと組み合わせて使う場合は、main関数はyacc側に書くため</span>
 <span class="c">| この部分はあまり書かないかもしれません。</span>
 <span class="c"> </span><span class="nb">-------------------------------------------------------</span><span class="c"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>lexで使える正規表現情報です。</p>
 <p><a href="http://cis.k.hosei.ac.jp/~nakata/lectureCompiler/YaccLex/2.html" title="Lex(flex)の使い方（簡略版）">Lex(flex)の使い方（簡略版）</a></p>
 <p>lexのファイルは*.lという名前で作成し、lex(flex)コマンドでCソースを生成します。</p>
-<div class="highlight"><pre><span></span><code>// lexの場合
+<div class="highlight"><pre><span></span>// lexの場合
 $ lex sample.l
 // flexの場合
 $ flex sample.l
-</code></pre></div>
+</pre></div>
+
 
 <p>lex.yy.cというファイルが出力されていればok。</p>
-<h1>yaccの書き方</h1>
+<h1 id="yacc">yaccの書き方</h1>
 <p>基本構造はlexと同じです。</p>
-<div class="highlight"><pre><span></span><code><span class="c"> </span><span class="nb">-------------------------------------------------------</span><span class="c"></span>
+<div class="highlight"><pre><span></span><span class="c"> </span><span class="nb">-------------------------------------------------------</span><span class="c"></span>
 <span class="c">| 定義部</span>
 <span class="c">| includeや%union</span><span class="nt">,</span><span class="c"> %token</span><span class="nt">,</span><span class="c"> %typeなどを定義します。</span>
 <span class="c">| includeはlexと同様に%{</span><span class="nt">...</span><span class="c">%}で記述します。</span>
@@ -132,24 +134,26 @@ $ flex sample.l
 <span class="c">| yyparse関数を使う際、yacc単体で利用するときは</span>
 <span class="c">| 字句解析器としてyylex関数の実装が必要になります。</span>
 <span class="c"> </span><span class="nb">-------------------------------------------------------</span><span class="c"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>yaccファイルは、*.yという名前で作成し、yacc(bison)コマンドでCソースを生成します。</p>
-<div class="highlight"><pre><span></span><code>// yaccの場合
+<div class="highlight"><pre><span></span>// yaccの場合
 $ yacc -d sample.y
 // bisonの場合
 $ bison -d sample.y
-</code></pre></div>
+</pre></div>
+
 
 <p>sample.tab.hとsample.tab.cというファイルが出力されていればok。</p>
-<h1>lexとyaccを組み合わせて使う</h1>
+<h1 id="lexyacc">lexとyaccを組み合わせて使う</h1>
 <p>yyparseが、yylexを必要としているように、lexとyaccは組み合わせ使うと便利です。</p>
-<h2>大域変数の利用パターン(変数)</h2>
+<h2 id="_1">大域変数の利用パターン(変数)</h2>
 <p>intやdoubleなどの変数を扱う場合に、lexとyaccの間で大域変数を使用して、lexの正規表現にマッチした変数を、yaccのunionと紐付けておくことができます。</p>
 <p>yaccでuniconで定義した変数は、lexで、<strong>yylval.変数名</strong>で参照できます。</p>
 <p>double型の足し算をするだけの単純な例です。</p>
 <p>lexファイル(sample.l)</p>
-<div class="highlight"><pre><span></span><code><span class="cm">%{</span>
+<div class="highlight"><pre><span></span><span class="cm">%{</span>
 <span class="cm">#include &lt;stdio.h&gt;</span>
 <span class="cm">#include &lt;stdlib.h&gt;</span>
 <span class="cm">#include &quot;sample.tab.h&quot;</span>
@@ -161,10 +165,11 @@ $ bison -d sample.y
 <span class="p">}</span><span class="w"></span>
 <span class="s">&quot;+&quot;</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">ADD</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
 <span class="c">%%</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>yaccファイル(sample.y)</p>
-<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="p">{</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="o">%</span><span class="p">{</span><span class="w"></span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
 <span class="o">%</span><span class="p">}</span><span class="w"></span>
@@ -193,17 +198,18 @@ $ bison -d sample.y
 <span class="w">    </span><span class="n">yyparse</span><span class="p">();</span><span class="w"></span>
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>double_valをいうyaccで定義した型を、lexファイルでyylvalを介して参照しています。</p>
 <p>yaccファイルでは、%tokenを使ってDOUBLEとunionの変数を紐付けることで、自動的に型をつけるように指定しています。</p>
-<h1>簡単な計算機を作る</h1>
+<h1 id="_2">簡単な計算機を作る</h1>
 <p>計算機なので計算順序を正しく定義してあげるのが大事だと思います。計算順序を決めるのに、yaccの%left、%rightが役に立ちそうです。</p>
 <p>%leftは左結合規則を定義、%rightは右結合規則を定義できます。</p>
 <p>身近なところだと、足し算などは左結合、代入などは右結合です。</p>
 <p>%left,%rightは定義した順番(上から下)に優先順位がつきます。</p>
 <p>"+-*/%^()"と数字(小数点)をlexで定義します。</p>
-<div class="highlight"><pre><span></span><code><span class="nf">%option</span><span class="w"> </span><span class="n">noyywrap</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="nf">%option</span><span class="w"> </span><span class="n">noyywrap</span><span class="w"></span>
 <span class="o">%</span><span class="p">{</span><span class="w"></span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
@@ -228,10 +234,11 @@ $ bison -d sample.y
 <span class="s">&quot;(&quot;</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">LP</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
 <span class="s">&quot;)&quot;</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">RP</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
 <span class="o">%%</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>yaccで構文規則を書いていきます、今から作る計算機は"^"だけ右結合です。</p>
-<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="p">{</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="o">%</span><span class="p">{</span><span class="w"></span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
@@ -274,10 +281,11 @@ $ bison -d sample.y
 <span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="n">yyparse</span><span class="p">();</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>コンパイルして実行します。</p>
-<div class="highlight"><pre><span></span><code>$ flex cal.l
+<div class="highlight"><pre><span></span>$ flex cal.l
 $ bison -d cal.y
 $ gcc cal.tab.c lex.yy.c -lm -o cal
 $ ./cal
@@ -289,21 +297,22 @@ $ ./cal
 &gt;&gt; <span class="m">24</span>.000000
 <span class="o">(</span><span class="m">9</span>-2*3<span class="o">)</span>^3
 &gt;&gt; <span class="m">27</span>.000000
-</code></pre></div>
+</pre></div>
+
 
 <p>おぉ、ちゃんと動いてる風だ。</p>
-<h4>計算機の例が書いてあって参考にした記事</h4>
+<h4 id="_3">計算機の例が書いてあって参考にした記事</h4>
 <ul>
 <li><a href="http://kmaebashi.com/programmer/devlang/yacclex.html" title="プログラミング言語を作る/yaccとlex">プログラミング言語を作る/yaccとlex</a></li>
-<li><a href="http://d.hatena.ne.jp/hake/20110207/p1" title="bison &amp; flexメモ その５ - はけの徒然日記">bison &amp; flexメモ　その５ - はけの徒然日記</a></li>
+<li><a href="http://d.hatena.ne.jp/hake/20110207/p1" title="bison &amp; flexメモ　その５ - はけの徒然日記">bison &amp; flexメモ　その５ - はけの徒然日記</a></li>
 <li><a href="http://www7b.biglobe.ne.jp/~robe/pf/pf012.html" title="プログラマの友 第十ニ報：bison を使ってみる">プログラマの友 第十ニ報：bison を使ってみる</a></li>
 <li><a href="https://ja.wikipedia.org/wiki/Yacc" title="Yacc - Wikipedia">Yacc - Wikipedia</a></li>
 <li><a href="http://www.cs.man.ac.uk/~pjj/cs212/ho/node4.html" title="YACC">YACC</a></li>
 </ul>
-<h1>まとめ</h1>
+<h1 id="_4">まとめ</h1>
 <p>lexとyaccの記法について、わかってくれば計算機作れた。</p>
 <p>実際に言語を作るときは、yaccで即時評価するのでなく、ASTを作成することになるので、ややこしくなってくる。。</p>
-<h1>参考記事</h1>
+<h1 id="_5">参考記事</h1>
 <ul>
 <li><a href="http://kmaebashi.com/programmer/devlang/yacclex.html" title="プログラミング言語を作る/yaccとlex">プログラミング言語を作る/yaccとlex</a></li>
 <li><a href="http://www.hpcs.cs.tsukuba.ac.jp/~msato/lecture-note/comp-lecture/note7.html" title="プログラミング言語処理">プログラミング言語処理</a></li>
@@ -492,7 +501,7 @@ $ ./cal
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -515,7 +524,7 @@ $ ./cal
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -545,6 +554,12 @@ $ ./cal
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

@@ -54,7 +54,7 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2017-12-05T16:45:31+09:00">
+    <li class="published" title="2017-12-05T16:45:31">
         <span>Date:</span>2017-12-05 火 (午後 04:45:31)
     </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/rust.html">rust</a> <a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> </li>
@@ -63,38 +63,46 @@
 </footer><!-- /.post-info -->      <p>WebAssembly(以下WASM)には興味があって遊んでみたいと思っていたら、rustifyという便利な魔法が先日GitHubに現れたので使ってみました。</p>
 <p>続編のほうが詳しいです =&gt; <a href="https://muunyblue.github.io/35d58f24d7a7701719c983a1ef1979b1.html">rustifyでWebAssembly - ライフゲームを作る</a></p>
 <p>ElectronでWASMを使ってランダムウォークをしてみます。</p>
-<p>[https://github.com/yymm/rustify-random-walk:embed]</p>
-<h1>準備</h1>
+<p>
+<a class="embedly-card" href="https://github.com/yymm/rustify-random-walk">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
+<h1 id="_1">準備</h1>
 <p>Node.js環境をnvmで、Rust環境をrustupで準備します。</p>
-<div class="highlight"><pre><span></span><code>% nvm install --lts
+<div class="highlight"><pre><span></span>% nvm install --lts
 % rustup update
-</code></pre></div>
+</pre></div>
+
 
 <p>rustifyを使うための準備です。</p>
-<div class="highlight"><pre><span></span><code>% rustup target add wasm32-unknown-unknown --toolchain nightly
+<div class="highlight"><pre><span></span>% rustup target add wasm32-unknown-unknown --toolchain nightly
 % cargo install --git https://github.com/alexcrichton/wasm-gc
-</code></pre></div>
+</pre></div>
+
 
 <p>Rustのブロジェクトを作ります。</p>
-<div class="highlight"><pre><span></span><code>% cargo init random_walk
-</code></pre></div>
+<div class="highlight"><pre><span></span>% cargo init random_walk
+</pre></div>
+
 
 <p>Node.jsのプロジェクトも作ります。</p>
-<div class="highlight"><pre><span></span><code>% <span class="nb">cd</span> random_walk
+<div class="highlight"><pre><span></span>% <span class="nb">cd</span> random_walk
 % mkdir view
 % npm init
-</code></pre></div>
+</pre></div>
+
 
 <p>Browserifyとrustify、Electronのインストールします。</p>
-<div class="highlight"><pre><span></span><code>% npm install browserify rustify electron
-</code></pre></div>
+<div class="highlight"><pre><span></span>% npm install browserify rustify electron
+</pre></div>
 
-<h1>サンプル動作</h1>
+
+<h1 id="_2">サンプル動作</h1>
 <p>まずElectronの準備をします。</p>
 <p>https://github.com/electron/electron/blob/master/docs/tutorial/quick-start.md</p>
 <p>ここを参考にindex.htmlとmain.jsを作ります。</p>
 <p>index.htmlはcanvasタグとscriptタグでbuild.jsを読み込むように変更します。</p>
-<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;</span>
@@ -105,12 +113,13 @@
     <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;build.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>.
   <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>次にrustifyするrender.jsを作ります。</p>
 <p>https://github.com/browserify/rustify</p>
 <p>サンプルコードのExternalで作ります。</p>
-<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nx">rust</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rustify&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">rust</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rustify&#39;</span><span class="p">)</span>
 
 <span class="kd">var</span> <span class="nx">wasm</span> <span class="o">=</span> <span class="nx">rust</span><span class="p">(</span><span class="s1">&#39;add-one.rs&#39;</span><span class="p">)</span>
 
@@ -122,27 +131,30 @@
   <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;Creating WASM module failed&#39;</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span>
   <span class="p">})</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>viewフォルダにadd-one.rsを作ります。</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#[no_mangle]</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="cp">#[no_mangle]</span><span class="w"></span>
 <span class="k">pub</span><span class="w"> </span><span class="k">fn</span> <span class="nf">add_one</span><span class="p">(</span><span class="n">x</span>: <span class="kt">i32</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="kt">i32</span> <span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>browserifyでWASM入りのbuild.jsに変換します。</p>
-<div class="highlight"><pre><span></span><code>% <span class="nb">cd</span> view
+<div class="highlight"><pre><span></span>% <span class="nb">cd</span> view
 % ./node_modules/.bin/browserify -t rustify render.js &gt; build.js
 % ./node_modules/.bin/electron .
-</code></pre></div>
+</pre></div>
+
 
 <p>DevToolsに42と69が表示されていれば成功。</p>
-<h1>ランダムウォークを作る</h1>
+<h1 id="_3">ランダムウォークを作る</h1>
 <p>必要なのは乱数だけです。</p>
 <p>Rustの乱数はrandクレートですが、extern crateするとrustifyでエラーが出てしまったので実装します。</p>
 <p>手軽なのはXorShiftなので検索してｽｯと実装します。</p>
-<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="n">std</span>::<span class="kt">u32</span><span class="p">;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="k">use</span><span class="w"> </span><span class="n">std</span>::<span class="kt">u32</span><span class="p">;</span><span class="w"></span>
 
 <span class="k">pub</span><span class="w"> </span><span class="k">struct</span> <span class="nc">XorShift</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="n">x</span>: <span class="kt">u32</span><span class="p">,</span><span class="w"></span>
@@ -176,11 +188,12 @@
 <span class="w">        </span><span class="bp">self</span><span class="p">.</span><span class="n">gen</span><span class="p">()</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="kt">f64</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="kt">u32</span>::<span class="n">MAX</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="kt">f64</span><span class="w"></span>
 <span class="w">    </span><span class="p">}</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>面倒なのでseedは固定です。0~1に正規化された乱数のほうが判定しやすいのでgen_norm関数を用意しました。</p>
 <p>wasmからstructを読み込む方法がわからなかったのでstatic mutのXorShiftを用意してそれから乱数を取り出す関数を作りました。先程のファイルの末尾に以下を追加します。</p>
-<div class="highlight"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">xorshift</span>: <span class="nc">XorShift</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XorShift</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="k">static</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">xorshift</span>: <span class="nc">XorShift</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XorShift</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="n">x</span>: <span class="mi">123456789</span><span class="p">,</span><span class="w"></span>
 <span class="w">    </span><span class="n">y</span>: <span class="mi">362436069</span><span class="p">,</span><span class="w"></span>
 <span class="w">    </span><span class="n">z</span>: <span class="mi">521288629</span><span class="p">,</span><span class="w"></span>
@@ -191,10 +204,11 @@
 <span class="k">pub</span><span class="w"> </span><span class="k">fn</span> <span class="nf">rand</span><span class="p">()</span><span class="w"> </span>-&gt; <span class="kt">f64</span> <span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="k">unsafe</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">xorshift</span><span class="p">.</span><span class="n">gen_norm</span><span class="p">()</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>あとはこの乱数を使ってCanvas上にぽちぽちプロットしていけば完成です。</p>
-<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nx">rust</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rustify&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kd">let</span> <span class="nx">rust</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rustify&#39;</span><span class="p">)</span>
 
 <span class="kd">let</span> <span class="nx">wasm</span> <span class="o">=</span> <span class="nx">rust</span><span class="p">(</span><span class="s1">&#39;../src/xorshift.rs&#39;</span><span class="p">)</span>
 
@@ -222,15 +236,17 @@
   <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;Creating WASM module failed&#39;</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span>
   <span class="p">})</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>これをrandom_walk.jsというファイル名で保存して以下のコマンドを実行します。</p>
-<div class="highlight"><pre><span></span><code>% <span class="nb">cd</span> view
+<div class="highlight"><pre><span></span>% <span class="nb">cd</span> view
 % ./node_modules/.bin/browserify -t rustify random_walk.js &gt; build.js
 % ./node_modules/.bin/electron .
-</code></pre></div>
+</pre></div>
 
-<p><img alt="random walk" src="https://gyazo.com/5667e89638de43bb3825fc5eab2581ac.png"></p>
+
+<p><img alt="random walk" src="https://gyazo.com/5667e89638de43bb3825fc5eab2581ac.png" /></p>
 <p>ぽちぽち動いていれば完成。</p>
 <p>rustify、らくらくwasm体験できるのでもう少し遊んでみたさが高まりました。</p>
     </div><!-- /.entry-content -->
@@ -407,7 +423,7 @@
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -430,7 +446,7 @@
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -460,6 +476,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

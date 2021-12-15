@@ -54,22 +54,25 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2017-07-14T02:52:47+09:00">
+    <li class="published" title="2017-07-14T02:52:47">
         <span>Date:</span>2017-07-14 金 (午前 02:52:47)
     </li>
         <!--<br />-->
-        <li class="modified" title="2017-07-31T02:10:52+09:00">
+        <li class="modified" title="2017-07-31T02:10:52">
             <span>Updated:</span>2017-07-31 月 (午前 02:10:52)
         </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> <a href="https://muunyblue.github.io/tag/css.html">CSS</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
 </footer><!-- /.post-info -->      <p>CodePenエディタのような可変グリッドで、拡張可能なグリッドがほしかったので作ってみました。</p>
-<p>[https://github.com/yymm/grid.vue:embed]</p>
-<p><img alt="demo" src="https://github.com/yymm/grid.vue/raw/master/capture.gif"></p>
-<h1>詳しい話</h1>
+<p>
+<a class="embedly-card" href="https://github.com/yymm/grid.vue">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
+<p><img alt="demo" src="https://github.com/yymm/grid.vue/raw/master/capture.gif" /></p>
+<h1 id="_1">詳しい話</h1>
 <p>templateでは可変グリッドのCSS書くのが大変になったのでrenderを使ったりして色々勉強になりました。という話です。</p>
-<h2>可変グリッド</h2>
+<h2 id="_2">可変グリッド</h2>
 <p>ロジックは、<a href="https://github.com/sparklinlabs/resize-handle" title="sparklinlabs/resize-handle: Robust resize handles / splitters for your HTML5 apps and websites">sparklinlabs/resize-handle: Robust resize handles / splitters for your HTML5 apps and websites</a>をまるっと参考にしました。</p>
 <p>CSSはflexboxを使っていて、リサイズイベントはJavaScriptで以下のような感じで制御してます</p>
 <ol>
@@ -81,22 +84,23 @@
 <li>mouseupでmousemoveとmouseupイベント削除</li>
 </ol>
 <p>本家のソースコードは上下左右に対応した汎用的なコードなのですが、今回作ったものは決め打ちのハードコードになっています。</p>
-<h2>CSS(flexbox)</h2>
+<h2 id="cssflexbox">CSS(flexbox)</h2>
 <p>縦横グリッドなので、flex(column)&gt;flex(row)の入れ子になってます。</p>
 <p>実際にはグリッド内の要素にも適用しているので、flex(column)&gt;flex(folumn)&gt;flex(row)&gt;flex(row)になっています。</p>
 <p>今回やって思ったのは、flexboxはネストして使うと便利ということでした。</p>
 <p>普段からCSSをもりもり書いているわけではないのでflexboxはトップレベルに近いところで使うと勝手に思っていたのですが、ネストするとスッキリするケースもあるので複雑になりすぎない程度にはネストさせると良いと思いました。</p>
-<h2>レイアウト</h2>
+<h2 id="_3">レイアウト</h2>
 <p>参考にした可変グリッドがグリッド要素とリサイズバーが同レベルに並んでいる構成になっているのですが、v-forを使うとどうしてもroot要素が必要になるので同じDOM構成にならないという問題がありました。</p>
 <p>どういうことかというと、こうしたい</p>
-<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;grid&quot;</span><span class="p">&gt;</span>...<span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+<div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;grid&quot;</span><span class="p">&gt;</span>...<span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;resizer&quot;</span><span class="p">&gt;&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;grid&quot;</span><span class="p">&gt;</span>...<span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;resizer&quot;</span><span class="p">&gt;&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>けど、v-forでやるとこうなります。</p>
-<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span> <span class="c">&lt;!-- v-forで増える要素 --&gt;</span>
+<div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span> <span class="c">&lt;!-- v-forで増える要素 --&gt;</span>
   <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;grid&quot;</span><span class="p">&gt;</span>...<span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;resizer&quot;</span><span class="p">&gt;&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
@@ -104,12 +108,13 @@
   <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;grid&quot;</span><span class="p">&gt;</span>...<span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;resizer&quot;</span><span class="p">&gt;&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>DOMの描画をもっと細かく制御したいと思ってたら、Vue.jsにはrender関数という低レイヤでDOM描画を扱える関数があるのでtemplateの代わりにそちらを使いました。</p>
 <p>今回のような$dataのリストに対してリストの間に別のDOMを挟み込みたいというような込み入った構造を作りたいときに、このようなレイヤの低めなAPIが提供されているのは良いなぁと思いました。当たり前かもしれませが、$dataと紐付いたDOMは$dataと連動して書き換えられます。</p>
 <p>デメリットとしてはコード量がtemplateを使用する時と比べてかなり増えます、10倍くらいになった気がします。</p>
-<h2>問題点ぽいところ</h2>
+<h2 id="_4">問題点ぽいところ</h2>
 <p>要素を追加するときは良い感じのサイズで追加されてほしいのでflexboxで追加してるのですが、リサイズするときはflexから外して固定サイズにしてるので、リサイズ前とリサイズ後で挙動が変わってしまいますが今のところ解決策を思いついてないのでそのままです。</p>
     </div><!-- /.entry-content -->
 
@@ -285,7 +290,7 @@
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -308,7 +313,7 @@
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -338,6 +343,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

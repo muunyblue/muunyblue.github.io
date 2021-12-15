@@ -54,25 +54,41 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2015-10-14T07:55:17+09:00">
+    <li class="published" title="2015-10-14T07:55:17">
         <span>Date:</span>2015-10-14 水 (午前 07:55:17)
     </li>
         <!--<br />-->
-        <li class="modified" title="2015-10-15T00:14:15+09:00">
+        <li class="modified" title="2015-10-15T00:14:15">
             <span>Updated:</span>2015-10-15 木 (午前 12:14:15)
         </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> <a href="https://muunyblue.github.io/tag/python.html">Python</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
 </footer><!-- /.post-info -->      <p><a href="http://blog.muuny-blue.info/4738a8f6fab937d899ae9631beab116f.html" title="PelicanのTheme【使う編】">前回</a>は人の作ったThemeを使う話でしたが、今回は作る話です。</p>
-<hr>
+<hr />
 <p>目次</p>
-<p>[TOC]</p>
-<h1>Themeを作成する</h1>
+<div class="toc">
+<ul>
+<li><a href="#theme">Themeを作成する</a></li>
+<li><a href="#themetips">Theme作成Tips</a><ul>
+<li><a href="#include-xxxhtml">include xxx.html</a></li>
+<li><a href="#if-pelicanconfpy">if [pelicanconf.pyの変数]</a></li>
+<li><a href="#if-article">if article</a></li>
+</ul>
+</li>
+<li><a href="#pelican-plugins">pelican-plugins</a><ul>
+<li><a href="#always-modified">Always Modified</a></li>
+<li><a href="#pelican-youtube">Pelican YouTube</a></li>
+</ul>
+</li>
+<li><a href="#_1">まとめ</a></li>
+</ul>
+</div>
+<h1 id="theme">Themeを作成する</h1>
 <p>Pelicanのドキュメントはとても親切でThemeを作る場合のことも書いてあります。</p>
 <p><a href="http://docs.getpelican.com/en/3.6.3/themes.html" title="Creating themes — Pelican 3.6.3 documentation">Creating themes — Pelican 3.6.3 documentation</a></p>
 <p>構成は以下のようにします。</p>
-<div class="highlight"><pre><span></span><code>├── <span class="nv">static</span>
+<div class="highlight"><pre><span></span>├── <span class="nv">static</span>
 │   ├── <span class="nv">css</span>
 │   └── <span class="nv">images</span>
 └── <span class="nv">templates</span>
@@ -87,7 +103,8 @@
     ├── <span class="nv">page</span>.<span class="nv">html</span>             <span class="o">//</span> <span class="nv">processed</span> <span class="k">for</span> <span class="nv">each</span> <span class="nv">page</span>
     ├── <span class="nv">tag</span>.<span class="nv">html</span>              <span class="o">//</span> <span class="nv">processed</span> <span class="k">for</span> <span class="nv">each</span> <span class="nv">tag</span>
     └── <span class="nv">tags</span>.<span class="nv">html</span>             <span class="o">//</span> <span class="nv">must</span> <span class="nv">list</span> <span class="nv">all</span> <span class="nv">the</span> <span class="nv">tags</span>. <span class="nv">Can</span> <span class="nv">be</span> <span class="nv">a</span> <span class="nv">tag</span> <span class="nv">cloud</span>.
-</code></pre></div>
+</pre></div>
+
 
 <p>staticとtemplatesというディレクトリに分かれていて、staticにはcssや画像、jsなどを配置、templatesにはhtmlを配置します。</p>
 <p>上記のtemplates内にあるファイルは必要なファイルです、jinja2を使っているのでオリジナルのhtmlを追加して他のhtmlからincludeすることもできます。</p>
@@ -96,13 +113,13 @@
 <p>このThemeを参考にする場合、編集の中心になるのは、base.html, index.html, article.htmlです。どういう配置にするのか、CSSフレームワークを使うのか、など好みの条件に合わせて書くと良いと思います。</p>
 <p>templates内で使用できる変数などはドキュメントにまとめられているので参考にするといいです。</p>
 <p><a href="http://docs.getpelican.com/en/3.6.3/themes.html#templates-and-variables" title="Creating themes — Pelican 3.6.3 documentation">Creating themes — Pelican 3.6.3 documentation #templates-and-variables</a></p>
-<h1>Theme作成Tips</h1>
+<h1 id="themetips">Theme作成Tips</h1>
 <p>PelicanのThemeは基本的にjinja2の機能をフルに活かして書いていきます、細かいところは色々ありますのでよく使ったところをまとめました。</p>
-<h2>include xxx.html</h2>
+<h2 id="include-xxxhtml">include xxx.html</h2>
 <p>jinja2の機能でincludeがあります、サイドバーなどのパーツをincludeするように設計するといい感じになります。</p>
 <p>Bootstrapのグリットデザインにサイドバーを組み込んでいる例です。</p>
 <p>base.html</p>
-<div class="highlight"><pre><span></span><code>    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
+<div class="highlight"><pre><span></span>    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
         <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
             <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;content&quot;</span> <span class="na">class=</span><span class="s">&quot;col-lg-9&quot;</span><span class="nt">&gt;</span>
                 <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;bs-component&quot;</span><span class="nt">&gt;</span>
@@ -117,10 +134,11 @@
             <span class="nt">&lt;/div&gt;</span><span class="c">&lt;!-- /#extras --&gt;</span>
         <span class="nt">&lt;/div&gt;</span><span class="c">&lt;!--./row --&gt;</span>
     <span class="nt">&lt;/div&gt;</span><span class="c">&lt;!--./container --&gt;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>sidebar.html</p>
-<div class="highlight"><pre><span></span><code><span class="c">{# ... #}</span><span class="x"></span>
+<div class="highlight"><pre><span></span><span class="c">{# ... #}</span><span class="x"></span>
 <span class="cp">{%</span> <span class="k">if</span> <span class="nv">DETAILS</span> <span class="cp">%}</span><span class="x"></span>
 <span class="x">  </span><span class="c">{# 内容 #}</span><span class="x"></span>
 <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
@@ -128,13 +146,14 @@
 <span class="x">  </span><span class="c">{# 内容 #}</span><span class="x"></span>
 <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
 <span class="c">{# ... #}</span><span class="x"></span>
-</code></pre></div>
+</pre></div>
 
-<h2>if [pelicanconf.pyの変数]</h2>
+
+<h2 id="if-pelicanconfpy">if [pelicanconf.pyの変数]</h2>
 <p>pelicanconfの内容で表示/非表示したい内容に使えます。</p>
 <p>例えば、Disqusの場合は以下のようになります。</p>
 <p>disqus_script.html</p>
-<div class="highlight"><pre><span></span><code><span class="cp">{%</span> <span class="k">if</span> <span class="nv">DISQUS_SITENAME</span> <span class="cp">%}</span>
+<div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">DISQUS_SITENAME</span> <span class="cp">%}</span>
 <span class="nt">&lt;script</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span>
     var disqus_shortname = &#39;<span class="cp">{{</span> <span class="nv">DISQUS_SITENAME</span> <span class="cp">}}</span>&#39;;
     (function () {
@@ -145,60 +164,67 @@
     }());
 <span class="nt">&lt;/script&gt;</span>
 <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>pelicanconf.pyに"DISQUS_SITENAME"が設定されていたらDISQUSのscriptをロードするようになります。</p>
 <p>このファイルは必要な部分でincludeします。コメントなのでarticle.htmlの下のほうにincludeします。</p>
-<div class="highlight"><pre><span></span><code>{<span class="o">%</span> <span class="k">include</span> <span class="s1">&#39;</span><span class="s">disqus_script.html</span><span class="s1">&#39;</span><span class="o">%</span>}
-</code></pre></div>
+<div class="highlight"><pre><span></span>{<span class="o">%</span> <span class="k">include</span> <span class="s1">&#39;</span><span class="s">disqus_script.html</span><span class="s1">&#39;</span><span class="o">%</span>}
+</pre></div>
 
-<h2>if article</h2>
+
+<h2 id="if-article">if article</h2>
 <p>これは、記事ページのときのみ表示したい(記事一覧やタグ一覧のときは表示しない)、SNSリンクボタンなどを表示するとき使えます。</p>
 <p>sitebar.html</p>
-<div class="highlight"><pre><span></span><code><span class="cp">{%</span> <span class="k">if</span> <span class="nv">article</span> <span class="cp">%}</span>
+<div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">article</span> <span class="cp">%}</span>
     <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;sns&quot;</span><span class="nt">&gt;</span>
         <span class="nt">&lt;h2&gt;</span>Share<span class="nt">&lt;/h2&gt;</span>
             <span class="cp">{%</span> <span class="k">include</span> <span class="s1">&#39;sns.html&#39;</span> <span class="cp">%}</span>
         <span class="nt">&lt;/ul&gt;</span>
     <span class="nt">&lt;/div&gt;</span>
 <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
-</code></pre></div>
+</pre></div>
 
-<h1>pelican-plugins</h1>
+
+<h1 id="pelican-plugins">pelican-plugins</h1>
 <p>Themeを作成するときにpelican-pluginsには便利なものが色々落ちています。</p>
 <p><a href="https://github.com/getpelican/pelican-plugins" title="getpelican/pelican-plugins">getpelican/pelican-plugins</a></p>
 <p>インストールは、このリポジトリを好きなところにクローンして、pelicanconf.pyでパスと使用するプラグインを指定します。</p>
-<div class="highlight"><pre><span></span><code>$ git clone --recursive https://github.com/getpelican/pelican-plugins
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ git clone --recursive https://github.com/getpelican/pelican-plugins
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>PLUGIN_PATHS = [&#39;path/to/pelican-plugins&#39;]
+
+<div class="highlight"><pre><span></span>PLUGIN_PATHS = [&#39;path/to/pelican-plugins&#39;]
 PLUGINS = [&#39;always_modified&#39;, &#39;pelican_youtube&#39;]
-</code></pre></div>
+</pre></div>
+
 
 <p>色々便利なものがありますが、使っているものだけ紹介します。</p>
-<h2>Always Modified</h2>
+<h2 id="always-modified">Always Modified</h2>
 <p><a href="https://github.com/getpelican/pelican-plugins/tree/master/always_modified" title="pelican-plugins/always_modified at master · getpelican/pelican-plugins">pelican-plugins/always_modified at master · getpelican/pelican-plugins</a></p>
 <p>最近の記事を表示するために必要なプラグインです。Pelicanはデフォルトでは、index.htmlでしかarticlesを参照できないのでこのプラグインは便利です。</p>
 <p>サイドバーなどに以下のような記述を追加すると、最新の記事を表示できます。</p>
-<div class="highlight"><pre><span></span><code><span class="cp">{%</span> <span class="k">for</span> <span class="nv">article</span> <span class="k">in</span> <span class="nv">articles</span><span class="o">|</span><span class="nf">sort</span><span class="o">(</span><span class="nv">reverse</span><span class="o">=</span><span class="kp">True</span><span class="o">,</span><span class="nv">attribute</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
+<div class="highlight"><pre><span></span><span class="cp">{%</span> <span class="k">for</span> <span class="nv">article</span> <span class="k">in</span> <span class="nv">articles</span><span class="o">|</span><span class="nf">sort</span><span class="o">(</span><span class="nv">reverse</span><span class="o">=</span><span class="kp">True</span><span class="o">,</span><span class="nv">attribute</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
 <span class="x">    </span><span class="cp">{%</span> <span class="k">if</span> <span class="nb">loop</span><span class="nv">.index0</span> <span class="o">&lt;</span> <span class="m">5</span> <span class="cp">%}</span><span class="x"></span>
 <span class="x">    </span><span class="cp">{{</span> <span class="nv">article.title</span><span class="o">|</span><span class="nf">striptags</span> <span class="cp">}}</span><span class="x"></span>
 <span class="x">    </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
 <span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span><span class="x"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>articleには記事情報全て含まれているので、ループ内で日付"{{ article.date.strftime("%Y %B %d") }}"なども参照できます。</p>
-<h2>Pelican YouTube</h2>
+<h2 id="pelican-youtube">Pelican YouTube</h2>
 <p><a href="https://github.com/kura/pelican_youtube" title="kura/pelican_youtube">kura/pelican_youtube</a></p>
 <p>reStructuredTextのディレクトリに"youtube"を追加します。</p>
-<div class="highlight"><pre><span></span><code><span class="p">..</span> <span class="ow">youtube</span><span class="p">::</span> <span class="nt">&lt;video_id&gt;</span>
+<div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">youtube</span><span class="p">::</span> <span class="nt">&lt;video_id&gt;</span>
 <span class="nc">:width:</span> 800
 <span class="nc">:height:</span> 500
 <span class="nc">:align:</span> center
-</code></pre></div>
+</pre></div>
+
 
 <p>こういう記述が使えます。</p>
-<h1>まとめ</h1>
+<h1 id="_1">まとめ</h1>
 <p>このブログもPelicanのThemeを作成しています。この内容は主にそのときに調べたことをまとめてみました。</p>
 <p>ちなみにこのブログのThemeは以下にあります。</p>
 <p><a href="https://github.com/yymm/mokumoku" title="yymm/mokumoku">yymm/mokumoku</a></p>
@@ -376,7 +402,7 @@ PLUGINS = [&#39;always_modified&#39;, &#39;pelican_youtube&#39;]
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -399,7 +425,7 @@ PLUGINS = [&#39;always_modified&#39;, &#39;pelican_youtube&#39;]
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -429,6 +455,12 @@ PLUGINS = [&#39;always_modified&#39;, &#39;pelican_youtube&#39;]
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

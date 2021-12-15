@@ -54,11 +54,11 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2016-09-05T07:25:34+09:00">
+    <li class="published" title="2016-09-05T07:25:34">
         <span>Date:</span>2016-09-05 月 (午前 07:25:34)
     </li>
         <!--<br />-->
-        <li class="modified" title="2016-09-05T07:28:49+09:00">
+        <li class="modified" title="2016-09-05T07:28:49">
             <span>Updated:</span>2016-09-05 月 (午前 07:28:49)
         </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> </li>
@@ -66,19 +66,20 @@
 </ul>
 </footer><!-- /.post-info -->      <p>幾つかLinuxをインストールした経験がないとGentooのインストールは非常に難しいので、前提として多少の知識がある方がインストールをすると思います。</p>
 <p>ので、コマンドと変更したファイルの内容をずらずらと書いていきます。</p>
-<p>~~色気が...ない...~~</p>
+<p><del>色気が...ない...</del></p>
 <p>インストールメディアは前回作成したUSBメモリを使います。</p>
 <p>前回 =&gt; <a href="http://blog.muuny-blue.info/8a2d334536b2f4146af8cf46acd85110.html" title="下準備 &amp; インストールUSB作成(Macで) : Retry Gentoo 1">下準備 &amp; インストールUSB作成(Macで) : Retry Gentoo 1</a></p>
 <p>※ Gentooのインストールは基本的にコマンド入力で行われるのでひたすらコマンド列挙です</p>
 <p>※ プロンプトの表記はインストールしたのときの実際の表示です</p>
-<h1>0. ネットワーク確認</h1>
-<div class="highlight"><pre><span></span><code>livecd ~ # ifconfig
+<h1 id="0">0. ネットワーク確認</h1>
+<div class="highlight"><pre><span></span>livecd ~ # ifconfig
 livecd ~ # ping -c 3 www.gentoo.org
-</code></pre></div>
+</pre></div>
+
 
 <p>pingが返ってくれば問題なし。</p>
-<h1>1. ディスクの準備</h1>
-<div class="highlight"><pre><span></span><code><span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">parted</span> <span class="o">-</span><span class="nv">a</span> <span class="nv">optimal</span> <span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">sda</span>
+<h1 id="1">1. ディスクの準備</h1>
+<div class="highlight"><pre><span></span><span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">parted</span> <span class="o">-</span><span class="nv">a</span> <span class="nv">optimal</span> <span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">sda</span>
 <span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">print</span>
 <span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">rm</span> <span class="mi">1</span>
 <span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">rm</span> <span class="mi">2</span>
@@ -114,22 +115,25 @@ livecd ~ # ping -c 3 www.gentoo.org
 <span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">mount</span> <span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">sda4</span> <span class="o">/</span><span class="nv">mnt</span><span class="o">/</span><span class="nv">gentoo</span>
 <span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">mkdir</span> <span class="o">/</span><span class="nv">mnt</span><span class="o">/</span><span class="nv">gentoo</span><span class="o">/</span><span class="nv">boot</span>
 <span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">mount</span> <span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">sda2</span> <span class="o">/</span><span class="nv">mnt</span><span class="o">/</span><span class="nv">gentoo</span><span class="o">/</span><span class="nv">boot</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>コマンドの結果はpartedのprintだけ記載しました。</p>
-<h1>2. Kernelの設定/ビルド</h1>
-<div class="highlight"><pre><span></span><code><span class="n">livecd</span> <span class="o">~</span> <span class="c1"># cd /mnt/gentoo</span>
+<h1 id="2-kernel">2. Kernelの設定/ビルド</h1>
+<div class="highlight"><pre><span></span><span class="n">livecd</span> <span class="o">~</span> <span class="c1"># cd /mnt/gentoo</span>
 <span class="n">livecd</span> <span class="n">gentoo</span> <span class="c1"># links https://www.gentoo.org/downloads/mirrors/</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>linksコマンドでテキストブラウザが開きます。ここでstage3のtar.bz2をダウンロードします。目的のファイルを見つけたらdボタンでダウンロード、qでブラウザを終了します。</p>
 <p>stage3-i686-20160830.tar.bz2を近いミラーからダウンロードしました。</p>
-<div class="highlight"><pre><span></span><code>livecd gentoo # tar xvjpf stage3-i686-20160830.tar.bz2 --xattrs
+<div class="highlight"><pre><span></span>livecd gentoo # tar xvjpf stage3-i686-20160830.tar.bz2 --xattrs
 livecd gentoo # nano -w /mnt/gentoo/etc/portage/make.conf
-</code></pre></div>
+</pre></div>
+
 
 <p>/mnt/gentoo/etc/portage/make.confにはMAKEOPT="-j5"を追加しました。</p>
-<div class="highlight"><pre><span></span><code><span class="n">livecd</span> <span class="n">gentoo</span> <span class="c1"># cp -L /etc/resolv.conf /mnt/gentoo/etc/</span>
+<div class="highlight"><pre><span></span><span class="n">livecd</span> <span class="n">gentoo</span> <span class="c1"># cp -L /etc/resolv.conf /mnt/gentoo/etc/</span>
 <span class="n">livecd</span> <span class="n">gentoo</span> <span class="c1"># mount -t proc proc /mnt/gentoo/proc</span>
 <span class="n">livecd</span> <span class="n">gentoo</span> <span class="c1"># mount --rbind /sys /mnt/gentoo/sys</span>
 <span class="n">livecd</span> <span class="n">gentoo</span> <span class="c1"># mount --rbind /dev /mnt/gentoo/dev</span>
@@ -143,52 +147,61 @@ livecd gentoo # nano -w /mnt/gentoo/etc/portage/make.conf
 <span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="c1"># eselect profile set 3</span>
 <span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="c1"># emerge --ask --update --deep --newuse @world</span>
 <span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="c1"># nano -w /etc/portage/make.conf</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>USEフラグの設定は以下のようにしました。</p>
-<div class="highlight"><pre><span></span><code>USE=&quot;-a52 -bluetooth -cdda -cdr -dvd -dvdr -fortran wifi networkmanager&quot;
-</code></pre></div>
+<div class="highlight"><pre><span></span>USE=&quot;-a52 -bluetooth -cdda -cdr -dvd -dvdr -fortran wifi networkmanager&quot;
+</pre></div>
+
 
 <p>"emerge --info | grep ^USE"コマンドでUSEフラグを確認後、"/usr/portage/profiles/use.desc"ファイルでUSEの説明を見ながら調整しました。</p>
-<div class="highlight"><pre><span></span><code>(chroot) livecd / # echo &quot;Asia/Tokyo&quot; &gt; /etc/timezone
+<div class="highlight"><pre><span></span>(chroot) livecd / # echo &quot;Asia/Tokyo&quot; &gt; /etc/timezone
 (chroot) livecd / # emerge --config sys-libs/timezone-data
 (chroot) livecd / # nano -w /etc/locale.gen
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>en_US UTF-8 UTF-8
+
+<div class="highlight"><pre><span></span>en_US UTF-8 UTF-8
 ja_JP UTF-8 UTF-8
-</code></pre></div>
+</pre></div>
+
 
 <p>の2つをコメントアウトしました。</p>
-<div class="highlight"><pre><span></span><code><span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="c1"># locale-gen</span>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="c1"># locale-gen</span>
 <span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="c1"># eselect locale list</span>
 <span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="c1"># eselect locale set 3</span>
 <span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="c1"># env-update &amp;&amp; source /etc/profile &amp;&amp; export PS1=&quot;(chroot) $PS1&quot;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>en_US UTF-8 UTF-8に設定しました。</p>
-<div class="highlight"><pre><span></span><code>(chroot) livecd / # emerge --ask sys-kernel/gentoo-sources
+<div class="highlight"><pre><span></span>(chroot) livecd / # emerge --ask sys-kernel/gentoo-sources
 (chroot) livecd / # cd /usr/src/linux
 (chroot) livecd linux # make menuconfig
-</code></pre></div>
+</pre></div>
+
 
 <p>マニュアルコンフィギュレーションでやってみました。</p>
 <p>64bitのチェックを外して、CPUにIntel ATOMを選択。ファイルシステムでext2を追加しました。</p>
-<div class="highlight"><pre><span></span><code>(chroot) livecd linux # make &amp;&amp; make modules_install
+<div class="highlight"><pre><span></span>(chroot) livecd linux # make &amp;&amp; make modules_install
 (chroot) livecd linux # make install
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>(chroot) livecd linux # emerge --ask sys-kernel/linux-firmware
+
+<div class="highlight"><pre><span></span>(chroot) livecd linux # emerge --ask sys-kernel/linux-firmware
 (chroot) livecd linux # nano -w /etc/fstab
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>BOOT =&gt; sda2
+
+<div class="highlight"><pre><span></span>BOOT =&gt; sda2
 ROOT =&gt; sda4 (ext3をext4に)
 SWAP =&gt; sda3
-</code></pre></div>
+</pre></div>
+
 
 <p>ネットワークを設定します。</p>
-<div class="highlight"><pre><span></span><code>(chroot) livecd linux # nano -w /etc/conf.d/hostname
+<div class="highlight"><pre><span></span>(chroot) livecd linux # nano -w /etc/conf.d/hostname
 (chroot) livecd linux # emerge --ask --noreplace net-misc/netifrc
 (chroot) livecd linux # nano -w /etc/conf.d/net
 (chroot) livecd linux # cd /etc/init.d
@@ -196,33 +209,37 @@ SWAP =&gt; sda3
 (chroot) livecd init.d # rc-update add net.enp4s0 default
 (chroot) livecd init.d # nano -w /etc/hosts
 (chroot) livecd init.d # emerge --ask net-misc/dhcpcd
-</code></pre></div>
+</pre></div>
+
 
 <p>NIC名などはハードによって異なると思いますので、則した名前で設定します。</p>
-<div class="highlight"><pre><span></span><code>(chroot) livecd init.d # passwd
+<div class="highlight"><pre><span></span>(chroot) livecd init.d # passwd
 (chroot) livecd init.d # emerge --ask app-admin/sysklogd
 (chroot) livecd init.d # rc-update add sysklogd default
-</code></pre></div>
+</pre></div>
 
-<h1>4. grubのインストール、そして再起動</h1>
-<div class="highlight"><pre><span></span><code>(chroot) livecd init.d # emerge --ask sys-boot/grub:2
+
+<h1 id="4-grub">4. grubのインストール、そして再起動</h1>
+<div class="highlight"><pre><span></span>(chroot) livecd init.d # emerge --ask sys-boot/grub:2
 (chroot) livecd init.d # grub-install /dev/sda
 (chroot) livecd init.d # grub-mkconfig -o /boot/grub/grub.cfg
 Generating grub configuration file ...
 Found linux image: /boot/vmlinuz-4.4.6-gentoo
 done
-</code></pre></div>
+</pre></div>
+
 
 <p>Found linux imageとなっていればokです。</p>
-<div class="highlight"><pre><span></span><code><span class="ss">(</span><span class="nv">chroot</span><span class="ss">)</span> <span class="nv">livecd</span> <span class="nv">init</span>.<span class="nv">d</span> # <span class="k">exit</span>
+<div class="highlight"><pre><span></span><span class="ss">(</span><span class="nv">chroot</span><span class="ss">)</span> <span class="nv">livecd</span> <span class="nv">init</span>.<span class="nv">d</span> # <span class="k">exit</span>
 <span class="nv">livecd</span> <span class="nv">gentoo</span> # <span class="nv">cd</span>
 <span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">umount</span> <span class="o">-</span><span class="nv">l</span> <span class="o">/</span><span class="nv">mnt</span><span class="o">/</span><span class="nv">gentoo</span><span class="o">/</span><span class="nv">dev</span>{<span class="o">/</span><span class="nv">shm</span>,<span class="o">/</span><span class="nv">pts</span>,}
 <span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">umount</span> <span class="o">/</span><span class="nv">mnt</span><span class="o">/</span><span class="nv">gentoo</span>{<span class="o">/</span><span class="nv">boot</span>,<span class="o">/</span><span class="nv">sys</span>,<span class="o">/</span><span class="nv">proc</span>,}
 <span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">reboot</span>
-</code></pre></div>
+</pre></div>
 
-<h1>最後に</h1>
-<p><img alt="" src="https://pbs.twimg.com/media/CrkOSHkUEAE7EGl.jpg"></p>
+
+<h1 id="_1">最後に</h1>
+<p><img alt="" src="https://pbs.twimg.com/media/CrkOSHkUEAE7EGl.jpg" /></p>
 <p>インストールできました！</p>
 <p>しかし、起動時にエラーがｯ...!!?</p>
 <p>...</p>
@@ -404,7 +421,7 @@ done
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -427,7 +444,7 @@ done
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -457,6 +474,12 @@ done
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

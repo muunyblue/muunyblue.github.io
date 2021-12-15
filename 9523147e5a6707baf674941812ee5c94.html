@@ -54,7 +54,7 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2015-11-12T07:43:08+09:00">
+    <li class="published" title="2015-11-12T07:43:08">
         <span>Date:</span>2015-11-12 木 (午前 07:43:08)
     </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/python.html">Python</a> <a href="https://muunyblue.github.io/tag/ci.html">CI</a> </li>
@@ -62,11 +62,11 @@
 </ul>
 </footer><!-- /.post-info -->      <p>Pythonのプロジェクトでtoxを使って複数PythonバージョンでTravisCIしてCoverallsを使う方法です。</p>
 <p>手元ではPython3.5で開発して、2.xでも動くのかな？Coverageは大丈夫かな？という想いを全てをgit pushにのせていくスタイルです。</p>
-<h1>tox + TravisCI</h1>
+<h1 id="tox-travisci">tox + TravisCI</h1>
 <p>toxを使ってPython2.7, 3.3, 3.4でテストする".travis.yml"と"tox.ini"です。</p>
 <p>testsディレクトリにテストが用意してあって、テストツールにはpytestを使っています。</p>
 <p>.travis.yml</p>
-<div class="highlight"><pre><span></span><code><span class="n">language</span><span class="o">:</span> <span class="n">python</span>
+<div class="highlight"><pre><span></span><span class="n">language</span><span class="o">:</span> <span class="n">python</span>
 
 <span class="n">env</span><span class="o">:</span>
   <span class="o">-</span> <span class="n">TOXENV</span><span class="o">=</span><span class="n">py27</span>
@@ -77,10 +77,11 @@
   <span class="o">-</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">tox</span> 
 
 <span class="n">script</span><span class="o">:</span> <span class="n">tox</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>tox.ini</p>
-<div class="highlight"><pre><span></span><code><span class="k">[tox]</span>
+<div class="highlight"><pre><span></span><span class="k">[tox]</span>
 <span class="na">envlist</span> <span class="o">=</span> <span class="s">py{27,33,34}</span>
 
 <span class="k">[testenv]</span>
@@ -92,19 +93,23 @@
     <span class="na">pytest</span>
 <span class="na">commands</span> <span class="o">=</span>
     <span class="na">py.test tests</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>TravisCIでリポジトリを有効してpushするとそれぞれのPythonでテストが始まります。</p>
 <p>PyPIに登録してあるパッケージを、toxでテストするとShields.ioでいい感じのバッジを作れます。</p>
-<p><a href=""><img alt="PyPI" src="https://img.shields.io/pypi/pyversions/Django.svg"></a></p>
+<p><a href=""><img alt="PyPI" src="https://img.shields.io/pypi/pyversions/Django.svg" /></a></p>
 <p>READMEに貼ってあるとわかりやすくて良い感じです。</p>
-<h1>TravisCI + Coveralls</h1>
+<h1 id="travisci-coveralls">TravisCI + Coveralls</h1>
 <p>TravisCIのテストが成功したときCoverallsにカバレッジさせるようにします。</p>
 <p>PythonにはCoverallsのパッケージがあるのでこれを使うことで.travis.ymlに設定を追加するだけでCoverallsを使えます。</p>
 <p>Coverallsの公式ドキュメントでも紹介されています(<a href="https://coveralls.zendesk.com/hc/en-us/articles/201342869-Python" title="Python – Coveralls">Python – Coveralls</a>)。</p>
-<p>[https://github.com/coagulant/coveralls-python:embed]</p>
+<p>
+<a class="embedly-card" href="https://github.com/coagulant/coveralls-python">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>Coverallsに対応した.travis.ymlの内容です。</p>
-<div class="highlight"><pre><span></span><code><span class="n">language</span><span class="o">:</span> <span class="n">python</span>
+<div class="highlight"><pre><span></span><span class="n">language</span><span class="o">:</span> <span class="n">python</span>
 
 <span class="n">env</span><span class="o">:</span>
   <span class="o">-</span> <span class="n">TOXENV</span><span class="o">=</span><span class="n">py27</span>
@@ -121,10 +126,11 @@
     <span class="o">-</span> <span class="n">coverage</span> <span class="n">report</span> <span class="o">-</span><span class="n">m</span>
 
 <span class="n">after_success</span><span class="o">:</span> <span class="n">coveralls</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>Coverallsでリポジトリを有効にしておけば、TravisCIで成功後にCoverallsが走ります。</p>
-<h1>まとめ</h1>
+<h1 id="_1">まとめ</h1>
 <p>ローカルでtoxの用意したり、カバレッジを確認するのが面倒な方にはこの方法いいかもしれません。</p>
     </div><!-- /.entry-content -->
 
@@ -300,7 +306,7 @@
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -323,7 +329,7 @@
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -353,6 +359,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

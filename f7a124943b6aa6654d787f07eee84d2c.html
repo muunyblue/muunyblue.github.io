@@ -54,11 +54,11 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2016-12-08T10:02:09+09:00">
+    <li class="published" title="2016-12-08T10:02:09">
         <span>Date:</span>2016-12-08 木 (午前 10:02:09)
     </li>
         <!--<br />-->
-        <li class="modified" title="2016-12-08T21:54:32+09:00">
+        <li class="modified" title="2016-12-08T21:54:32">
             <span>Updated:</span>2016-12-08 木 (午後 09:54:32)
         </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> <a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> </li>
@@ -67,21 +67,37 @@
 </footer><!-- /.post-info -->      <p>この記事は、<a href="http://qiita.com/advent-calendar/2016/threejs" title="Three.js Advent Calendar 2016 - Qiita">Three.js Advent Calendar 2016</a> 9日目の記事です。</p>
 <p>たまたま空いていたので、<a href="http://www.adventar.org/calendars/1454#list-2016-12-05" title="まんがタイムきらら Advent Calendar 2016 - Adventar">まんがタイムきらら Advent Calendar 2016</a> 9日目の記事でもありますが、きらら成分はステラのまほうのアニメ(しかもエンディングだけ)となっていますので気をつけてください。</p>
 <p>✗目次</p>
-<p>[TOC]</p>
-<hr>
+<div class="toc">
+<ul>
+<li><a href="#threejs">何でThree.js?</a></li>
+<li><a href="#_1">はじめの一歩</a></li>
+<li><a href="#_2">四角を表示する</a></li>
+<li><a href="#_3">四角を増やす</a></li>
+<li><a href="#_4">ランダムにいっぱいの四角を表示する</a></li>
+<li><a href="#_5">カラフルにする</a></li>
+<li><a href="#_6">カメラを動かす</a></li>
+<li><a href="#_7">微調整</a></li>
+<li><a href="#_8">背景アニメーション</a></li>
+<li><a href="#_9">最後に</a></li>
+</ul>
+</div>
+<hr />
 <p>仕事の疲れをステラのまほうで癒やしているとき、エンディングのヨナカジカルを見ているとWebGLでやれそうだなぁ...となったので仕事の息抜きにやってみた話です。</p>
 <p>普段からWebGL触っている系の職種ではないため過度な期待はしないで下さい。</p>
 <p>結果として以下のようなものが出来上がります。</p>
-<p>[https://twitter.com/y_y_m_m/status/791193793831706624:embed]</p>
+<p>
+<a class="embedly-card" href="https://twitter.com/y_y_m_m/status/791193793831706624">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>Demo =&gt; <a href="https://yymm.github.io/Yonakajikaru/" title="Yonakajikaru">Yonakajikaru</a></p>
 <p>Repo =&gt; <a href="https://github.com/yymm/Yonakajikaru" title="yymm/Yonakajikaru: https://yymm.github.io/Yonakajikaru/">yymm/Yonakajikaru</a></p>
-<h1>何でThree.js?</h1>
+<h1 id="threejs">何でThree.js?</h1>
 <p>WebGLレンダリングもでき、APIがわかりやすいという印象を受けたので採用しました。</p>
-<h1>はじめの一歩</h1>
+<h1 id="_1">はじめの一歩</h1>
 <p>基本的に公式のドキュメントを参考にして作っていきました。</p>
 <p><a href="https://threejs.org/docs/index.html#Manual/Introduction/Creating_a_scene" title="three.js - documentation - Manual - Creating a scene">three.js - documentation - Manual - Creating a scene</a></p>
 <p>上記のドキュメントの最後に書いてあるhtmlとjavascript部分をちょっといじってファイルにしたものです。</p>
-<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>My first Three.js app<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
@@ -94,9 +110,10 @@
     <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;js/app.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
   <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="kd">const</span> <span class="nx">scene</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Scene</span><span class="p">();</span>
+
+<div class="highlight"><pre><span></span><span class="kd">const</span> <span class="nx">scene</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Scene</span><span class="p">();</span>
 <span class="kd">const</span> <span class="nx">camera</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">PerspectiveCamera</span><span class="p">(</span> <span class="mf">75</span><span class="p">,</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span><span class="o">/</span><span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1000</span> <span class="p">);</span>
 
 <span class="kd">const</span> <span class="nx">renderer</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">WebGLRenderer</span><span class="p">();</span>
@@ -118,36 +135,38 @@
 <span class="p">};</span>
 
 <span class="nx">render</span><span class="p">();</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>index.htmlをブラウザで見てみると緑のcubeがぐるぐるしているのがみえるはずです。</p>
 <p>このサンプルコードをベースに作っていきます。</p>
-<h1>四角を表示する</h1>
+<h1 id="_2">四角を表示する</h1>
 <p>表示したいのはただの四角形なので四角形をドキュメントから探します。</p>
 <p>図形はGeometriesにあり、PlaneGeometoryかPlaneBufferGeometryを使えば四角形を表示できるようです。</p>
 <p><a href="https://threejs.org/docs/index.html#Reference/Geometries/PlaneGeometry" title="three.js - documentation - Reference - PlaneGeometry">three.js - documentation - Reference - PlaneGeometry</a></p>
 <blockquote>
 <p>PlaneGeometry(width, height, widthSegments, heightSegments)</p>
-<p>width — Width along the X axis.
-height — Height along the Y axis.
-widthSegments — Optional. Default is 1.
+<p>width — Width along the X axis.<br />
+height — Height along the Y axis.<br />
+widthSegments — Optional. Default is 1.<br />
 heightSegments — Optional. Default is 1. </p>
 </blockquote>
 <p>BoxGeometryをPlaneGeometryに差替えます、引数は必要なものだけBoxGeometryを同じ値で設定します。</p>
-<div class="highlight"><pre><span></span><code><span class="gd">- const geometry = new THREE.BoxGeometry( 1, 1, 1 );</span>
+<div class="highlight"><pre><span></span><span class="gd">- const geometry = new THREE.BoxGeometry( 1, 1, 1 );</span>
 <span class="gi">+ const geometry = new THREE.PlaneGeometry( 1, 1 );</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>引数はwidth,heightなので1×1の四角になります。</p>
-<hr>
+<hr />
 <p>普通のGeometryかBufferGeometryのどちらを使えばいいのか判断するためBufferGeometryのドキュメントを読みました。</p>
 <p><a href="https://threejs.org/docs/index.html#Reference/Core/BufferGeometry" title="three.js - documentation - Reference - BufferGeometry">three.js - documentation - Reference - BufferGeometry</a></p>
 <p>BufferGeometryはGeometryよりも効率的だけど扱いが大変で、シェーダーなど使う場合はBufferGeomerty一択になるようです。</p>
 <p>今回は複雑な使い方しないの+いっぱい四角を表示するのでGPU効率の良いBufferGeometryを使うことにします。</p>
-<h1>四角を増やす</h1>
+<h1 id="_3">四角を増やす</h1>
 <p>愚直にfor文をぶん回す方法で増やてみます、ひとつひとつ図形(Mesh:geometryとmaterial)を作ってSceneに追加していく方法です。</p>
 <p>図形の位置はMeshのpositionを変更することで移動できます。positionのデフォルト値は(x,y,z)=(0,0,0)です。</p>
-<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mf">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mf">3</span><span class="p">;</span> <span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mf">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mf">3</span><span class="p">;</span> <span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">geometry</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">PlaneBufferGeometry</span><span class="p">(</span> <span class="mf">1</span><span class="p">,</span> <span class="mf">1</span> <span class="p">);</span>
   <span class="kd">const</span> <span class="nx">material</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">MeshBasicMaterial</span><span class="p">(</span> <span class="p">{</span> <span class="nx">color</span><span class="o">:</span> <span class="mh">0x00ff00</span> <span class="p">}</span> <span class="p">);</span>
   <span class="kd">const</span> <span class="nx">plane</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Mesh</span><span class="p">(</span> <span class="nx">geometry</span><span class="p">,</span> <span class="nx">material</span> <span class="p">);</span>
@@ -155,18 +174,19 @@ heightSegments — Optional. Default is 1. </p>
   <span class="nx">plane</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
   <span class="nx">scene</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span> <span class="nx">plane</span> <span class="p">);</span>
 <span class="p">}</span>
-</code></pre></div>
+</pre></div>
 
-<p><img alt="086da7fe3c4a4a75e6f4971f09076019.png" src="https://i.gyazo.com/086da7fe3c4a4a75e6f4971f09076019.png"></p>
+
+<p><img alt="086da7fe3c4a4a75e6f4971f09076019.png" src="https://i.gyazo.com/086da7fe3c4a4a75e6f4971f09076019.png" /></p>
 <p>増えましたが、効率悪そうです。</p>
 <p><a href="http://blog.tsumikiinc.com/article/20160225_threejs-points.html" title="three.js製パーティクルシステムの実装 | 技術コラム | つみきブログ">three.js製パーティクルシステムの実装 | 技術コラム | つみきブログ</a></p>
 <p>上記のブログにあるようにgeometryで四角いパーティクルを作ってシェーダーで色や動きをつけていくほうが効率的なように思えますが今後の課題とします。(パフォーマンスの測定方法とかも知らないのでこれも課題)</p>
-<h1>ランダムにいっぱいの四角を表示する</h1>
+<h1 id="_4">ランダムにいっぱいの四角を表示する</h1>
 <p>まず表示する範囲について考えます。</p>
 <p>エンディングでカメラが動いた時に横にも四角が広がっているように見えるので、見えている範囲より広め(表示範囲の２倍くらい)に分布するようにします。</p>
 <p>各話でエンディングムービーが若干異なりますが一話のエンディングの感じだと相当奥まで多くの四角が広がっているのでz方向が深めにとったほうが良さそうです。</p>
 <p>以上を踏まえてxy方向、z方向についてカメラの範囲と位置や四角の大きさ、表示範囲を調整します。</p>
-<div class="highlight"><pre><span></span><code><span class="kd">const</span> <span class="nx">scene</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Scene</span><span class="p">();</span>
+<div class="highlight"><pre><span></span><span class="kd">const</span> <span class="nx">scene</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Scene</span><span class="p">();</span>
 <span class="kd">const</span> <span class="nx">far</span> <span class="o">=</span> <span class="mf">10000</span><span class="p">;</span>
 <span class="kd">const</span> <span class="nx">camera</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">PerspectiveCamera</span><span class="p">(</span> <span class="mf">75</span><span class="p">,</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span><span class="o">/</span><span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="nx">far</span> <span class="p">);</span>
 
@@ -199,16 +219,17 @@ heightSegments — Optional. Default is 1. </p>
 <span class="p">};</span>
 
 <span class="nx">render</span><span class="p">();</span>
-</code></pre></div>
+</pre></div>
 
-<p><img alt="c2972efba2b732c68eb3e0c437ebb5f8.png" src="https://i.gyazo.com/c2972efba2b732c68eb3e0c437ebb5f8.png"></p>
+
+<p><img alt="c2972efba2b732c68eb3e0c437ebb5f8.png" src="https://i.gyazo.com/c2972efba2b732c68eb3e0c437ebb5f8.png" /></p>
 <p>いい感じです、コードの説明をします。</p>
 <p>まずカメラですが、ドキュメントを確認すると引数は以下のようになっています。</p>
 <blockquote>
 <p>PerspectiveCamera( fov, aspect, near, far )</p>
-<p>fov — Camera frustum vertical field of view.
-aspect — Camera frustum aspect ratio.
-near — Camera frustum near plane.
+<p>fov — Camera frustum vertical field of view.<br />
+aspect — Camera frustum aspect ratio.<br />
+near — Camera frustum near plane.<br />
 far — Camera frustum far plane. </p>
 </blockquote>
 <p>fov(画角)を広げるか、frustum(円錐)を広げるか迷いますが、frustumのfarを変更するほうが直感的に分かりやすかったのでfovはサンプルコードの初期値のままにしました。</p>
@@ -216,59 +237,63 @@ far — Camera frustum far plane. </p>
 <p>(fovやfrustumなど全く聞き慣れない単語なので検索ないとよくわからなかったです。<a href="https://ja.wikipedia.org/wiki/%E7%94%BB%E8%A7%92" title="画角 - Wikipedia">画角 - Wikipedia</a>や<a href="http://r-dimension.xsrv.jp/classes_j/6_interactive3d/" title="6. カメラ（processing 3D入門） | Yasushi Noguchi Class">6. カメラ（processing 3D入門） | Yasushi Noguchi Class</a>などを参考にしました。)</p>
 <p>四角の位置はランダムに配置するようにします、x,y,z方向で範囲が違うので任意の範囲で乱数生成しています。サイズは1のままだと近いものしか見えないので適度な大きさ(50)にしています。個数は1000個にしてますがカメラをもっと離して個数をもっと増やすと賑やかしくなりそうです。</p>
 <p>(ちなみに、はじめのうちは調整する感覚がつかめず真っ黒な画面になることが多かったです、値を変更しながらイメージして試行錯誤してこの値になってます。)</p>
-<h1>カラフルにする</h1>
+<h1 id="_5">カラフルにする</h1>
 <p>色などはmaterialで設定します。</p>
 <ul>
 <li><a href="https://threejs.org/docs/index.html#Reference/Materials/MeshBasicMaterial" title="three.js - documentation - Reference - MeshBasicMaterial">three.js - documentation - Reference - MeshBasicMaterial</a></li>
 <li><a href="https://threejs.org/docs/index.html#Reference/Materials/Material" title="three.js - documentation - Reference - Material">three.js - documentation - Reference - Material</a></li>
 </ul>
 <p>透過も一緒に設定します。</p>
-<div class="highlight"><pre><span></span><code>  <span class="kd">const</span> <span class="nx">color</span> <span class="o">=</span> <span class="s2">&quot;#000000&quot;</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/0/g</span><span class="p">,</span><span class="kd">function</span><span class="p">(){</span><span class="k">return</span> <span class="p">(</span><span class="o">~~</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mf">16</span><span class="p">)).</span><span class="nx">toString</span><span class="p">(</span><span class="mf">16</span><span class="p">);});</span>
+<div class="highlight"><pre><span></span>  <span class="kd">const</span> <span class="nx">color</span> <span class="o">=</span> <span class="s2">&quot;#000000&quot;</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/0/g</span><span class="p">,</span><span class="kd">function</span><span class="p">(){</span><span class="k">return</span> <span class="p">(</span><span class="o">~~</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mf">16</span><span class="p">)).</span><span class="nx">toString</span><span class="p">(</span><span class="mf">16</span><span class="p">);});</span>
   <span class="kd">const</span> <span class="nx">material</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">MeshBasicMaterial</span><span class="p">(</span> <span class="p">{</span> <span class="nx">color</span><span class="o">:</span> <span class="nx">color</span><span class="p">,</span> <span class="nx">transparent</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">opacity</span><span class="o">:</span> <span class="mf">0.6</span> <span class="p">}</span> <span class="p">);</span>
-</code></pre></div>
+</pre></div>
 
-<p><img alt="247da044b6db69d7c707ab76c1ac7fcc.png" src="https://i.gyazo.com/247da044b6db69d7c707ab76c1ac7fcc.png"></p>
+
+<p><img alt="247da044b6db69d7c707ab76c1ac7fcc.png" src="https://i.gyazo.com/247da044b6db69d7c707ab76c1ac7fcc.png" /></p>
 <p>それっぽい感じになってきました。ちょっと変更するだけでそれっぽくなってテンションが上がります。</p>
 <p>fovを2倍、個数を5倍にして賑やかしさも上げました、PCのファンも回り出します。</p>
 <p>HEXを作っているコードはstackoverflowから拾ってきたものです(URLは忘れてしまいました...)</p>
-<h1>カメラを動かす</h1>
+<h1 id="_6">カメラを動かす</h1>
 <p>アニメーションは最後の方にあるrenderの関数内に記述します。</p>
 <p>とりあえず、cameraのz方向を小さくしていくと近づいていきます。</p>
-<div class="highlight"><pre><span></span><code><span class="kd">const</span> <span class="nx">render</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="kd">const</span> <span class="nx">render</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
   <span class="nx">requestAnimationFrame</span><span class="p">(</span> <span class="nx">render</span> <span class="p">);</span>
   <span class="nx">camera</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span> <span class="o">-=</span> <span class="mf">4.0</span><span class="p">;</span>
   <span class="nx">renderer</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="nx">scene</span><span class="p">,</span> <span class="nx">camera</span><span class="p">);</span>
 <span class="p">};</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>xy方向はカメラが回転している感じに動いているので、mousemoveイベントを追加してカメラを連動させてみます。</p>
-<div class="highlight"><pre><span></span><code><span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span> <span class="s1">&#39;mousemove&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span> <span class="s1">&#39;mousemove&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">const</span> <span class="nx">x</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span> <span class="o">/</span> <span class="mf">2</span> <span class="o">-</span> <span class="nx">event</span><span class="p">.</span><span class="nx">clientX</span><span class="p">;</span>
   <span class="kd">const</span> <span class="nx">y</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span> <span class="o">/</span> <span class="mf">2</span> <span class="o">-</span> <span class="nx">event</span><span class="p">.</span><span class="nx">clientY</span><span class="p">;</span>
   <span class="nx">camera</span><span class="p">.</span><span class="nx">rotation</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">y</span> <span class="o">/</span> <span class="mf">500</span><span class="p">;</span>
   <span class="nx">camera</span><span class="p">.</span><span class="nx">rotation</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">/</span> <span class="mf">500</span><span class="p">;</span>
 <span class="p">}</span> <span class="p">);</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>画面中心を(0,0)としてマウスの方向に連動(x,yの指定が逆)して動くように設定しています。</p>
 <p>rotationは角度(rad)で指定するため大きい数で割らないとぶっ飛んで行くので注意です。</p>
-<hr>
-<p>カメラを回転して気づくことですが、通り過ぎていった四角を後ろから見ようとすると見えません何故か消えてなくなっています。これはMaterialのsideがデフォルトでTHREE.FrontSideになっており表しか見えなかったためです。T
+<hr />
+<p>カメラを回転して気づくことですが、通り過ぎていった四角を後ろから見ようとすると見えません何故か消えてなくなっています。これはMaterialのsideがデフォルトでTHREE.FrontSideになっており表しか見えなかったためです。T<br />
 HREE.DoubleSideを指定すると通り過ぎていった四角も見えるようになります。</p>
 <p><a href="https://threejs.org/docs/index.html#Reference/Materials/Material" title="three.js - documentation - Reference - Material">three.js - documentation - Reference - Material</a></p>
-<div class="highlight"><pre><span></span><code>  <span class="kd">const</span> <span class="nx">material</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">MeshBasicMaterial</span><span class="p">(</span> <span class="p">{</span> <span class="nx">color</span><span class="o">:</span> <span class="nx">color</span><span class="p">,</span> <span class="nx">side</span><span class="o">:</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">DoubleSide</span><span class="p">,</span> <span class="nx">transparent</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">opacity</span><span class="o">:</span> <span class="mf">0.8</span> <span class="p">}</span> <span class="p">);</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span>  <span class="kd">const</span> <span class="nx">material</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">MeshBasicMaterial</span><span class="p">(</span> <span class="p">{</span> <span class="nx">color</span><span class="o">:</span> <span class="nx">color</span><span class="p">,</span> <span class="nx">side</span><span class="o">:</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">DoubleSide</span><span class="p">,</span> <span class="nx">transparent</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">opacity</span><span class="o">:</span> <span class="mf">0.8</span> <span class="p">}</span> <span class="p">);</span>
+</pre></div>
+
 
 <p>マウスに連動してカメラがぐるぐるしている様子です。</p>
-<p><img alt="3f70de403256df94b5ca5130de4c5ec8.gif" src="https://i.gyazo.com/3f70de403256df94b5ca5130de4c5ec8.gif"></p>
-<h1>微調整</h1>
+<p><img alt="3f70de403256df94b5ca5130de4c5ec8.gif" src="https://i.gyazo.com/3f70de403256df94b5ca5130de4c5ec8.gif" /></p>
+<h1 id="_7">微調整</h1>
 <ul>
 <li>回転済みの四角作成</li>
 <li>スピードチェンジ機能</li>
 <li>その他微調整</li>
 </ul>
 <p>以下これまでの内容のapp.jsです。</p>
-<div class="highlight"><pre><span></span><code><span class="kd">const</span> <span class="nx">scene</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Scene</span><span class="p">();</span>
+<div class="highlight"><pre><span></span><span class="kd">const</span> <span class="nx">scene</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Scene</span><span class="p">();</span>
 <span class="kd">const</span> <span class="nx">far</span> <span class="o">=</span> <span class="mf">20000</span><span class="p">;</span>
 <span class="kd">const</span> <span class="nx">camera</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">PerspectiveCamera</span><span class="p">(</span> <span class="mf">75</span><span class="p">,</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span><span class="o">/</span><span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="nx">far</span> <span class="p">);</span>
 
@@ -338,16 +363,17 @@ HREE.DoubleSideを指定すると通り過ぎていった四角も見えるよ�
 <span class="p">};</span>
 
 <span class="nx">render</span><span class="p">();</span>
-</code></pre></div>
+</pre></div>
 
-<p><img alt="519d6baa7dfb2a8568851e968d7d3f1c.gif" src="https://i.gyazo.com/519d6baa7dfb2a8568851e968d7d3f1c.gif"></p>
+
+<p><img alt="519d6baa7dfb2a8568851e968d7d3f1c.gif" src="https://i.gyazo.com/519d6baa7dfb2a8568851e968d7d3f1c.gif" /></p>
 <p>左ドラッグするとｷﾞｭｰﾝと近づきます。すごいそれっぽい。</p>
 <p>透過と角度をランダムに指定しているのでキラキラ感が増した気がします。</p>
-<h1>背景アニメーション</h1>
+<h1 id="_8">背景アニメーション</h1>
 <p>背景の色はrendererのsetClearColorで変更できます。</p>
 <p><a href="https://threejs.org/docs/index.html?q=render#Reference/Renderers/WebGLRenderer" title="three.js - documentation - Reference - WebGLRenderer">three.js - documentation - Reference - WebGLRenderer</a></p>
 <p>いい方法が思いつかないので非常に雑に白にしてみます。</p>
-<div class="highlight"><pre><span></span><code><span class="kd">const</span> <span class="nx">fadeColor</span> <span class="o">=</span> <span class="p">[</span> <span class="mh">0xffffff</span><span class="p">,</span> <span class="mh">0xdddddd</span><span class="p">,</span> <span class="mh">0xbbbbbb</span><span class="p">,</span> <span class="mh">0x555555</span><span class="p">,</span> <span class="mh">0x333333</span><span class="p">,</span> <span class="mh">0x111111</span> <span class="p">];</span>
+<div class="highlight"><pre><span></span><span class="kd">const</span> <span class="nx">fadeColor</span> <span class="o">=</span> <span class="p">[</span> <span class="mh">0xffffff</span><span class="p">,</span> <span class="mh">0xdddddd</span><span class="p">,</span> <span class="mh">0xbbbbbb</span><span class="p">,</span> <span class="mh">0x555555</span><span class="p">,</span> <span class="mh">0x333333</span><span class="p">,</span> <span class="mh">0x111111</span> <span class="p">];</span>
 
 <span class="kd">const</span> <span class="nx">render</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
   <span class="nx">requestAnimationFrame</span><span class="p">(</span> <span class="nx">render</span> <span class="p">);</span>
@@ -360,19 +386,20 @@ HREE.DoubleSideを指定すると通り過ぎていった四角も見えるよ�
   <span class="k">if</span> <span class="p">(</span><span class="nx">camera</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span> <span class="o">==</span> <span class="mf">14850</span><span class="p">)</span> <span class="p">{</span> <span class="nx">renderer</span><span class="p">.</span><span class="nx">setClearColor</span><span class="p">(</span><span class="nx">fadeColor</span><span class="p">[</span><span class="mf">5</span><span class="p">],</span> <span class="mf">1.0</span><span class="p">);</span> <span class="p">}</span>
   <span class="nx">renderer</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="nx">scene</span><span class="p">,</span> <span class="nx">camera</span><span class="p">);</span>
 <span class="p">};</span>
-</code></pre></div>
+</pre></div>
 
-<p><img alt="c7b46473622af8697026e5ea01a61de4.gif" src="https://i.gyazo.com/c7b46473622af8697026e5ea01a61de4.gif"></p>
+
+<p><img alt="c7b46473622af8697026e5ea01a61de4.gif" src="https://i.gyazo.com/c7b46473622af8697026e5ea01a61de4.gif" /></p>
 <p>雑ですが動いたのでok.....</p>
-<h1>最後に</h1>
+<h1 id="_9">最後に</h1>
 <p>サンプルコードをベースにして、コードを書く側としては無理なく作ってみました(ブラウザやGPUやCPUは無理してるかもしれません)。</p>
 <p>普段ビジュアル的なプログラミングをしていない自分でも手軽にリッチな表現を扱えるThree.jsは面白いと感じました。</p>
 <p>(欲を言えば音楽や星形や図形のアニメーションもやりたかったのですが仕事の息抜きの範疇を超え始めるので断念しました無念。)</p>
 <p>余裕があれば最適なコードを勉強していきたい所存なので、有識者の方アドバイスあれば是非に。</p>
-<hr>
+<hr />
 <p>もともと<a href="http://www.adventar.org/calendars/1454#list-2016-12-05" title="まんがタイムきらら Advent Calendar 2016 - Adventar">まんがタイムきらら Advent Calendar 2016</a>の参加予定はなかったのですが、たまたま空いていたので急遽入れてみました。</p>
 <p>きららアニメには毎期癒やされていますが、ステラのまほうは癒やし効果とプログラミングのモチベーション向上効果があって最高です、みなさん癒やされてプログラミングがんばりましょう。</p>
-<p><img alt="a47ec6591fa0030818008a1dda344f5d.png" src="https://i.gyazo.com/a47ec6591fa0030818008a1dda344f5d.png"></p>
+<p><img alt="a47ec6591fa0030818008a1dda344f5d.png" src="https://i.gyazo.com/a47ec6591fa0030818008a1dda344f5d.png" /></p>
     </div><!-- /.entry-content -->
 
     <div class="article-ad">
@@ -547,7 +574,7 @@ HREE.DoubleSideを指定すると通り過ぎていった四角も見えるよ�
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -570,7 +597,7 @@ HREE.DoubleSideを指定すると通り過ぎていった四角も見えるよ�
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -600,6 +627,12 @@ HREE.DoubleSideを指定すると通り過ぎていった四角も見えるよ�
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

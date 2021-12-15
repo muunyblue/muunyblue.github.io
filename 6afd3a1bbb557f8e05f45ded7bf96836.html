@@ -54,50 +54,55 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2017-01-23T01:48:13+09:00">
+    <li class="published" title="2017-01-23T01:48:13">
         <span>Date:</span>2017-01-23 月 (午前 01:48:13)
     </li>
         <!--<br />-->
-        <li class="modified" title="2017-01-23T01:52:28+09:00">
+        <li class="modified" title="2017-01-23T01:52:28">
             <span>Updated:</span>2017-01-23 月 (午前 01:52:28)
         </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/python.html">Python</a> <a href="https://muunyblue.github.io/tag/vim.html">Vim</a> <a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
-</footer><!-- /.post-info -->      <p><img alt="" src="https://i.gyazo.com/675774830708de1e6282eaa2ecc577dd.gif"></p>
+</footer><!-- /.post-info -->      <p><img alt="" src="https://i.gyazo.com/675774830708de1e6282eaa2ecc577dd.gif" /></p>
 <p>型付きPythonは静的型解析ツールであるmypyによる検査と、jediによる補完が効くという開発に役立つ便利な恩恵があります。</p>
 <p>実行時には(まだ)型の恩恵はないですが始めるには十分な恩恵だと感じたので始めてみました。</p>
-<hr>
+<hr />
 <p>venvとmypyを使うので、Python3と言ってもPython3.5(現在の最新版)を使います。</p>
 <p>スタイルチェックにはflake8を使用します。</p>
-<h1>Vim(Neovim)の準備</h1>
-<div class="highlight"><pre><span></span><code>:echo has(&#39;python&#39;)
-</code></pre></div>
+<h1 id="vimneovim">Vim(Neovim)の準備</h1>
+<div class="highlight"><pre><span></span>:echo has(&#39;python&#39;)
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>:echo has(&#39;python3&#39;)
-</code></pre></div>
+
+<div class="highlight"><pre><span></span>:echo has(&#39;python3&#39;)
+</pre></div>
+
 
 <p>コマンドが1を返すことを確認します。もし0の場合は、Pythonを有効にします(有効にする方法は"vim python 有効"で検索)。</p>
-<h1>Python3.5のインストール</h1>
+<h1 id="python35">Python3.5のインストール</h1>
 <p>※Python3.6も出るみたいなので適宜その時の最新版をインストールしてください</p>
 <p>パッケージマネージャーでインストールするとPython3.5が入って便利かつ簡単です。</p>
 <p>macOS</p>
-<div class="highlight"><pre><span></span><code>$ brew install python3
+<div class="highlight"><pre><span></span>$ brew install python3
 $ python3 --version
 <span class="m">3</span>.5.2
-</code></pre></div>
+</pre></div>
+
 
 <p>ubuntu16.04</p>
-<div class="highlight"><pre><span></span><code><span class="c">% sudo apt-get install python3</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="c">% sudo apt-get install python3</span><span class="w"></span>
 <span class="c">% python3 --version</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>Windows</p>
 <p>パッケージマネージャがあるのかもしれませんが詳しくないので、インストーラからPython3.5をインストールします。</p>
-<h1>必要なパッケージのインストール</h1>
+<h1 id="_1">必要なパッケージのインストール</h1>
 <p>UbuntuとWindowsでは管理者権限が必要になるので、それぞれsudoをつける、管理者権限でcmdを起動してください。</p>
-<div class="highlight"><pre><span></span><code>$ pip3 install -U flake8 mypy-lang jedi
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ pip3 install -U flake8 mypy-lang jedi
+</pre></div>
+
 
 <p>それぞれ</p>
 <ul>
@@ -118,16 +123,19 @@ $ python3 --version
 </ul>
 <p>ということでflake8単体で使っています。</p>
 <p>しかもsyntasticを使用した場合、非同期に実行されないのでスタイルチェッカーが重いと結構なストレスになりそうです。</p>
-<h1>環境構築(venv)</h1>
+<h1 id="venv">環境構築(venv)</h1>
 <p>デフォルトでvenvが同梱されているのでそちらを使います。</p>
-<div class="highlight"><pre><span></span><code>$ mkdir progect
+<div class="highlight"><pre><span></span>$ mkdir progect
 $ pyvenv project
 $ <span class="nb">cd</span> project
 $ <span class="nb">source</span> bin/activate
-</code></pre></div>
+</pre></div>
 
-<p>!!! warning
-    activateファイルにfishスクリプトも用意されているのですが、"$(var)"を使っていてエラーになるので該当部分を"(var)"に修正すれば動きます。</p>
+
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>activateファイルにfishスクリプトも用意されているのですが、"$(var)"を使っていてエラーになるので該当部分を"(var)"に修正すれば動きます。</p>
+</div>
 <p>pyvenvコマンドをすると色々ファイルが作られるのでgitignoreしたくなります。</p>
 <p>GitHub公式のgitignoreを使うと良いです。</p>
 <ul>
@@ -136,24 +144,26 @@ $ <span class="nb">source</span> bin/activate
 </ul>
 <p>この2つを組み合わせればPythonのgitignoreは多くのケースで十分そうです。</p>
 <p>後者の方は<a href="http://qiita.com/katsew/items/5cade12fa743a2f31f25" title="グローバルで.gitignoreを適応する - Qiita">Globalのgitignore</a>に入れると良いようです。</p>
-<h1>Neovim/Vimの設定</h1>
+<h1 id="neovimvim">Neovim/Vimの設定</h1>
 <p>flake8とmypyのスタイルチェックをSyntasticまたはNeomakeで行い、jediで補完します。</p>
-<p><img alt="" src="https://i.gyazo.com/ed444e6bcf1f5b7071eff9cfbf76601e.png"></p>
-<h2>型チェック &amp; スタイルチェック</h2>
+<p><img alt="" src="https://i.gyazo.com/ed444e6bcf1f5b7071eff9cfbf76601e.png" /></p>
+<h2 id="_2">型チェック &amp; スタイルチェック</h2>
 <p><a href="https://github.com/vim-syntastic/syntastic" title="vim-syntastic/syntastic: Syntax checking hacks for vim">syntastic</a>または<a href="https://github.com/neomake/neomake" title="neomake/neomake: Async :make and linting framework for Neovim/Vim">neomake</a>を使って、ファイル保存時にチェックします。</p>
 <p>インストール方法は各プラグインマネージャなどに従って下さい。</p>
 <p>Python用の設定は以下のように書きます。</p>
 <p>syntastic↓</p>
-<div class="highlight"><pre><span></span><code>let g:syntastic_python_checkers = [&#39;python&#39;, &#39;flake8&#39;, &#39;mypy&#39;]
-</code></pre></div>
+<div class="highlight"><pre><span></span>let g:syntastic_python_checkers = [&#39;python&#39;, &#39;flake8&#39;, &#39;mypy&#39;]
+</pre></div>
+
 
 <p>neomake↓</p>
-<div class="highlight"><pre><span></span><code>let g:neomake_python_enabled_makers = [&#39;python&#39;, &#39;flake8&#39;, &#39;mypy&#39;]
-</code></pre></div>
+<div class="highlight"><pre><span></span>let g:neomake_python_enabled_makers = [&#39;python&#39;, &#39;flake8&#39;, &#39;mypy&#39;]
+</pre></div>
+
 
 <p>参考までに私の設定です。プラグインマネージャにはdein.vimを使ってtomlファイルでプラグインを管理しています、Neovimのときはneomake、Vimのときはsyntasticを使っています。</p>
 <p>(neomakeはNeovim専用ではなくVim8.0.0027以降であれば使えます)</p>
-<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<div class="highlight"><pre><span></span><span class="k">[[plugins]]</span>
 <span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;neomake/neomake&#39;</span>
 <span class="na">if</span> <span class="o">=</span> <span class="s">&quot;has(&#39;nvim&#39;)&quot;</span>
 <span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
@@ -171,41 +181,46 @@ $ <span class="nb">source</span> bin/activate
 <span class="na">&quot; for Python</span>
 <span class="na">let g:syntastic_python_checkers</span> <span class="o">=</span> <span class="s">[&#39;python&#39;, &#39;flake8&#39;, &#39;mypy&#39;]</span>
 <span class="na">&#39;&#39;&#39;</span>
-</code></pre></div>
+</pre></div>
 
-<h2>補完</h2>
+
+<h2 id="_3">補完</h2>
 <p>jediをneocomplete.vimとdeoplete.nvimから利用する方法を紹介します。</p>
 <p>jediはType Hintsがついてると型に応じてメソッド名などを補完するのでかなり便利です。</p>
-<p><img alt="" src="https://i.gyazo.com/675774830708de1e6282eaa2ecc577dd.gif"></p>
+<p><img alt="" src="https://i.gyazo.com/675774830708de1e6282eaa2ecc577dd.gif" /></p>
 <p>neocomplete.vimとdeoplete.nvimのインストール方法については省略します。</p>
-<h3>neocomplete.vim</h3>
+<h3 id="neocompletevim">neocomplete.vim</h3>
 <p><a href="https://github.com/davidhalter/jedi-vim" title="davidhalter/jedi-vim: Using the jedi autocompletion library for VIM.">davidhalter/jedi-vim: Using the jedi autocompletion library for VIM.</a>をプラグインを追加して以下の設定をします。</p>
-<div class="highlight"><pre><span></span><code><span class="n">autocmd</span> <span class="n">FileType</span> <span class="n">python</span> <span class="n">setlocal</span> <span class="n">omnifunc</span><span class="o">=</span><span class="n">jedi</span><span class="c1">#completions</span>
+<div class="highlight"><pre><span></span><span class="n">autocmd</span> <span class="n">FileType</span> <span class="n">python</span> <span class="n">setlocal</span> <span class="n">omnifunc</span><span class="o">=</span><span class="n">jedi</span><span class="c1">#completions</span>
 <span class="n">let</span> <span class="n">g</span><span class="p">:</span><span class="n">jedi</span><span class="c1">#completions_enabled = 0</span>
 <span class="n">let</span> <span class="n">g</span><span class="p">:</span><span class="n">jedi</span><span class="c1">#auto_vim_configuration = 0</span>
 <span class="n">let</span> <span class="n">g</span><span class="p">:</span><span class="n">neocomplete</span><span class="c1">#force_omni_input_patterns.python = &#39;\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*&#39;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>参考: <a href="http://kozo2.hatenablog.com/entry/2014/01/22/050714" title="jedi-vimとneocomplete.vimを併用する際に行っておきたい設定 - kozo2's blog">jedi-vimとneocomplete.vimを併用する際に行っておきたい設定 - kozo2's blog</a></p>
-<h3>deoplete.nvim</h3>
+<h3 id="deopletenvim">deoplete.nvim</h3>
 <p><a href="https://github.com/zchee/deoplete-jedi" title="zchee/deoplete-jedi: deoplete.nvim source for Python">zchee/deoplete-jedi: deoplete.nvim source for Python</a>をプラグインに追加します。</p>
 <p>venvを使うのでグローバルにインストールされているPythonへのパスの設定が必要です。</p>
-<div class="highlight"><pre><span></span><code>let g:python_host_prog = &#39;/full/path/to/neovim2/bin/python&#39;
+<div class="highlight"><pre><span></span>let g:python_host_prog = &#39;/full/path/to/neovim2/bin/python&#39;
 let g:python3_host_prog = &#39;/full/path/to/neovim3/bin/python&#39;
-</code></pre></div>
+</pre></div>
 
-<h3>Previewが邪魔な人向け</h3>
+
+<h3 id="preview">Previewが邪魔な人向け</h3>
 <p>jediを使っているとPreviewがでてきて邪魔という方が多く見受けられます、Vimの機能なのでVim側の設定で変えられます。</p>
 <p><a href="https://github.com/Shougo/deoplete.nvim/issues/298" title="Leave the preview window always closed · Issue #298 · Shougo/deoplete.nvim">Previewを出さない</a></p>
-<div class="highlight"><pre><span></span><code>set completeopt-=preview
-</code></pre></div>
+<div class="highlight"><pre><span></span>set completeopt-=preview
+</pre></div>
+
 
 <p><a href="https://github.com/Shougo/deoplete.nvim/issues/115" title="Close preview window after completion? · Issue #115 · Shougo/deoplete.nvim">補完終了時に自動で閉じる</a></p>
-<div class="highlight"><pre><span></span><code><span class="nv">autocmd</span> <span class="nv">InsertLeave</span>,<span class="nv">CompleteDone</span> <span class="o">*</span> <span class="k">if</span> <span class="nv">pumvisible</span><span class="ss">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">|</span> <span class="nv">pclose</span> <span class="o">|</span> <span class="k">endif</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="nv">autocmd</span> <span class="nv">InsertLeave</span>,<span class="nv">CompleteDone</span> <span class="o">*</span> <span class="k">if</span> <span class="nv">pumvisible</span><span class="ss">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">|</span> <span class="nv">pclose</span> <span class="o">|</span> <span class="k">endif</span>
+</pre></div>
+
 
 <p>など良い感じに設定すると良いです。</p>
-<h1>まとめ</h1>
+<h1 id="_4">まとめ</h1>
 <p>型の恩恵は実行時には(まだ)ないですが、静的型チェッカー(mypy)、jediによる補完と開発に置ける恩恵はなかなかのものだと思うのでおすすめです。</p>
 <p>紹介した方法は新しいPython1つしかインストールしてないので、古いバージョンでのデバック作業などが必要になった場合に困りそうですがそれはまた必要になってから考えようかと思ってます。とりあえず現状はCIするときにtoxで各バージョンのテストを走らせることで確認しています。</p>
     </div><!-- /.entry-content -->
@@ -382,7 +397,7 @@ let g:python3_host_prog = &#39;/full/path/to/neovim3/bin/python&#39;
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -405,7 +420,7 @@ let g:python3_host_prog = &#39;/full/path/to/neovim3/bin/python&#39;
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -435,6 +450,12 @@ let g:python3_host_prog = &#39;/full/path/to/neovim3/bin/python&#39;
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

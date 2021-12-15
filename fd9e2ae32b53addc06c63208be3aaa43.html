@@ -54,7 +54,7 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2015-10-15T07:46:54+09:00">
+    <li class="published" title="2015-10-15T07:46:54">
         <span>Date:</span>2015-10-15 木 (午前 07:46:54)
     </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> <a href="https://muunyblue.github.io/tag/python.html">Python</a> </li>
@@ -62,9 +62,9 @@
 </ul>
 </footer><!-- /.post-info -->      <p><a href="https://github.com/getpelican/pelican/wiki/Tips-n-Tricks#generate-sitemapxml" title="Tips n Tricks · getpelican/pelican Wiki">Tips n Tricks · getpelican/pelican Wiki</a></p>
 <p>こちらに方法がのっていたので実践してみた。</p>
-<h1>sitemap.htmlを作成</h1>
+<h1 id="sitemaphtml">sitemap.htmlを作成</h1>
 <p>使っているテーマのtemplatesにsitemap.htmlを作成し、以下の内容を記入。</p>
-<div class="highlight"><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
 <span class="p">&lt;</span><span class="nt">urlset</span> <span class="na">xmlns</span><span class="o">=</span><span class="s">&quot;http://www.sitemaps.org/schemas/sitemap/0.9&quot;</span><span class="p">&gt;</span>
 
 {% for article in articles %}
@@ -96,16 +96,18 @@
 {% endfor %}
 
 <span class="p">&lt;/</span><span class="nt">urlset</span><span class="p">&gt;</span>
-</code></pre></div>
+</pre></div>
 
-<h1>pelicanconf.pyの編集</h1>
-<div class="highlight"><pre><span></span><code><span class="n">DIRECT_TEMPLATES</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="s1">&#39;tags&#39;</span><span class="p">,</span> <span class="s1">&#39;categories&#39;</span><span class="p">,</span> <span class="s1">&#39;archives&#39;</span><span class="p">,</span> <span class="s1">&#39;sitemap&#39;</span><span class="p">)</span>
+
+<h1 id="pelicanconfpy">pelicanconf.pyの編集</h1>
+<div class="highlight"><pre><span></span><span class="n">DIRECT_TEMPLATES</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="s1">&#39;tags&#39;</span><span class="p">,</span> <span class="s1">&#39;categories&#39;</span><span class="p">,</span> <span class="s1">&#39;archives&#39;</span><span class="p">,</span> <span class="s1">&#39;sitemap&#39;</span><span class="p">)</span>
 <span class="n">SITEMAP_SAVE_AS</span> <span class="o">=</span> <span class="s1">&#39;sitemap.xml&#39;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>あとはデブロイすると、きっとsitemap.xmlができていていい感じになっているはずです。</p>
-<h1>できている様子</h1>
-<p><img alt="" src="https://speedline.herokuapp.com/process?url=https%3A%2F%2Fi.gyazo.com%2Fb88c0135e1d7bd48c9f78fcddc3f8238.png"></p>
+<h1 id="_1">できている様子</h1>
+<p><img alt="" src="https://speedline.herokuapp.com/process?url=https%3A%2F%2Fi.gyazo.com%2Fb88c0135e1d7bd48c9f78fcddc3f8238.png" /></p>
 <p>できたー</p>
     </div><!-- /.entry-content -->
 
@@ -281,7 +283,7 @@
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -304,7 +306,7 @@
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -334,6 +336,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

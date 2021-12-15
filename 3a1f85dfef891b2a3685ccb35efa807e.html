@@ -54,14 +54,14 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2018-08-22T13:41:01+09:00">
+    <li class="published" title="2018-08-22T13:41:01">
         <span>Date:</span>2018-08-22 水 (午後 01:41:01)
     </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/keyboard.html">Keyboard</a> <a href="https://muunyblue.github.io/tag/zen.html">Zen</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
-</footer><!-- /.post-info -->      <p><img alt="Zen Keyboard" src="https://pbs.twimg.com/media/Dk7SEiLU8AAAqTr.jpg"></p>
-<p><img alt="Zen Keyboard LED" src="https://pbs.twimg.com/media/DlFqdWxU8AA1VlS.jpg"></p>
+</footer><!-- /.post-info -->      <p><img alt="Zen Keyboard" src="https://pbs.twimg.com/media/Dk7SEiLU8AAAqTr.jpg" /></p>
+<p><img alt="Zen Keyboard LED" src="https://pbs.twimg.com/media/DlFqdWxU8AA1VlS.jpg" /></p>
 <p>LEDの輝きと黒の透過キーキャップを活かして中二ぽい感じに仕上げてみました。</p>
 <p>自分が感じたZen Keyboardの特徴です。</p>
 <ul>
@@ -81,7 +81,7 @@
 <li>リストレストを使っているがリストレスト自体でかいし幅取りすぎと感じる</li>
 <li>キーボード光らせたい</li>
 </ul>
-<h1>購入方法</h1>
+<h1 id="_1">購入方法</h1>
 <p><a href="https://www.rgbkb.net/products/zen-keyboard">Zen Keyboard - RGBKB.net</a>で買うことができます。</p>
 <p>ニューヨークから送られてきたのですが、購入してから2週間程度で届いたので仕事が早くて安心です。</p>
 <p>キットに入ってないもの</p>
@@ -94,7 +94,10 @@
 <li>Micro USBケーブル</li>
 </ul>
 <p>Zenの後継にあたるSolのGBが2018年9月7日まで行われており、いますぐにZenがほしいわけでないならSolがおすすめです。</p>
-<p>[https://www.rgbkb.net/products/the-sol-keyboard-pcb:embed]</p>
+<p>
+<a class="embedly-card" href="https://www.rgbkb.net/products/the-sol-keyboard-pcb">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>詳細情報 =&gt; <a href="https://www.rgbkb.net/pages/announcing-sol-the-brightest-keyboard-on-earth">Announcing Sol, the brightest keyboard on earth - RGBKB.net</a></p>
 <p>Solはすごいです。</p>
 <ul>
@@ -105,115 +108,125 @@
 <li>しかもロープロ対応</li>
 <li>割と安い(?)</li>
 </ul>
-<h1>ビルド方法</h1>
-<p>本家ドキュメントが英語なので少し詳しめに書いていきます。自分が参考にした資料と動画は以下です。
-- <a href="https://legonut.gitbooks.io/zen-keyboard/content/">Zen Keyboard Build Guide</a> (公式ドキュメント)
+<h1 id="_2">ビルド方法</h1>
+<p>本家ドキュメントが英語なので少し詳しめに書いていきます。自分が参考にした資料と動画は以下です。<br />
+- <a href="https://legonut.gitbooks.io/zen-keyboard/content/">Zen Keyboard Build Guide</a> (公式ドキュメント)<br />
 - <a href="https://www.youtube.com/watch?v=1tDWJe_P5PQ">Zen Keyboard Build Log</a> (動画)</p>
 <p>パーツがかなり小さく、各プレートははんだづけで完全に固定されてしまい組み立て後は修正不可能な状態になるので組み立て難易度は高めに感じました。</p>
 <p>参考までに作業時間は一気に作ってだいたい5,6時間程度でした。</p>
-<h2>0. 組み立て前に</h2>
+<h2 id="0">0. 組み立て前に</h2>
 <p><strong>まずは<a href="https://giant.gfycat.com/MindlessChillyHypacrosaurus.webm">この動画</a>を見てください。</strong>(webm形式なので対応していないブラウザでは見れないかもです)</p>
 <p>この動画は公式ドキュメントの<a href="https://legonut.gitbooks.io/zen-keyboard/content/chapter1/final-assembly.html">Final assembly</a>にリンクされている動画なのですが何故かSoldering(はんだづけ)の章のあとの章なので見逃す可能性が高いです、めっちゃイメージが湧くので組み立て前に見ましょう。必ず見ましょう。</p>
 <p>あと、各部品(ダイオード、LED、抵抗、3叉のピン)は左右で1つずつ余る(計2つ余る)分量しか入っていないので故障がないように、温調はんだごてを使用し温度を適切に保つようにしたほうが良いです。(自分は基本270℃、LEDだけ220℃あたりでやりました、温度で故障しないでできました)</p>
 <p>以下説明に使う画像はProMicro取り付けの画像を除き左右の区別はつけていません、しかしProMicro以外は左右対称ですので問題ないはずです。</p>
-<h2>1. Middleプレートにダイオードをはんだづけ</h2>
+<h2 id="1-middle">1. Middleプレートにダイオードをはんだづけ</h2>
 <p>Middleプレートはサイズが他よりひと回り小さく四角い穴が空いているプレートになります。</p>
 <p><strong>そしてすべてのパーツは上面にはんだづけします。</strong>(以下の写真がMiddleプレート左手側の上面です)</p>
-<p><img alt="Middleプレート" src="https://pbs.twimg.com/media/Dk5JYkVUYAAi8NO.jpg"></p>
+<p><img alt="Middleプレート" src="https://pbs.twimg.com/media/Dk5JYkVUYAAi8NO.jpg" /></p>
 <p>ダイオードはSMD(表面実装)になります。向きは<strong>取り付ける部分の両脇にガイド線(白)があり、線が長くなっているほうにダイオードの線が刻まれている部分(カソード)がくるように取り付けます。</strong></p>
-<p><img alt="ダイオードの向き" src="https://pbs.twimg.com/media/Dk5JZm-V4AAdKOi.jpg"></p>
+<p><img alt="ダイオードの向き" src="https://pbs.twimg.com/media/Dk5JZm-V4AAdKOi.jpg" /></p>
 <p>写真では光の加減と小さすぎてわかりづらいですが白の線が長くなっているほうにダイオードのカソードがきています。</p>
 <p>ちなみに白のPCBを買うとガイド線は黒になります。</p>
 <p>SMDダイオードはんだづけは片方のランドに予備ハンダしてからピンセットで予備ハンダした部分を溶かしながらつけるのが個人的にはおすすめです(参考にした動画もその方法ではんだづけしているので見てみると良いかもです)。</p>
-<h2>2. MiddleプレートにProMicroを取り付ける</h2>
+<h2 id="2-middlepromicro">2. MiddleプレートにProMicroを取り付ける</h2>
 <p><strong>ProMicroはMiddleプレートの上面につけます。</strong></p>
 <p>ProMicroの表裏の向きは左と右で異なります。<strong>左側はProMicroの部品がついている面が上、右側はProMicroの平らで何もついていない面が上になります。</strong></p>
-<p>!!! warning
-    Middleプレート下面はBottomプレートと接しますので下面をはんだづけする際ははんだを盛りすぎないように注意してください。</p>
-<div class="highlight"><pre><span></span><code>はんだごてでピンを熱しながらそこにはんだを流し込むと良いとドキュメントに書いてあります。温調はんだごてを使っている場合は少し高めの温度に設定してやると良いかもしれません。
-</code></pre></div>
-
-<p><img alt="左のProMicro" src="https://pbs.twimg.com/media/DlL7sAgUYAAlaIw.jpg"></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Middleプレート下面はBottomプレートと接しますので下面をはんだづけする際ははんだを盛りすぎないように注意してください。</p>
+<p>はんだごてでピンを熱しながらそこにはんだを流し込むと良いとドキュメントに書いてあります。温調はんだごてを使っている場合は少し高めの温度に設定してやると良いかもしれません。</p>
+</div>
+<p><img alt="左のProMicro" src="https://pbs.twimg.com/media/DlL7sAgUYAAlaIw.jpg" /></p>
 <p>左のProMicroは付属のピンヘッダの黒い部分を使いません、<strong>そのまま裏面の平らな面とMiddleプレートを密着させるように取り付けます。</strong></p>
 <p>取り付けるとMiddleプレートの下面に黒い部分とあまりのピンが結構はみ出るのでペンチで黒い部分を取り除き、ニッパーでピンを切り落とします。</p>
-<p><img alt="右のProMicro" src="https://pbs.twimg.com/media/DlL7rNGU0AI3Q9s.jpg"></p>
+<p><img alt="右のProMicro" src="https://pbs.twimg.com/media/DlL7rNGU0AI3Q9s.jpg" /></p>
 <p>右のProMicroはピンヘッダの黒い部分をPCBとProMicroの間にはさみます。<strong>MiddleプレートとProMicroの間にピンヘッダの黒い部分でスペースができるように取り付けます。</strong></p>
 <p>取り付けるとMiddleプレート下面にピンがはみ出ますのでニッパーで切り落とします。</p>
 <p>取り付けたらProMicroの3Dプリンタカバーがはまるか確認します、黒のProMicroを使用しましたが上部にはみ出たピンヘッダを少しニッパーでカットすればしっかりはまりました。</p>
-<h2>3. MiddleプレートにTRRSジャックを取り付ける</h2>
+<h2 id="3-middletrrs">3. MiddleプレートにTRRSジャックを取り付ける</h2>
 <p><strong>Middleプレートの上面</strong>にTRRSジャックを取り付けます。</p>
-<p><img alt="TRRSジャック" src="https://pbs.twimg.com/media/DlL7213U4AASVSq.jpg"></p>
+<p><img alt="TRRSジャック" src="https://pbs.twimg.com/media/DlL7213U4AASVSq.jpg" /></p>
 <p>ここまで取り付けたらダイオードの向きに間違いがないか確認すると良いです。</p>
 <p>ProMicroが取り付けられているので一旦Zenのファームウェアを書き込んで導通チェックをしましょう。ファームウェアの書き込み方について簡単にですがこの記事の一番最後に書いてあります。</p>
-<h2>4. Middleプレート下面のジャンパ</h2>
+<h2 id="4-middle">4. Middleプレート下面のジャンパ</h2>
 <p><strong>Middleプレート下面</strong>のProMicroを取り付けた真裏(PCB下面)をガイド線に従ってジャンパします。ジャンパするランド間に少し距離があるので先程カットしたProMicroのピンヘッダの切れ端を使うと良いです。右側のピンヘッダの切れ端がちょうど良い長さでした。</p>
-<p><img alt="ピンヘッダの切れ端" src="https://pbs.twimg.com/media/DlL71XQU0AAVIYi.jpg"></p>
+<p><img alt="ピンヘッダの切れ端" src="https://pbs.twimg.com/media/DlL71XQU0AAVIYi.jpg" /></p>
 <p>ガイド線がある部分をジャンパします。切れ端をガイド線部分のランドの間に置いてはんだを盛っていきます。</p>
-<p><img alt="ジャンパ" src="https://pbs.twimg.com/media/DlL72ALU8AAsQ4W.jpg"></p>
+<p><img alt="ジャンパ" src="https://pbs.twimg.com/media/DlL72ALU8AAsQ4W.jpg" /></p>
 <p>公式のBuild Guideで何故かVCCのところにもはんだを盛っていたのですが必要なのか不明です。(なんか不安なので自分は盛りました)</p>
-<h2>5. BottomプレートにLEDと抵抗を取り付ける</h2>
+<h2 id="5-bottomled">5. BottomプレートにLEDと抵抗を取り付ける</h2>
 <p>取り付けるパーツの中では難易度が一番高いです、抵抗がすごく小さいので必要な人はルーペがあったほうが良いかもしれません。</p>
-<p><img alt="LEDと抵抗https://pbs.twimg.com/media/Dk5QHrEUYAACrWG.jpg" src="https://pbs.twimg.com/media/Dk5QHrEUYAACrWG.jpg"></p>
+<p><img alt="LEDと抵抗https://pbs.twimg.com/media/Dk5QHrEUYAACrWG.jpg" src="https://pbs.twimg.com/media/Dk5QHrEUYAACrWG.jpg" /></p>
 <p>抵抗には上下左右どちらも向きはありませんが、<strong>LEDには向きがあります。</strong></p>
 <p><strong>LEDの切れ込みが入っている部分をLEDを付ける部分の内側にある四角いガイド線の書けている部分に合わせて取り付けます。</strong></p>
 <p>抵抗が小さすぎて大変ですが以下のようなはんだづけの技をDiscordのSelf-Made Keyboardチャンネルで教えていただきましたので参考にすると良いと思います。</p>
-<p>[https://www.youtube.com/watch?v=MYlIxjXj-Ik:embed]</p>
+<p>
+<a class="embedly-card" href="https://www.youtube.com/watch?v=MYlIxjXj-Ik">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>自分は完成後に伝授してもらったので一箇所ておくれてしまいました・・・</p>
-<h2>6. LED動作確認</h2>
+<h2 id="6-led">6. LED動作確認</h2>
 <p>MiddleプレートとBottomプレートは3叉のピンでつなぐのですが、通信し合う部分はTRRSケーブルのすぐ近くの穴になります。</p>
 <p>この部分に3pinのピンヘッダを指してMiddleプレートとBottomプレートをつないで電源をいれるとLEDの動作確認ができます。</p>
 <p>はんだで完全につなぐわけではないのでちょっとした反動で途切れてしまいますが、全点灯するか確認して点灯しなければ間違いを探します。</p>
 <p>LEDの光る順番ですが、TRRSケーブルから一番近いLEDから始まり上部に行きそこからぐるっと親指キー部分まで一周するような順番になっています。</p>
 <p>一箇所違うとそこからさきは光らないのでその順番を頼りに修正していくと良いかと思います。</p>
 <p>3.に書いたダイオードの動作確認とLEDの動作確認がしっかりできてから次のステップに進んでください。以降のステップに進むと修正が難しくなってきます。</p>
-<p><img alt="点灯の様子" src="https://pbs.twimg.com/media/DlMEwPnUcAAcPMS.jpg"></p>
-<h2>7. Middleプレートに3叉のピンを取り付ける</h2>
+<p><img alt="点灯の様子" src="https://pbs.twimg.com/media/DlMEwPnUcAAcPMS.jpg" /></p>
+<h2 id="7-middle3">7. Middleプレートに3叉のピンを取り付ける</h2>
 <p>Middleプレートにはんだづけして固定するのですが、まずはBottomプレートに長い方が下になるように3叉のピンを差し込みます。</p>
 <p>(ピンを差し込む箇所はいっぱいあるので全部使う必要はないと公式ドキュメントに書いてありますがせっかくなので自分は全部使いました。)</p>
-<p><img alt="Bottomプレートにピンを差し込む" src="https://pbs.twimg.com/media/Dk5oL4pU4AAPPrh.jpg"></p>
+<p><img alt="Bottomプレートにピンを差し込む" src="https://pbs.twimg.com/media/Dk5oL4pU4AAPPrh.jpg" /></p>
 <p>差し込んだらMiddleプレートを重ねます。差し込んだら上面からピンをMiddleプレートにはんだづけします。</p>
 <p>このとき重ねたMiddleプレートとBottomプレートの下にはみ出たピンより少し高いくらいの台を置かないとピンからBottomプレートが抜けてしまうので注意です、自分は場合はペンチを下に敷いてはんだづけしました。</p>
-<p><img alt="Middleプレートにピンをはんだづけ" src="https://pbs.twimg.com/media/DlMExL3U8AA2ani.jpg"></p>
+<p><img alt="Middleプレートにピンをはんだづけ" src="https://pbs.twimg.com/media/DlMExL3U8AA2ani.jpg" /></p>
 <p><strong>このときTRRSケーブルに一番近い部分のピンは必ず3箇所はんだづけをしてください。</strong></p>
 <p>はんだづけしたらBottomプレートを外して、ペンチでピンについた黒い部分を取ります。以下の画像ははんだづけ後黒い部分を取り除いている最中のMiddleプレート下面です。</p>
-<p><img alt="はんだづけ後のMiddleプレート下面" src="https://pbs.twimg.com/media/Dk5oRnIVsAIqCHV.jpg"></p>
+<p><img alt="はんだづけ後のMiddleプレート下面" src="https://pbs.twimg.com/media/Dk5oRnIVsAIqCHV.jpg" /></p>
 <p>自分はTRRSケーブルに近いピン以外は2箇所だけのはんだづけにしました。</p>
-<h2>8. Middleプレートにスタビライザーを取り付ける</h2>
+<h2 id="8-middle">8. Middleプレートにスタビライザーを取り付ける</h2>
 <p>親指キー部分にスタビライザーを取り付けます。参考にした動画では両面テープで取り付けているように見えるのですが自分はそのままつけました。</p>
-<p><img alt="スタビライザー" src="https://pbs.twimg.com/media/Dk57mgmV4AEVTns.jpg"></p>
+<p><img alt="スタビライザー" src="https://pbs.twimg.com/media/Dk57mgmV4AEVTns.jpg" /></p>
 <p>何か作法(部品と干渉しないようにするなど)があるかもしれないので各自調べたほうが良いかもしれません。</p>
-<h2>9. スイッチを取り付ける</h2>
+<h2 id="9">9. スイッチを取り付ける</h2>
 <p>Topプレートにスイッチをはめ込み、Middleプレートと合体します。一番外側のスイッチは1uのサイズか1.5uのサイズが選ぶことができます。</p>
-<p><img alt="Topプレート" src="https://pbs.twimg.com/media/Dk57nkBU0AAMIqd.jpg"></p>
+<p><img alt="Topプレート" src="https://pbs.twimg.com/media/Dk57nkBU0AAMIqd.jpg" /></p>
 <p>上の画像ではまっているスイッチはTopプレートにはめ込むのが大変なので先にはめ込みました。</p>
 <p>下の画像にあるように、それ以外の外側と親指のスイッチは簡単にはまったのでMiddleプレートにはめ込んでからつけました。</p>
-<p><img alt="Middleプレートと合体" src="https://pbs.twimg.com/media/Dk57oqWU0AEvP5t.jpg"></p>
+<p><img alt="Middleプレートと合体" src="https://pbs.twimg.com/media/Dk57oqWU0AEvP5t.jpg" /></p>
 <p>自分の場合、スイッチが5pinだったので先にTopプレートにほどんどを取り付けてからのほうがはめ込みやすかったです。</p>
 <p>TopプレートとMiddleプレートがしっかり合体したのが確認できればスイッチをMiddleプレートにはんだづけします。</p>
-<h2>10. Bottomプレートと合体</h2>
+<h2 id="10-bottom">10. Bottomプレートと合体</h2>
 <p>Middleプレートにつけた3叉のピンをBottomプレートに通して合体します。</p>
-<p><img alt="合体" src="https://pbs.twimg.com/media/Dk58J4mU4AEV8Yv.jpg"></p>
+<p><img alt="合体" src="https://pbs.twimg.com/media/Dk58J4mU4AEV8Yv.jpg" /></p>
 <p>自分の場合、できる限りピタッとくっつけたいですが完全にぴったりとはいきませんでした。できるだけ近い状態でピンをはんだづけして固定しました。</p>
 <p>はんだづけが完了したらはみ出たピンをニッパーできれいにカットします。</p>
-<p><img alt="完成" src="https://pbs.twimg.com/media/Dk58LATUwAIjkKg.jpg"></p>
+<p><img alt="完成" src="https://pbs.twimg.com/media/Dk58LATUwAIjkKg.jpg" /></p>
 <p>USBケーブルをつないで光ってスイッチがちゃんと動作するのを確認します。</p>
-<h2>11. キーキャップをつけて完成</h2>
+<h2 id="11">11. キーキャップをつけて完成</h2>
 <p>キースイッチはKBDfansで以下のキーキャップを購入しました。</p>
-<p>[https://kbd.fans/collections/keycaps/products/front-side-printed-backlit-keycaps-104-87-iso-ansi-layout-translucidus-backlit-keycaps-for-corsair-strafe-k65-k70-logitech-g710:embed]</p>
+<p>
+<a class="embedly-card" href="https://kbd.fans/collections/keycaps/products/front-side-printed-backlit-keycaps-104-87-iso-ansi-layout-translucidus-backlit-keycaps-for-corsair-strafe-k65-k70-logitech-g710">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>ZenはLEDがついているので透過するタイプのキーキャップを選びました、しかも側面印字でRealforceに憧れを抱いていた自分にとっては良きものでした。</p>
-<h1>ファームウェア書き込み</h1>
+<h1 id="_3">ファームウェア書き込み</h1>
 <p><a href="https://github.com/qmk/qmk_firmware/tree/master/keyboards/zen">Zen Keyboard - qmk/qmk_firmware</a></p>
 <p>QMKにZenのファームウェアがあるので書き込めば良いのですが、Zenにはリセットスイッチがありません。</p>
 <p>初回は手動でProMicroのRSTとGRDをショート(導通線でつなぐ)させる必要があります。</p>
 <p>毎回手動ショートさせるのが面倒なので初回の書き込み時にキー配列に"RESET"を入れるのを忘れないようにします。</p>
 <p>qmk_firmwareをローカルにgit cloneまたはコピーして以下のコマンドで書き込みします(詳細はきっと他に詳しい情報があるので割愛)。</p>
-<div class="highlight"><pre><span></span><code>$ make zen/rev1:default:avrdude
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ make zen/rev1:default:avrdude
+</pre></div>
+
 
 <p>defaultキーマップにはレイヤーが2つしかなく少し簡易的なので、"qmk_firmware/keyboards/zen/keymaps"にあるxyverzが多めのレイヤーを用意しているのでそちらをベースにしても良いかもしれません。</p>
 <p>あと最近リファクタリングが入っているので古いqmk_firmwareを使っている人は更新推奨です。</p>
 <p>参考までに自分のキーマップは以下です。</p>
-<p>[https://github.com/yymm/my-zen-profile:embed]</p>
+<p>
+<a class="embedly-card" href="https://github.com/yymm/my-zen-profile">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>個人的にconfig.hに"#define MASTER_RIGHT"を追加して右側をMasterにするのがおすすめです、理由は右のほうがモゲにくくProMicroが取り付けられているからです。</p>
     </div><!-- /.entry-content -->
 
@@ -389,7 +402,7 @@
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -412,7 +425,7 @@
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -442,6 +455,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

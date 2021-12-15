@@ -54,61 +54,86 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2016-07-05T03:32:08+09:00">
+    <li class="published" title="2016-07-05T03:32:08">
         <span>Date:</span>2016-07-05 火 (午前 03:32:08)
     </li>
         <!--<br />-->
-        <li class="modified" title="2016-07-05T04:13:56+09:00">
+        <li class="modified" title="2016-07-05T04:13:56">
             <span>Updated:</span>2016-07-05 火 (午前 04:13:56)
         </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
 </footer><!-- /.post-info -->      <p><a href="https://rust-lang-ja.github.io/the-rust-programming-language-ja/1.6/book/" title="プログラミング言語Rust">プログラミング言語Rust</a>を一通り読んだのでまずFibonacci数列書いてみたメモです。</p>
-<hr>
+<hr />
 <p>Table Of Contents</p>
-<p>[TOC]</p>
-<h1>準備</h1>
+<div class="toc">
+<ul>
+<li><a href="#_1">準備</a><ul>
+<li><a href="#_2">モジュール</a></li>
+<li><a href="#_3">テスト</a></li>
+<li><a href="#_4">ベンチマークテスト</a></li>
+</ul>
+</li>
+<li><a href="#fibonacci">Fibonacci数列</a><ul>
+<li><a href="#1">関数呼び出し1回</a></li>
+<li><a href="#_5">動的計画法</a></li>
+<li><a href="#_6">配列を使って計算結果をメモ</a></li>
+<li><a href="#_7">繰り返し二乗法</a></li>
+<li><a href="#_8">一般項</a></li>
+<li><a href="#_9">速度比較</a></li>
+</ul>
+</li>
+<li><a href="#_10">まとめ</a></li>
+<li><a href="#_11">参考記事</a></li>
+</ul>
+</div>
+<h1 id="_1">準備</h1>
 <p>Fibonacci以外にも色々やっていく予定なので、Rustの勉強用リポジトリを作ります。</p>
-<div class="highlight"><pre><span></span><code>$ cargo new exercise --bin
+<div class="highlight"><pre><span></span>$ cargo new exercise --bin
 $ <span class="nb">cd</span> exercise
-</code></pre></div>
+</pre></div>
 
-<h2>モジュール</h2>
+
+<h2 id="_2">モジュール</h2>
 <p>mainにﾄﾞﾊﾞﾄﾞﾊﾞ書いても良いのですがRustにはモジュールがあるので使ってみます。</p>
-<div class="highlight"><pre><span></span><code>$ <span class="nb">cd</span> src
+<div class="highlight"><pre><span></span>$ <span class="nb">cd</span> src
 $ touch lib.rs
 $ touch fibonacci.rs
-</code></pre></div>
+</pre></div>
+
 
 <p>lib.rsにモジュールについての情報を書き込みます。</p>
-<div class="highlight"><pre><span></span><code><span class="k">pub</span><span class="w"> </span><span class="k">mod</span> <span class="nn">fibonacci</span><span class="p">;</span><span class="w"></span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="k">pub</span><span class="w"> </span><span class="k">mod</span> <span class="nn">fibonacci</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+
 
 <p>fibonacci.rsを書いていきます。外部から呼ぶ関数にはpubをつけて宣言します。</p>
-<div class="highlight"><pre><span></span><code><span class="k">pub</span><span class="w"> </span><span class="k">fn</span> <span class="nf">fib_match</span><span class="p">(</span><span class="n">n</span>: <span class="kt">i32</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="kt">i32</span> <span class="p">{</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="k">pub</span><span class="w"> </span><span class="k">fn</span> <span class="nf">fib_match</span><span class="p">(</span><span class="n">n</span>: <span class="kt">i32</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="kt">i32</span> <span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="k">match</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">        </span><span class="mi">0</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
 <span class="w">        </span><span class="mi">1</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"></span>
 <span class="w">        </span><span class="n">_</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">fib_match</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fib_match</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="w"></span>
 <span class="w">    </span><span class="p">}</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>main.rsから呼び出すときは</p>
-<div class="highlight"><pre><span></span><code><span class="k">extern</span><span class="w"> </span><span class="k">crate</span><span class="w"> </span><span class="n">exercise</span><span class="p">;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="k">extern</span><span class="w"> </span><span class="k">crate</span><span class="w"> </span><span class="n">exercise</span><span class="p">;</span><span class="w"></span>
 
 <span class="k">use</span><span class="w"> </span><span class="n">exercise</span>::<span class="n">fibonacci</span><span class="p">;</span><span class="w"></span>
 
 <span class="k">fn</span> <span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="fm">assert_eq!</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="n">fibonacci</span>::<span class="n">fib_match</span><span class="p">(</span><span class="mi">5</span><span class="p">));</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>のようにします。</p>
-<h2>テスト</h2>
+<h2 id="_3">テスト</h2>
 <p>fibonacci.rs内に続けてテストを書いていく方向でいきます。</p>
-<div class="highlight"><pre><span></span><code><span class="c1">// pub fn fib_match() ... の下</span>
+<div class="highlight"><pre><span></span><span class="c1">// pub fn fib_match() ... の下</span>
 
 <span class="cp">#[cfg(test)]</span><span class="w"></span>
 <span class="k">mod</span> <span class="nn">tests_fibonacci</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
@@ -119,9 +144,10 @@ $ touch fibonacci.rs
 <span class="w">        </span><span class="fm">assert_eq!</span><span class="p">(</span><span class="mi">89</span><span class="p">,</span><span class="w"> </span><span class="n">fib_match</span><span class="p">(</span><span class="mi">10</span><span class="p">));</span><span class="w"></span>
 <span class="w">    </span><span class="p">}</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>$ cargo <span class="nb">test</span>
+
+<div class="highlight"><pre><span></span>$ cargo <span class="nb">test</span>
      Running target/debug/exercise-aedb186b5607382a
 
 running <span class="m">1</span> <span class="nb">test</span>
@@ -140,28 +166,31 @@ running <span class="m">0</span> tests
 running <span class="m">0</span> tests
 
 <span class="nb">test</span> result: ok. <span class="m">0</span> passed<span class="p">;</span> <span class="m">0</span> failed<span class="p">;</span> <span class="m">0</span> ignored<span class="p">;</span> <span class="m">0</span> measured
-</code></pre></div>
+</pre></div>
 
-<h2>ベンチマークテスト</h2>
+
+<h2 id="_4">ベンチマークテスト</h2>
 <p>Fibonacci数列計算の時間を図りたさがあるのでベンチマークテストを使ってみます。</p>
 <p><a href="https://rust-lang-ja.github.io/the-rust-programming-language-ja/1.6/book/benchmark-tests.html" title="ベンチマークテスト">ベンチマークテスト</a></p>
 <p>注意して欲しいのはRust 1.9時点ではベンチマークテストはnightly buildでしか使えないということです。</p>
 <p>nightlyの入手方法は以下にあります。</p>
 <p><a href="https://rust-lang-ja.github.io/the-rust-programming-language-ja/1.6/book/nightly-rust.html" title="Nightly Rust">Nightly Rust</a></p>
-<div class="highlight"><pre><span></span><code>$ curl -s https://static.rust-lang.org/rustup.sh <span class="p">|</span> sh -s -- --channel<span class="o">=</span>nightly
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ curl -s https://static.rust-lang.org/rustup.sh <span class="p">|</span> sh -s -- --channel<span class="o">=</span>nightly
+</pre></div>
+
 
 <p>これでベンチマークテストができます。</p>
 <p>テストはfibonacci.rsに書いていくことにしたのでベンチマークテストを追加します。その前に、testアトリビュートとtestクレートをlib.rsに追加します。</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#![feature(test)]</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="cp">#![feature(test)]</span><span class="w"></span>
 
 <span class="k">extern</span><span class="w"> </span><span class="k">crate</span><span class="w"> </span><span class="n">test</span><span class="p">;</span><span class="w"></span>
 
 <span class="k">pub</span><span class="w"> </span><span class="k">mod</span> <span class="nn">fibonacci</span><span class="p">;</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>fibonacci.rsにベンチマークテストを書きます。</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#[cfg(test)]</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="cp">#[cfg(test)]</span><span class="w"></span>
 <span class="k">mod</span> <span class="nn">tests_fibonacci</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="k">use</span><span class="w"> </span><span class="k">super</span>::<span class="o">*</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="k">use</span><span class="w"> </span><span class="n">test</span>::<span class="n">Bencher</span><span class="p">;</span><span class="w"></span>
@@ -176,9 +205,10 @@ running <span class="m">0</span> tests
 <span class="w">        </span><span class="n">b</span><span class="p">.</span><span class="n">iter</span><span class="p">(</span><span class="o">||</span><span class="w"> </span><span class="n">fib_match</span><span class="p">(</span><span class="mi">30</span><span class="p">));</span><span class="w"></span>
 <span class="w">    </span><span class="p">}</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>$ cargo bench
+
+<div class="highlight"><pre><span></span>$ cargo bench
    Compiling exercise v0.1.0 <span class="o">(</span>file:///home/vagrant/works/exercise<span class="o">)</span>
      Running target/release/exercise-aedb186b5607382a
 
@@ -193,33 +223,35 @@ running <span class="m">2</span> tests
 running <span class="m">0</span> tests
 
 <span class="nb">test</span> result: ok. <span class="m">0</span> passed<span class="p">;</span> <span class="m">0</span> failed<span class="p">;</span> <span class="m">0</span> ignored<span class="p">;</span> <span class="m">0</span> measured
-</code></pre></div>
+</pre></div>
+
 
 <p>これは便利。</p>
-<h1>Fibonacci数列</h1>
+<h1 id="fibonacci">Fibonacci数列</h1>
 <p>パターンマッチを使った方法(O(2^n))はもう書いたのでそれ以外の方法でも書いてみます。</p>
-<h2>関数呼び出し1回</h2>
+<h2 id="1">関数呼び出し1回</h2>
 <blockquote>
 <p>O(n)</p>
 </blockquote>
 <p>Rustは関数内に関数を定義できます。</p>
-<div class="highlight"><pre><span></span><code><span class="k">pub</span><span class="w"> </span><span class="k">fn</span> <span class="nf">fib_one</span><span class="p">(</span><span class="n">n</span>: <span class="kt">i32</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="kt">i32</span> <span class="p">{</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="k">pub</span><span class="w"> </span><span class="k">fn</span> <span class="nf">fib_one</span><span class="p">(</span><span class="n">n</span>: <span class="kt">i32</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="kt">i32</span> <span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="k">fn</span> <span class="nf">func</span><span class="p">(</span><span class="n">a</span>: <span class="kt">i32</span><span class="p">,</span><span class="w"> </span><span class="n">b</span>: <span class="kt">i32</span><span class="p">,</span><span class="w"> </span><span class="n">c</span>: <span class="kt">i32</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="kt">i32</span> <span class="p">{</span><span class="w"></span>
 <span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">a</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
 <span class="w">        </span><span class="n">func</span><span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
 <span class="w">    </span><span class="p">}</span><span class="w"></span>
 <span class="w">    </span><span class="n">func</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>クロージャを使って再帰を書けたほう便利そうですが</p>
 <p><a href="https://github.com/rust-lang/rust/issues/17911" title="rust-lang closures does not support recursive ,while python lambda expression does · Issue #17911 · rust-lang/rust">rust-lang closures does not support recursive ,while python lambda expression does · Issue #17911 · rust-lang/rust</a></p>
 <p>クロージャを使った再帰はできないみたいです。</p>
-<h2>動的計画法</h2>
+<h2 id="_5">動的計画法</h2>
 <blockquote>
 <p>O(n)</p>
 </blockquote>
-<div class="highlight"><pre><span></span><code><span class="k">pub</span><span class="w"> </span><span class="k">fn</span> <span class="nf">fib_dp_simple</span><span class="p">(</span><span class="n">n</span>: <span class="kt">i32</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="kt">i32</span> <span class="p">{</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="k">pub</span><span class="w"> </span><span class="k">fn</span> <span class="nf">fib_dp_simple</span><span class="p">(</span><span class="n">n</span>: <span class="kt">i32</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="kt">i32</span> <span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">f1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">f2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
@@ -230,24 +262,29 @@ running <span class="m">0</span> tests
 <span class="w">    </span><span class="p">}</span><span class="w"></span>
 <span class="w">    </span><span class="n">tmp</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
 
-<h2>配列を使って計算結果をメモ</h2>
+
+<h2 id="_6">配列を使って計算結果をメモ</h2>
 <p>一度計算した結果を配列にメモする方法。</p>
-<p><a href="https://www.amazon.co.jp/%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E3%82%B3%E3%83%B3%E3%83%86%E3%82%B9%E3%83%88%E3%83%81%E3%83%A3%E3%83%AC%E3%83%B3%E3%82%B8%E3%83%96%E3%83%83%E3%82%AF-%E7%AC%AC2%E7%89%88-%EF%BD%9E%E5%95%8F%E9%A1%8C%E8%A7%A3%E6%B1%BA%E3%81%AE%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0%E6%B4%BB%E7%94%A8%E5%8A%9B%E3%81%A8%E3%82%B3%E3%83%BC%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0%E3%83%86%E3%82%AF%E3%83%8B%E3%83%83%E3%82%AF%E3%82%92%E9%8D%9B%E3%81%88%E3%82%8B%EF%BD%9E-%E7%A7%8B%E8%91%89%E6%8B%93%E5%93%89/dp/4839941068" title="プログラミングコンテストチャレンジブック [第2版] ～問題解決のアルゴリズム活用力とコーディングテクニックを鍛える～ : 秋葉拓哉, 岩田陽一, 北川宜稔 : 本 : Amazon">プログラミングコンテストチャレンジブック [第2版]</a>にあるC++のコード</p>
-<div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">memo</span><span class="p">[</span><span class="n">MAX_N</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+<p><a href="https://www.amazon.co.jp/%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E3%82%B3%E3%83%B3%E3%83%86%E3%82%B9%E3%83%88%E3%83%81%E3%83%A3%E3%83%AC%E3%83%B3%E3%82%B8%E3%83%96%E3%83%83%E3%82%AF-%E7%AC%AC2%E7%89%88-%EF%BD%9E%E5%95%8F%E9%A1%8C%E8%A7%A3%E6%B1%BA%E3%81%AE%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0%E6%B4%BB%E7%94%A8%E5%8A%9B%E3%81%A8%E3%82%B3%E3%83%BC%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0%E3%83%86%E3%82%AF%E3%83%8B%E3%83%83%E3%82%AF%E3%82%92%E9%8D%9B%E3%81%88%E3%82%8B%EF%BD%9E-%E7%A7%8B%E8%91%89%E6%8B%93%E5%93%89/dp/4839941068" title="プログラミングコンテストチャレンジブック [第2版]　～問題解決のアルゴリズム活用力とコーディングテクニックを鍛える～ : 秋葉拓哉, 岩田陽一, 北川宜稔 : 本 : Amazon">プログラミングコンテストチャレンジブック [第2版]</a>にあるC++のコード</p>
+<div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">memo</span><span class="p">[</span><span class="n">MAX_N</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
 
 <span class="kt">int</span><span class="w"> </span><span class="nf">fib</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">memo</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">memo</span><span class="p">[</span><span class="n">n</span><span class="p">];</span><span class="w"></span>
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">memo</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="mi">-2</span><span class="p">);</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>これを素直に実装しようとすると、memoはstatic mut [i32; MAX_N]型の配列になると思うのですが、static mut型の値を変更するにはunsafeを使わざるを得ないのでアンチパターンな気がします。</p>
-<p>[https://twitter.com/_sunnyone/status/748687110731812864:embed]</p>
+<p>
+<a class="embedly-card" href="https://twitter.com/_sunnyone/status/748687110731812864">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>という意見をもらったので実装してみました。</p>
-<div class="highlight"><pre><span></span><code><span class="k">const</span><span class="w"> </span><span class="n">MAX_N</span>: <span class="kt">usize</span> <span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">MAX_N</span>: <span class="kt">usize</span> <span class="o">=</span><span class="w"> </span><span class="mi">1000</span><span class="p">;</span><span class="w"></span>
 <span class="k">struct</span> <span class="nc">FibMemo</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="n">memo</span>: <span class="p">[</span><span class="kt">i32</span><span class="p">;</span><span class="w"> </span><span class="n">MAX_N</span><span class="p">],</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
@@ -269,17 +306,18 @@ running <span class="m">0</span> tests
 <span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FibMemo</span>::<span class="n">new</span><span class="p">();</span><span class="w"></span>
 <span class="w">    </span><span class="n">f</span><span class="p">.</span><span class="n">calc</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>ベンチマークテストしてみるとあまり速度が出ておらず、もっと良い実装ありそうですが正解がわかってません。</p>
-<h2>繰り返し二乗法</h2>
+<h2 id="_7">繰り返し二乗法</h2>
 <blockquote>
 <p>O(log(n))</p>
 </blockquote>
-<p><a href="https://www.amazon.co.jp/%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E3%82%B3%E3%83%B3%E3%83%86%E3%82%B9%E3%83%88%E3%83%81%E3%83%A3%E3%83%AC%E3%83%B3%E3%82%B8%E3%83%96%E3%83%83%E3%82%AF-%E7%AC%AC2%E7%89%88-%EF%BD%9E%E5%95%8F%E9%A1%8C%E8%A7%A3%E6%B1%BA%E3%81%AE%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0%E6%B4%BB%E7%94%A8%E5%8A%9B%E3%81%A8%E3%82%B3%E3%83%BC%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0%E3%83%86%E3%82%AF%E3%83%8B%E3%83%83%E3%82%AF%E3%82%92%E9%8D%9B%E3%81%88%E3%82%8B%EF%BD%9E-%E7%A7%8B%E8%91%89%E6%8B%93%E5%93%89/dp/4839941068" title="プログラミングコンテストチャレンジブック [第2版] ～問題解決のアルゴリズム活用力とコーディングテクニックを鍛える～ : 秋葉拓哉, 岩田陽一, 北川宜稔 : 本 : Amazon">プログラミングコンテストチャレンジブック [第2版]</a>にのってる方法です。</p>
+<p><a href="https://www.amazon.co.jp/%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0%E3%82%B3%E3%83%B3%E3%83%86%E3%82%B9%E3%83%88%E3%83%81%E3%83%A3%E3%83%AC%E3%83%B3%E3%82%B8%E3%83%96%E3%83%83%E3%82%AF-%E7%AC%AC2%E7%89%88-%EF%BD%9E%E5%95%8F%E9%A1%8C%E8%A7%A3%E6%B1%BA%E3%81%AE%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0%E6%B4%BB%E7%94%A8%E5%8A%9B%E3%81%A8%E3%82%B3%E3%83%BC%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0%E3%83%86%E3%82%AF%E3%83%8B%E3%83%83%E3%82%AF%E3%82%92%E9%8D%9B%E3%81%88%E3%82%8B%EF%BD%9E-%E7%A7%8B%E8%91%89%E6%8B%93%E5%93%89/dp/4839941068" title="プログラミングコンテストチャレンジブック [第2版]　～問題解決のアルゴリズム活用力とコーディングテクニックを鍛える～ : 秋葉拓哉, 岩田陽一, 北川宜稔 : 本 : Amazon">プログラミングコンテストチャレンジブック [第2版]</a>にのってる方法です。</p>
 <p>フィボナッチ数列の行列表現を利用した手法です。</p>
-<p><img alt="" src="https://wikimedia.org/api/rest_v1/media/math/render/svg/f6c3a4e68394f24f47f52c9bd3ae9f5f1353f4cf"></p>
-<div class="highlight"><pre><span></span><code><span class="k">fn</span> <span class="nf">mul</span><span class="p">(</span><span class="n">a</span>: <span class="kp">&amp;</span><span class="p">[</span><span class="kt">i32</span><span class="p">;</span><span class="w"> </span><span class="mi">4</span><span class="p">],</span><span class="w"> </span><span class="n">b</span>: <span class="kp">&amp;</span><span class="p">[</span><span class="kt">i32</span><span class="p">;</span><span class="w"> </span><span class="mi">4</span><span class="p">])</span><span class="w"> </span>-&gt; <span class="p">[</span><span class="kt">i32</span><span class="p">;</span><span class="w"> </span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<p><img alt="" src="https://wikimedia.org/api/rest_v1/media/math/render/svg/f6c3a4e68394f24f47f52c9bd3ae9f5f1353f4cf" /></p>
+<div class="highlight"><pre><span></span><span class="k">fn</span> <span class="nf">mul</span><span class="p">(</span><span class="n">a</span>: <span class="kp">&amp;</span><span class="p">[</span><span class="kt">i32</span><span class="p">;</span><span class="w"> </span><span class="mi">4</span><span class="p">],</span><span class="w"> </span><span class="n">b</span>: <span class="kp">&amp;</span><span class="p">[</span><span class="kt">i32</span><span class="p">;</span><span class="w"> </span><span class="mi">4</span><span class="p">])</span><span class="w"> </span>-&gt; <span class="p">[</span><span class="kt">i32</span><span class="p">;</span><span class="w"> </span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="mi">4</span><span class="p">];</span><span class="w"></span>
 <span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">0</span><span class="o">..</span><span class="mi">2</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mi">0</span><span class="o">..</span><span class="mi">2</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
@@ -312,7 +350,8 @@ running <span class="m">0</span> tests
 <span class="w">    </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pow</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">);</span><span class="w"></span>
 <span class="w">    </span><span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>リファレンスやExampleを見るとビット演算やシフト演算もサポートされていました。</p>
 <ul>
@@ -321,36 +360,41 @@ running <span class="m">0</span> tests
 <li><a href="http://rustbyexample.com/primitives/literals.html" title="Literals and operators | Rust by Example">Literals and operators | Rust by Example</a></li>
 </ul>
 <p>上のコードでは二次元配列ではなく一次元配列で処理してます。</p>
-<h2>一般項</h2>
+<h2 id="_8">一般項</h2>
 <blockquote>
 <p>O(1)</p>
 </blockquote>
-<p><img alt="fibonacci" src="https://wikimedia.org/api/rest_v1/media/math/render/svg/eeaf8988188910d65eba337464ac93de077909f2"></p>
-<div class="highlight"><pre><span></span><code><span class="k">pub</span><span class="w"> </span><span class="k">fn</span> <span class="nf">fib_formulas</span><span class="p">(</span><span class="n">n</span>: <span class="kt">i32</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="kt">i32</span> <span class="p">{</span><span class="w"></span>
+<p><img alt="fibonacci" src="https://wikimedia.org/api/rest_v1/media/math/render/svg/eeaf8988188910d65eba337464ac93de077909f2" /></p>
+<div class="highlight"><pre><span></span><span class="k">pub</span><span class="w"> </span><span class="k">fn</span> <span class="nf">fib_formulas</span><span class="p">(</span><span class="n">n</span>: <span class="kt">i32</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="kt">i32</span> <span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="mi">1</span><span class="k">f64</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">5</span><span class="k">f64</span><span class="p">.</span><span class="n">sqrt</span><span class="p">()</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="k">f64</span><span class="w"> </span><span class="p">).</span><span class="n">powi</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="mi">1</span><span class="k">f64</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">5</span><span class="k">f64</span><span class="p">.</span><span class="n">sqrt</span><span class="p">()</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="k">f64</span><span class="w"> </span><span class="p">).</span><span class="n">powi</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">5</span><span class="k">f64</span><span class="p">.</span><span class="n">sqrt</span><span class="p">()</span><span class="w"> </span><span class="p">).</span><span class="n">round</span><span class="p">()</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="kt">i32</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>Rustはf64などのプリミティブ型にimplで数値計算系のメソッドが定義されているので、こういった処理を直感的に書けて便利感を感じました。</p>
-<h2>速度比較</h2>
+<h2 id="_9">速度比較</h2>
 <p>matchの方法は遅すぎるのでのせてません。1000番目の計算時間です。</p>
-<div class="highlight"><pre><span></span><code>test fibonacci::bench_fib_one       ... bench:         317 ns/iter (+/- 55)
+<div class="highlight"><pre><span></span>test fibonacci::bench_fib_one       ... bench:         317 ns/iter (+/- 55)
 test fibonacci::bench_fib_dp_simple ... bench:         321 ns/iter (+/- 59)
 test fibonacci::bench_fib_memo      ... bench:       8,525 ns/iter (+/- 1,039)
 test fibonacci::bench_fib_repeat    ... bench:          24 ns/iter (+/- 5)
 test fibonacci::bench_fib_formulas  ... bench:           0 ns/iter (+/- 0)
-</code></pre></div>
+</pre></div>
+
 
 <p>関数呼び出し1回と動的計画法はO(n)で同程度の時間、メモを使用した方法は結構時間かかっています。繰り返し二乗法はO(log(n))なので速いです。</p>
 <p>一般項はO(1)なのでどんなnでも定数時間しかかからないので比較しても意味なさげです。</p>
 <p>こういうアルゴリズム別に計算時間の比較とかしたいときにベンチマークテスト便利!便利!ってなりました。</p>
-<h1>まとめ</h1>
+<h1 id="_10">まとめ</h1>
 <p>色々学びがありました。</p>
 <p>テスト関係が標準であるのはいいことですね。ベンチマークテストも簡単に使えて便利でした。</p>
 <p>Rustはコンパイラ先生がかなり厳しくつらいので、まだ慣れが必要感がすごいです。がんばるぞい。</p>
 <p>ソースコードは以下にあります。自分のやる気次第ですが他のこともやってみたい予定です。</p>
-<p>[https://github.com/yymm/rust-exercise:embed]</p>
-<h1>参考記事</h1>
+<p>
+<a class="embedly-card" href="https://github.com/yymm/rust-exercise">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
+<h1 id="_11">参考記事</h1>
 <ul>
 <li><a href="https://rust-lang-ja.github.io/the-rust-programming-language-ja/1.6/book/crates-and-modules.html" title="クレートとモジュール">クレートとモジュール</a></li>
 <li><a href="http://qiita.com/kondei/items/c75a2d920f79e5c9ee3d" title="Rustのテストのガイド - Qiita">Rustのテストのガイド - Qiita</a></li>
@@ -532,7 +576,7 @@ test fibonacci::bench_fib_formulas  ... bench:           0 ns/iter (+/- 0)
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -555,7 +599,7 @@ test fibonacci::bench_fib_formulas  ... bench:           0 ns/iter (+/- 0)
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -585,6 +629,12 @@ test fibonacci::bench_fib_formulas  ... bench:           0 ns/iter (+/- 0)
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

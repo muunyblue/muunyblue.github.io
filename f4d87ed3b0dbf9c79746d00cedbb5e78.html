@@ -54,24 +54,37 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2015-11-12T06:49:40+09:00">
+    <li class="published" title="2015-11-12T06:49:40">
         <span>Date:</span>2015-11-12 木 (午前 06:49:40)
     </li>
         <!--<br />-->
-        <li class="modified" title="2015-11-13T09:42:48+09:00">
+        <li class="modified" title="2015-11-13T09:42:48">
             <span>Updated:</span>2015-11-13 金 (午前 09:42:48)
         </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/python.html">Python</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
 </footer><!-- /.post-info -->      <p>目次</p>
-<p>[TOC]</p>
-<hr>
+<div class="toc">
+<ul>
+<li><a href="#1">1. 必要なファイル</a></li>
+<li><a href="#2-setuppy">2. setup.pyの内容</a></li>
+<li><a href="#3-pypi">3. PyPIへの登録</a></li>
+<li><a href="#_1">まとめ</a><ul>
+<li><a href="#_2">参考記事</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<hr />
 <p>PyPIにパッケージを登録してみたので流れをまとめました、詳しい説明は抜きで必要最低限のことだけをまとめてあります。</p>
 <p>主にPyPAの公式sampleprojectを参考にしています。</p>
-<p>[https://github.com/pypa/sampleproject:embed]</p>
-<h1>1. 必要なファイル</h1>
-<div class="highlight"><pre><span></span><code>.
+<p>
+<a class="embedly-card" href="https://github.com/pypa/sampleproject">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
+<h1 id="1">1. 必要なファイル</h1>
+<div class="highlight"><pre><span></span>.
 ├── MANIFEST.in
 ├── README.rst
 ├── setup.cfg
@@ -82,23 +95,26 @@
 └── tests
 　   ├── __init__.py
 　   └── test_XXX.py
-</code></pre></div>
+</pre></div>
+
 
 <p>※XXXは適宜置き換えます</p>
 <p>setup.cfgは以下のように書いておきます。</p>
-<div class="highlight"><pre><span></span><code><span class="k">[bdist_wheel]</span>
+<div class="highlight"><pre><span></span><span class="k">[bdist_wheel]</span>
 <span class="na">universal</span><span class="o">=</span><span class="s">1</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>MANIFEST.inはPyPIにアップロードするファイル書きます。</p>
-<div class="highlight"><pre><span></span><code><span class="k">include</span> <span class="nv">README</span>.<span class="nv">rst</span>
+<div class="highlight"><pre><span></span><span class="k">include</span> <span class="nv">README</span>.<span class="nv">rst</span>
 <span class="k">include</span> <span class="nv">setup</span>.<span class="nv">cfg</span>
 <span class="nv">recursive</span><span class="o">-</span><span class="k">include</span> <span class="nv">tests</span> <span class="o">*</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>README.rstとなっているのでreStructuredTextです。PyPIでMarkdownは使えません。</p>
-<h1>2. setup.pyの内容</h1>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">sys</span>
+<h1 id="2-setuppy">2. setup.pyの内容</h1>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
 
 <span class="kn">from</span> <span class="nn">setuptools.command.test</span> <span class="kn">import</span> <span class="n">test</span> <span class="k">as</span> <span class="n">TestCommand</span>
 <span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span><span class="p">,</span> <span class="n">find_packages</span>
@@ -170,7 +186,8 @@
         <span class="p">],</span>
     <span class="p">},</span>
 <span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>※sampleというパッケージになっているので適宜置き換えます</p>
 <p>特筆すべき内容</p>
@@ -182,36 +199,43 @@
 </ol>
 <p>他は基本的なsetup.pyの内容です。</p>
 <p>setupの引数の、name,description,url,authorなどの内容は適宜書き換えて使います。</p>
-<h1>3. PyPIへの登録</h1>
+<h1 id="3-pypi">3. PyPIへの登録</h1>
 <p>(1) <a href="https://pypi.python.org/pypi" title="PyPI - the Python Package Index : Python Package Index">PyPI - the Python Package Index : Python Package Index</a>でユーザーを作ります。</p>
 <p>(2) ~/.pypircを作成します。</p>
-<div class="highlight"><pre><span></span><code><span class="k">[distutils]</span>
+<div class="highlight"><pre><span></span><span class="k">[distutils]</span>
 <span class="na">index-servers</span> <span class="o">=</span>
    <span class="na">pypi</span>
 
 <span class="k">[pypi]</span>
 <span class="na">username: {Username}</span>
 <span class="na">password: {Password}</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>(3) setup.pyの内容を確認します。</p>
-<div class="highlight"><pre><span></span><code>$ python setup.py check -r -s
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ python setup.py check -r -s
+</pre></div>
+
 
 <p>(4) PyPIに登録します。</p>
-<div class="highlight"><pre><span></span><code>$ python setup.py register
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ python setup.py register
+</pre></div>
+
 
 <p>(5) パッケージをアップロードします。</p>
-<div class="highlight"><pre><span></span><code><span class="o">$</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">sdist</span> <span class="n">bdist_wheel</span> <span class="n">upload</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="o">$</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">sdist</span> <span class="n">bdist_wheel</span> <span class="n">upload</span>
+</pre></div>
+
 
 <p><strong>コマンドを実行するにあたって必要なパッケージがいくつかあるので適宜インストールが必要です。</strong></p>
-<h1>まとめ</h1>
+<h1 id="_1">まとめ</h1>
 <p>必要最低限の情報で説明はないので、PyPIについて詳しいことは他のブログエントリや公式のドキュメントを参照するといいです。</p>
-<h2>参考記事</h2>
+<h2 id="_2">参考記事</h2>
 <p>PyPIについて多くのことはこちらのスライドに学びました。わかりやすかったです。</p>
-<p>[https://tell-k.github.io/pyconjp2015/#1:embed]</p>
+<p>
+<a class="embedly-card" href="https://tell-k.github.io/pyconjp2015/#1">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
     </div><!-- /.entry-content -->
 
     <div class="article-ad">
@@ -386,7 +410,7 @@
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -409,7 +433,7 @@
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -439,6 +463,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

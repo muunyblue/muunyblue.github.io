@@ -54,7 +54,7 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2017-08-10T11:42:03+09:00">
+    <li class="published" title="2017-08-10T11:42:03">
         <span>Date:</span>2017-08-10 木 (午前 11:42:03)
     </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> <a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> </li>
@@ -62,12 +62,12 @@
 </ul>
 </footer><!-- /.post-info -->      <p>nvim-typescriptを使用する方法ではできなかったので出来るように頑張りました。</p>
 <p>(他に代替出来る方法を教えていただいたの最後の方で紹介します。)</p>
-<p><img alt="demo" src="https://user-images.githubusercontent.com/1256685/29148673-f6238c3a-7da9-11e7-84ee-f075adba0390.gif"></p>
+<p><img alt="demo" src="https://user-images.githubusercontent.com/1256685/29148673-f6238c3a-7da9-11e7-84ee-f075adba0390.gif" /></p>
 <p>Vueファイル内で、html, typescript, cssの補完が良い感じに効くようになりました。</p>
-<h1>やり方</h1>
+<h1 id="_1">やり方</h1>
 <p>deoplete.vimとcontext_filetype.vim、nvim-typescriptを使用します。</p>
 <p>dein.vimでプラグイン管理をする場合の最小構成は以下です。</p>
-<div class="highlight"><pre><span></span><code><span class="k">if</span> &amp;<span class="nb">compatible</span>
+<div class="highlight"><pre><span></span><span class="k">if</span> &amp;<span class="nb">compatible</span>
   <span class="k">set</span> <span class="nb">nocompatible</span>
 <span class="k">endif</span>
 <span class="k">set</span> <span class="nb">runtimepath</span><span class="p">+=~</span><span class="sr">/.vim/</span>bundle<span class="sr">/repos/</span>github.<span class="k">com</span><span class="sr">/Shougo/</span>dein.<span class="k">vim</span>
@@ -92,22 +92,38 @@
 
 <span class="k">filetype</span> plugin indent <span class="k">on</span>
 <span class="nb">syntax</span> enable
-</code></pre></div>
+</pre></div>
+
 
 <p>nvim-typescriptを使うにはまだ"npm i -g typescript"する必要があるのでそこは注意です。</p>
-<h1>やったこと</h1>
+<h1 id="_2">やったこと</h1>
 <p>context_filetype.vimとnvim_typescriptをVue対応させました。</p>
-<p>[https://github.com/Shougo/context_filetype.vim/pull/33:embed]</p>
-<p>[https://github.com/mhartington/nvim-typescript/pull/71:embed]</p>
+<p>
+<a class="embedly-card" href="https://github.com/Shougo/context_filetype.vim/pull/33">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
+<p>
+<a class="embedly-card" href="https://github.com/mhartington/nvim-typescript/pull/71">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>あとはdeoplete.nvim本体もShougoさんに修正した頂きました。</p>
-<p>[https://github.com/Shougo/deoplete.nvim/issues/526:embed]</p>
+<p>
+<a class="embedly-card" href="https://github.com/Shougo/deoplete.nvim/issues/526">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>PRとかIssue出してから反映されるのが素早くて素晴らしかったです、感謝です。</p>
-<h1>他の方法</h1>
+<h1 id="_3">他の方法</h1>
 <p>色々画策しているうちに、この方法以外にもVimでVue + TypeScriptする方法はあると教えていただきました。</p>
-<p>[https://twitter.com/Hchan_mgn/status/894834184195162113:embed]</p>
+<p>
+<a class="embedly-card" href="https://twitter.com/Hchan_mgn/status/894834184195162113">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>LanguageClientを使う方法です、Vue.jsの公式にLanguageServerProtcolの実装があるとは知らなかったのでびっくりでした。</p>
 <p>VeturはVue公式なのでVueに特化した補完が聞きそうなのでこちらのほうが便利かも？</p>
-<p>[https://twitter.com/Quramy/status/894743968147165184:embed]</p>
+<p>
+<a class="embedly-card" href="https://twitter.com/Quramy/status/894743968147165184">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>これはtuquyomiを使う方法です、Vimでも動きそうなのでNeovimが使えない環境ではこちらが良さそう。</p>
     </div><!-- /.entry-content -->
 
@@ -283,7 +299,7 @@
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -306,7 +322,7 @@
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -336,6 +352,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

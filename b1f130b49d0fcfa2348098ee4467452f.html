@@ -54,7 +54,7 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2016-07-19T00:52:26+09:00">
+    <li class="published" title="2016-07-19T00:52:26">
         <span>Date:</span>2016-07-19 火 (午前 12:52:26)
     </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/react.html">React</a> <a href="https://muunyblue.github.io/tag/flask.html">Flask</a> </li>
@@ -64,7 +64,7 @@
 <p><a href="https://github.com/reactjs/react-router" title="GitHub - reactjs/react-router: A complete routing library for React">GitHub - reactjs/react-router: A complete routing library for React</a></p>
 <p>react-routerがCDNで使用できると聞いてやってみました。</p>
 <p><a href="https://facebook.github.io/react/docs/tutorial.html" title="Tutorial | React">Reactのチュートリアル</a>でもCDNのみを使用した例を使っているのでこれを雛形として、react-routerのCDNを追加します。</p>
-<div class="highlight"><pre><span></span><code><span class="c">&lt;!-- index.html --&gt;</span>
+<div class="highlight"><pre><span></span><span class="c">&lt;!-- index.html --&gt;</span>
 <span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
@@ -80,16 +80,18 @@
     <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/babel&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;main.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
   <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>これでreact-routerが使えます。</p>
 <p>CDNを使用した場合は、window.ReactRouterにライブラリが入っています。</p>
-<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="p">{</span><span class="nx">Router</span><span class="p">,</span> <span class="nx">Route</span><span class="p">,</span> <span class="nx">Link</span><span class="p">,</span> <span class="nx">hashHistory</span><span class="p">}</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">ReactRouter</span><span class="p">;</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="kd">let</span> <span class="p">{</span><span class="nx">Router</span><span class="p">,</span> <span class="nx">Route</span><span class="p">,</span> <span class="nx">Link</span><span class="p">,</span> <span class="nx">hashHistory</span><span class="p">}</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">ReactRouter</span><span class="p">;</span>
+</pre></div>
+
 
 <p>このように変数として宣言しておくと良いです。</p>
 <p>簡単なreact-routerの例です。</p>
-<div class="highlight"><pre><span></span><code><span class="c1">// main.js</span>
+<div class="highlight"><pre><span></span><span class="c1">// main.js</span>
 
 <span class="kd">let</span> <span class="p">{</span><span class="nx">Router</span><span class="p">,</span> <span class="nx">Route</span><span class="p">,</span> <span class="nx">Link</span><span class="p">,</span> <span class="nx">browserHistory</span><span class="p">}</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">ReactRouter</span><span class="p">;</span>
 
@@ -133,19 +135,20 @@
   <span class="o">&lt;</span><span class="err">/Router&gt;</span>
   <span class="p">),</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">)</span>
 <span class="p">);</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>index.htmlをブラウザで開くだけでreact-routerが動いているのを確認できます。</p>
 <p>個人的にこれはすごく便利で、npmのあれこれを気にしなくて良いのはメリットです。あとはブラウザでimportが動くようになれば、依存関係を気軽にファイル分けできて良さそうな気がします。</p>
 <p>historyにhashHistoryを使用していますが、サーバに乗せればbrowserHistoryも使えます。</p>
-<h1>Flaskと共に実装する場合</h1>
+<h1 id="flask">Flaskと共に実装する場合</h1>
 <p>こういう場合は、react-routerで作成したルーティングテーブルにリロードでアクセスすると404エラーになってしまいます。</p>
 <p>redditやstackoverflowで議論されていて、解決策が提示されています。</p>
 <ul>
 <li><a href="https://www.reddit.com/r/reactjs/comments/42pn95/reactrouter_and_flask_404/" title="React-router and Flask 404 : reactjs">React-router and Flask 404 : reactjs</a></li>
 <li><a href="http://stackoverflow.com/questions/30620276/flask-and-react-routing" title="python - Flask and React routing - Stack Overflow">python - Flask and React routing - Stack Overflow</a></li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">render_template</span>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">render_template</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -156,12 +159,16 @@
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>FlaskでCDNのreact-routerを使用した例です。</p>
-<p>[https://github.com/yymm/flask-react-router:embed]</p>
+<p>
+<a class="embedly-card" href="https://github.com/yymm/flask-react-router">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>サーバサイドをNodejs以外で書くとなると、2つのパッケージマネージャを使うことになり管理が大変になるのでnpm非依存になるように工夫してみました。</p>
-<hr>
+<hr />
 <p>Nodejs界隈がビルドツールに強く依存していたりしてモダンなWebフロントエンド開発を始める際のハードルが高くなっているような気がしています、CDNでさっと始めるメリットもあると思いますので気軽にはじめたい方におすすめです。</p>
     </div><!-- /.entry-content -->
 
@@ -337,7 +344,7 @@
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -360,7 +367,7 @@
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -390,6 +397,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

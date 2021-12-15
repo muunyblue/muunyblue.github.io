@@ -54,11 +54,11 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2015-10-21T05:52:22+09:00">
+    <li class="published" title="2015-10-21T05:52:22">
         <span>Date:</span>2015-10-21 水 (午前 05:52:22)
     </li>
         <!--<br />-->
-        <li class="modified" title="2015-11-11T08:53:52+09:00">
+        <li class="modified" title="2015-11-11T08:53:52">
             <span>Updated:</span>2015-11-11 水 (午前 08:53:52)
         </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/python.html">Python</a> </li>
@@ -66,60 +66,60 @@
 </ul>
 </footer><!-- /.post-info -->      <p>Python3.3からvenvというのが入ってきてvirtualenvを置き換えられるという感じでしたが、日本語情報では色々不便という情報が多かったのでなんとなく敬遠していました。しかし、Python3.4からensurepipという便利なものがvenvで使えるようになって、煩わしさがなくなっているようなので使ってみました。</p>
 <p>※Python3.4以上を対象にしています。</p>
-<h1>pyenv</h1>
+<h1 id="pyenv">pyenv</h1>
 <p>使っているOSのパッケージマネージャでは新しいPythonはすぐにインストール出来ないので、Pythonのバージョンマネージャが必要です。</p>
 <p>そこでpyenvです。</p>
-<p>[https://github.com/yyuu/pyenv:embed]</p>
+<p>
+<a class="embedly-card" href="https://github.com/yyuu/pyenv">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>インストールは<a href="https://github.com/yyuu/pyenv#installation" title="yyuu/pyenv">README</a>にまとまっていますのでそちらを参考にするといいです。</p>
 <p>インストール可能なPythonの一覧を確認して、3.5と3.4をインストールしてみます。</p>
-<div class="highlight"><pre><span></span><code>$ pyenv install -l
+<div class="highlight"><pre><span></span>$ pyenv install -l
 $ pyenv install <span class="m">3</span>.5.0
 $ pyenv install <span class="m">3</span>.4.3
-</code></pre></div>
+</pre></div>
+
 
 <p>インストールしたPythonは"pyenv global"コマンドで使えます。</p>
-<div class="highlight"><pre><span></span><code>$ pyenv global <span class="m">3</span>.5.0
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ pyenv global <span class="m">3</span>.5.0
+</pre></div>
 
-<p>!!! warning "バージョンが変わらない問題"
-    自分はMacOSXで起こりました。他のOSでも起こるかもしれません。
-    MaOSXの場合、brewでインストールしたPythonが優先されてしまうのが問題みたいです。</p>
-<div class="highlight"><pre><span></span><code>```
-$ brew uninstall python
-```
 
-brewのpythonを消したくない場合はやむを得なくPATHを書き換える方法があります。(.bashrcや.zshrcに書く)
-
-```
-PATH=/Users/&lt;USER&gt;/.pyenv/shims:$PATH
-```
-
-大変暴力的なのでお勧めできませんが、これで共存できます。
-</code></pre></div>
-
-<h1>venv</h1>
+<div class="admonition warning">
+<p class="admonition-title">バージョンが変わらない問題</p>
+<p>自分はMacOSXで起こりました。他のOSでも起こるかもしれません。<br />
+MaOSXの場合、brewでインストールしたPythonが優先されてしまうのが問題みたいです。</p>
+<p><code>$ brew uninstall python</code></p>
+<p>brewのpythonを消したくない場合はやむを得なくPATHを書き換える方法があります。(.bashrcや.zshrcに書く)</p>
+<p><code>PATH=/Users/&lt;USER&gt;/.pyenv/shims:$PATH</code></p>
+<p>大変暴力的なのでお勧めできませんが、これで共存できます。</p>
+</div>
+<h1 id="venv">venv</h1>
 <p>パッケージはグローバルにインストールするのではなくプロジェクトごとに独立してインストールして使いたいです、そういう場合にvenvを使います。</p>
 <p>さっきglobalに設定した3.5.0を使ってやってみます。venvはPython3.3以降だとデフォルトで使用可能です。</p>
 <p>venvはpyvenvコマンドから実行できます。プロジェクトを作成してvenvを初期化し有効化します。</p>
-<div class="highlight"><pre><span></span><code>$ mkdir venv_test
+<div class="highlight"><pre><span></span>$ mkdir venv_test
 $ pyvenv venv_test
 $ <span class="nb">source</span> venv_test/bin/activate
 <span class="o">(</span>venv_test<span class="o">)</span> $ 
-</code></pre></div>
+</pre></div>
+
 
 <p>venvが有効化されると"([evn名]) "がシェルの先頭につきます。</p>
 <p>この状態でpipもこの環境内のみで有効なpipなので必要なパッケージをインストールして開発を開始できます。</p>
 <p>venvを無効化する場合は、</p>
-<div class="highlight"><pre><span></span><code>$ deactivate
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ deactivate
+</pre></div>
+
 
 <p>するだけです。</p>
-<h1>まとめ</h1>
+<h1 id="_1">まとめ</h1>
 <p>Python3.5が便利そうという情報を聞いて、Python3の環境構築をまとめてみました。</p>
 <p>venvはデフォルト使えるのでインストールの手間などが無く便利だと思っています、言語標準になってくれて良さを感じます。</p>
 <p>これでpython2+virtualenvを捨ててpython3+venvライフを送れそうです。</p>
 <p>ensurepipの詳しいことなどは以下の参考記事を見ると良いかもしれません。</p>
-<h1>参考記事</h1>
+<h1 id="_2">参考記事</h1>
 <ul>
 <li><a href="https://docs.python.org/3/library/venv.html" title="28.3. venv — Creation of virtual environments — Python 3.5.0 documentation">28.3. venv — Creation of virtual environments — Python 3.5.0 documentation</a></li>
 <li><a href="http://kainokikaede.hatenablog.com/entry/2014/04/04/162125" title="Python の venv と ensurepip とを「正しく」使う - KainokiKaede's diary">Python の venv と ensurepip とを「正しく」使う - KainokiKaede's diary</a></li>
@@ -299,7 +299,7 @@ $ <span class="nb">source</span> venv_test/bin/activate
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -322,7 +322,7 @@ $ <span class="nb">source</span> venv_test/bin/activate
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -352,6 +352,12 @@ $ <span class="nb">source</span> venv_test/bin/activate
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

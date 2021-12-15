@@ -54,7 +54,7 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2017-12-11T14:32:15+09:00">
+    <li class="published" title="2017-12-11T14:32:15">
         <span>Date:</span>2017-12-11 月 (午後 02:32:15)
     </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> <a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> </li>
@@ -62,27 +62,31 @@
 </ul>
 </footer><!-- /.post-info -->      <p><a href="https://muunyblue.github.io/8eec1a372e8a99076315db9ea4d24b2c.html">rustifyで簡単WebAssemblyしてみる</a></p>
 <p>続編です、もう少し実践的なライフゲームを作ってみました。</p>
-<p>[https://github.com/yymm/rustify-game-of-life:embed]</p>
-<h1>Demo</h1>
-<p><img alt="emmo" src="https://github.com/yymm/rustify-game-of-life/raw/master/demo.gif"></p>
+<p>
+<a class="embedly-card" href="https://github.com/yymm/rustify-game-of-life">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
+<h1 id="demo">Demo</h1>
+<p><img alt="emmo" src="https://github.com/yymm/rustify-game-of-life/raw/master/demo.gif" /></p>
 <p>Electonで動かしてますが普通にブラウザでも動きます。</p>
 <p>前の記事は試してみただけだったので少し詳しくまとめてみます。</p>
-<h1>rustifyとは</h1>
+<h1 id="rustify">rustifyとは</h1>
 <p>borwserifyのtransformでrustコードをwasmに変換するものです。</p>
 <p>js内にインラインで書いたrustをwasmに変換することもできるので手軽に利用することもできます。</p>
 <p>何をやっているかというと、wasmを生成してwasm-gcを噛ませて元のjsファイルのrustの部分をwasmで置き換えるということをやっています。</p>
-<div class="highlight"><pre><span></span><code>% rustc +nightly --target wasm32-unknown-unknown &lt;file&gt; --crate-type<span class="o">=</span>cdylib --out-dir &lt;outdir&gt;
+<div class="highlight"><pre><span></span>% rustc +nightly --target wasm32-unknown-unknown &lt;file&gt; --crate-type<span class="o">=</span>cdylib --out-dir &lt;outdir&gt;
 % wasm-gc &lt;file&gt; &lt;out_file&gt;
-</code></pre></div>
+</pre></div>
+
 
 <p>実行しているコマンドはこれだけなので、wasmをfetchやfsでreadFileSyncしてもほぼ同じです。</p>
-<h1>rustifyができそうなこと</h1>
+<h1 id="rustify_1">rustifyができそうなこと</h1>
 <p>rustifyはjsのプロジェクトに対して一部分をrust+wasmに置き換えるようなことができそうです。</p>
 <p>webpackなどで行うメインのビルド前に、rustifyで変換をかけてからwebpackビルドに回すみたいなことは簡単にできるので、もともとあるjsプロジェクトの高速化に使えるのでは・・・という感想です。</p>
-<h1>メモリ共有</h1>
+<h1 id="_1">メモリ共有</h1>
 <p>ライフゲームを作るにあたって配列データをwasmとjsで共有する必要があります。emscriptenを使えばModule._mallocを使えるのですがwasm32-unknown-unknownでは使えません。</p>
 <p>正解の方法はわからなかったのでBox\&lt;T>でヒープに確保したarrayの生ポインタを返すことで実現してみました。</p>
-<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nx">rust</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rustify&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">rust</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rustify&#39;</span><span class="p">)</span>
 
 <span class="kd">var</span> <span class="nx">wasm</span> <span class="o">=</span> <span class="nx">rust</span><span class="sb">`</span>
 <span class="sb">const ROW: usize = 10;</span>
@@ -112,14 +116,15 @@
   <span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;Creating WASM module failed&#39;</span><span class="p">,</span> <span class="nx">e</span><span class="p">)</span>
   <span class="p">})</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>js側で生ポインタから値を取り出す方法がわからなかったのでgetElementしています。</p>
 <p>この方法だとサイズを動的に確保できないのが残念なので時間があれば改良したいです。</p>
 <p>メモリの解放はwasm-gcがやってくれると信じて使います。</p>
-<h1>開発しぐさ</h1>
+<h1 id="_2">開発しぐさ</h1>
 <p>rustのプロジェクトをベースにしてviewディレクトリにnode.jsのプロジェクトを作成して開発しました。</p>
-<div class="highlight"><pre><span></span><code>.
+<div class="highlight"><pre><span></span>.
 ├── Cargo.toml
 ├── src
 │   ├── lib.rs
@@ -132,22 +137,25 @@
     ├── lifegame.js
     ├── main.js
     └── package.json
-</code></pre></div>
+</pre></div>
+
 
 <p>wasmにするのに必要な部分(lib.rs)とrustだけでも動くロジック部分(lib.rs以外)を切り分けで開発しました(ファイル名は何でもいいです)。</p>
 <p>wasmのみに必要な部分(lib.rs)はロジック部分とは本質的に無関係なのでインターフェースだけ決めて、ロジック部分ができるまではダミーデータを使いました。</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># view部分のビルド</span>
+<div class="highlight"><pre><span></span><span class="c1"># view部分のビルド</span>
 % <span class="nb">cd</span> view
 % ./node_modules/.bin/browserify -t rustify lifegame.js &gt; build.js
-</code></pre></div>
+</pre></div>
+
 
 <p>ロジック部分のRustには#[test]があるので今回のロジックの核であるライフゲーム部分は先に簡単なtestを書いて動作を確認しました。</p>
-<div class="highlight"><pre><span></span><code>% cargo <span class="nb">test</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span>% cargo <span class="nb">test</span>
+</pre></div>
+
 
 <p>ロジック部分ができたらダミデータを置き換えて完成です。</p>
-<h1>ライフゲーム本体</h1>
-<div class="highlight"><pre><span></span><code><span class="k">pub</span><span class="w"> </span><span class="k">struct</span> <span class="nc">Lifegame</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<h1 id="_3">ライフゲーム本体</h1>
+<div class="highlight"><pre><span></span><span class="k">pub</span><span class="w"> </span><span class="k">struct</span> <span class="nc">Lifegame</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="n">row</span>: <span class="kt">i32</span><span class="p">,</span><span class="w"></span>
 <span class="w">    </span><span class="n">col</span>: <span class="kt">i32</span><span class="p">,</span><span class="w"></span>
 <span class="w">    </span><span class="n">room</span>: <span class="nb">Vec</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
@@ -200,16 +208,18 @@
 <span class="w">        </span><span class="p">}</span><span class="w"></span>
 <span class="w">    </span><span class="p">}</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>Rust結構書きやすいしコンパイラも賢いので本当に好きです。がまだ雰囲気で書いているので間違っているかもしれません。</p>
-<h1>もっと遊びたい</h1>
+<h1 id="_4">もっと遊びたい</h1>
 <p><a href="https://aochagavia.github.io/blog/rocket---a-rust-game-running-on-wasm/">Rocket - A Rust game running on WASM</a></p>
 <p>この記事を見てしゅごいとなったのでもっと遊びたくなりました。</p>
 <p>もともとPistonで作っていたゲームをwasm+canvas(html)で置き換えた話のようです。</p>
 <p>あとこの前extern crateができないと思っていたのですがrustcでなくcargoを使えばできることもわかったのでできることの幅も広がりそうです。</p>
-<div class="highlight"><pre><span></span><code>% cargo build --target wasm32-unknown-unknown
-</code></pre></div>
+<div class="highlight"><pre><span></span>% cargo build --target wasm32-unknown-unknown
+</pre></div>
+
 
 <p>正直jsはあまり洗練されたプログラミング言語ではないのでrustを使ってwebのロジックを書けるのは魅力的です。</p>
 <p>実用するにはどうすればいいのか考えながらもう少し遊んでいきたいです。</p>
@@ -387,7 +397,7 @@
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -410,7 +420,7 @@
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -440,6 +450,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

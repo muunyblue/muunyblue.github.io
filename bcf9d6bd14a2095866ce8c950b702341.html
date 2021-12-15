@@ -54,7 +54,7 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2015-10-05T01:47:27+09:00">
+    <li class="published" title="2015-10-05T01:47:27">
         <span>Date:</span>2015-10-05 月 (午前 01:47:27)
     </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/asakatsu.html">Asakatsu</a> <a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> </li>
@@ -63,10 +63,10 @@
 </footer><!-- /.post-info -->      <p>朝活#3</p>
 <p>※個人的なメモです、簡単なアプリしか想定していません。</p>
 <p>gulp, browserify, reactjs, coffee-script, sass(scss), hamlで始めます。</p>
-<h1>ディレクトリ構成</h1>
+<h1 id="_1">ディレクトリ構成</h1>
 <p>srcにあるcoffee-script, haml, scssを編集して、そこをgulpでwatchします。</p>
 <p>dest/, *.htmlはgulpが勝手に作ります。libにはダウンロードしたCSS及びJSライブラリを入れる構成です。</p>
-<div class="highlight"><pre><span></span><code>.
+<div class="highlight"><pre><span></span>.
 ├── package.json
 ├── gulpfile.coffee
 ├── *.html
@@ -80,21 +80,24 @@
     ├── coffee
     ├── haml
     └── scss
-</code></pre></div>
+</pre></div>
 
-<h1>Bootstrapping</h1>
-<div class="highlight"><pre><span></span><code>$ npm install gulp -g
+
+<h1 id="bootstrapping">Bootstrapping</h1>
+<div class="highlight"><pre><span></span>$ npm install gulp -g
 $ npm init
 $ npm install gulp browserify gulp-sass gulp-haml gulp-watch glob vinyl-source-stream react coffee-script coffee-reactify superagent sanitize.css -save
-</code></pre></div>
+</pre></div>
+
 
 <p>CSSで困らないために、<a href="http://10up.github.io/sanitize.css/" title="sanitize.css">sanitize.css</a>を使います。</p>
 <p>-&gt; src/scss/style.scss</p>
-<div class="highlight"><pre><span></span><code><span class="k">@import</span> <span class="s1">&#39;sanitize.scss&#39;</span><span class="p">;</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="k">@import</span> <span class="s1">&#39;sanitize.scss&#39;</span><span class="p">;</span>
+</pre></div>
+
 
 <p>-&gt; src/haml/index/haml</p>
-<div class="highlight"><pre><span></span><code><span class="nn">!!!</span>
+<div class="highlight"><pre><span></span><span class="nn">!!!</span>
 <span class="nt">%html</span><span class="p">{</span><span class="ss">lang</span><span class="p">:</span> <span class="s2">&quot;ja&quot;</span><span class="p">}</span>
   <span class="nt">%head</span>
     <span class="nt">%meta</span><span class="p">{</span><span class="ss">charset</span><span class="p">:</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">}</span>
@@ -104,12 +107,13 @@ $ npm install gulp browserify gulp-sass gulp-haml gulp-watch glob vinyl-source-s
   <span class="nt">%body</span>
     <span class="nt">%script</span><span class="p">{</span><span class="ss">src</span><span class="p">:</span> <span class="s2">&quot;dest/js/app.js&quot;</span><span class="p">}</span>
     <span class="c">/%script{src: &quot;lib/js/xxx.js&quot;}</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>エントリポイントです、Reactを使う場合、bodyをReactで扱えばこれ以上書かなくても良いかもしれないです。libに追加したCSS/JSがあればロードします。</p>
-<h1>gulpfile</h1>
+<h1 id="gulpfile">gulpfile</h1>
 <p>watchしていますが、コンパイルエラーでgulpのプロセスが落ちるという欠陥がありますが、個人用途ですぐに捨てゆくのもなので気にせず使っています。</p>
-<div class="highlight"><pre><span></span><code><span class="nv">gulp       = </span><span class="nx">require</span> <span class="s">&#39;gulp&#39;</span>
+<div class="highlight"><pre><span></span><span class="nv">gulp       = </span><span class="nx">require</span> <span class="s">&#39;gulp&#39;</span>
 <span class="nv">browserify = </span><span class="nx">require</span> <span class="s">&#39;browserify&#39;</span>
 <span class="nv">sass       = </span><span class="nx">require</span> <span class="s">&#39;gulp-sass&#39;</span>
 <span class="nv">haml       = </span><span class="nx">require</span> <span class="s">&#39;gulp-haml&#39;</span>
@@ -149,10 +153,12 @@ $ npm install gulp browserify gulp-sass gulp-haml gulp-watch glob vinyl-source-s
   <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span> <span class="s">&#39;src/coffee/*.coffee&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;build:coffee&#39;</span><span class="p">]</span>
   <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span> <span class="s">&#39;src/scss/*.scss&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;build:scss&#39;</span><span class="p">]</span>
   <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span> <span class="s">&#39;src/haml/*.haml&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;build:haml&#39;</span><span class="p">]</span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>$ gulp watch
-</code></pre></div>
+
+<div class="highlight"><pre><span></span>$ gulp watch
+</pre></div>
+
 
 <p>で開発スタートです。</p>
     </div><!-- /.entry-content -->
@@ -329,7 +335,7 @@ $ npm install gulp browserify gulp-sass gulp-haml gulp-watch glob vinyl-source-s
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -352,7 +358,7 @@ $ npm install gulp browserify gulp-sass gulp-haml gulp-watch glob vinyl-source-s
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -382,6 +388,12 @@ $ npm install gulp browserify gulp-sass gulp-haml gulp-watch glob vinyl-source-s
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

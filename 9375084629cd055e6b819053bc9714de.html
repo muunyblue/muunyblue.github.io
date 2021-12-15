@@ -54,7 +54,7 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2015-09-20T00:55:33+09:00">
+    <li class="published" title="2015-09-20T00:55:33">
         <span>Date:</span>2015-09-20 日 (午前 12:55:33)
     </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/idcf.html">IDCF</a> <a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> </li>
@@ -66,26 +66,29 @@
 <p>VPSにはIDCFクラウドの一番安いのを使います。Dokkuを入れる前に、</p>
 <p><a href="http://blog.muuny-blue.info/50982fb2f2cfa186d335310461dfa2be.html" title="IDCFクラウド借りました">IDCFクラウド借りました</a></p>
 <p>にあるようなセットアップが済んでいるものとします。</p>
-<h1>Dokkuのインストール</h1>
-<div class="highlight"><pre><span></span><code>$ wget https://raw.github.com/progrium/dokku/v0.3.26/bootstrap.sh
+<h1 id="dokku">Dokkuのインストール</h1>
+<div class="highlight"><pre><span></span>$ wget https://raw.github.com/progrium/dokku/v0.3.26/bootstrap.sh
 $ sudo <span class="nv">DOKKU_TAG</span><span class="o">=</span>v0.3.26 bash bootstrap.sh
-</code></pre></div>
+</pre></div>
+
 
 <p>続いてサーバにログインしている状態で、ホスト名の設定。(root権限で実行)</p>
 <p>VHOSTとHOSTNAMEに、持っているDNSの名前を設定する。(サブドメインでも良い)</p>
 <p>(仮に、foo.barを設定したとする。)</p>
-<div class="highlight"><pre><span></span><code># echo &quot;foo.bar&quot; &gt; /home/dokku/VHOST
+<div class="highlight"><pre><span></span># echo &quot;foo.bar&quot; &gt; /home/dokku/VHOST
 # echo &quot;foo.bar&quot; &gt; /home/dokku/HOSTNAME
-</code></pre></div>
+</pre></div>
+
 
 <p>("http://foo.bar"にアクセスしてもdokkuの初期設定画面が出てきたので、そちらで設定できるみたい)</p>
 <p>次に、git pushできるようにするために、SSHの公開鍵を設定する。公開鍵のある場所で以下のコマンドを実行する。</p>
-<div class="highlight"><pre><span></span><code>(ローカル) $ cat ~/.ssh/id_rsa.pub | ssh root@&lt;your_ip&gt; &quot;sudo sshcommand acl-add dokku &lt;name&gt;&quot;
+<div class="highlight"><pre><span></span>(ローカル) $ cat ~/.ssh/id_rsa.pub | ssh root@&lt;your_ip&gt; &quot;sudo sshcommand acl-add dokku &lt;name&gt;&quot;
 (サーバ内) $ cat ~/.ssh/id_rsa.pub | sudo sshcommand acl-add dokku &lt;name&gt;
-</code></pre></div>
+</pre></div>
+
 
 <p>Dokkuの下準備はこれだけ、次にドメインの設定する。</p>
-<h1>ドメインの設定(お名前.com)</h1>
+<h1 id="com">ドメインの設定(お名前.com)</h1>
 <p>Dokkuはnginxを使ってサブドメインにデプロイしてくれるので、ワイルドカードを設定してみる。</p>
 <p>お名前.comでは、サブドメインにワイルドカードが使えないので、*.<domain>とするしかないみたいです。</p>
 <p>しょうがないので、DNSレコード設定で以下のようにAレコードを設定する。</p>
@@ -111,11 +114,11 @@ $ sudo <span class="nv">DOKKU_TAG</span><span class="o">=</span>v0.3.26 bash boo
 </tbody>
 </table>
 <p>これで、例えば"dokku@foo.bar:sample"にpushしたとき、"http://sample.foo.bar"にデプロイされる。</p>
-<h1>Dokkuにサンプルアプリをデプロイ</h1>
+<h1 id="dokku_1">Dokkuにサンプルアプリをデプロイ</h1>
 <p>Pythonのサンプルをデプロイしてみる。</p>
 <p><a href="https://github.com/heroku/python-sample" title="heroku/python-sample">heroku/python-sample</a></p>
 <p>ローカル環境にgit cloneして、remoteにdokkuを追加。</p>
-<div class="highlight"><pre><span></span><code><span class="n">$</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="n">clone</span><span class="w"> </span><span class="nl">https</span><span class="p">:</span><span class="c1">//github.com/heroku/python-sample.git</span>
+<div class="highlight"><pre><span></span><span class="n">$</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="n">clone</span><span class="w"> </span><span class="nl">https</span><span class="p">:</span><span class="c1">//github.com/heroku/python-sample.git</span>
 <span class="n">$</span><span class="w"> </span><span class="n">cd</span><span class="w"> </span><span class="n">python</span><span class="o">-</span><span class="n">sample</span><span class="w"></span>
 <span class="n">$</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="n">remote</span><span class="w"> </span><span class="n">add</span><span class="w"> </span><span class="n">dokku</span><span class="w"> </span><span class="n">dokku</span><span class="p">@</span><span class="n">foo</span><span class="p">.</span><span class="nl">bar</span><span class="p">:</span><span class="n">python</span><span class="o">-</span><span class="n">sample</span><span class="w"></span>
 <span class="n">$</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="n">push</span><span class="w"> </span><span class="n">dokku</span><span class="w"> </span><span class="n">master</span><span class="w"></span>
@@ -179,13 +182,14 @@ $ sudo <span class="nv">DOKKU_TAG</span><span class="o">=</span>v0.3.26 bash boo
 
 <span class="n">To</span><span class="w"> </span><span class="n">dokku</span><span class="p">@</span><span class="n">foo</span><span class="p">.</span><span class="nl">bar</span><span class="p">:</span><span class="n">python</span><span class="o">-</span><span class="n">sample</span><span class="w"></span>
 <span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">[</span><span class="n">new</span><span class="w"> </span><span class="n">branch</span><span class="p">]</span><span class="w">      </span><span class="n">master</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">master</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>初回はDockerのイメージとかを色々落としてくるので時間がかかるが、いい感じにデプロイされている様子を見れる。</p>
 <p>Aレコードがちゃんと設定されていれば、ブラウザでも見れます。</p>
-<p><img alt="Hello Dokku" src="https://i.gyazo.com/1ad23dfd5b4eaeef76f14de4cca9e848.png"></p>
+<p><img alt="Hello Dokku" src="https://i.gyazo.com/1ad23dfd5b4eaeef76f14de4cca9e848.png" /></p>
 <p>Dokkuの様子を、サーバにSSHして確認。</p>
-<div class="highlight"><pre><span></span><code>$ dokku <span class="nv">apps</span>
+<div class="highlight"><pre><span></span>$ dokku <span class="nv">apps</span>
 <span class="o">=====</span>&gt; My Apps
 python-sample
 $ dokku ps python-sample
@@ -197,33 +201,35 @@ root       <span class="m">137</span>  <span class="m">0</span>.0  <span class="
 root       <span class="m">143</span>  <span class="m">0</span>.0  <span class="m">0</span>.1  <span class="m">15564</span>  <span class="m">1156</span> ?        R+   <span class="m">00</span>:21   <span class="m">0</span>:00 ps auxwww
 $ ls -la /home/dokku <span class="p">|</span> grep python-sample
 drwxrwxr-x  <span class="m">8</span> dokku dokku <span class="m">4096</span> XXX XX XX:XX python-sample
-</code></pre></div>
+</pre></div>
+
 
 <p>Dockerの様子も確認。</p>
-<div class="highlight"><pre><span></span><code>$ sudo docker ps
+<div class="highlight"><pre><span></span>$ sudo docker ps
 CONTAINER ID        IMAGE                        COMMAND             CREATED             STATUS              PORTS               NAMES
 a63daf76bcb3        dokku/python-sample:latest   <span class="s2">&quot;/start web&quot;</span>        <span class="m">4</span> minutes ago       Up <span class="m">4</span> minutes                            insane_leakey
 $ sudo docker images
 REPOSITORY             TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
 dokku/python-sample    latest              d8025105f0c0        <span class="m">4</span> minutes ago       <span class="m">1</span>.421 GB
 gliderlabs/herokuish   latest              359e311e765f        <span class="m">6</span> weeks ago         <span class="m">1</span>.263 GB
-</code></pre></div>
+</pre></div>
+
 
 <p>okぽい。</p>
 <p>アプリに対して、操作するときはdokkuコマンドから操作する。詳しくはdokku --help。</p>
-<h1>まとめ</h1>
+<h1 id="_1">まとめ</h1>
 <p>IDCFフロンティアの一番安いのにもDokkuちゃんとのせられたし、ちゃんと動いた。個人用途には申し分なさそう。</p>
 <p>メモリ使用量の様子。</p>
-<p><img alt="メモリ使用量" src="https://i.gyazo.com/36ecfb4e53c09ffbb76c2cd73e2033dd.png"></p>
+<p><img alt="メモリ使用量" src="https://i.gyazo.com/36ecfb4e53c09ffbb76c2cd73e2033dd.png" /></p>
 <p>アプリ1つしかデブロイしてないけど、あまり無茶させなければ大丈夫そうな気配。</p>
 <p>入れたあとにDokkuAlternativeってのがあることを知った、こっちは、メジャーどころのDB連携がデフォルトでついていたりWebコンソールがあるみたい、こっちのほうがなにかとよさそう。</p>
 <p>dokku-altに関しては日本語で丁寧にまとまってる記事があったのでそちらを見るといいかもしれない。</p>
 <p><a href="http://freedom-man.com/blog/dokku-alternative/" title="Dokku Alternative触ってみる。">Dokku Alternative触ってみる。</a></p>
 <p>(今のところ不便はないので素のdokkuを運用しいています)</p>
-<h1>参考資料</h1>
+<h1 id="_2">参考資料</h1>
 <ul>
 <li><a href="https://github.com/progrium/dokku" title="progrium/dokku">progrium/dokku</a></li>
-<li><a href="http://progrium.viewdocs.io/dokku/installation/" title="">dokku</a></li>
+<li><a href="http://progrium.viewdocs.io/dokku/installation/">dokku</a></li>
 <li><a href="http://qiita.com/nyarla/items/a4ea9dd71625c72e48a1" title="DigitalOceanでUbuntu 12.04 + dokkuを構築した際のメモ - Qiita">DigitalOceanでUbuntu 12.04 + dokkuを構築した際のメモ - Qiita</a></li>
 <li><a href="http://shokai.org/blog/archives/8855" title="橋本商会 » DockerとdokkuをMacにインストールして自分をHeroku化した">橋本商会 » DockerとdokkuをMacにインストールして自分をHeroku化した</a></li>
 <li><a href="http://knowledge.sakura.ad.jp/tech/2356/" title="DockerでミニHeroku！「Dokku」をさくらのクラウドで試す - さくらのナレッジ">DockerでミニHeroku！「Dokku」をさくらのクラウドで試す - さくらのナレッジ</a></li>
@@ -406,7 +412,7 @@ gliderlabs/herokuish   latest              359e311e765f        <span class="m">6
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -429,7 +435,7 @@ gliderlabs/herokuish   latest              359e311e765f        <span class="m">6
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -459,6 +465,12 @@ gliderlabs/herokuish   latest              359e311e765f        <span class="m">6
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

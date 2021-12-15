@@ -54,17 +54,17 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2016-12-27T04:36:50+09:00">
+    <li class="published" title="2016-12-27T04:36:50">
         <span>Date:</span>2016-12-27 火 (午前 04:36:50)
     </li>
         <!--<br />-->
-        <li class="modified" title="2016-12-27T04:44:54+09:00">
+        <li class="modified" title="2016-12-27T04:44:54">
             <span>Updated:</span>2016-12-27 火 (午前 04:44:54)
         </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/neovim.html">neovim</a> <a href="https://muunyblue.github.io/tag/vim.html">vim</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
-</footer><!-- /.post-info -->      <p><img alt="" src="https://i.gyazo.com/1089d23c5abf4d0cf038f597d3ee64a5.png"></p>
+</footer><!-- /.post-info -->      <p><img alt="" src="https://i.gyazo.com/1089d23c5abf4d0cf038f597d3ee64a5.png" /></p>
 <p>11月あたりからvim環境を見直して概ねまとまってきたのでメモとして残しておきます。</p>
 <p>概要は</p>
 <ul>
@@ -74,47 +74,72 @@
 </ul>
 <p>になります。</p>
 <p>設定ファイルはGitHubの.dotfilesにあるのでこちらを見ればこの記事は読まなくてもいいかもしれません。</p>
-<p>[https://github.com/yymm/.dotfiles/tree/master/config/nvim:embed]</p>
-<hr>
-<p>[TOC]</p>
-<h1>Neovimはじめました</h1>
+<p>
+<a class="embedly-card" href="https://github.com/yymm/.dotfiles/tree/master/config/nvim">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
+<hr />
+<div class="toc">
+<ul>
+<li><a href="#neovim">Neovimはじめました</a><ul>
+<li><a href="#neovim_1">Neovimのインストールはパッケージマネージャーから</a></li>
+<li><a href="#_1">設定ファイルの場所</a></li>
+</ul>
+</li>
+<li><a href="#nyaovim">Nyaovimもはじめました</a></li>
+<li><a href="#_2">プラグイン整理</a><ul>
+<li><a href="#deinvim">dein.vim</a></li>
+</ul>
+</li>
+<li><a href="#iceberg">iceberg</a></li>
+<li><a href="#neoterm">neoterm</a></li>
+<li><a href="#neomake">neomake</a></li>
+<li><a href="#deopletenvim">deoplete.nvim</a></li>
+<li><a href="#vim-airline">vim-airline</a></li>
+<li><a href="#vimfiler">Vimfiler</a></li>
+<li><a href="#_3">関数内検索</a></li>
+</ul>
+</div>
+<h1 id="neovim">Neovimはじめました</h1>
 <p><a href="https://neovim.io/" title="Home - Neovim">Home - Neovim</a></p>
 <p>Neovimのterminal modeに感動してNeovimをはじめてみることにしました。</p>
 <p>あとVimよりサクサク動いていて、思考の速度に近づいてる気がします。</p>
-<h2>Neovimのインストールはパッケージマネージャーから</h2>
+<h2 id="neovim_1">Neovimのインストールはパッケージマネージャーから</h2>
 <p>OSXとUbuntuでの開発が多いのでパッケージマネージャーを使ってインストールすることにします。</p>
 <p>しかもNeovimの場合パッケージマネージャーを使用して新しいNeovimをインストールすることが可能なので手元でビルドしなくていいのもメリットだと感じています。</p>
 <p>あとPython拡張を使うのでインストールと一緒に有効にしておきます。</p>
 <p>OSXの場合(<a href="https://github.com/neovim/homebrew-neovim/blob/master/README.md" title="homebrew-neovim/README.md at master · neovim/homebrew-neovim">homebrew-neovim/README.md at master · neovim/homebrew-neovim</a>)</p>
-<div class="highlight"><pre><span></span><code>brew tap neovim/neovim
+<div class="highlight"><pre><span></span>brew tap neovim/neovim
 brew install --HEAD neovim
 brew install python
 brew install python3
 pip2 install --user --upgrade neovim
 pip3 install --user --upgrade neovim
-</code></pre></div>
+</pre></div>
+
 
 <p>Ubuntuの場合(<a href="https://github.com/neovim/neovim/wiki/Installing-Neovim#ubuntu" title="Installing Neovim · neovim/neovim Wiki">Installing Neovim · neovim/neovim Wiki</a>)</p>
-<div class="highlight"><pre><span></span><code>sudo apt-get install software-properties-common
+<div class="highlight"><pre><span></span>sudo apt-get install software-properties-common
 sudo add-apt-repository ppa:neovim-ppa/unstable
 sudo apt-get update
 sudo apt-get install neovim
 sudo apt-get install python-dev python-pip python3-dev python3-pip
 sudo pip2 install --user --upgrade neovim
 sudo pip3 install --user --upgrade neovim
-</code></pre></div>
+</pre></div>
+
 
 <p>手元でビルドする場合、<a href="https://github.com/neovim/neovim/wiki/Building-Neovim#build-prerequisites" title="Building Neovim · neovim/neovim Wiki">CentOS6以前などではビルドに必要なツールをビルドする必要があったりする</a>ので、自分の場合は環境によってはNeovimは諦めてVimも併用で使うようにしています。</p>
-<h2>設定ファイルの場所</h2>
+<h2 id="_1">設定ファイルの場所</h2>
 <p>デフォルトでは"~/.config/nvim/init.vim"がVimで言う"~/.vimrc"になります。</p>
 <p>環境変数"$XDG_CONFIG_HOME"を変更することで、デフォルトの"~/.config"部分を変更できます。</p>
 <p>今後Neovimメインで使っていくような気がしているので、.vimrcへのシンボリックリンクを作成することでVimも同じ設定で使えるようにしています。</p>
-<h1>Nyaovimもはじめました</h1>
-<p><img alt="" src="https://i.gyazo.com/dafd85baa0a464ccffb2ceeff43c4d46.gif"></p>
+<h1 id="nyaovim">Nyaovimもはじめました</h1>
+<p><img alt="" src="https://i.gyazo.com/dafd85baa0a464ccffb2ceeff43c4d46.gif" /></p>
 <p>MiniBrowserプラグインを使って、Web開発のプレビューを横に出しながらプログラミングできて楽しいです。</p>
 <p>Markdownプレビューも最高です。</p>
 <p>設定ファイル(~/.config/nyaovim/nyaovimrc.html)</p>
-<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="n">dom</span><span class="o">-</span><span class="k">module</span><span class="w"> </span><span class="n">id</span><span class="o">=</span><span class="ss">&quot;nyaovim-app&quot;</span><span class="o">&gt;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">dom</span><span class="o">-</span><span class="k">module</span><span class="w"> </span><span class="n">id</span><span class="o">=</span><span class="ss">&quot;nyaovim-app&quot;</span><span class="o">&gt;</span><span class="w"></span>
 <span class="w">  </span><span class="o">&lt;</span><span class="n">template</span><span class="o">&gt;</span><span class="w"></span>
 <span class="w">    </span><span class="o">&lt;</span><span class="n">style</span><span class="o">&gt;</span><span class="w"></span>
 <span class="w">      </span><span class="cm">/* CSS configurations here */</span><span class="w"></span>
@@ -143,10 +168,11 @@ sudo pip3 install --user --upgrade neovim
 <span class="w">    </span><span class="o">&lt;</span><span class="n">popup</span><span class="o">-</span><span class="n">tooltip</span><span class="w"> </span><span class="n">editor</span><span class="o">=</span><span class="ss">&quot;[[editor]]&quot;</span><span class="o">&gt;&lt;/</span><span class="n">popup</span><span class="o">-</span><span class="n">tooltip</span><span class="o">&gt;</span><span class="w"></span>
 <span class="w">  </span><span class="o">&lt;/</span><span class="n">template</span><span class="o">&gt;</span><span class="w"></span>
 <span class="o">&lt;/</span><span class="n">dom</span><span class="o">-</span><span class="k">module</span><span class="o">&gt;</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>Nyaovimプラグインもdein.vimで読み込むのですが、"if exists('g:nyaovim_version')"を使うことでNyaovim固有の設定を記述します。</p>
-<h1>プラグイン整理</h1>
+<h1 id="_2">プラグイン整理</h1>
 <p>今までの構成を大幅に変更してみました。dein.vimによる影響が大きいですが以下の点が今までと大きく変わりました。</p>
 <ul>
 <li>cacheの利用</li>
@@ -156,7 +182,7 @@ sudo pip3 install --user --upgrade neovim
 <li>NeovimとVimとNyaovimで使用するプラグインも使い分かる</li>
 </ul>
 <p>Neovimをメインに据えていくのでルートディレクトリは"~/.config/nvim"で、ディレクトリ構成は以下のようになっています。</p>
-<div class="highlight"><pre><span></span><code>~/.config/nvim
+<div class="highlight"><pre><span></span>~/.config/nvim
 ├── dein.toml
 ├── deinlazy.toml
 ├── init.vim
@@ -175,9 +201,10 @@ sudo pip3 install --user --upgrade neovim
     ├── vimfiler.rc.vim
     ├── vimshell.rc.vim
     └── yankround.rc.vim
-</code></pre></div>
+</pre></div>
 
-<h2>dein.vim</h2>
+
+<h2 id="deinvim">dein.vim</h2>
 <p>Shougo氏がdein.vimという新しいプラグインマネージャを作っていたのでそちらに移行しました。</p>
 <p>基本的にShougo氏の<a href="https://github.com/Shougo/shougo-s-github/tree/master/vim/rc" title="shougo-s-github/vim/rc at master · Shougo/shougo-s-github">vimrc</a>を参考にして作ってみました。</p>
 <ul>
@@ -186,7 +213,7 @@ sudo pip3 install --user --upgrade neovim
 <li>tomlを使う =&gt; <a href="https://github.com/Shougo/shougo-s-github/blob/master/vim/rc/dein.rc.vim#L15" title="shougo-s-github/dein.rc.vim at master · Shougo/shougo-s-github">shougo-s-github/dein.rc.vim#L15</a></li>
 </ul>
 <p>このあたりを参考にして以下のようなinit.vimになりました。</p>
-<div class="highlight"><pre><span></span><code><span class="k">if</span> &amp;<span class="nb">compatible</span>
+<div class="highlight"><pre><span></span><span class="k">if</span> &amp;<span class="nb">compatible</span>
   <span class="k">set</span> <span class="nb">nocompatible</span>
 <span class="k">endif</span>
 
@@ -237,15 +264,17 @@ augroup END
 
 runtime<span class="p">!</span> <span class="k">options</span>.rc.<span class="k">vim</span>
 runtime<span class="p">!</span> <span class="nb">keymap</span>.rc.<span class="k">vim</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>ポイントは、Neovim/Vim/Nyaovimでcacheのパスを使い分けて各々のプラグインを使用できるようにしています。</p>
 <p>Vim本体の設定とKeymapは別ファイルとして最後に読み込んでいます。</p>
 <p>Neovimも開発中なので、プラグインに関しても日々更新されていくものが多いので、動作がおかしいときや数日に一度は":call dein#update()"してプラグインを更新すると良いです。</p>
 <p>管理するプラグインについてはdein.toml(遅延ロードするプラグインはdeinlazy.toml)に書きます。</p>
-<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<div class="highlight"><pre><span></span><span class="k">[[plugins]]</span>
 <span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;xxx/yyy&#39;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>基本的には上の書き方で、設定がある場合はhook_*を使って設定を読み込みます。</p>
 <ul>
@@ -257,7 +286,7 @@ runtime<span class="p">!</span> <span class="nb">keymap</span>.rc.<span class="k
 <p>hookのスクリプトに"source <path>.vim"と書いて外部のVim scriptを読み込むようにするとtomlファイルがすっきりするので、設定が長くなるプラグインなどはそうしています。</p>
 <p>ifというキーを使ってNeovimやVimの切り替えができます。</p>
 <p>以下はneocompleteとdeoplete.nvim、neotermとvimshellの例です。</p>
-<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<div class="highlight"><pre><span></span><span class="k">[[plugins]]</span>
 <span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;Shougo/neocomplete.vim&#39;</span>
 <span class="na">depends</span> <span class="o">=</span> <span class="s">&#39;context_filetype.vim&#39;</span>
 <span class="na">if</span> <span class="o">=</span> <span class="s">&quot;has(&#39;lua&#39;)&quot;</span>
@@ -288,7 +317,8 @@ runtime<span class="p">!</span> <span class="nb">keymap</span>.rc.<span class="k
 <span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
 <span class="na">source ~/.config/nvim/plugins/vimshell.rc.vim</span>
 <span class="na">&#39;&#39;&#39;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>これを書くまでに参考にして勉強したりした情報集です、ありがとうございました。</p>
 <ul>
@@ -306,13 +336,13 @@ runtime<span class="p">!</span> <span class="nb">keymap</span>.rc.<span class="k
 <li><a href="http://thinca.hatenablog.com/entry/20100205/1265307642" title="vimrc基礎文法最速マスター - 永遠に未完成">vimrc基礎文法最速マスター - 永遠に未完成</a></li>
 <li><a href="http://thinca.hatenablog.com/entry/20100201/1265009821" title="Vimスクリプト基礎文法最速マスター - 永遠に未完成">Vimスクリプト基礎文法最速マスター - 永遠に未完成</a></li>
 </ul>
-<hr>
+<hr />
 <p>残りは気になった個別のプラグインについて書いていきます。</p>
-<h1>iceberg</h1>
+<h1 id="iceberg">iceberg</h1>
 <p><a href="http://cocopon.me/app/vim-iceberg/" title="Iceberg - dark color scheme for Vim">Iceberg - dark color scheme for Vim</a></p>
 <p>目に優しそうでカッコいいカラースキームです。</p>
 <p>visual modeを結構多用するのですが、モニターのブルーライトカットが効きすぎているのか色が分かりづらかったのでオレンジ色に変えてあります。</p>
-<div class="highlight"><pre><span></span><code><span class="k">au</span> MyAutoCmd <span class="nb">VimEnter</span> * nested <span class="k">colorscheme</span> iceberg
+<div class="highlight"><pre><span></span><span class="k">au</span> MyAutoCmd <span class="nb">VimEnter</span> * nested <span class="k">colorscheme</span> iceberg
 <span class="c">&quot; Visual mode</span>
 <span class="k">au</span> MyAutoCmd <span class="nb">VimEnter</span> * <span class="nb">highlight</span> Visual ctermbg<span class="p">=</span><span class="m">216</span>
 <span class="c">&quot; backgroung transparency</span>
@@ -321,20 +351,22 @@ runtime<span class="p">!</span> <span class="nb">keymap</span>.rc.<span class="k
 <span class="c">&quot;au MyAutoCmd VimEnter * highlight TablineSel ctermbg=none</span>
 <span class="c">&quot;au MyAutoCmd VimEnter * highlight LineNr ctermbg=none</span>
 <span class="c">&quot;au MyAutoCmd VimEnter * highlight CursorLineNr ctermbg=none</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>カラースキームを使う場合、一行目の記述は必須のようです。</p>
 <ul>
 <li><a href="http://qiita.com/kawaz/items/ee725f6214f91337b42b" title="dein.vimによるプラグイン管理のマイベストプラクティス - Qiita">dein.vimによるプラグイン管理のマイベストプラクティス - Qiita</a></li>
 <li><a href="http://qiita.com/s_of_p/items/87a9d787ff5506edab8e" title="端末上の Vim で colorscheme の背景を透過する - Qiita">端末上の Vim で colorscheme の背景を透過する - Qiita</a></li>
 </ul>
-<h1>neoterm</h1>
+<h1 id="neoterm">neoterm</h1>
 <p>neovimのterminal modeが便利すぎてやばいです。</p>
 <p>とりあえずいつもどおりにノーマルモードを使用するために以下の設定をします。</p>
-<div class="highlight"><pre><span></span><code><span class="k">if</span> has<span class="p">(</span><span class="s1">&#39;nvim&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="k">if</span> has<span class="p">(</span><span class="s1">&#39;nvim&#39;</span><span class="p">)</span>
   tnoremap <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span>ESC<span class="p">&gt;</span> <span class="p">&lt;</span>C<span class="p">-</span>\<span class="p">&gt;&lt;</span>C<span class="p">-</span><span class="k">n</span><span class="p">&gt;</span>
 <span class="k">endif</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>もっと便利に使うためにneotermを導入します。</p>
 <p><a href="https://github.com/kassio/neoterm" title="kassio/neoterm: Wrapper of some neovim's :terminal functions.">kassio/neoterm: Wrapper of some neovim's :terminal functions.</a></p>
@@ -346,7 +378,7 @@ runtime<span class="p">!</span> <span class="nb">keymap</span>.rc.<span class="k
 <li><a href="https://github.com/kassio/neoterm/commit/5586f57ee3a15f31d44bb6bc49def98799d20527" title="Add a Ttoggle command. · kassio/neoterm@5586f57">toggle</a>する設定</li>
 <li>vimshellの代用ぽい設定</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<div class="highlight"><pre><span></span><span class="k">[[plugins]]</span>
 <span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;kassio/neoterm&#39;</span>
 <span class="na">if</span> <span class="o">=</span> <span class="s">&quot;has(&#39;nvim&#39;)&quot;</span>
 <span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
@@ -356,12 +388,16 @@ runtime<span class="p">!</span> <span class="nb">keymap</span>.rc.<span class="k
 <span class="na">nnoremap &lt;silent&gt; vt :Ttoggle&lt;cr&gt;</span>
 <span class="na">nnoremap &lt;silent&gt; vs :terminal&lt;cr&gt;</span>
 <span class="na">&#39;&#39;&#39;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>shellを指定している方を多く見ましたが、自分の環境では$SHELLが開いている感じがしたので設定していません。</p>
-<p>[https://twitter.com/y_y_m_m/status/799147443942105088:embed]</p>
+<p>
+<a class="embedly-card" href="https://twitter.com/y_y_m_m/status/799147443942105088">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>とは言いましたが、Vimではterminal modeは使えないのでVimShellを使うように設定しています。</p>
-<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<div class="highlight"><pre><span></span><span class="k">[[plugins]]</span>
 <span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;kassio/neoterm&#39;</span>
 <span class="na">if</span> <span class="o">=</span> <span class="s">&quot;has(&#39;nvim&#39;)&quot;</span>
 <span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
@@ -379,13 +415,14 @@ runtime<span class="p">!</span> <span class="nb">keymap</span>.rc.<span class="k
 <span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;Shougo/vimproc.vim&#39;</span>
 <span class="na">if</span> <span class="o">=</span> <span class="s">&quot;!has(&#39;nvim&#39;)&quot;</span>
 <span class="na">build</span> <span class="o">=</span> <span class="s">&#39;make&#39;</span>
-</code></pre></div>
+</pre></div>
 
-<h1>neomake</h1>
+
+<h1 id="neomake">neomake</h1>
 <p>非同期でmakeやlintを実行するsyntasticの非同期版のようなプラグインです。</p>
 <p>READMEは最低限の内容のみとなっているので、helpを読みながら設定していきます。</p>
 <p>まず、見た目の設定です。</p>
-<div class="highlight"><pre><span></span><code><span class="c">&quot; color</span>
+<div class="highlight"><pre><span></span><span class="c">&quot; color</span>
 autocmd<span class="p">!</span> <span class="nb">BufWritePost</span> * Neomake
 <span class="k">au</span> MyAutoCmd <span class="nb">ColorScheme</span> * <span class="k">hi</span> NeomakeErrorSign cterm<span class="p">=</span><span class="nb">bold</span> ctermfg<span class="p">=</span><span class="m">7</span> ctermbg<span class="p">=</span><span class="m">9</span>
 <span class="k">au</span> MyAutoCmd <span class="nb">ColorScheme</span> * <span class="k">hi</span> NeomakeWarningSign cterm<span class="p">=</span><span class="nb">bold</span> ctermfg<span class="p">=</span><span class="m">8</span> ctermbg<span class="p">=</span><span class="m">216</span>
@@ -402,21 +439,24 @@ autocmd<span class="p">!</span> <span class="nb">BufWritePost</span> * Neomake
      \   <span class="s1">&#39;texthl&#39;</span>: <span class="s1">&#39;NeomakeMessageSign&#39;</span><span class="p">,</span>
      \ }
 <span class="k">let</span> <span class="k">g</span>:neomake_info_sign <span class="p">=</span> {<span class="s1">&#39;text&#39;</span>: <span class="s1">&#39;ℹ➤&#39;</span><span class="p">,</span> <span class="s1">&#39;texthl&#39;</span>: <span class="s1">&#39;NeomakeInfoSign&#39;</span>}
-</code></pre></div>
+</pre></div>
+
 
 <p>基本的に<a href="https://github.com/neomake/neomake/tree/master/autoload/neomake/makers" title="neomake/autoload/neomake/makers at master · neomake/neomake">ここ</a>にあるmakerは使えます。有効にする際は以下のように書きます。</p>
-<div class="highlight"><pre><span></span><code>let g:neomake_&lt;lang&gt;_enabled_makers = [&#39;&lt;maker&gt;&#39;, &#39;&lt;maker&gt;&#39;]
-</code></pre></div>
+<div class="highlight"><pre><span></span>let g:neomake_&lt;lang&gt;_enabled_makers = [&#39;&lt;maker&gt;&#39;, &#39;&lt;maker&gt;&#39;]
+</pre></div>
+
 
 <p>maker名は末尾の名前です、例えば<a href="https://github.com/neomake/neomake/blob/master/autoload/neomake/makers/ft/cpp.vim" title="neomake/cpp.vim at master · neomake/neomake">neomake/cpp.vim at master · neomake/neomake</a>にある"function! neomake#makers#ft#cpp#gcc()"の場合は"gcc"になります。</p>
 <p>複数指定すると複数個makerが動くことになるので動作が被ってる場合、同じメッセージが複数出ます。</p>
 <p>makerは自作することもできるようです。</p>
-<div class="highlight"><pre><span></span><code><span class="n">g</span><span class="o">:</span><span class="n">neomake_</span><span class="o">{</span> <span class="n">filetype</span> <span class="o">}</span><span class="n">_</span><span class="o">{</span> <span class="n">makername</span> <span class="o">}</span><span class="n">_maker</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">g</span><span class="o">:</span><span class="n">neomake_</span><span class="o">{</span> <span class="n">filetype</span> <span class="o">}</span><span class="n">_</span><span class="o">{</span> <span class="n">makername</span> <span class="o">}</span><span class="n">_maker</span>
+</pre></div>
+
 
 <p>ディレクトリmakerという機能もあるようなので気になります。</p>
 <p>Vim7.4.503からneomakeは使用可能ですが、syntasticに慣れていたのもありVimを使う時はsyntasticを使うようにしています。</p>
-<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<div class="highlight"><pre><span></span><span class="k">[[plugins]]</span>
 <span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;neomake/neomake&#39;</span>
 <span class="na">if</span> <span class="o">=</span> <span class="s">&quot;has(&#39;nvim&#39;)&quot;</span>
 <span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
@@ -429,10 +469,11 @@ autocmd<span class="p">!</span> <span class="nb">BufWritePost</span> * Neomake
 <span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
 <span class="na">source ~/.config/nvim/plugins/syntastic.rc.vim</span>
 <span class="na">&#39;&#39;&#39;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>ちなみにSyntasticもneomakeと同じような見た目になるように設定しています。</p>
-<div class="highlight"><pre><span></span><code><span class="c">&quot; ColorScheme</span>
+<div class="highlight"><pre><span></span><span class="c">&quot; ColorScheme</span>
 <span class="k">au</span> MyAutoCmd <span class="nb">VimEnter</span> * <span class="nb">highlight</span> SignColumn ctermbg<span class="p">=</span><span class="m">237</span>
 <span class="k">au</span> MyAutoCmd <span class="nb">VimEnter</span> * <span class="nb">highlight</span> SyntasticErrorSign cterm<span class="p">=</span><span class="nb">bold</span> ctermfg<span class="p">=</span><span class="m">255</span> ctermbg<span class="p">=</span><span class="m">203</span>
 <span class="k">au</span> MyAutoCmd <span class="nb">VimEnter</span> * <span class="nb">highlight</span> SyntasticWarningSign cterm<span class="p">=</span><span class="nb">bold</span> ctermfg<span class="p">=</span><span class="m">233</span> ctermbg<span class="p">=</span><span class="m">150</span>
@@ -447,12 +488,13 @@ autocmd<span class="p">!</span> <span class="nb">BufWritePost</span> * Neomake
 <span class="k">let</span> <span class="k">g</span>:syntastic_javascript_checkers <span class="p">=</span> [<span class="s1">&#39;eslint&#39;</span>]
 <span class="c">&quot; for c/cpp</span>
 <span class="k">let</span> <span class="k">g</span>:syntastic_cpp_compiler_options <span class="p">=</span> <span class="s1">&#39;-Wall&#39;</span>
-</code></pre></div>
+</pre></div>
 
-<h1>deoplete.nvim</h1>
+
+<h1 id="deopletenvim">deoplete.nvim</h1>
 <p>neocompleteに次ぐ補完プラグインです。</p>
 <p>deinlazyに追加します。</p>
-<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<div class="highlight"><pre><span></span><span class="k">[[plugins]]</span>
 <span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;Shougo/deoplete.nvim&#39;</span>
 <span class="na">depends</span> <span class="o">=</span> <span class="s">&#39;context_filetype.vim&#39;</span>
 <span class="na">if</span> <span class="o">=</span> <span class="s">&quot;has(&#39;nvim&#39;)&quot;</span>
@@ -460,10 +502,11 @@ autocmd<span class="p">!</span> <span class="nb">BufWritePost</span> * Neomake
 <span class="na">hook_source</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
 <span class="na">source ~/.config/nvim/plugins/deoplete.rc.vim</span>
 <span class="na">&#39;&#39;&#39;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>deoplete.rc.vim</p>
-<div class="highlight"><pre><span></span><code><span class="k">let</span> <span class="k">g</span>:deoplete#enable_at_startup <span class="p">=</span> <span class="m">1</span>
+<div class="highlight"><pre><span></span><span class="k">let</span> <span class="k">g</span>:deoplete#enable_at_startup <span class="p">=</span> <span class="m">1</span>
 <span class="c">&quot; &lt;TAB&gt;: completion.</span>
 <span class="nb">inoremap</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;&lt;</span>expr<span class="p">&gt;</span> <span class="p">&lt;</span>TAB<span class="p">&gt;</span>
       \ pumvisible<span class="p">()</span> ? <span class="s2">&quot;\&lt;C-n&gt;&quot;</span> :
@@ -490,14 +533,15 @@ autocmd<span class="p">!</span> <span class="nb">BufWritePost</span> * Neomake
 \ ]<span class="p">)</span>
 
 <span class="k">let</span> <span class="k">g</span>:deoplete#enable_camel_case <span class="p">=</span> <span class="m">1</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><a href="https://github.com/Shougo/deoplete.nvim/blob/master/doc/deoplete.txt#L887" title="deoplete.nvim/deoplete.txt at master · Shougo/deoplete.nvim">deoplete.nvim/deoplete.txt at master · Shougo/deoplete.nvim</a></p>
 <p>ドキュメントを見ると言語ごとにEXTERNAL SOURCESがあるので、開発する言語を中心にプラグインを適宜追加していけば良さそうです。</p>
-<h1>vim-airline</h1>
+<h1 id="vim-airline">vim-airline</h1>
 <p>airlineは対応しているプラグインも多く設定も少なくて済むので、とても好きなpowerlineです。</p>
 <p>dein.vimは依存関係を書けるので設定ファイルがわかりやすくなって良いです。</p>
-<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<div class="highlight"><pre><span></span><span class="k">[[plugins]]</span>
 <span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;majutsushi/tagbar&#39;</span>
 
 <span class="k">[[plugins]]</span>
@@ -516,10 +560,11 @@ autocmd<span class="p">!</span> <span class="nb">BufWritePost</span> * Neomake
 <span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
 <span class="na">let g:airline_theme</span><span class="o">=</span><span class="s">&#39;luna&#39;</span>
 <span class="na">&#39;&#39;&#39;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>airline.rc.vim</p>
-<div class="highlight"><pre><span></span><code><span class="k">if</span> exists<span class="p">(</span><span class="s1">&#39;g:nyaovim_version&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="k">if</span> exists<span class="p">(</span><span class="s1">&#39;g:nyaovim_version&#39;</span><span class="p">)</span>
   <span class="k">let</span> <span class="k">g</span>:airline_powerline_fonts <span class="p">=</span> <span class="m">0</span>
   <span class="k">let</span> <span class="k">g</span>:airline_left_sep <span class="p">=</span> <span class="s1">&#39;&#39;</span>
   <span class="k">let</span> <span class="k">g</span>:airline_right_sep <span class="p">=</span> <span class="s1">&#39;&#39;</span>
@@ -530,14 +575,15 @@ autocmd<span class="p">!</span> <span class="nb">BufWritePost</span> * Neomake
 <span class="k">if</span> <span class="p">!</span>has<span class="p">(</span><span class="s1">&#39;nvim&#39;</span><span class="p">)</span>
   <span class="k">let</span> <span class="k">g</span>:airline#extensions#whitespace#mixed_indent_algo <span class="p">=</span> <span class="m">2</span> <span class="c">&quot; see :help airline-whitespace@en</span>
 <span class="k">endif</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>NyaovimでPowerlineFontが崩れてしまったのでNyaovimでは無効にしています。</p>
 <p>mixed_indentがうざかったりしますがドキュメントを読むとアルゴリズムを変更できるので賢めのアルゴリズムに変更しています。</p>
-<h1>Vimfiler</h1>
+<h1 id="vimfiler">Vimfiler</h1>
 <p><a href="https://github.com/Shougo/vimfiler.vim" title="Shougo/vimfiler.vim: Powerful file explorer implemented by Vim script">Shougo/vimfiler.vim: Powerful file explorer implemented by Vim script</a></p>
 <p>便利すぎて手放せないプラグインです。</p>
-<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<div class="highlight"><pre><span></span><span class="k">[[plugins]]</span>
 <span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;Shougo/unite.vim&#39;</span>
 <span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
 <span class="na">nnoremap &lt;silent&gt; fb :&lt;C-u&gt;Unite buffer&lt;CR&gt;</span>
@@ -549,10 +595,11 @@ autocmd<span class="p">!</span> <span class="nb">BufWritePost</span> * Neomake
 <span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
 <span class="na">source ~/.config/nvim/plugins/vimfiler.rc.vim</span>
 <span class="na">&#39;&#39;&#39;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>vimfiler.rc.vim</p>
-<div class="highlight"><pre><span></span><code><span class="k">call</span> vimfiler#custom#profile<span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="s1">&#39;context&#39;</span><span class="p">,</span> {
+<div class="highlight"><pre><span></span><span class="k">call</span> vimfiler#custom#profile<span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="s1">&#39;context&#39;</span><span class="p">,</span> {
      \ <span class="s1">&#39;safe&#39;</span> : <span class="m">0</span><span class="p">,</span>
      \ <span class="s1">&#39;auto_expand&#39;</span> : <span class="m">1</span><span class="p">,</span>
      \ <span class="s1">&#39;parent&#39;</span> : <span class="m">0</span><span class="p">,</span>
@@ -576,15 +623,16 @@ autocmd MyAutoCmd <span class="nb">FileType</span> vimfiler <span class="k">call
 <span class="k">let</span> <span class="k">g</span>:vimfiler_tree_closed_icon <span class="p">=</span> <span class="s1">&#39;▸&#39;</span>
 <span class="k">let</span> <span class="k">g</span>:vimfiler_file_icon <span class="p">=</span> <span class="s1">&#39;-&#39;</span>
 <span class="k">let</span> <span class="k">g</span>:vimfiler_marked_file_icon <span class="p">=</span> <span class="s1">&#39;*&#39;</span>
-</code></pre></div>
+</pre></div>
 
-<h1>関数内検索</h1>
+
+<h1 id="_3">関数内検索</h1>
 <p>1000行くらいの長い関数がひしめき合ってるコードと向かい合うとき関数内検索があるとかなり便利なので下記の情報を元にできるようにしました。かなり便利です。</p>
 <ul>
 <li><a href="http://qiita.com/kentaro/items/dd981f7d1337d2fd8e94" title="Vimで、特定の範囲内(textobj)で検索する - Qiita">Vimで、特定の範囲内(textobj)で検索する - Qiita</a></li>
 <li><a href="http://d.hatena.ne.jp/osyo-manga/20131019/1382191487" title="Vim で範囲内を検索する operator をつくった - C++でゲームプログラミング">Vim で範囲内を検索する operator をつくった - C++でゲームプログラミング</a></li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<div class="highlight"><pre><span></span><span class="k">[[plugins]]</span>
 <span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;kana/vim-operator-user&#39;</span>
 
 <span class="k">[[plugins]]</span>
@@ -599,7 +647,8 @@ autocmd MyAutoCmd <span class="nb">FileType</span> vimfiler <span class="k">call
 <span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
 <span class="na">nmap &lt;Space&gt;/ &lt;Plug&gt;(operator-search)if</span>
 <span class="na">&#39;&#39;&#39;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><Space>/で検索できます。</p>
     </div><!-- /.entry-content -->
@@ -776,7 +825,7 @@ autocmd MyAutoCmd <span class="nb">FileType</span> vimfiler <span class="k">call
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -799,7 +848,7 @@ autocmd MyAutoCmd <span class="nb">FileType</span> vimfiler <span class="k">call
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -829,6 +878,12 @@ autocmd MyAutoCmd <span class="nb">FileType</span> vimfiler <span class="k">call
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

@@ -54,32 +54,38 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2018-08-17T13:41:01+09:00">
+    <li class="published" title="2018-08-17T13:41:01">
         <span>Date:</span>2018-08-17 金 (午後 01:41:01)
     </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/keyboard.html">Keyboard</a> <a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
 </footer><!-- /.post-info -->      <p>まっしろMinidoxを作りました。かわいい。</p>
-<p><img alt="White Minidox" src="https://pbs.twimg.com/media/DknbeqPUYAEm4cM.jpg"></p>
+<p><img alt="White Minidox" src="https://pbs.twimg.com/media/DknbeqPUYAEm4cM.jpg" /></p>
 <p>ちょっと前に<a href="https://booth.pm/ja/items/718976">Boothで販売していたMinidoxのPCB</a>を購入していまたのですがやっと組み立て追わったのでビルドログを残しておきます。</p>
-<h1>組み立て編</h1>
-<p>[https://twitter.com/y_y_m_m/status/1025401830723936256:embed]</p>
+<h1 id="_1">組み立て編</h1>
+<p>
+<a class="embedly-card" href="https://twitter.com/y_y_m_m/status/1025401830723936256">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>基本的に<a href="https://imgur.com/a/vImo6#Rfd586V">Minidox Build log/guide</a>を見て組み立てればokなので、個人的に気をつけた点のみ書いていきます。</p>
 <p>英語がわからない場合はGoogle翻訳に突っ込むとなんとなくわかったので英語がよくわからない場合でも上記のBuild log/guideで問題ないと思います。</p>
-<h2>ダイオード折り曲げ</h2>
+<h2 id="_2">ダイオード折り曲げ</h2>
 <p>ダイオードの足をPCBに指定されているに折り曲げる必要があるのですが手で地道に折り曲げていくのは苦痛なのでいっぺんに折り曲げる方法を紹介します。</p>
 <p>折り曲げ幅はPCBを重ねて4枚分の幅なので今から組み立てるMinidoxのPCB2枚とPCB幅くらいの何かを2つ用意します。</p>
 <p>ちょうどZen KeyboardのPCBがあったので私はそれを使いました。</p>
-<p><img alt="pcb folding" src="https://pbs.twimg.com/media/DjpYxdOU8AEuYy-.jpg"></p>
+<p><img alt="pcb folding" src="https://pbs.twimg.com/media/DjpYxdOU8AEuYy-.jpg" /></p>
 <p>間のPCB2枚分を隙間にしておくとダイオードがぴったりはまって調子良いです。</p>
-<h2>ProMicroの向き</h2>
+<h2 id="promicro">ProMicroの向き</h2>
 <p><strong>左右で裏表が逆になります。</strong>Build log/guideの画像は左側のみしか載せていないので注意です。</p>
 <p>あと、<strong>ProMicroはSwitchをハンダ付けしてからPCBにハンダ付けします。</strong></p>
 <p>先にProMicroの足をハンダ付けするのですがそのままの勢いでProMicro本体までハンダ付けしてしまわないように注意です。</p>
-<h1>ケース編</h1>
+<h1 id="_3">ケース編</h1>
 <p>ケースはアクリルサンドイッチでなく3Dプリンタケースにしました。</p>
-<p>[https://github.com/pjones/minidox-case:embed]</p>
+<p>
+<a class="embedly-card" href="https://github.com/pjones/minidox-case">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>モデリング経験はないのでここにあるデータをそのまま使いました。必要なファイルは以下になります。(coverなしの場合)</p>
 <ul>
 <li>stls/case/case-left.stl</li>
@@ -90,18 +96,18 @@
 <p>作成はDMM.makeにしてみました。注文方法は上記のstlファイルをDMM.makeにアップロードして確認メールを正常に受け取ったら注文するだけです。材質は一番安いナイロンのナチュラルカラーにしました。</p>
 <p>一番安い素材でもこのサイズのケースになると合計で15,000円近くなるので3Dプリンタを自宅に欲しくなりました。</p>
 <p>届いたケースの写真です。だいたい1週間程度で届きました。</p>
-<p><img alt="case" src="https://pbs.twimg.com/media/Dkxk21OUYAEHoiU.jpg"></p>
-<p><img alt="top" src="https://pbs.twimg.com/media/Dkxk3crUwAIvFfp.jpg"></p>
+<p><img alt="case" src="https://pbs.twimg.com/media/Dkxk21OUYAEHoiU.jpg" /></p>
+<p><img alt="top" src="https://pbs.twimg.com/media/Dkxk3crUwAIvFfp.jpg" /></p>
 <p>発注直後あたりに薄くて壊れやすい箇所があるけど大丈夫？ってメールが届いたのでそのままお願いしますというやり取りが1回ありました。</p>
 <p>実際に結構薄っぺらい箇所がありますが問題なく仕上がっていました、すごい。</p>
-<h2>ケースとPCBの干渉</h2>
+<h2 id="pcb">ケースとPCBの干渉</h2>
 <p>残念ながら内側を少し削らないとケースにちゃんと収まりません。ちょっと写真が分かりづらいかもですが削った箇所の写真です。</p>
-<p><img alt="shave1" src="https://pbs.twimg.com/media/Dkxk4NBUwAEHsV_.jpg"></p>
-<p><img alt="shave2" src="https://pbs.twimg.com/media/Dkxk4w6UUAE3MCI.jpg"></p>
+<p><img alt="shave1" src="https://pbs.twimg.com/media/Dkxk4NBUwAEHsV_.jpg" /></p>
+<p><img alt="shave2" src="https://pbs.twimg.com/media/Dkxk4w6UUAE3MCI.jpg" /></p>
 <p>ちょうど良い道具がなかったのでニッパーとカッターでガリガリ削りました・・・結構削りやすいので彫刻刀やサンドペーパーで削るときれいに削れるのではないかと思います。</p>
 <p>削る箇所ですが、Switch足(ハンダ付けしてない部分)がケース内側のPCBが乗るでっぱり部分にあたってしまう箇所があるのでそこを削りました。蛍光ペンとかでSwitch足に軽く色をつけて載せてみると干渉箇所がよくわかります。</p>
 <p>Switchの足を削る手もあったのですがPCBを傷つけそうなのでやめました。</p>
-<h2>pjones/minidox-case</h2>
+<h2 id="pjonesminidox-case">pjones/minidox-case</h2>
 <p>このケースに関して気になったこと一覧です。</p>
 <ul>
 <li>ケースはネジ止めできサイズはM3です</li>
@@ -116,55 +122,67 @@
 <li>ナイロン素材は滑るのでゴム足が必要です</li>
 <li>上蓋とキーが干渉することがあり、上蓋の一部をかち割りたくなったりします</li>
 </ul>
-<h1>キー配列</h1>
+<h1 id="_4">キー配列</h1>
 <p>まだ試行段階ですが以下のようになっています。</p>
-<p>[https://github.com/yymm/my-minidox-profile:embed]</p>
+<p>
+<a class="embedly-card" href="https://github.com/yymm/my-minidox-profile">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>この記事もMinidoxで書いていますが明らかにキー数が足りてない感が否めません・・・せめてCrkbdくらい欲しくなります。</p>
 <p>明らかにキー数がなりないのでLayer以外のQMKの機能を活用したくなってきます、いくつか使った機能を紹介します。</p>
-<h2>Mod Tap</h2>
+<h2 id="mod-tap">Mod Tap</h2>
 <p><a href="https://github.com/qmk/qmk_firmware/blob/master/docs/feature_advanced_keycodes.md#mod-tap">Mod Tap - qmk_firmware</a></p>
 <p>Mod Tapとは長押しするとCtrlやShiftのようなModifierキー(修飾キー)になって短くタップすると指定した任意キーになるという機能です。</p>
 <p>個人的には、CtrlとTab、AltとEsc、などを組み合わせるのが便利です。以下keycodeです。</p>
-<div class="highlight"><pre><span></span><code><span class="c1">// CtrlとTab</span>
+<div class="highlight"><pre><span></span><span class="c1">// CtrlとTab</span>
 <span class="n">CTL_T</span><span class="p">(</span><span class="n">KC_TAB</span><span class="p">)</span><span class="w"></span>
 <span class="c1">// AltとEsc</span>
 <span class="n">ALT_T</span><span class="p">(</span><span class="n">KC_ESC</span><span class="p">)</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>Tab待ち受け時間はconfig.hに設定を追加すると調整できます。</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#ifdef TAPPING_TERM</span>
+<div class="highlight"><pre><span></span><span class="cp">#ifdef TAPPING_TERM</span>
 <span class="cp">#undef TAPPING_TERM</span>
 <span class="cp">#endif </span><span class="c1">// TAPPING_TERM</span>
 <span class="cp">#define TAPPING_TERM 200</span>
-</code></pre></div>
+</pre></div>
 
-<h2>LT</h2>
+
+<h2 id="lt">LT</h2>
 <p>Mod TapのLayer版です。以下、LOWERとSpaceの例です。</p>
-<div class="highlight"><pre><span></span><code><span class="c1">// LOWERとSpace</span>
+<div class="highlight"><pre><span></span><span class="c1">// LOWERとSpace</span>
 <span class="n">LT</span><span class="p">(</span><span class="n">_LOWER</span><span class="p">,</span><span class="n">KC_SPC</span><span class="p">)</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
+
 
 <p>LTを使う際の注意は、SAFE_RANGEからラベリングされているcustom_keycodeの"LOWER"という変数ではなく、Oからラベリングされているlayer_numberの"_LOWER"の変数を使います。</p>
-<h1>Switch: Zilent 78g</h1>
+<h1 id="switch-zilent-78g">Switch: Zilent 78g</h1>
 <p>遊舎工房産の元気なZilentです。</p>
-<p><img alt="zilent minidox" src="https://pbs.twimg.com/media/Djr1nG9VsAAw44P.jpg"></p>
+<p><img alt="zilent minidox" src="https://pbs.twimg.com/media/Djr1nG9VsAAw44P.jpg" /></p>
 <p>個人的に前からSilent軸はすごく気になっていて遊舎工房さんで扱い始めて簡単に試すことができ嬉しいです。</p>
 <p>(というか国内でキースイッチが爆速で買えるの本当に凄い・・・)</p>
 <p>感想ですが、Zilentめっちゃ静かです。静かすぎてびっくりしています。今回Minidoxにつけたのは一番重い78gなのでなおさら静かなのかもしれません。</p>
 <p>静音リングをましましにつけていた自分にとってはぴったりな軸でした!</p>
 <p>一番軽いのも買ったので試しにつけてみた絵です。水色かわいい。かわいい。</p>
-<p>[https://twitter.com/y_y_m_m/status/1025602161634201601:embed]</p>
+<p>
+<a class="embedly-card" href="https://twitter.com/y_y_m_m/status/1025602161634201601">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>軽いのも良さそうでしたがなんとなく白黒で揃えたかったので、また別のキーボードに乗せることにしました。</p>
 <p>ZilentはTactileのSilent軸ですが、LinearのSilent軸も気になるのでKBDfansでGateron赤Silentが売っているので何かの機会に購入したいなぁと思っています。</p>
-<h1>白Keycaps</h1>
+<h1 id="keycaps">白Keycaps</h1>
 <p><a href="https://talpkeyboard.stores.jp/">TALP KEYBOARD</a>で注文しました。</p>
 <p>DSAの白です、最近XDAもキーキャップも扱いだしていて気になります。1.5uのMacぽい印字のあるキーキャップも欲しかったのですが売り切れていたのでそっちはKBDfansで注文しました。</p>
 <p>ここまで来るとわかりますが、minidoxの素材は<strong>ほぼすべて日本で手に入っています。</strong></p>
 <p>国内で自作キーボードのパーツがほぼほぼ買えるってかなりすごいと思います。しかもすぐ届く。自作キーボードの時代きてますね。</p>
-<h1>ケーブル</h1>
-<p>[https://www.amazon.co.jp/gp/product/B07BJZFQ7N/ref=oh_aui_detailpage_o00_s00:embed]</p>
+<h1 id="_5">ケーブル</h1>
+<p>
+<a class="embedly-card" href="https://www.amazon.co.jp/gp/product/B07BJZFQ7N/ref=oh_aui_detailpage_o00_s00">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>Minidoxは4極のケーブルを使います。せっかくなので白いケーブルを買いました。</p>
-<h1>Minidox所感</h1>
+<h1 id="minidox">Minidox所感</h1>
 <ul>
 <li>小さくてかわいい</li>
 <li>とにかく小さい、小さすぎる</li>
@@ -351,7 +369,7 @@
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -374,7 +392,7 @@
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -404,6 +422,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

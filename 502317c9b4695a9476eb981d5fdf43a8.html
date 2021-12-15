@@ -54,24 +54,24 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2017-09-07T09:43:03+09:00">
+    <li class="published" title="2017-09-07T09:43:03">
         <span>Date:</span>2017-09-07 木 (午前 09:43:03)
     </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/javascript.html">JavaScript</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
 </footer><!-- /.post-info -->      <p>":"に続けて打ち込むと自動で補完してくれるようになります。</p>
-<p><img alt="demo" src="https://gyazo.com/68de503622f29ed4213c201a75b870c1.gif"></p>
+<p><img alt="demo" src="https://gyazo.com/68de503622f29ed4213c201a75b870c1.gif" /></p>
 <p>EmojiリストはGitHub APIから取得しています。</p>
-<h1>必要なパッケージ</h1>
+<h1 id="_1">必要なパッケージ</h1>
 <ul>
 <li>CodeMirror</li>
 <li>show-hint addonのコードを編集するのでソースコードが必要</li>
 <li>Axios</li>
 </ul>
 <p>パッケージの読み込み方法は各自におまかせします(scriptタグでもビルドツールでも構いません)。</p>
-<h1>やり方</h1>
-<div class="highlight"><pre><span></span><code><span class="c1">// sample data</span>
+<h1 id="_2">やり方</h1>
+<div class="highlight"><pre><span></span><span class="c1">// sample data</span>
 <span class="kd">let</span> <span class="nx">emojiList</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;apple:&#39;</span><span class="p">,</span> <span class="s1">&#39;abc:&#39;</span><span class="p">,</span> <span class="s1">&#39;axz:&#39;</span><span class="p">,</span> <span class="s1">&#39;bee:&#39;</span><span class="p">,</span> <span class="s1">&#39;beam:&#39;</span><span class="p">,</span> <span class="s1">&#39;bleach:&#39;</span><span class="p">]</span>
 
 <span class="kd">let</span> <span class="nx">emojiComplete</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cm</span><span class="p">)</span> <span class="p">{</span>
@@ -100,7 +100,8 @@
 <span class="p">}</span>
 
 <span class="nx">cm</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="nx">emojiComplete</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>ひとまずemoji画像のないシンプルな例です。cmはCodeMirrorインスタンスです。</p>
 <p>CodeMirrorのchangeイベントにshowHintを仕込んで実現しています。</p>
@@ -111,11 +112,11 @@
 <p>これで自動的に":"のあとに文字を入れると補完候補が表示されます。</p>
 <p>showHint関数に指定している、completeSingle: falseは必須です。細かい理由はわかりませんがこれがないと無限ループするようです。</p>
 <p>emojiListが末尾に":"が付いて不格好なのは、補完完了時に末尾の":"まで補完されるようにしているからですがこれは回避できます、これは以下の内容で説明します。</p>
-<h2>Emojiのリスト取得</h2>
+<h2 id="emoji">Emojiのリスト取得</h2>
 <p>GitHub APIにEmoji一覧を取得するAPIがあるので利用します。</p>
 <p><a href="https://developer.github.com/v3/emojis/" title="Emojis | GitHub Developer Guide">Emojis | GitHub Developer Guide</a></p>
 <p>先程の例のemojiListをapiで取得したものに置き換えれば完全なリストになります。</p>
-<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nx">res</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;https://api.github.com/emojis&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kd">let</span> <span class="nx">res</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;https://api.github.com/emojis&#39;</span><span class="p">)</span>
 <span class="k">if</span> <span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">status</span> <span class="o">!==</span> <span class="mf">200</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Error...&#39;</span><span class="p">)</span>
   <span class="k">return</span>
@@ -125,22 +126,24 @@
 <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">key</span> <span class="ow">in</span> <span class="nx">res</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">emojiList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">key</span><span class="si">}</span><span class="sb">:`</span><span class="p">)</span>
 <span class="p">}</span>
-</code></pre></div>
+</pre></div>
 
-<h2>Emoji画像の表示</h2>
+
+<h2 id="emoji_1">Emoji画像の表示</h2>
 <p>show-hint addonの補完候補には文字列しか表示できません。</p>
 <p>実際にCodeMirrorの<a href="https://github.com/codemirror/CodeMirror/blob/master/addon/hint/show-hint.js">addon/hint/show-hint.js</a>を見てみると、文字列リスト or {text: str, displayText: str}のリストを指定する仕様になっています。</p>
 <p>画像を表示させるようにshow-hint.jsを書き換えます。</p>
-<div class="highlight"><pre><span></span><code>      if (cur.render) cur.render(elt, data, cur);
+<div class="highlight"><pre><span></span>      if (cur.render) cur.render(elt, data, cur);
 <span class="gd">-     else elt.appendChild(document.createTextNode(cur.displayText || getText(cur)));</span>
 <span class="gi">+     else elt.innerHTML = cur.displayText</span>
       elt.hintId = i;
-</code></pre></div>
+</pre></div>
+
 
 <p><a href="https://github.com/codemirror/CodeMirror/blob/master/addon/hint/show-hint.js#L219">219行目</a>あたりです。</p>
 <p>displayTextで指定する補完候補表示をinnerHTMLで表示できるようにしました。</p>
 <p>{text: str, displayText: str}のリストでの補完候補の指定は、textは実際に補完する際に使われる文字列でdisplayTextが補完候補を表示するときに使われる文字列になるので、emojiListを以下のようにします。</p>
-<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nx">res</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;https://api.github.com/emojis&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kd">let</span> <span class="nx">res</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;https://api.github.com/emojis&#39;</span><span class="p">)</span>
 <span class="k">if</span> <span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">status</span> <span class="o">!==</span> <span class="mf">200</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Error...&#39;</span><span class="p">)</span>
   <span class="k">return</span>
@@ -150,14 +153,15 @@
 <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">key</span> <span class="ow">in</span> <span class="nx">res</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">emojiList</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="nx">text</span><span class="o">:</span> <span class="sb">`</span><span class="si">${</span><span class="nx">key</span><span class="si">}</span><span class="sb">:`</span><span class="p">,</span> <span class="nx">displayText</span><span class="o">:</span> <span class="sb">`&lt;img width=&quot;15&quot; height=&quot;15&quot; src=&quot;</span><span class="si">${</span><span class="nx">res</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span><span class="si">}</span><span class="sb">&quot; alt=&quot;icon&quot; async&gt;&lt;/img&gt; </span><span class="si">${</span><span class="nx">key</span><span class="si">}</span><span class="sb">`</span><span class="p">})</span>
 <span class="p">}</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>displayTextをGitHub APIで取得した画像を小さくしたもの + Emoji名の形にします。</p>
 <p>これで冒頭のGifキャプチャーのように表示されるようになります。</p>
 <p>かなりの量の画像を取得するのでimgタグにはasyncオプションをつけています。</p>
-<h1>完全なコード</h1>
+<h1 id="_3">完全なコード</h1>
 <p>書き換えたshow-hint.jsを使用する必要があるので注意。</p>
-<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nx">cm</span> <span class="o">=</span> <span class="nx">CodeMirror</span><span class="p">(</span><span class="cm">/* Dom Element */</span><span class="p">,</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="kd">let</span> <span class="nx">cm</span> <span class="o">=</span> <span class="nx">CodeMirror</span><span class="p">(</span><span class="cm">/* Dom Element */</span><span class="p">,</span> <span class="p">{</span>
   <span class="c1">// Options</span>
 <span class="p">})</span>
 
@@ -201,9 +205,10 @@
 <span class="p">}</span>
 
 <span class="nx">cm</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="nx">emojiComplete</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
 
-<h1>参考記事</h1>
+
+<h1 id="_4">参考記事</h1>
 <ul>
 <li><a href="http://qiita.com/mizchi/items/15441d0e285f86125b0a" title="CodeMirrorでAutoCompleteする - Qiita">CodeMirrorでAutoCompleteする - Qiita</a></li>
 <li><a href="https://codemirror.net/doc/manual.html#addons" title="CodeMirror: User Manual">CodeMirror: User Manual</a></li>
@@ -384,7 +389,7 @@
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -407,7 +412,7 @@
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -437,6 +442,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

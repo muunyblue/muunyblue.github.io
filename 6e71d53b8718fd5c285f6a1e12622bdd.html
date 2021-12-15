@@ -54,7 +54,7 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2016-07-28T03:37:05+09:00">
+    <li class="published" title="2016-07-28T03:37:05">
         <span>Date:</span>2016-07-28 木 (午前 03:37:05)
     </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/cppcheck.html">Cppcheck</a> </li>
@@ -62,48 +62,56 @@
 </ul>
 </footer><!-- /.post-info -->      <p>Cppcheckはとても優れたツールですが、Windowsで使用する場合はSetupがありますが、Linuxで使用する場合は手動でのインストールになります。</p>
 <p>ソースコードをダウンロードしてビルドすれば良いのですが、ビルドするツールをインストールできない場合などビルド困難な場合がありますので、RPMパッケージをインストールする方法を紹介します。</p>
-<p>!!! note
-    1つ注意なのは、RPMパッケージでインストールするため必ずしも最新版のCppcheckを使えるわけではありません、新しいCppcheckがどうしても使いたい場合はソースコードからビルドしましょう。</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>1つ注意なのは、RPMパッケージでインストールするため必ずしも最新版のCppcheckを使えるわけではありません、新しいCppcheckがどうしても使いたい場合はソースコードからビルドしましょう。</p>
+</div>
 <p>紹介する方法はCentOS6を対象にしますが、別バージョンのCentOSに関しても目的のバージョンに置き換えればインストール可能だと思います。</p>
-<h1>How to Install</h1>
+<h1 id="how-to-install">How to Install</h1>
 <p><a href="https://pkgs.org/download/cppcheck" title="cppcheck Download (DEB, RPM, TXZ)">cppcheck Download (DEB, RPM, TXZ)</a></p>
 <p>上記のリンクから目的のCppcheckのRPMパッケージを探します。</p>
 <p>CentOS6のx86_64のCppcheckを選択するとパッケージの詳細ページに行きます、下の方にDownloadという項目があります。</p>
-<p><img alt="" src="https://i.gyazo.com/576a77cae5ff94458f59477416cadfda.png"></p>
+<p><img alt="" src="https://i.gyazo.com/576a77cae5ff94458f59477416cadfda.png" /></p>
 <p>DownloadアイコンをクリックするとRPMパッケージへのリンクがあるページに行きますので、"Binary package"のリンクをコピーして、CppcheckをインストールするCentOS上でwgetします。</p>
-<div class="highlight"><pre><span></span><code>$ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/cppcheck-1.63-2.el6.x86_64.rpm
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/cppcheck-1.63-2.el6.x86_64.rpm
+</pre></div>
+
 
 <p>あとはrpmコマンドでインストールします。</p>
-<div class="highlight"><pre><span></span><code>$ sudo npm -ivh cppcheck-1.63-2.el6.x86_64.rpm
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ sudo npm -ivh cppcheck-1.63-2.el6.x86_64.rpm
+</pre></div>
+
 
 <p>残念なことに自分の環境では以下のようなエラーが出ました。</p>
-<div class="highlight"><pre><span></span><code><span class="n">warning</span><span class="o">:</span> <span class="n">cppcheck</span><span class="o">-</span><span class="mf">1.63</span><span class="o">-</span><span class="mi">2</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">x86_64</span><span class="o">.</span><span class="na">rpm</span><span class="o">:</span> <span class="n">Header</span> <span class="n">V3</span> <span class="n">RSA</span><span class="o">/</span><span class="n">SHA256</span> <span class="n">Signature</span><span class="o">,</span> <span class="n">key</span> <span class="n">ID</span> <span class="mi">0608</span><span class="n">b895</span><span class="o">:</span> <span class="n">NOKEY</span>
+<div class="highlight"><pre><span></span><span class="n">warning</span><span class="o">:</span> <span class="n">cppcheck</span><span class="o">-</span><span class="mf">1.63</span><span class="o">-</span><span class="mi">2</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">x86_64</span><span class="o">.</span><span class="na">rpm</span><span class="o">:</span> <span class="n">Header</span> <span class="n">V3</span> <span class="n">RSA</span><span class="o">/</span><span class="n">SHA256</span> <span class="n">Signature</span><span class="o">,</span> <span class="n">key</span> <span class="n">ID</span> <span class="mi">0608</span><span class="n">b895</span><span class="o">:</span> <span class="n">NOKEY</span>
 <span class="n">error</span><span class="o">:</span> <span class="n">Failed</span> <span class="n">dependencies</span><span class="o">:</span>
         <span class="n">libtinyxml2</span><span class="o">.</span><span class="na">so</span><span class="o">.</span><span class="mi">1</span><span class="o">()(</span><span class="mi">64</span><span class="n">bit</span><span class="o">)</span> <span class="k">is</span> <span class="n">needed</span> <span class="n">by</span> <span class="n">cppcheck</span><span class="o">-</span><span class="mf">1.63</span><span class="o">-</span><span class="mi">2</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">x86_64</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>libtinyxml2がないみたいです。</p>
 <p>依存パッケージは最初に選択したパッケージのリンク先で確認できます。</p>
 <p><a href="https://pkgs.org/centos-6/epel-x86_64/cppcheck-1.63-2.el6.x86_64.rpm.html" title="cppcheck-1.63-2.el6.x86_64.rpm CentOS 6 Download">cppcheck-1.63-2.el6.x86_64.rpm CentOS 6 Download</a></p>
 <p>足りないパッケージは環境によって違うと思いますので適宜インストールします。今回のケースではlibtinyxml2が足りないので、Cppcheckと同じようにインストールしていきます。</p>
 <p>DownloadからRPMパッケージへのリンクをコピーしてインストールします。</p>
-<div class="highlight"><pre><span></span><code>$ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/tinyxml2-1.0.11-4.20130805git0323851.el6.x86_64.rpm
+<div class="highlight"><pre><span></span>$ wget http://dl.fedoraproject.org/pub/epel/6/x86_64/tinyxml2-1.0.11-4.20130805git0323851.el6.x86_64.rpm
 $ sudo rpm -ivh tinyxml2-1.0.11-4.20130805git0323851.el6.x86_64.rpm
-</code></pre></div>
+</pre></div>
+
 
 <p>これでCppcheckをインストールする準備ができたので改めてインストールします。</p>
-<div class="highlight"><pre><span></span><code>$ sudo npm -ivh cppcheck-1.63-2.el6.x86_64.rpm
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ sudo npm -ivh cppcheck-1.63-2.el6.x86_64.rpm
+</pre></div>
+
 
 <p>エラーがでなければインストール完了です。</p>
-<hr>
+<hr />
 <p>新しいバージョンをビルドしてインストールしたいなどで、パッケージをアンインストールする際には以下のようにアンインストールします。</p>
-<div class="highlight"><pre><span></span><code>$ sudo npm -e cppcheck-1.63-2
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ sudo npm -e cppcheck-1.63-2
+</pre></div>
 
-<h1>まとめ</h1>
+
+<h1 id="_1">まとめ</h1>
 <p>RPMパッケージを直接インストールすることで、リポジトリの追加やビルドツールのインストールなどが省けるメリットがあります。デメリットはバージョンが固定なことです。</p>
 <p>状況に応じてインストール方法を選択していくことになると思いますが、RPMでのインストールは簡単だったので割りとおすすめです。</p>
     </div><!-- /.entry-content -->
@@ -280,7 +288,7 @@ $ sudo rpm -ivh tinyxml2-1.0.11-4.20130805git0323851.el6.x86_64.rpm
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -303,7 +311,7 @@ $ sudo rpm -ivh tinyxml2-1.0.11-4.20130805git0323851.el6.x86_64.rpm
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -333,6 +341,12 @@ $ sudo rpm -ivh tinyxml2-1.0.11-4.20130805git0323851.el6.x86_64.rpm
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

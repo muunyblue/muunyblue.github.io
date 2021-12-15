@@ -55,11 +55,11 @@
             <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2016-01-08T02:36:05+09:00">
+    <li class="published" title="2016-01-08T02:36:05">
         <span>Date:</span>2016-01-08 金 (午前 02:36:05)
     </li>
         <!--<br />-->
-        <li class="modified" title="2016-01-08T02:40:24+09:00">
+        <li class="modified" title="2016-01-08T02:40:24">
             <span>Updated:</span>2016-01-08 金 (午前 02:40:24)
         </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> <a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> </li>
@@ -67,12 +67,19 @@
 </ul>
 </footer><!-- /.post-info -->            <p>docker-composeを使うと連携する複数のコンテナを割と簡単に構築できます。</p>
 <p>アプリケーションコンテナや開発用コンテナからデータベースコンテナを扱う際に気になったことをまとめてみます。</p>
-<hr>
+<hr />
 <p>✗TOC</p>
-<p>[TOC]</p>
-<h1>データベースの永続化</h1>
-<p>データベース内のデータは永続化しないと消えてしまうので、残したい場合は明示的に永続化させておく必要があります。</p>
-<p>公式のイメージの設定例(redis, mysql …</p>
+<div class="toc">
+<ul>
+<li><a href="#_1">データベースの永続化</a><ul>
+<li><a href="#redis">redis</a></li>
+<li><a href="#mysql">mysql</a></li>
+<li><a href="#postgres">postgres</a></li>
+<li><a href="#mongo">mongo</a></li>
+</ul>
+</li>
+<li><a href="#_2">データベースを参照する方法</a></li>
+<li><a href="#port">portの指定 ...</a></li></ul></div>
             <div class="bottom-fade">
                 <a href="https://muunyblue.github.io/9f067d8d6df2d4b8c64fb4c084d6c208.html"><div>read more</div></a>
             </div>
@@ -93,17 +100,17 @@
             <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2016-01-07T07:58:26+09:00">
+    <li class="published" title="2016-01-07T07:58:26">
         <span>Date:</span>2016-01-07 木 (午前 07:58:26)
     </li>
         <!--<br />-->
-        <li class="modified" title="2016-01-08T01:18:21+09:00">
+        <li class="modified" title="2016-01-08T01:18:21">
             <span>Updated:</span>2016-01-08 金 (午前 01:18:21)
         </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> <a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
-</footer><!-- /.post-info -->            <p>vagrant+VirtualBox上(Ubuntu)で、公式のmysqlイメージを使って、コンテナを立ててデータを永続化(ホストにマウント(data volume))したときのマイナートラブルです …</p>
+</footer><!-- /.post-info -->            <p>vagrant+VirtualBox上(Ubuntu)で、公式のmysqlイメージを使って、コンテナを立ててデータを永続化(ホストにマウント(data volume))したときのマイナートラブルです ...</p>
             <div class="bottom-fade">
                 <a href="https://muunyblue.github.io/e9074df9d70cb6f30fa378e92edbb490.html"><div>read more</div></a>
             </div>
@@ -196,7 +203,7 @@
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/duet-display.html">Duet Display</a> (1)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -225,7 +232,7 @@
                 <li><a href="https://muunyblue.github.io/tag/recipe.html">Recipe</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
                 <li><a href="https://muunyblue.github.io/tag/sho-yu.html">Sho-yu</a> (1)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -256,6 +263,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

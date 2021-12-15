@@ -54,7 +54,7 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2016-09-13T02:03:08+09:00">
+    <li class="published" title="2016-09-13T02:03:08">
         <span>Date:</span>2016-09-13 火 (午前 02:03:08)
     </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> <a href="https://muunyblue.github.io/tag/gtk.html">Gtk+</a> </li>
@@ -64,17 +64,22 @@
 <p>gtk-rs/gtkを使ってみます。</p>
 <p>開発を始める前にビルドするためにGtkのツールキットが必要なのでインストールします。</p>
 <p><a href="http://gtk-rs.org/docs/requirements.html" title="Gtk-rs">Requirements - Gtk-rs</a></p>
-<div class="highlight"><pre><span></span><code>$ brew install gtk+3
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ brew install gtk+3
+</pre></div>
+
 
 <p>(LinuxやWindowsでも動作するみたいです)</p>
-<p>[https://github.com/gtk-rs/examples:embed]</p>
+<p>
+<a class="embedly-card" href="https://github.com/gtk-rs/examples">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>を参考に簡単な例を作ってみます。</p>
-<div class="highlight"><pre><span></span><code>$ cargo new hello --bin
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ cargo new hello --bin
+</pre></div>
+
 
 <p>Cargo.tomlをexamplesのようにします。</p>
-<div class="highlight"><pre><span></span><code><span class="k">[dependencies]</span>
+<div class="highlight"><pre><span></span><span class="k">[dependencies]</span>
 <span class="na">glib</span> <span class="o">=</span> <span class="s">&quot;^0&quot;</span>
 <span class="na">gdk</span> <span class="o">=</span> <span class="s">&quot;^0&quot;</span>
 <span class="na">gdk-pixbuf</span> <span class="o">=</span> <span class="s">&quot;^0&quot;</span>
@@ -86,10 +91,11 @@
 <span class="na">gtk_3_10</span> <span class="o">=</span> <span class="s">[&quot;gtk/v3_10&quot;]</span>
 <span class="na">gtk_3_16</span> <span class="o">=</span> <span class="s">[&quot;gtk_3_10&quot;, &quot;gtk/v3_16&quot;]</span>
 <span class="na">gtk_3_18</span> <span class="o">=</span> <span class="s">[&quot;gtk_3_16&quot;] #for CI tools</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>src/main.rsをexamplesのbasicと同じ内容で書きます。</p>
-<div class="highlight"><pre><span></span><code><span class="k">extern</span><span class="w"> </span><span class="k">crate</span><span class="w"> </span><span class="n">gtk</span><span class="p">;</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="k">extern</span><span class="w"> </span><span class="k">crate</span><span class="w"> </span><span class="n">gtk</span><span class="p">;</span><span class="w"></span>
 
 <span class="k">use</span><span class="w"> </span><span class="n">gtk</span>::<span class="n">prelude</span>::<span class="o">*</span><span class="p">;</span><span class="w"></span>
 
@@ -119,13 +125,15 @@
 <span class="w">    </span><span class="n">window</span><span class="p">.</span><span class="n">show_all</span><span class="p">();</span><span class="w"></span>
 <span class="w">    </span><span class="n">gtk</span>::<span class="n">main</span><span class="p">();</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
-</code></pre></div>
+</pre></div>
 
-<div class="highlight"><pre><span></span><code>$ cargo build
+
+<div class="highlight"><pre><span></span>$ cargo build
 $ cargo run
-</code></pre></div>
+</pre></div>
 
-<p><img alt="" src="https://i.gyazo.com/75e8ed5c95b04a02ce3c6cdd8099f61a.png"></p>
+
+<p><img alt="" src="https://i.gyazo.com/75e8ed5c95b04a02ce3c6cdd8099f61a.png" /></p>
 <p>あっさり動きました。</p>
 <p>どこまで実装されているのかわかりませんが、触っていってみようかと思っています。</p>
     </div><!-- /.entry-content -->
@@ -302,7 +310,7 @@ $ cargo run
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -325,7 +333,7 @@ $ cargo run
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -355,6 +363,12 @@ $ cargo run
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

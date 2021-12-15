@@ -54,11 +54,11 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2015-10-14T05:15:11+09:00">
+    <li class="published" title="2015-10-14T05:15:11">
         <span>Date:</span>2015-10-14 水 (午前 05:15:11)
     </li>
         <!--<br />-->
-        <li class="modified" title="2015-10-14T07:44:28+09:00">
+        <li class="modified" title="2015-10-14T07:44:28">
             <span>Updated:</span>2015-10-14 水 (午前 07:44:28)
         </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/python.html">Python</a> <a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> <a href="https://muunyblue.github.io/tag/markdown.html">Markdown</a> </li>
@@ -70,61 +70,91 @@
 <li><a href="https://pythonhosted.org/Markdown/reference.html" title="Library Reference — Python Markdown">Library Reference — Python Markdown</a></li>
 </ul>
 <p>使い方は以下のようになります。</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">markdown</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">markdown</span>
 <span class="nb">print</span> <span class="n">markdown</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>extensionsで拡張できます。</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">markdown</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">markdown</span>
 <span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;fenced_code&quot;</span><span class="p">,</span> <span class="s2">&quot;tables&quot;</span><span class="p">]</span>
 <span class="nb">print</span> <span class="n">markdown</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="n">extensions</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p><a href="https://pythonhosted.org/Markdown/extensions/index.html" title="Extensions — Python Markdown">Extensions — Python Markdown</a></p>
 <p>ここに書いてあるExtensionsはデフォルトで利用可能です。このドキュメントには指定するのに'markdown.extensions.footnotes'と書いていますが、単に'footnotes'だけでも使えます。</p>
-<h1>おすすめ設定(GFM的に使える)</h1>
+<h1 id="gfm">おすすめ設定(GFM的に使える)</h1>
 <p>delタグとinsタグを使うために以下のパッケージをインストールします。</p>
-<div class="highlight"><pre><span></span><code>$ pip install mdx_del_ins
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ pip install mdx_del_ins
+</pre></div>
+
 
 <p>del_insがExtensionで使えますので以下のように設定します。</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">markdown</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">markdown</span>
 <span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;extra&#39;</span><span class="p">,</span> <span class="s1">&#39;admonition&#39;</span><span class="p">,</span> <span class="s1">&#39;codehilite(css_class=highlight)&#39;</span><span class="p">,</span>
               <span class="s1">&#39;nl2br&#39;</span><span class="p">,</span> <span class="s1">&#39;sane_lists&#39;</span><span class="p">,</span> <span class="s1">&#39;toc&#39;</span><span class="p">,</span> <span class="s1">&#39;del_ins&#39;</span><span class="p">]</span>
 <span class="nb">print</span> <span class="n">markdown</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">,</span> <span class="n">extensions</span><span class="p">)</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>GFMライクに使えます。</p>
 <p>Pelicanで使用する場合には、pelicanconf.pyに以下のように書きます。</p>
-<div class="highlight"><pre><span></span><code>MD_EXTENSIONS = [&#39;extra&#39;, &#39;admonition&#39;, &#39;codehilite(css_class=highlight)&#39;,
+<div class="highlight"><pre><span></span>MD_EXTENSIONS = [&#39;extra&#39;, &#39;admonition&#39;, &#39;codehilite(css_class=highlight)&#39;,
                  &#39;nl2br&#39;, &#39;sane_lists&#39;, &#39;toc&#39;, &#39;del_ins&#39;]
-</code></pre></div>
+</pre></div>
+
 
 <p>この記事もこの設定で書いています。</p>
-<h1>標準のExtensionリファレンス</h1>
+<h1 id="extension">標準のExtensionリファレンス</h1>
 <p><a href="https://pythonhosted.org/Markdown/extensions/index.html" title="Extensions — Python Markdown">Extensions — Python Markdown</a></p>
 <p>以下は上記のドキュメントを簡単にまとめました。興味のある方どうぞ。</p>
-<p>++目次++</p>
-<p>[TOC]</p>
-<h1>extras</h1>
+<p><ins>目次</ins></p>
+<div class="toc">
+<ul>
+<li><a href="#gfm">おすすめ設定(GFM的に使える)</a></li>
+<li><a href="#extension">標準のExtensionリファレンス</a></li>
+<li><a href="#extras">extras</a><ul>
+<li><a href="#abbreviations-abbr">Abbreviations (abbr)</a></li>
+<li><a href="#attribute-lists-attr_list">Attribute Lists (attr_list)</a></li>
+<li><a href="#definition-lists-def_list">Definition Lists (def_list)</a></li>
+<li><a href="#fenced-code-blocks-fenced_code">Fenced Code Blocks (fenced_code)</a></li>
+<li><a href="#footnotes-footnotes">Footnotes (footnotes)</a></li>
+<li><a href="#tables-tables">Tables (tables)</a></li>
+<li><a href="#smart_strong-smart_strong">Smart_Strong (smart_strong)</a></li>
+</ul>
+</li>
+<li><a href="#admonition-admonition">Admonition (admonition)</a></li>
+<li><a href="#codehilite-codehilite">CodeHilite (codehilite)</a></li>
+<li><a href="#headerid-headerid">HeaderId (headerid)</a></li>
+<li><a href="#meta-data-meta">Meta-Data (meta)</a></li>
+<li><a href="#new-line-to-break-extension-nl2br">New-Line-to-Break Extension (nl2br)</a></li>
+<li><a href="#sane-lists-sane_lists">Sane Lists (sane_lists)</a></li>
+<li><a href="#smartypants-smarty">SmartyPants (smarty)</a></li>
+<li><a href="#table-of-contents-toc">Table of Contents (toc)</a></li>
+<li><a href="#wikilinks">WikiLinks</a></li>
+</ul>
+</div>
+<h1 id="extras">extras</h1>
 <p>色々含まれているので1つずつ見てみます。</p>
-<h2>Abbreviations (abbr)</h2>
+<h2 id="abbreviations-abbr">Abbreviations (abbr)</h2>
 <p><a href="https://pythonhosted.org/Markdown/extensions/abbreviations.html" title="Abbreviations Extension — Python Markdown">Abbreviations Extension — Python Markdown</a></p>
 <p>略語tag(\&lt;abbr>)を追加できます。以下に例を示します。</p>
-<div class="highlight"><pre><span></span><code>The HTML specification 
+<div class="highlight"><pre><span></span>The HTML specification 
 is maintained by the W3C.
 
 *[HTML]: Hyper Text Markup Language
 *[W3C]:  World Wide Web Consortium
-</code></pre></div>
+</pre></div>
 
-<p>The <abbr title="Hyper Text Markup Language">HTML</abbr> specification 
+
+<p>The <abbr title="Hyper Text Markup Language">HTML</abbr> specification <br />
 is maintained by the <abbr title="World Wide Web Consortium">W3C</abbr>.</p>
 <p>(正直余り使わないし、調べるまで知りませんでした)</p>
-<h2>Attribute Lists (attr_list)</h2>
+<h2 id="attribute-lists-attr_list">Attribute Lists (attr_list)</h2>
 <p><a href="https://pythonhosted.org/Markdown/extensions/attr_list.html" title="Attribute Lists Extension — Python Markdown">Attribute Lists Extension — Python Markdown</a></p>
 <p>classやidなどのattributeを追加できます。便利そう。</p>
-<div class="highlight"><pre><span></span><code>This is a paragraph.
+<div class="highlight"><pre><span></span>This is a paragraph.
 {: <span class="ni">#an_id</span> .a_class }
 
 <span class="gh">A setext style header {: #setext}</span>
@@ -133,59 +163,65 @@ is maintained by the <abbr title="World Wide Web Consortium">W3C</abbr>.</p>
 <span class="gu">### A hash style header ### {: #hash }</span>
 
 [<span class="nt">link</span>](<span class="na">http://example.com</span>){: class=&quot;foo bar&quot; title=&quot;Some title!&quot; }
-</code></pre></div>
+</pre></div>
+
 
 <p>blockに対して, inlineに対して両方使えます。</p>
 <p>cssセレクタぽく書けます。ダブルクォーテーション("")で囲むことで複数指定もできます。</p>
-<div class="highlight"><pre><span></span><code>{: #someid .someclass somekey=&#39;some value&#39; }
+<div class="highlight"><pre><span></span>{: #someid .someclass somekey=&#39;some value&#39; }
 
 {: #id1 .class1 id=id2 class=&quot;class2 class3&quot; .class4 }
-</code></pre></div>
+</pre></div>
 
-<h2>Definition Lists (def_list)</h2>
+
+<h2 id="definition-lists-def_list">Definition Lists (def_list)</h2>
 <p><a href="https://pythonhosted.org/Markdown/extensions/definition_lists.html" title="Definition Lists Extension — Python Markdown">Definition Lists Extension — Python Markdown</a></p>
 <p>dl&gt;dt&gt;ddを書けます。</p>
-<div class="highlight"><pre><span></span><code><span class="n">Apple</span>
+<div class="highlight"><pre><span></span><span class="n">Apple</span>
 <span class="o">:</span>   <span class="n">Pomaceous</span> <span class="n">fruit</span> <span class="n">of</span> <span class="n">plants</span> <span class="n">of</span> <span class="n">the</span> <span class="n">genus</span> <span class="n">Malus</span> <span class="k">in</span> 
     <span class="n">the</span> <span class="n">family</span> <span class="n">Rosaceae</span><span class="o">.</span>
 
 <span class="n">Orange</span>
 <span class="o">:</span>   <span class="n">The</span> <span class="n">fruit</span> <span class="n">of</span> <span class="n">an</span> <span class="n">evergreen</span> <span class="n">tree</span> <span class="n">of</span> <span class="n">the</span> <span class="n">genus</span> <span class="n">Citrus</span><span class="o">.</span>
-</code></pre></div>
+</pre></div>
+
 
 <dl>
 <dt>Apple</dt>
-<dd>Pomaceous fruit of plants of the genus Malus in 
+<dd>Pomaceous fruit of plants of the genus Malus in <br />
 the family Rosaceae.</dd>
 <dt>Orange</dt>
 <dd>The fruit of an evergreen tree of the genus Citrus.</dd>
 </dl>
-<h2>Fenced Code Blocks (fenced_code)</h2>
+<h2 id="fenced-code-blocks-fenced_code">Fenced Code Blocks (fenced_code)</h2>
 <p><a href="https://pythonhosted.org/Markdown/extensions/fenced_code_blocks.html" title="Fenced Code Blocks Extension — Python Markdown">Fenced Code Blocks Extension — Python Markdown</a></p>
 <p>```で書こうとコードブロックになります。デフォルトの機能にしてほしいくらいです。</p>
 <p>このExtensionは指定行だけハイライトするということもできるみたいです。以下のように指定します。</p>
-<div class="highlight"><pre><span></span><code>python hl_lines=&quot;2 3 4&quot;
-</code></pre></div>
+<div class="highlight"><pre><span></span>python hl_lines=&quot;2 3 4&quot;
+</pre></div>
+
 
 <p>こんな感じになります。</p>
-<div class="highlight"><pre><span></span><code><span class="err">$</span> <span class="n">cat</span> <span class="n">sample</span><span class="o">.</span><span class="n">py</span>
+<div class="highlight"><pre><span></span><span class="err">$</span> <span class="n">cat</span> <span class="n">sample</span><span class="o">.</span><span class="n">py</span>
 <span class="hll"><span class="c1"># cat result</span>
 </span><span class="hll"><span class="c1"># code block [python]</span>
 </span><span class="hll"><span class="kn">import</span> <span class="nn">antigravity</span>
-</span></code></pre></div>
+</span></pre></div>
 
-<h2>Footnotes (footnotes)</h2>
+
+<h2 id="footnotes-footnotes">Footnotes (footnotes)</h2>
 <p><a href="https://pythonhosted.org/Markdown/extensions/footnotes.html" title="Footnotes Extension — Python Markdown">Footnotes Extension — Python Markdown</a></p>
 <p>脚注です。</p>
-<div class="highlight"><pre><span></span><code>Footnotes[^1] have a label[^@#$%] and the footnote&#39;s content.
+<div class="highlight"><pre><span></span>Footnotes[^1] have a label[^@#$%] and the footnote&#39;s content.
 
 [^1]: This is a footnote content.
 [^@#$%]: A footnote on the label: &quot;@#$%&quot;.
-</code></pre></div>
+</pre></div>
 
-<p>Footnotes<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> have a label<sup id="fnref:@#$%"><a class="footnote-ref" href="#fn:@#$%">2</a></sup> and the footnote's content.</p>
+
+<p>Footnotes<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup> have a label<sup id="fnref:@#$%"><a class="footnote-ref" href="#fn:@#$%" rel="footnote">2</a></sup> and the footnote's content.</p>
 <p>脚注内に複数行を入れることもできます。</p>
-<div class="highlight"><pre><span></span><code>[^1]: 
+<div class="highlight"><pre><span></span>[^1]: 
     The first paragraph of the definition.
 
     Paragraph two of the definition.
@@ -196,16 +232,18 @@ the family Rosaceae.</dd>
         a code block
 
     A final paragraph.
-</code></pre></div>
+</pre></div>
 
-<h2>Tables (tables)</h2>
+
+<h2 id="tables-tables">Tables (tables)</h2>
 <p><a href="https://pythonhosted.org/Markdown/extensions/tables.html" title="Tables Extension — Python Markdown">Tables Extension — Python Markdown</a></p>
 <p>テーブルが使えます。</p>
-<div class="highlight"><pre><span></span><code>First Header  | Second Header
+<div class="highlight"><pre><span></span>First Header  | Second Header
 ------------- | -------------
 Content Cell  | Content Cell
 Content Cell  | Content Cell
-</code></pre></div>
+</pre></div>
+
 
 <table>
 <thead>
@@ -225,10 +263,10 @@ Content Cell  | Content Cell
 </tr>
 </tbody>
 </table>
-<h2>Smart_Strong (smart_strong)</h2>
+<h2 id="smart_strong-smart_strong">Smart_Strong (smart_strong)</h2>
 <p><a href="https://pythonhosted.org/Markdown/extensions/smart_strong.html" title="Smart Strong Extension — Python Markdown">Smart Strong Extension — Python Markdown</a></p>
 <p>賢く強調してくれます。</p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">markdown</span>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">markdown</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">markdown</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span><span class="s1">&#39;Text with double__underscore__words.&#39;</span><span class="p">,</span> \
                       <span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;markdown.extensions.smart_strong&#39;</span><span class="p">])</span>
 <span class="sa">u</span><span class="s1">&#39;&lt;p&gt;Text with double__underscore__words.&lt;/p&gt;&#39;</span>
@@ -238,12 +276,13 @@ Content Cell  | Content Cell
 <span class="o">&gt;&gt;&gt;</span> <span class="n">markdown</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span><span class="s1">&#39;__this__works__too__.&#39;</span><span class="p">,</span> \
                       <span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;markdown.extensions.smart_strong&#39;</span><span class="p">])</span>
 <span class="sa">u</span><span class="s1">&#39;&lt;p&gt;&lt;strong&gt;this__works__too&lt;/strong&gt;.&lt;/p&gt;&#39;</span>
-</code></pre></div>
+</pre></div>
 
-<h1>Admonition (admonition)</h1>
+
+<h1 id="admonition-admonition">Admonition (admonition)</h1>
 <p><a href="https://pythonhosted.org/Markdown/extensions/admonition.html" title="Admonition Extension — Python Markdown">Admonition Extension — Python Markdown</a></p>
 <p>reStructuredTextにあるAdminisions(<a href="http://docutils.sourceforge.net/docs/ref/rst/directives.html#specific-admonitions" title="reStructuredText Directives">reStructuredText Directives</a>)のMarkdown版を使えます。</p>
-<div class="highlight"><pre><span></span><code>!!! note
+<div class="highlight"><pre><span></span>!!! note
     You should note that the title will be automatically capitalized.
 
 !!! warning &quot;WARNING&quot;
@@ -251,28 +290,35 @@ Content Cell  | Content Cell
 
 !!! important &quot;&quot;
     This is a admonition box without a title.
-</code></pre></div>
+</pre></div>
 
-<p>!!! note
-    You should note that the title will be automatically capitalized.</p>
-<p>!!! warning "WARNING"
-    ...</p>
-<p>!!! important ""
-    This is a admonition box without a title.</p>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You should note that the title will be automatically capitalized.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">WARNING</p>
+<p>...</p>
+</div>
+<div class="admonition important">
+<p>This is a admonition box without a title.</p>
+</div>
 <p>CSSをいい感じに書いておくと良いです。</p>
-<h1>CodeHilite (codehilite)</h1>
+<h1 id="codehilite-codehilite">CodeHilite (codehilite)</h1>
 <p><a href="https://pythonhosted.org/Markdown/extensions/code_hilite.html" title="CodeHilite Extension — Python Markdown">CodeHilite Extension — Python Markdown</a></p>
 <p>css_classを指定しないとうまくハイライトされませんでした。</p>
-<div class="highlight"><pre><span></span><code><span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;codehilite(css_class=highlight)&#39;</span><span class="p">]</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;codehilite(css_class=highlight)&#39;</span><span class="p">]</span>
+</pre></div>
 
-<h1>HeaderId (headerid)</h1>
+
+<h1 id="headerid-headerid">HeaderId (headerid)</h1>
 <p><a href="https://pythonhosted.org/Markdown/extensions/header_id.html" title="HeaderId Extension — Python Markdown">HeaderId Extension — Python Markdown</a></p>
 <p>headerにheader_&lt;数字&gt;というIDをつけてくれます。</p>
-<h1>Meta-Data (meta)</h1>
+<h1 id="meta-data-meta">Meta-Data (meta)</h1>
 <p><a href="https://pythonhosted.org/Markdown/extensions/meta_data.html" title="Meta-Data Extension — Python Markdown">Meta-Data Extension — Python Markdown</a></p>
 <p>以下の様にメタデータを定義できるようになります。</p>
-<div class="highlight"><pre><span></span><code><span class="n">Title</span><span class="o">:</span>   <span class="n">My</span> <span class="n">Document</span>
+<div class="highlight"><pre><span></span><span class="n">Title</span><span class="o">:</span>   <span class="n">My</span> <span class="n">Document</span>
 <span class="n">Summary</span><span class="o">:</span> <span class="n">A</span> <span class="n">brief</span> <span class="n">description</span> <span class="n">of</span> <span class="n">my</span> <span class="n">document</span><span class="o">.</span>
 <span class="n">Authors</span><span class="o">:</span> <span class="n">Waylan</span> <span class="n">Limberg</span>
          <span class="n">John</span> <span class="n">Doe</span>
@@ -281,12 +327,13 @@ Content Cell  | Content Cell
 <span class="n">base_url</span><span class="o">:</span> <span class="n">http</span><span class="o">://</span><span class="n">example</span><span class="o">.</span><span class="na">com</span>
 
 <span class="n">This</span> <span class="k">is</span> <span class="n">the</span> <span class="n">first</span> <span class="n">paragraph</span> <span class="n">of</span> <span class="n">the</span> <span class="n">document</span><span class="o">.</span>
-</code></pre></div>
+</pre></div>
 
-<h1>New-Line-to-Break Extension (nl2br)</h1>
+
+<h1 id="new-line-to-break-extension-nl2br">New-Line-to-Break Extension (nl2br)</h1>
 <p><a href="https://pythonhosted.org/Markdown/extensions/nl2br.html" title="New Line to Break Extension — Python Markdown">New Line to Break Extension — Python Markdown</a></p>
 <p>以下の例に示すように、改行が新しい行になるようにパースされます。</p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">markdown</span>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">markdown</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">... Line 1</span>
 <span class="s2">... Line 2</span>
@@ -295,62 +342,89 @@ Content Cell  | Content Cell
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span> <span class="n">html</span>
 <span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">Line</span> <span class="mi">1</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
 <span class="n">Line</span> <span class="mi">2</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</code></pre></div>
+</pre></div>
 
-<h1>Sane Lists (sane_lists)</h1>
+
+<h1 id="sane-lists-sane_lists">Sane Lists (sane_lists)</h1>
 <p><a href="https://pythonhosted.org/Markdown/extensions/sane_lists.html" title="Sane Lists Extension — Python Markdown">Sane Lists Extension — Python Markdown</a></p>
 <p>listを賢くパースしてくれます。</p>
 <ol>
 <li>Ordered item 1</li>
-<li>
-<p>Ordered item 2</p>
-</li>
-<li>
-<p>Unordered item 1</p>
-</li>
-<li>Unordered item 2</li>
+<li>Ordered item 2</li>
 </ol>
-<h1>SmartyPants (smarty)</h1>
+<ul>
+<li>Unordered item 1</li>
+<li>Unordered item 2</li>
+</ul>
+<h1 id="smartypants-smarty">SmartyPants (smarty)</h1>
 <p><a href="https://pythonhosted.org/Markdown/extensions/smarty.html" title="SmartyPants Extension — Python Markdown">SmartyPants Extension — Python Markdown</a></p>
 <p>文字参照を置き換えてくれます。詳しくは以下を参照。</p>
 <ul>
 <li><a href="https://ja.wikipedia.org/wiki/%E6%96%87%E5%AD%97%E5%8F%82%E7%85%A7" title="文字参照 - Wikipedia">文字参照 - Wikipedia</a></li>
 <li><a href="http://www.koikikukan.com/archives/2007/07/24-000751.php" title="SmartyPants とは: 小粋空間">SmartyPants とは: 小粋空間</a></li>
 </ul>
-<h1>Table of Contents (toc)</h1>
+<h1 id="table-of-contents-toc">Table of Contents (toc)</h1>
 <p><a href="https://pythonhosted.org/Markdown/extensions/toc.html" title="Table of Contents Extension — Python Markdown">Table of Contents Extension — Python Markdown</a></p>
 <p>目次を表示します。</p>
-<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">TOC</span><span class="o">]</span><span class="w"></span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="o">[</span><span class="n">TOC</span><span class="o">]</span><span class="w"></span>
+</pre></div>
 
-<p>[TOC]</p>
-<h1>WikiLinks</h1>
+
+<div class="toc">
+<ul>
+<li><a href="#gfm">おすすめ設定(GFM的に使える)</a></li>
+<li><a href="#extension">標準のExtensionリファレンス</a></li>
+<li><a href="#extras">extras</a><ul>
+<li><a href="#abbreviations-abbr">Abbreviations (abbr)</a></li>
+<li><a href="#attribute-lists-attr_list">Attribute Lists (attr_list)</a></li>
+<li><a href="#definition-lists-def_list">Definition Lists (def_list)</a></li>
+<li><a href="#fenced-code-blocks-fenced_code">Fenced Code Blocks (fenced_code)</a></li>
+<li><a href="#footnotes-footnotes">Footnotes (footnotes)</a></li>
+<li><a href="#tables-tables">Tables (tables)</a></li>
+<li><a href="#smart_strong-smart_strong">Smart_Strong (smart_strong)</a></li>
+</ul>
+</li>
+<li><a href="#admonition-admonition">Admonition (admonition)</a></li>
+<li><a href="#codehilite-codehilite">CodeHilite (codehilite)</a></li>
+<li><a href="#headerid-headerid">HeaderId (headerid)</a></li>
+<li><a href="#meta-data-meta">Meta-Data (meta)</a></li>
+<li><a href="#new-line-to-break-extension-nl2br">New-Line-to-Break Extension (nl2br)</a></li>
+<li><a href="#sane-lists-sane_lists">Sane Lists (sane_lists)</a></li>
+<li><a href="#smartypants-smarty">SmartyPants (smarty)</a></li>
+<li><a href="#table-of-contents-toc">Table of Contents (toc)</a></li>
+<li><a href="#wikilinks">WikiLinks</a></li>
+</ul>
+</div>
+<h1 id="wikilinks">WikiLinks</h1>
 <p><a href="https://pythonhosted.org/Markdown/extensions/wikilinks.html" title="WikiLinks Extension — Python Markdown">WikiLinks Extension — Python Markdown</a></p>
 <p>内部参照が使えるようになります。</p>
-<div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">[Bracketed</span><span class="o">]</span><span class="err">]</span><span class="w"></span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="o">[</span><span class="n">[Bracketed</span><span class="o">]</span><span class="err">]</span><span class="w"></span>
+</pre></div>
+
 
 <p>パースすると以下のようになります。</p>
-<div class="highlight"><pre><span></span><code><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;/Bracketed/&quot;</span> <span class="na">class=</span><span class="s">&quot;wikilink&quot;</span><span class="nt">&gt;</span>Bracketed<span class="nt">&lt;/a&gt;</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;/Bracketed/&quot;</span> <span class="na">class=</span><span class="s">&quot;wikilink&quot;</span><span class="nt">&gt;</span>Bracketed<span class="nt">&lt;/a&gt;</span>
+</pre></div>
+
 
 <div class="footnote">
-<hr>
+<hr />
 <ol>
 <li id="fn:1">
 <p>The first paragraph of the definition.</p>
 <p>Paragraph two of the definition.</p>
 <blockquote>
-<p>A blockquote with
+<p>A blockquote with<br />
 multiple lines.</p>
 </blockquote>
-<div class="highlight"><pre><span></span><code>a code block
-</code></pre></div>
+<div class="highlight"><pre><span></span>a code block
+</pre></div>
 
-<p>A final paragraph.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+
+<p>A final paragraph.&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 <li id="fn:@#$%">
-<p>A footnote on the label: "@#$%".&#160;<a class="footnote-backref" href="#fnref:@#$%" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<p>A footnote on the label: "@#$%".&#160;<a class="footnote-backref" href="#fnref:@#$%" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
@@ -528,7 +602,7 @@ multiple lines.</p>
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -551,7 +625,7 @@ multiple lines.</p>
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -581,6 +655,12 @@ multiple lines.</p>
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

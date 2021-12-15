@@ -54,25 +54,28 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2017-09-21T12:58:03+09:00">
+    <li class="published" title="2017-09-21T12:58:03">
         <span>Date:</span>2017-09-21 木 (午後 12:58:03)
     </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> <a href="https://muunyblue.github.io/tag/javascript.html">JavaScript</a> <a href="https://muunyblue.github.io/tag/css.html">CSS</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
-</footer><!-- /.post-info -->      <h1>Locks</h1>
-<p><a href="https://yymm.github.io/locks/#/"><img alt="" src="https://github.com/yymm/locks/raw/master/screenshot/locks.png"></a></p>
+</footer><!-- /.post-info -->      <h1 id="locks">Locks</h1>
+<p><a href="https://yymm.github.io/locks/#/"><img alt="" src="https://github.com/yymm/locks/raw/master/screenshot/locks.png" /></a></p>
 <p>スライド作るときPowerPointやKeynoteでも良いけどインストールされてないとか好みじゃないとかMarkdownで書きたいときあります。</p>
 <p>でもWebサービスとかだと外部のサーバにデータ乗るかもしれないし機密情報とかのせられない・・・みたいなときに使うツールということで作りました。</p>
-<p>[https://yymm.github.io/locks/#/:embed]</p>
+<p>
+<a class="embedly-card" href="https://yymm.github.io/locks/#/">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>ここにアクセスするだけで誰でも使えます。LocalStorageを使っているのでデータが自分のPC外に出てしまう心配はありません。</p>
 <p>その代わりにPCやブラウザが変わると同じデータを参照することは出来ないので注意です(今後、Syncサーバを置いてデータ共有する機能も実装しようと考えています)。</p>
 <p>エディタのテーマやコードハイライトのテーマ、Markdownのテーマがたくさん選べるのである程度お好みのデザインで作れます。</p>
 <p>Locks自体にスライドやメモを公開する機能があるので一応配布用途にも使えます(本文は圧縮されてURLに乗っている形式です)。</p>
 <p>今後も開発を続けていく予定です、興味が出た方ぜひ使ってみて下さい。</p>
-<h1>機能紹介</h1>
+<h1 id="_1">機能紹介</h1>
 <p>細かい機能は、<a href="https://goo.gl/Pdtdy3">What's about Locks?</a>にまとまっていますので大まかな紹介です。</p>
-<h2>基本機能</h2>
+<h2 id="_2">基本機能</h2>
 <ul>
 <li>データが漏れない(LocalStorageに保存、通信もしない)</li>
 <li>LocalStorage容量確認</li>
@@ -86,19 +89,22 @@
 </ul>
 <p>LocalStorageを使っているので割りと機能が豊富でもサクサク動きます。</p>
 <p>LocalStorageの容量はブラウザによってまちまちなので容量を表示するようにしています、最大5MBにしていますがブラウザによって違うのであくまで目安ですが...</p>
-<h2>公開機能</h2>
+<h2 id="_3">公開機能</h2>
 <p><a href="https://goo.gl/F3WPQ8">公開機能のデモ</a></p>
 <p>こういう感じに自由に公開できます。</p>
 <p>本文を圧縮したものをURLに乗っけて公開しています。必然的にURLが長くなるのでGoogleにURLを短縮してもらっています。</p>
 <p>配布したい資料を作るときには便利ですが、本文をURLに乗っけるので長さの制限があります。</p>
 <p>正確な値はわかりませんが10000kBを超えるとダメのようです。</p>
-<h2>TextLint</h2>
-<p><img alt="textlint demo" src="https://gyazo.com/40f85726a25942f4319bcdf0e3d90916.gif"></p>
+<h2 id="textlint">TextLint</h2>
+<p><img alt="textlint demo" src="https://gyazo.com/40f85726a25942f4319bcdf0e3d90916.gif" /></p>
 <p>TextLintを利用することもできます。ブラウザでうまく動かすことができなかったので今はサーバとやり取りする方法になっています。</p>
 <p><a href="https://github.com/textlint/textlint/issues/299" title="@textlint/browser · Issue #299 · textlint/textlint">@textlint/browser · Issue #299 · textlint/textlint</a></p>
 <p>こういうIssueも上がっていたので期待しつつ現状はこのままで様子を見てブラウザで動かしたい気持ちです。</p>
 <p>サンプルサーバのソースを公開しているのでHerokuにのせて使うと良いです。ルール増やしたい方はforkして増やすと良いです。</p>
-<p>[https://github.com/yymm/locks-textlint-server:embed]</p>
+<p>
+<a class="embedly-card" href="https://github.com/yymm/locks-textlint-server">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>使い方</p>
 <ol>
 <li>サーバをHerokuなどにデプロイ</li>
@@ -106,11 +112,14 @@
 <li>TextLintのServer URLにデプロイしたサーバのURLを書いてenter</li>
 <li>正しく接続されるとルール一覧が出てくるので有効にするとエディタページでLintが効きます</li>
 </ol>
-<h1>今後</h1>
+<h1 id="_4">今後</h1>
 <p>とりあえずSync機能を作る予定です。これもHerokuなどにサーバを置いてそこのデータを貯めるようにします。</p>
 <p>最終的にブログ吐けるようにしていきたいと考えています、GitHub Pagesにデプロイする方式にする予定ですがぼちぼち開発を続けていこうと思います。</p>
 <p>リポジトリはこちら</p>
-<p>[https://github.com/yymm/locks:embed]</p>
+<p>
+<a class="embedly-card" href="https://github.com/yymm/locks">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
     </div><!-- /.entry-content -->
 
     <div class="article-ad">
@@ -285,7 +294,7 @@
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -308,7 +317,7 @@
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -338,6 +347,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

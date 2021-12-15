@@ -54,58 +54,62 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2015-10-01T01:01:28+09:00">
+    <li class="published" title="2015-10-01T01:01:28">
         <span>Date:</span>2015-10-01 木 (午前 01:01:28)
     </li>
         <!--<br />-->
-        <li class="modified" title="2015-10-01T01:13:00+09:00">
+        <li class="modified" title="2015-10-01T01:13:00">
             <span>Updated:</span>2015-10-01 木 (午前 01:13:00)
         </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/asakatsu.html">Asakatsu</a> <a href="https://muunyblue.github.io/tag/haskell.html">Haskell</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
 </footer><!-- /.post-info -->      <p>朝活#1</p>
-<h1>積読</h1>
+<h1 id="_1">積読</h1>
 <p>おもしろそうだなーと思ってつい本を買う</p>
 <p>目次を読む</p>
 <p>へぇー</p>
 <p><strong>何かが起こる</strong></p>
 <p>本棚にしまう</p>
-<p><img alt="関数プログラミング 珠玉のアルゴリズムデザイン" src="https://i.gyazo.com/38375b27061721266f1dee6f856a83f0.png"></p>
+<p><img alt="関数プログラミング 珠玉のアルゴリズムデザイン" src="https://i.gyazo.com/38375b27061721266f1dee6f856a83f0.png" /></p>
 <p><a href="http://www.amazon.co.jp/%E9%96%A2%E6%95%B0%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0-%E7%8F%A0%E7%8E%89%E3%81%AE%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3-Richard-bird/dp/4274050645" title="Amazon.co.jp： 関数プログラミング 珠玉のアルゴリズムデザイン: Richard bird, 山下 伸夫: 本">Amazon.co.jp： 関数プログラミング 珠玉のアルゴリズムデザイン: Richard bird, 山下 伸夫: 本</a></p>
 <p>この本の場合、Haskellが読めなくて本棚にinされた。</p>
-<h1>Haskellに入門したい</h1>
+<h1 id="haskell">Haskellに入門したい</h1>
 <p>この本を読みたいのでHaskellを書けるようになりたい。</p>
 <p>"Haskell 入門"でGoogle検索すると、上のほうに「怖くないHaskell」が出てきてこわい。関数プログラミングには怖いイメージあるの良くないことだと思う。</p>
 <p>実行したいので処理系を調べると、GHCというのがデファクトぽい。 </p>
-<h1>GHCにふれる</h1>
+<h1 id="ghc">GHCにふれる</h1>
 <p>Mac OS X環境では、brew経由でインストールできるようだ。</p>
-<div class="highlight"><pre><span></span><code>$ brew install ghc
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ brew install ghc
+</pre></div>
+
 
 <p>自分のMacには何故かHaskellがインストールされていた。</p>
-<div class="highlight"><pre><span></span><code>$ ghc --version
+<div class="highlight"><pre><span></span>$ ghc --version
 The Glorious Glasgow Haskell Compilation System, version <span class="m">7</span>.8.3
-</code></pre></div>
+</pre></div>
+
 
 <p>これは、2014年のバージョンみたいだ。</p>
 <p>以前も始めようとしていた痕跡があった。</p>
 <p>律儀にパッケージマネージャのcabalもインストールされていた。</p>
-<div class="highlight"><pre><span></span><code>$ cabal --version
+<div class="highlight"><pre><span></span>$ cabal --version
 cabal-install version <span class="m">1</span>.20.0.3
 using version <span class="m">1</span>.20.0.2 of the Cabal library 
-</code></pre></div>
+</pre></div>
+
 
 <p>どういうコマンドでインストールされていたのかわからないのでこわい。</p>
-<h1>Haskellを書いてみる</h1>
+<h1 id="haskell_1">Haskellを書いてみる</h1>
 <p>ひとまずこのバージョンのHaskellで書いてみる。</p>
-<div class="highlight"><pre><span></span><code><span class="nf">main</span> <span class="ow">=</span> <span class="kr">do</span>
+<div class="highlight"><pre><span></span><span class="nf">main</span> <span class="ow">=</span> <span class="kr">do</span>
   <span class="n">putStrLn</span> <span class="s">&quot;Hello Haskell!&quot;</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>はじめてのHaskellはこのコードで、vim-quickrunで実行されたので実行コマンドを知らなくても実行された、quickrunとても便利。</p>
 <p>少し調べてFizzBuzz関数を書くと下のようになりました。</p>
-<div class="highlight"><pre><span></span><code><span class="nf">fizzbuzz</span> <span class="n">n</span>
+<div class="highlight"><pre><span></span><span class="nf">fizzbuzz</span> <span class="n">n</span>
   <span class="o">|</span> <span class="n">n</span> <span class="p">`</span><span class="n">mod</span><span class="p">`</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">=</span> <span class="s">&quot;Fizz&quot;</span>
   <span class="o">|</span> <span class="n">n</span> <span class="p">`</span><span class="n">mod</span><span class="p">`</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">=</span> <span class="s">&quot;Buzz&quot;</span>
   <span class="o">|</span> <span class="n">n</span> <span class="p">`</span><span class="n">mod</span><span class="p">`</span> <span class="mi">15</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">=</span> <span class="s">&quot;FizzBuzz&quot;</span>
@@ -114,17 +118,18 @@ using version <span class="m">1</span>.20.0.2 of the Cabal library
 <span class="nf">main</span> <span class="ow">=</span> <span class="kr">do</span>
   <span class="kr">let</span> <span class="n">l</span> <span class="ow">=</span> <span class="mi">1</span>
   <span class="n">print</span> <span class="p">(</span><span class="n">map</span> <span class="n">fizzbuzz</span> <span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="mi">10</span><span class="p">])</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>"|"で書いているのはガードと呼ばれるものみたいです。</p>
 <p>なんとなく書いている気になれた。</p>
-<h2>参考記事</h2>
+<h2 id="_2">参考記事</h2>
 <ul>
 <li><a href="http://qiita.com/arowM/items/9ebfb7cafecd99290663" title="こわくないHaskell入門（初級） - Qiita">こわくないHaskell入門（初級） - Qiita</a></li>
 <li><a href="http://haskell.g.hatena.ne.jp/lnznt/20141124/1416794826" title="Haskell で 初めての FizzBuzz - lnzntのHaskell日記 - haskell">Haskell で 初めての FizzBuzz - lnzntのHaskell日記 - haskell</a></li>
 <li><a href="http://qiita.com/7shi/items/145f1234f8ec2af923ef" title="Haskell 超入門 - Qiita">Haskell 超入門 - Qiita</a></li>
 </ul>
-<h1>結果として</h1>
+<h1 id="_3">結果として</h1>
 <p>Haskellのスペルが曖昧になる程度のﾊｽｹｪﾙ力しかないので、まず文法を覚えようと思った。</p>
 <p>すごいH本などを読むといいのだと思うけど、あの手の分厚い本を頑張って読むのは自分には合ってないことがわかっているので、辞書代わりに使うのがちょうどいいと思っている。</p>
 <p>文法をひとさらいしたら先の本をよみながらHaskellを勉強していく予定。</p>
@@ -302,7 +307,7 @@ using version <span class="m">1</span>.20.0.2 of the Cabal library
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -325,7 +330,7 @@ using version <span class="m">1</span>.20.0.2 of the Cabal library
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -355,6 +360,12 @@ using version <span class="m">1</span>.20.0.2 of the Cabal library
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

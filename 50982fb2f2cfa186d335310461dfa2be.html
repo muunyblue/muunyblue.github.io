@@ -54,17 +54,17 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2015-09-19T00:27:54+09:00">
+    <li class="published" title="2015-09-19T00:27:54">
         <span>Date:</span>2015-09-19 土 (午前 12:27:54)
     </li>
         <!--<br />-->
-        <li class="modified" title="2015-09-19T00:44:17+09:00">
+        <li class="modified" title="2015-09-19T00:44:17">
             <span>Updated:</span>2015-09-19 土 (午前 12:44:17)
         </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/idcf.html">IDCF</a> <a href="https://muunyblue.github.io/tag/vps.html">VPS</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
-</footer><!-- /.post-info -->      <h1>経緯</h1>
+</footer><!-- /.post-info -->      <h1 id="_1">経緯</h1>
 <p>今までGehirnを使っていたけど、<a href="https://www.gehirn.jp/gis/rs2plan.html">Gehirnの料金体制の変更</a>に伴い、VPSを変更することにしました。</p>
 <p>自分の場合、個人用途なのでアクセスも主に自分くらいしかないようなサービスしか動かさないのでとにかく安いVPSを探して使っています。</p>
 <p>旧Gehirnは300円(税抜) per monthという遠足のお菓子くらいの価格なので選択していましたが、料金体制が40円 per dayになるのでもっと安いのにしたいので乗り換えることにしました。</p>
@@ -76,7 +76,7 @@
 <p>が500円くらい。</p>
 <p>DigitalOceanがあるが為替が安定しないので辞めて、IDCFクラウドにしました。</p>
 <p>IDCFクラウドは、2015/7/31までに申し込めば使える3000円クーポンがあったのが決め手。</p>
-<h1>申し込み</h1>
+<h1 id="_2">申し込み</h1>
 <p><a href="http://www.idcf.jp/cloud/?cl=top_cloud" title="IDCFクラウド -使いやすく、パワフル｜IDCフロンティア">IDCFクラウド -使いやすく、パワフル｜IDCフロンティア</a></p>
 <ol>
 <li>「無料で始める」からユーザーの登録をします</li>
@@ -87,27 +87,28 @@
 <p>初期費用もなくサーバもすぐに立ち上がります。すごい良さ。</p>
 <p>管理画面もわかりやすくて、すごい良さです。</p>
 <p>IDCFクラウド、良いです。</p>
-<h1>サーバを立てる</h1>
+<h1 id="_3">サーバを立てる</h1>
 <p>light.S1の追加ストレージなしをUbuntu14.04LTSで立てました。</p>
-<p><img alt="" src="http://i.gyazo.com/def8832573d5be0803aeacde516d1487.png"></p>
+<p><img alt="" src="http://i.gyazo.com/def8832573d5be0803aeacde516d1487.png" /></p>
 <p>このとき、あとでSSHするのでSSH keyも登録しておきます。</p>
-<h1>SSHの設定</h1>
+<h1 id="ssh">SSHの設定</h1>
 <p>サーバを立てましたが、プライベートネットワークで構成されているので、グローバルIPでサーバの必要なポートにアクセスできるように設定します。</p>
-<p><img alt="IDCFクラウドのイメージ" src="http://i.gyazo.com/e84703268212c03dc9b627c5341f888b.png"></p>
+<p><img alt="IDCFクラウドのイメージ" src="http://i.gyazo.com/e84703268212c03dc9b627c5341f888b.png" /></p>
 <p>こんな感じのイメージ(イメージなので正しくないかもしれません)なので、FirewallとPort forwardingの設定をします。</p>
 <p>管理コンソールのIPアドレスにある、もらってるIPのところで設定ができます。</p>
-<p><img alt="FirewallとPort forwardの設定ボタン" src="http://i.gyazo.com/c08a33d300fbe9a840276e77ee32f40e.png"></p>
+<p><img alt="FirewallとPort forwardの設定ボタン" src="http://i.gyazo.com/c08a33d300fbe9a840276e77ee32f40e.png" /></p>
 <p>ポートフォワードでプレイベートポートにSSH(22番ポート)、パブリックポートに22ポートを指定します。</p>
 <p>次にFirewallで、さきほどパブリックポートに指定したポートに対して、ソースCIDRにMy IP、タイプにCustom TCPを設定します。</p>
 <p>(セキュリティ的に、ポートフォワードのパブリックのSSHのポートを変えたほうがいいですが、ここでは、FirewallのソースCIDRでIPを制限することにしています。)</p>
 <p>コメントは両者ともSSHとしました。</p>
 <p>SSHの公開鍵を登録したPCからSSHします。</p>
-<div class="highlight"><pre><span></span><code>$ ssh root@XXX.XXX.XXX.XXX
-</code></pre></div>
+<div class="highlight"><pre><span></span>$ ssh root@XXX.XXX.XXX.XXX
+</pre></div>
+
 
 <p>Ubuntuの場合、ログインできたら以下のようになりました。</p>
-<p><img alt="" src="http://i.gyazo.com/77ab6842dfbb6fca19fa225f17a5500e.png"></p>
-<h1>swap領域の設定</h1>
+<p><img alt="" src="http://i.gyazo.com/77ab6842dfbb6fca19fa225f17a5500e.png" /></p>
+<h1 id="swap">swap領域の設定</h1>
 <p>デフォルトでswap領域は作られていないので作っておきます。(Docker使うのでswapを作っておいたほうが良さそうでした)</p>
 <ul>
 <li><a href="https://www.digitalocean.com/community/tutorials/how-to-add-swap-on-ubuntu-12-04" title="How To Add Swap on Ubuntu 12.04 | DigitalOcean">How To Add Swap on Ubuntu 12.04 | DigitalOcean</a></li>
@@ -121,24 +122,26 @@
 </blockquote>
 <p>1Gにするなら、bs=1024 count=1024kで1G、bs=1M count=1024で1G。</p>
 <p>/.swapfileに作る。</p>
-<div class="highlight"><pre><span></span><code>$ sudo dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/.swapfile <span class="nv">bs</span><span class="o">=</span>1M <span class="nv">count</span><span class="o">=</span><span class="m">1024</span>
+<div class="highlight"><pre><span></span>$ sudo dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/.swapfile <span class="nv">bs</span><span class="o">=</span>1M <span class="nv">count</span><span class="o">=</span><span class="m">1024</span>
 $ sudo mkswap /.swapfile
 $ sudo swapon /.swapfile
 $ sudo vi /etc/fstab
 /.swapfile       none    swap    sw      <span class="m">0</span>       <span class="m">0</span>
 $ sudo chown root:root /.swapfile
 $ sudo chmod <span class="m">0600</span> /.swapfile
-</code></pre></div>
+</pre></div>
 
-<h1>userの追加</h1>
+
+<h1 id="user">userの追加</h1>
 <p>rootユーザーしかいないので、セキュリティ的にrootでSSH出来ないようにして、root権限を持つユーザーで操作するように設定します。</p>
-<div class="highlight"><pre><span></span><code>$ adduser <span class="nv">$USER</span>
+<div class="highlight"><pre><span></span>$ adduser <span class="nv">$USER</span>
 $ visudo
 <span class="nv">$USER</span>    <span class="nv">ALL</span><span class="o">=(</span>ALL:ALL<span class="o">)</span> ALL
-</code></pre></div>
+</pre></div>
+
 
 <p>sshできるようにして、rootのssh接続をできないようにします。</p>
-<div class="highlight"><pre><span></span><code>$ su <span class="nv">$USER</span>
+<div class="highlight"><pre><span></span>$ su <span class="nv">$USER</span>
 $ mkdir ~/.ssh
 $ chmod <span class="m">0700</span> ~/.ssh
 $ vi ~/.ssh/authorized_keys
@@ -147,18 +150,20 @@ $ chmod <span class="m">0600</span> ~/.ssh/authorized_keys
 $ sudo vi /etc/ssh/sshd_config
 <span class="c1">#PermitRootLogin without-password</span>
 PermitRootLogin no
-</code></pre></div>
+</pre></div>
+
 
 <p>sshd_configは以下の項目も確認。</p>
-<div class="highlight"><pre><span></span><code>PubkeyAuthentication yes
+<div class="highlight"><pre><span></span>PubkeyAuthentication yes
 PasswordAuthentication no
-</code></pre></div>
+</pre></div>
 
-<h1>Mackerelを使う</h1>
+
+<h1 id="mackerel">Mackerelを使う</h1>
 <p>IDCFクラウドは、サーバの状態を見たりするUIがなさそうなので、Mackarelで監視してみました。</p>
 <p>IDCFクラウドはMackerel対応していて、OAuthしてMackarel使えるみたいでしたが、同じメールアドレスでMackerelのユーザー持ってたので、もったいないですが既存のユーザーで行いました。</p>
 <p>Ubuntuにしたので、debパッケージでのインストール方法を参考にインストール、追加でサービスの設定等はしていませんが、Mackerelでの監視はさくっとできました。</p>
-<h1>今後</h1>
+<h1 id="_4">今後</h1>
 <p>Dokkuを動かしたいなぁという感じです。</p>
     </div><!-- /.entry-content -->
 
@@ -334,7 +339,7 @@ PasswordAuthentication no
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -357,7 +362,7 @@ PasswordAuthentication no
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -387,6 +392,12 @@ PasswordAuthentication no
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

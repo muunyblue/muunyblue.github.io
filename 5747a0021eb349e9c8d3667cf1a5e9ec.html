@@ -54,59 +54,92 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2015-11-11T09:11:52+09:00">
+    <li class="published" title="2015-11-11T09:11:52">
         <span>Date:</span>2015-11-11 水 (午前 09:11:52)
     </li>
         <!--<br />-->
-        <li class="modified" title="2015-11-12T00:55:58+09:00">
+        <li class="modified" title="2015-11-12T00:55:58">
             <span>Updated:</span>2015-11-12 木 (午前 12:55:58)
         </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/python.html">Python</a> <a href="https://muunyblue.github.io/tag/markdown.html">Markdown</a> <a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
 </footer><!-- /.post-info -->      <p><a href="http://blog.muuny-blue.info/e38e37a99f7de1f45d169efcdb288dd1.html" title="埋め込み機能がほしい">埋め込み機能がほしい</a>ので作りました。</p>
-<p>[https://github.com/yymm/mdx_embedly:embed]</p>
+<p>
+<a class="embedly-card" href="https://github.com/yymm/mdx_embedly">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>書式はよくあるembedの形式です。</p>
-<div class="highlight"><pre><span></span><code><span class="p">[{</span>URL<span class="p">}:</span>embed<span class="p">]</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="p">[{</span>URL<span class="p">}:</span>embed<span class="p">]</span>
+</pre></div>
+
 
 <p>やたらに便利です。</p>
-<h1>Pelicanで使う方法</h1>
-<div class="highlight"><pre><span></span><code>$ pip install mdx_embedly
-</code></pre></div>
+<h1 id="pelican">Pelicanで使う方法</h1>
+<div class="highlight"><pre><span></span>$ pip install mdx_embedly
+</pre></div>
+
 
 <p>pelicanconf.pyのMD_EXTENSIONSに'embedly'を追加すると使えます。</p>
-<div class="highlight"><pre><span></span><code><span class="n">MD_EXTENSIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;embedly&#39;</span><span class="p">]</span>
-</code></pre></div>
+<div class="highlight"><pre><span></span><span class="n">MD_EXTENSIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;embedly&#39;</span><span class="p">]</span>
+</pre></div>
 
-<h1>PythonのMarkdownを拡張する方法</h1>
-<div class="highlight"><pre><span></span><code>$ pip install mdx_embedly
-</code></pre></div>
+
+<h1 id="pythonmarkdown">PythonのMarkdownを拡張する方法</h1>
+<div class="highlight"><pre><span></span>$ pip install mdx_embedly
+</pre></div>
+
 
 <p>markdownの引数のextensionsに'embedly'を追加すると使えます。</p>
-<div class="highlight"><pre><span></span><code><span class="n">source</span> <span class="o">=</span> <span class="s2">&quot;[</span><span class="si">{URL}</span><span class="s2">:embed]&quot;</span>
+<div class="highlight"><pre><span></span><span class="n">source</span> <span class="o">=</span> <span class="s2">&quot;[</span><span class="si">{URL}</span><span class="s2">:embed]&quot;</span>
 <span class="n">html</span> <span class="o">=</span> <span class="n">markdown</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;embedly&#39;</span><span class="p">])</span>
-</code></pre></div>
+</pre></div>
 
-<h1>Embedly</h1>
+
+<h1 id="embedly">Embedly</h1>
 <p><a href="http://embed.ly/" title="Embedly makes your content more engaging and easier to share | Embedly">Embedly</a>のCardsを使っています。</p>
-<p>[http://embed.ly/cards:embed]</p>
-<h1>例外 - gist</h1>
+<p>
+<a class="embedly-card" href="http://embed.ly/cards">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
+<h1 id="-gist">例外 - gist</h1>
 <p>gistはgist-embedが便利なのでこちらを使用しています。</p>
-<p>[https://github.com/blairvanderhoof/gist-embed:embed]</p>
+<p>
+<a class="embedly-card" href="https://github.com/blairvanderhoof/gist-embed">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
 <p>便利です。</p>
-<p>[https://gist.github.com/yymm/726df7f0e4ed48e54a06:embed]</p>
-<h1>ギャラリー</h1>
+<p>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gist-embed/2.4/gist-embed.min.js"></script>
+<code data-gist-id="726df7f0e4ed48e54a06"></code>
+</p>
+<h1 id="_1">ギャラリー</h1>
 <p>むやみやたらに便利な様子です。</p>
-<p>[https://twitter.com/yymm6666/status/664368716809834496:embed]</p>
-<hr>
-<p>[http://www.amazon.co.jp/TransBook-T100TAM-10-1inch-Microsoft-T100TAM-B-64S-/dp/B00UL73PT0/ref=sr_1_6?ie=UTF8&amp;qid=1447232716&amp;sr=8-6&amp;keywords=asus:embed]</p>
-<hr>
-<p>[https://www.youtube.com/watch?v=EXYTyVR1Eac:embed]</p>
-<hr>
-<p>[http://www.slideshare.net/suhasmallya/sample-slidesharepresentation:embed]</p>
-<hr>
-<p>[https://speakerdeck.com/samlambert/the-mysql-ecosystem-at-github-2015:embed]</p>
+<p>
+<a class="embedly-card" href="https://twitter.com/yymm6666/status/664368716809834496">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
+<hr />
+<p>
+<a class="embedly-card" href="http://www.amazon.co.jp/TransBook-T100TAM-10-1inch-Microsoft-T100TAM-B-64S-/dp/B00UL73PT0/ref=sr_1_6?ie=UTF8&amp;qid=1447232716&amp;sr=8-6&amp;keywords=asus">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
+<hr />
+<p>
+<a class="embedly-card" href="https://www.youtube.com/watch?v=EXYTyVR1Eac">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
+<hr />
+<p>
+<a class="embedly-card" href="http://www.slideshare.net/suhasmallya/sample-slidesharepresentation">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
+<hr />
+<p>
+<a class="embedly-card" href="https://speakerdeck.com/samlambert/the-mysql-ecosystem-at-github-2015">embed.ly</a>
+<script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>
+</p>
     </div><!-- /.entry-content -->
 
     <div class="article-ad">
@@ -281,7 +314,7 @@
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -304,7 +337,7 @@
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -334,6 +367,12 @@
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->

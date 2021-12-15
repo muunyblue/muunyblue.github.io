@@ -54,16 +54,16 @@
     <div class="entry-content">
 <footer class="post-info">
 <ul>
-    <li class="published" title="2015-10-02T04:12:43+09:00">
+    <li class="published" title="2015-10-02T04:12:43">
         <span>Date:</span>2015-10-02 金 (午前 04:12:43)
     </li>
 <li><span>Tags:</span><a href="https://muunyblue.github.io/tag/asakatsu.html">Asakatsu</a> <a href="https://muunyblue.github.io/tag/go.html">Go</a> </li>
     <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
 </ul>
 </footer><!-- /.post-info -->      <p>朝活#2</p>
-<h1>code</h1>
+<h1 id="code">code</h1>
 <p>localhost:8080/jsonに向けてJSONをPOSTするとJSONが返ってきます。</p>
-<div class="highlight"><pre><span></span><code><span class="kn">package</span> <span class="nx">main</span>
+<div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nx">main</span>
 
 <span class="kn">import</span> <span class="p">(</span>
     <span class="s">&quot;fmt&quot;</span>
@@ -116,24 +116,27 @@
     <span class="nx">http</span><span class="p">.</span><span class="nx">HandleFunc</span><span class="p">(</span><span class="s">&quot;/json&quot;</span><span class="p">,</span> <span class="nx">jsonHandleFunc</span><span class="p">)</span>
     <span class="nx">http</span><span class="p">.</span><span class="nx">ListenAndServe</span><span class="p">(</span><span class="s">&quot;:8080&quot;</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
 <span class="p">}</span>
-</code></pre></div>
+</pre></div>
 
-<h2>動作している様子</h2>
+
+<h2 id="_1">動作している様子</h2>
 <p>POSTしている様子</p>
-<div class="highlight"><pre><span></span><code>$ curl -v -H <span class="s2">&quot;Accept: application/json&quot;</span> -H <span class="s2">&quot;Content-type: application/json&quot;</span> -X POST -d <span class="s1">&#39;{&quot;In&quot;: &quot;ｲｨｲｨｨｨﾝｯ&quot;}&#39;</span> http://localhost:8080/json
+<div class="highlight"><pre><span></span>$ curl -v -H <span class="s2">&quot;Accept: application/json&quot;</span> -H <span class="s2">&quot;Content-type: application/json&quot;</span> -X POST -d <span class="s1">&#39;{&quot;In&quot;: &quot;ｲｨｲｨｨｨﾝｯ&quot;}&#39;</span> http://localhost:8080/json
 <span class="c1"># curlの表示(長いので省略)</span>
 <span class="o">{</span><span class="s2">&quot;Out&quot;</span>:<span class="s2">&quot;返ってくる&quot;</span><span class="o">}</span>%
-</code></pre></div>
+</pre></div>
+
 
 <p>Serverの様子</p>
-<div class="highlight"><pre><span></span><code>$ go run server.go
+<div class="highlight"><pre><span></span>$ go run server.go
 main.Input<span class="o">{</span>In:<span class="s2">&quot;ｲｨｲｨｨｨﾝｯ&quot;</span><span class="o">}</span>
-</code></pre></div>
+</pre></div>
+
 
 <p>staticディレクトリを掘ると、そこのファイルがルートで見れるようにしているので、そこからJSON APIに向けてPOSTして良しなにする感じのSPAを作る予定。</p>
-<h1>まとめ</h1>
+<h1 id="_2">まとめ</h1>
 <p>調べるのと理解に時間がかかった(2時間くらい)、発明された車輪を使用するほうがいいかもしれないと何度も思った。</p>
-<h1>参考資料</h1>
+<h1 id="_3">参考資料</h1>
 <ul>
 <li><a href="http://qiita.com/taizo/items/bf1ec35a65ad5f608d45" title="Go言語でhttpサーバーを立ち上げてHello Worldをする - Qiita">Go言語でhttpサーバーを立ち上げてHello Worldをする - Qiita</a></li>
 <li><a href="http://qiita.com/jpshadowapps/items/463b2623209479adcd88" title="Go net/httpパッケージの概要とHTTPクライアント実装例 - Qiita">Go net/httpパッケージの概要とHTTPクライアント実装例 - Qiita</a></li>
@@ -318,7 +321,7 @@ main.Input<span class="o">{</span>In:<span class="s2">&quot;ｲｨｲｨｨｨ�
                 <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
-                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">Ergodox</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
                 <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
@@ -341,7 +344,7 @@ main.Input<span class="o">{</span>In:<span class="s2">&quot;ｲｨｲｨｨｨ�
                 <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
                 <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
-                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">Sushicorp</a> (3)</li>
                 <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
                 <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
@@ -371,6 +374,12 @@ main.Input<span class="o">{</span>In:<span class="s2">&quot;ｲｨｲｨｨｨ�
         </ul>
     </div><!-- /.social -->
 
+<div>
+        <h2><span class="glyphicon glyphicon-paperclip"></span> Pages</h2>
+        <ul>
+            <li><a href="https://muunyblue.github.io/pages/about_me.html">About me</a></li>
+        </ul>
+    </div><!-- /.pages -->
             </div><!-- /.bs-component -->
         </div><!-- /#extras -->
     </div><!--./container -->
