@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="utf-8" />
+　　　　　　　　<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gentooのインストール : Retry Gentoo 2</title>
+    <link rel="shortcut icon" href="https://muunyblue.github.io/theme/img/favicon.ico" >
+
+	<link rel="stylesheet" href="https://muunyblue.github.io/theme/css/main.css" />
+    <link rel="stylesheet" href="https://muunyblue.github.io/theme/css/bootstrap.min.css" />
+
+
+    <link href="https://muunyblue.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="もくもくブログ Atom Feed" />
+    <link href="https://muunyblue.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="もくもくブログ RSS Feed" />
+
+	<script src="https://muunyblue.github.io/theme/js/jquery-2.1.4.min.js"></script>
+
+    <!--[if IE]>
+        <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="google-site-verification" content="ETSvqWJsfDNiXwsK89y7-OqkwM1O7DK9wiAkkA4Vfow" />
+    <link rel="alternate" hreflang="ja" href="http://blog.muuny-blue.info/" />
+</head>
+
+<body class="no-thank-yu">
+    <header id="banner" class="page-header clearfix">
+        <div id="contenthead" class="container">
+			<a href="https://muunyblue.github.io/">
+				<img id="title-logo" src="https://muunyblue.github.io/theme/img/title.png"></img>
+			</a>
+			<img id="look" src="https://muunyblue.github.io/theme/img/2.svg"></img>
+        </div>
+    </header><!-- /#banner -->
+
+    <!--Honoka Bootstrap-->
+    <div class="container">
+        <div id="content" class="row">
+            <div class="bs-component">
+                <div class="col-lg-12">
+  <article>
+    <header>
+      <div class="page-header">
+        <h1 class="entry-title">
+          <a href="https://muunyblue.github.io/3bb39baf42957397d3fae8e0e66b6554.html" rel="bookmark"
+             title="Permalink to Gentooのインストール : Retry Gentoo 2">
+				<span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+            Gentooのインストール : Retry Gentoo 2
+          </a>
+        </h1>
+      </div>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+<ul>
+    <li class="published" title="2016-09-05T07:25:34+09:00">
+        <span>Date:</span>2016-09-05 月 (午前 07:25:34)
+    </li>
+        <!--<br />-->
+        <li class="modified" title="2016-09-05T07:28:49+09:00">
+            <span>Updated:</span>2016-09-05 月 (午前 07:28:49)
+        </li>
+<li><span>Tags:</span><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> </li>
+    <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
+</ul>
+</footer><!-- /.post-info -->      <p>幾つかLinuxをインストールした経験がないとGentooのインストールは非常に難しいので、前提として多少の知識がある方がインストールをすると思います。</p>
+<p>ので、コマンドと変更したファイルの内容をずらずらと書いていきます。</p>
+<p>~~色気が...ない...~~</p>
+<p>インストールメディアは前回作成したUSBメモリを使います。</p>
+<p>前回 =&gt; <a href="http://blog.muuny-blue.info/8a2d334536b2f4146af8cf46acd85110.html" title="下準備 &amp; インストールUSB作成(Macで) : Retry Gentoo 1">下準備 &amp; インストールUSB作成(Macで) : Retry Gentoo 1</a></p>
+<p>※ Gentooのインストールは基本的にコマンド入力で行われるのでひたすらコマンド列挙です</p>
+<p>※ プロンプトの表記はインストールしたのときの実際の表示です</p>
+<h1>0. ネットワーク確認</h1>
+<div class="highlight"><pre><span></span><code>livecd ~ # ifconfig
+livecd ~ # ping -c 3 www.gentoo.org
+</code></pre></div>
+
+<p>pingが返ってくれば問題なし。</p>
+<h1>1. ディスクの準備</h1>
+<div class="highlight"><pre><span></span><code><span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">parted</span> <span class="o">-</span><span class="nv">a</span> <span class="nv">optimal</span> <span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">sda</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">print</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">rm</span> <span class="mi">1</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">rm</span> <span class="mi">2</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">rm</span> <span class="mi">3</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">rm</span> <span class="mi">4</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">unit</span> <span class="nv">mib</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">mkpart</span> <span class="nv">primary</span> <span class="mi">1</span> <span class="mi">3</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">name</span> <span class="mi">1</span> <span class="nv">grub</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">set</span> <span class="mi">1</span> <span class="nv">bios_grub</span> <span class="nv">on</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">mkpart</span> <span class="nv">primary</span> <span class="mi">3</span> <span class="mi">131</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">name</span> <span class="mi">2</span> <span class="nv">boot</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">mkpart</span> <span class="nv">primary</span> <span class="mi">131</span> <span class="mi">1155</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">name</span> <span class="mi">3</span> <span class="nv">swap</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">mkpart</span> <span class="nv">primary</span> <span class="mi">1155</span> <span class="o">-</span><span class="mi">1</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">name</span> <span class="mi">4</span> <span class="nv">rootfs</span>
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">print</span>
+<span class="nv">Model</span>: <span class="nv">Virtio</span> <span class="nv">Block</span> <span class="nv">Device</span> <span class="ss">(</span><span class="nv">virtblk</span><span class="ss">)</span>
+<span class="nv">Disk</span> <span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">sda</span>: <span class="mi">20480</span><span class="nv">MiB</span>
+<span class="nv">Sector</span> <span class="nv">size</span> <span class="ss">(</span><span class="nv">logical</span><span class="o">/</span><span class="nv">physical</span><span class="ss">)</span>: <span class="mi">512</span><span class="nv">B</span><span class="o">/</span><span class="mi">512</span><span class="nv">B</span>
+<span class="nv">Partition</span> <span class="nv">Table</span>: <span class="nv">gpt</span>
+
+<span class="nv">Number</span>   <span class="nv">Start</span>      <span class="k">End</span>       <span class="nv">Size</span>     <span class="nv">File</span> <span class="nv">system</span>  <span class="nv">Name</span>   <span class="nv">Flags</span>
+ <span class="mi">1</span>       <span class="mi">1</span>.<span class="mi">00</span><span class="nv">MiB</span>    <span class="mi">3</span>.<span class="mi">00</span><span class="nv">MiB</span>   <span class="mi">2</span>.<span class="mi">00</span><span class="nv">MiB</span>               <span class="nv">grub</span>   <span class="nv">bios_grub</span>
+ <span class="mi">2</span>       <span class="mi">3</span>.<span class="mi">00</span><span class="nv">MiB</span>    <span class="mi">131</span><span class="nv">MiB</span>    <span class="mi">128</span><span class="nv">MiB</span>                <span class="nv">boot</span>
+ <span class="mi">3</span>       <span class="mi">131</span><span class="nv">MiB</span>     <span class="mi">1155</span><span class="nv">MiB</span>   <span class="mi">1024</span><span class="nv">MiB</span>               <span class="nv">swap</span>
+ <span class="mi">4</span>       <span class="mi">1155</span><span class="nv">MiB</span>    <span class="mi">114472</span><span class="nv">MiB</span> <span class="mi">113317</span><span class="nv">MiB</span>             <span class="nv">rootfs</span>
+
+<span class="ss">(</span><span class="nv">parted</span><span class="ss">)</span> <span class="nv">quit</span>
+<span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">mkfs</span>.<span class="nv">ext2</span> <span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">sda2</span>
+<span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">mkfs</span>.<span class="nv">ext4</span> <span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">sda4</span>
+<span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">mkswap</span> <span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">sda3</span>
+<span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">swapon</span> <span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">sda3</span>
+<span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">mount</span> <span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">sda4</span> <span class="o">/</span><span class="nv">mnt</span><span class="o">/</span><span class="nv">gentoo</span>
+<span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">mkdir</span> <span class="o">/</span><span class="nv">mnt</span><span class="o">/</span><span class="nv">gentoo</span><span class="o">/</span><span class="nv">boot</span>
+<span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">mount</span> <span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">sda2</span> <span class="o">/</span><span class="nv">mnt</span><span class="o">/</span><span class="nv">gentoo</span><span class="o">/</span><span class="nv">boot</span>
+</code></pre></div>
+
+<p>コマンドの結果はpartedのprintだけ記載しました。</p>
+<h1>2. Kernelの設定/ビルド</h1>
+<div class="highlight"><pre><span></span><code><span class="n">livecd</span> <span class="o">~</span> <span class="c1"># cd /mnt/gentoo</span>
+<span class="n">livecd</span> <span class="n">gentoo</span> <span class="c1"># links https://www.gentoo.org/downloads/mirrors/</span>
+</code></pre></div>
+
+<p>linksコマンドでテキストブラウザが開きます。ここでstage3のtar.bz2をダウンロードします。目的のファイルを見つけたらdボタンでダウンロード、qでブラウザを終了します。</p>
+<p>stage3-i686-20160830.tar.bz2を近いミラーからダウンロードしました。</p>
+<div class="highlight"><pre><span></span><code>livecd gentoo # tar xvjpf stage3-i686-20160830.tar.bz2 --xattrs
+livecd gentoo # nano -w /mnt/gentoo/etc/portage/make.conf
+</code></pre></div>
+
+<p>/mnt/gentoo/etc/portage/make.confにはMAKEOPT="-j5"を追加しました。</p>
+<div class="highlight"><pre><span></span><code><span class="n">livecd</span> <span class="n">gentoo</span> <span class="c1"># cp -L /etc/resolv.conf /mnt/gentoo/etc/</span>
+<span class="n">livecd</span> <span class="n">gentoo</span> <span class="c1"># mount -t proc proc /mnt/gentoo/proc</span>
+<span class="n">livecd</span> <span class="n">gentoo</span> <span class="c1"># mount --rbind /sys /mnt/gentoo/sys</span>
+<span class="n">livecd</span> <span class="n">gentoo</span> <span class="c1"># mount --rbind /dev /mnt/gentoo/dev</span>
+<span class="n">livecd</span> <span class="n">gentoo</span> <span class="c1"># chroot /mnt/gentoo /bin/bash</span>
+<span class="n">livecd</span> <span class="o">/</span> <span class="c1"># source /etc/profile</span>
+<span class="n">livecd</span> <span class="o">/</span> <span class="c1"># export PS1=&quot;(chroot) $PS1&quot;</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="c1"># emerge-webrsync</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="c1"># emerge --sync</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="c1"># eselect news read</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="c1"># eselect profile list</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="c1"># eselect profile set 3</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="c1"># emerge --ask --update --deep --newuse @world</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="c1"># nano -w /etc/portage/make.conf</span>
+</code></pre></div>
+
+<p>USEフラグの設定は以下のようにしました。</p>
+<div class="highlight"><pre><span></span><code>USE=&quot;-a52 -bluetooth -cdda -cdr -dvd -dvdr -fortran wifi networkmanager&quot;
+</code></pre></div>
+
+<p>"emerge --info | grep ^USE"コマンドでUSEフラグを確認後、"/usr/portage/profiles/use.desc"ファイルでUSEの説明を見ながら調整しました。</p>
+<div class="highlight"><pre><span></span><code>(chroot) livecd / # echo &quot;Asia/Tokyo&quot; &gt; /etc/timezone
+(chroot) livecd / # emerge --config sys-libs/timezone-data
+(chroot) livecd / # nano -w /etc/locale.gen
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>en_US UTF-8 UTF-8
+ja_JP UTF-8 UTF-8
+</code></pre></div>
+
+<p>の2つをコメントアウトしました。</p>
+<div class="highlight"><pre><span></span><code><span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="c1"># locale-gen</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="c1"># eselect locale list</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="c1"># eselect locale set 3</span>
+<span class="p">(</span><span class="n">chroot</span><span class="p">)</span> <span class="n">livecd</span> <span class="o">/</span> <span class="c1"># env-update &amp;&amp; source /etc/profile &amp;&amp; export PS1=&quot;(chroot) $PS1&quot;</span>
+</code></pre></div>
+
+<p>en_US UTF-8 UTF-8に設定しました。</p>
+<div class="highlight"><pre><span></span><code>(chroot) livecd / # emerge --ask sys-kernel/gentoo-sources
+(chroot) livecd / # cd /usr/src/linux
+(chroot) livecd linux # make menuconfig
+</code></pre></div>
+
+<p>マニュアルコンフィギュレーションでやってみました。</p>
+<p>64bitのチェックを外して、CPUにIntel ATOMを選択。ファイルシステムでext2を追加しました。</p>
+<div class="highlight"><pre><span></span><code>(chroot) livecd linux # make &amp;&amp; make modules_install
+(chroot) livecd linux # make install
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>(chroot) livecd linux # emerge --ask sys-kernel/linux-firmware
+(chroot) livecd linux # nano -w /etc/fstab
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>BOOT =&gt; sda2
+ROOT =&gt; sda4 (ext3をext4に)
+SWAP =&gt; sda3
+</code></pre></div>
+
+<p>ネットワークを設定します。</p>
+<div class="highlight"><pre><span></span><code>(chroot) livecd linux # nano -w /etc/conf.d/hostname
+(chroot) livecd linux # emerge --ask --noreplace net-misc/netifrc
+(chroot) livecd linux # nano -w /etc/conf.d/net
+(chroot) livecd linux # cd /etc/init.d
+(chroot) livecd init.d # ln -s net.lo net.enp4s0
+(chroot) livecd init.d # rc-update add net.enp4s0 default
+(chroot) livecd init.d # nano -w /etc/hosts
+(chroot) livecd init.d # emerge --ask net-misc/dhcpcd
+</code></pre></div>
+
+<p>NIC名などはハードによって異なると思いますので、則した名前で設定します。</p>
+<div class="highlight"><pre><span></span><code>(chroot) livecd init.d # passwd
+(chroot) livecd init.d # emerge --ask app-admin/sysklogd
+(chroot) livecd init.d # rc-update add sysklogd default
+</code></pre></div>
+
+<h1>4. grubのインストール、そして再起動</h1>
+<div class="highlight"><pre><span></span><code>(chroot) livecd init.d # emerge --ask sys-boot/grub:2
+(chroot) livecd init.d # grub-install /dev/sda
+(chroot) livecd init.d # grub-mkconfig -o /boot/grub/grub.cfg
+Generating grub configuration file ...
+Found linux image: /boot/vmlinuz-4.4.6-gentoo
+done
+</code></pre></div>
+
+<p>Found linux imageとなっていればokです。</p>
+<div class="highlight"><pre><span></span><code><span class="ss">(</span><span class="nv">chroot</span><span class="ss">)</span> <span class="nv">livecd</span> <span class="nv">init</span>.<span class="nv">d</span> # <span class="k">exit</span>
+<span class="nv">livecd</span> <span class="nv">gentoo</span> # <span class="nv">cd</span>
+<span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">umount</span> <span class="o">-</span><span class="nv">l</span> <span class="o">/</span><span class="nv">mnt</span><span class="o">/</span><span class="nv">gentoo</span><span class="o">/</span><span class="nv">dev</span>{<span class="o">/</span><span class="nv">shm</span>,<span class="o">/</span><span class="nv">pts</span>,}
+<span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">umount</span> <span class="o">/</span><span class="nv">mnt</span><span class="o">/</span><span class="nv">gentoo</span>{<span class="o">/</span><span class="nv">boot</span>,<span class="o">/</span><span class="nv">sys</span>,<span class="o">/</span><span class="nv">proc</span>,}
+<span class="nv">livecd</span> <span class="o">~</span> # <span class="nv">reboot</span>
+</code></pre></div>
+
+<h1>最後に</h1>
+<p><img alt="" src="https://pbs.twimg.com/media/CrkOSHkUEAE7EGl.jpg"></p>
+<p>インストールできました！</p>
+<p>しかし、起動時にエラーがｯ...!!?</p>
+<p>...</p>
+<p>enp4s0が認識されていないようです、ifconfig -aしてもloしか出てこないのでネットワーク周りのドライバがないのでは...感があります。</p>
+<p>マニュアルコンフィギュレーションに挑戦してみたのですが失敗していたようです。</p>
+<p>もう一度カーネルコンパイルしなおせばいけるかもしれないので次回はKernelの修正と復旧をしてみようと思います。</p>
+<p>しかしその他のエラーは見受けられなかったのでネットワークの問題が解決すればいけそうな気がするのを励みに頑張ります。</p>
+    </div><!-- /.entry-content -->
+
+    <div class="article-ad">
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- responsive -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-8481391240785119"
+           data-ad-slot="3238871784"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <div class="comments">
+      <div id="disqus-toggle">
+          <h3>Show comments <span class="glyphicon glyphicon-comment"></span></h3>
+      </div>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        $("#disqus-toggle").click(function(){
+          var disqus_shortname = 'mokumoku';
+          var disqus_identifier = '3bb39baf42957397d3fae8e0e66b6554.html';
+          var disqus_url = 'https://muunyblue.github.io/3bb39baf42957397d3fae8e0e66b6554.html';
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//mokumoku.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          $("#disqus-toggle").remove();
+        });
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+                </div><!-- /.col-lg-12 -->
+            </div><!-- /.bs-component -->
+        </div>
+        <div id="extras" class="row">
+            <div class="bs-component">
+<div class="extras-ad">
+    <h2><span class="glyphicon glyphicon-object-align-left"></span> Adsense</h2>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- small_square -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:200px;height:200px"
+         data-ad-client="ca-pub-8481391240785119"
+         data-ad-slot="9438651388"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+    <div class="sns">
+        <h2><span class="glyphicon glyphicon-share"></span> Share</h2>
+<ul>
+    <li>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="_y_y_m_m_">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </li>
+    
+    <li>
+        <a href="http://b.hatena.ne.jp/entry/https://muunyblue.github.io/3bb39baf42957397d3fae8e0e66b6554.html" class="hatena-bookmark-button" data-hatena-bookmark-title="Gentooのインストール : Retry Gentoo 2" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加">
+            <img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+
+    </li>
+        <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+   
+    
+    
+    
+    <li>
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3&appId=387525661451951";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+        <div class="fb-like" data-href="https://muunyblue.github.io/3bb39baf42957397d3fae8e0e66b6554.html" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
+    </li>
+ 
+</ul>    </div>
+
+    <div class="blogroll">
+        <h2><span class="glyphicon glyphicon-pushpin"></span> About</h2>
+        <p>どこにでもいる平凡なプログラムを書く人間のログ。</p>
+    </div><!-- /.blogroll -->
+
+    <div class="category">
+        <h2><span class="glyphicon glyphicon-th-list"></span> Category</h2>
+        <ul>
+			<li>
+				<a href="https://muunyblue.github.io/category/diary.html">
+				    	<span class="glyphicon glyphicon-book" aria-hidden="true" style="color: #0bd566;"></span>
+				    Diary
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/jia.html">
+				    	<span class="glyphicon glyphicon-home" aria-hidden="true" style="color: #f48c39;"></span>
+				    家
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/programming.html">
+				    	<span class="glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+				    Programming
+				</a>
+			</li>
+        </ul>
+    </div>
+
+    <div class="recently">
+        <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
+        <ul>
+			    <li>
+                    <p>2021年 12月16日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/97885afd60c10c4a454c11e225763e04.html">
+                            普通のキーボード写真とBLEの話
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 5月24日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
+                            React Hooks: useReducer & Context API with TypeScript
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 1月23日 午後 09:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/214cfbe603b7f9f9bc005d5f53f7a1d3.html">
+                            普通のTwitter転職
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月22日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/3a1f85dfef891b2a3685ccb35efa807e.html">
+                            Zen Keyboard Build log
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月17日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
+                            Minidoxビルドログ
+                        </a>
+                    </p>
+			    </li>
+        </ul>
+    </div>
+
+    <div class="tags">
+        <h2><span class="glyphicon glyphicon-tags"></span> Tags</h2>
+        <ul>
+                <li><a href="https://muunyblue.github.io/tag/asakatsu.html">Asakatsu</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/btsync.html">btsync</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/c.html">C++</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ci.html">CI</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/cppcheck.html">Cppcheck</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/css.html">CSS</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/github.html">GitHub</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gitlab.html">GitLab</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/go.html">Go</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/gtk.html">Gtk+</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/haskell.html">Haskell</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/hooks.html">Hooks</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/idcf.html">IDCF</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/javascript.html">JavaScript</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/keyboard.html">Keyboard</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/markdown.html">Markdown</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
+                <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/ubuntu.html">Ubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vagrant.html">Vagrant</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vim.html">Vim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/vps.html">VPS</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/zen.html">Zen</a> (1)</li>
+        </ul>
+    </div><!-- /.social -->
+
+    <div class="social">
+        <h2><span class="glyphicon glyphicon-sunglasses"></span> Social</h2>
+        <ul>
+            <li><a href="https://twitter.com/_y_y_m_m_" target="_blank">Twitter</a></li>
+            <li><a href="https://github.com/yymm" target="_blank">Github</a></li>
+            <li><a href="https://bitbucket.org/yymm" target="_blank">Bitbucket</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.atom.xml" target="_blank" type="application/atom+xml" rel="alternate">atom feed</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.rss.xml" target="_blank" type="application/rss+xml" rel="alternate">rss feed</a></li>
+        </ul>
+    </div><!-- /.social -->
+
+            </div><!-- /.bs-component -->
+        </div><!-- /#extras -->
+    </div><!--./container -->
+    <!--Honoka Bootstrap end -->
+
+    <footer id="contentinfo">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <p id="bloginfo"><a href="https://github.com/yymm/MokuMokuBlog" target="_blank" title="This blog"><img id="mokumokublog" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/mokumokublog.ico"></img></a> POWERD BY <a href="https://github.com/getpelican/pelican" target="_blank" title="This blog"><img id="pelican" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/pelican.ico"></img></a> GENERATED BY <a href="https://github.com/yymm/MemoMemo" target="_blank" title="MemoMemo"><img id="memomemo" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/memomemo.ico"></img></a></p>
+                    <p>Copyright <span class="glyphicon glyphicon-copyright-mark"></span> 2018 <a href="https://github.com/yymm" target="_blank">yuya yano</a> All Rights Reserved.</p>
+					<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img id="copyright" alt="クリエイティブ・コモンズ・ライセンス" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a></p>
+                </div><!--./col-xs-12 -->
+            </div><!--./row -->
+        </div><!--./container -->
+    </footer><!-- /#contentinfo -->
+
+<script src="https://muunyblue.github.io/theme/js/jquery.lazyload.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+$(function() {
+	$("img.lazy").lazyload({
+		effect : "fadeIn"
+	});
+});
+</script>
+<script src="https://muunyblue.github.io/theme/js/bootstrap.min.js"></script>
+<script src="https://muunyblue.github.io/theme/js/script.js"></script>
+
+    <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-67688469-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+<script type="text/javascript">
+    var disqus_shortname = 'mokumoku';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+
+<!--
+<!-- PtEngine -->
+<script type="text/javascript">
+	window._pt_sp_2 = [];
+	_pt_sp_2.push('setAccount,3e10d017');
+	var _protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+	(function() {
+		var atag = document.createElement('script'); atag.type = 'text/javascript'; atag.async = true;
+		atag.src = _protocol + 'js.ptengine.jp/pta.js';
+		var stag = document.createElement('script'); stag.type = 'text/javascript'; stag.async = true;
+		stag.src = _protocol + 'js.ptengine.jp/pts.js';
+		var s = document.getElementsByTagName('script')[0]; 
+		s.parentNode.insertBefore(atag, s);s.parentNode.insertBefore(stag, s);
+	})();
+</script>
+-->
+
+</body>
+</html>

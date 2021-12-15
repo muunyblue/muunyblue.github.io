@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="utf-8" />
+　　　　　　　　<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>React Hooks: useReducer & Context API with TypeScript</title>
+    <link rel="shortcut icon" href="https://muunyblue.github.io/theme/img/favicon.ico" >
+
+	<link rel="stylesheet" href="https://muunyblue.github.io/theme/css/main.css" />
+    <link rel="stylesheet" href="https://muunyblue.github.io/theme/css/bootstrap.min.css" />
+
+
+    <link href="https://muunyblue.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="もくもくブログ Atom Feed" />
+    <link href="https://muunyblue.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="もくもくブログ RSS Feed" />
+
+	<script src="https://muunyblue.github.io/theme/js/jquery-2.1.4.min.js"></script>
+
+    <!--[if IE]>
+        <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="google-site-verification" content="ETSvqWJsfDNiXwsK89y7-OqkwM1O7DK9wiAkkA4Vfow" />
+    <link rel="alternate" hreflang="ja" href="http://blog.muuny-blue.info/" />
+</head>
+
+<body class="no-thank-yu">
+    <header id="banner" class="page-header clearfix">
+        <div id="contenthead" class="container">
+			<a href="https://muunyblue.github.io/">
+				<img id="title-logo" src="https://muunyblue.github.io/theme/img/title.png"></img>
+			</a>
+			<img id="look" src="https://muunyblue.github.io/theme/img/2.svg"></img>
+        </div>
+    </header><!-- /#banner -->
+
+    <!--Honoka Bootstrap-->
+    <div class="container">
+        <div id="content" class="row">
+            <div class="bs-component">
+                <div class="col-lg-12">
+  <article>
+    <header>
+      <div class="page-header">
+        <h1 class="entry-title">
+          <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html" rel="bookmark"
+             title="Permalink to React Hooks: useReducer & Context API with TypeScript">
+				<span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+            React Hooks: useReducer & Context API with TypeScript
+          </a>
+        </h1>
+      </div>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+<ul>
+    <li class="published" title="2019-05-24T01:41:01+09:00">
+        <span>Date:</span>2019-05-24 金 (午前 01:41:01)
+    </li>
+<li><span>Tags:</span><a href="https://muunyblue.github.io/tag/react.html">React</a> <a href="https://muunyblue.github.io/tag/hooks.html">Hooks</a> <a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> </li>
+    <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
+</ul>
+</footer><!-- /.post-info -->      <p>最近React Hooksに入門してみていて、reduxを意識したuseReducerというAPIと
+Context APIが気になったので素振りしてみました。</p>
+<p>あとFunctionalに書けるHooksとTypeScriptは相性が良いのではないかと思ったので
+すべてTypeScriptで書いていきます。</p>
+<h1>canvas animation framework</h1>
+<p><img alt="demo" src="https://raw.githubusercontent.com/yymm/hooks-canvas-sample/master/1000-particle-example.gif"></p>
+<ul>
+<li><a href="https://github.com/yymm/hooks-canvas-sample">yymm/hooks-canvas-sample</a></li>
+</ul>
+<p>素振りするにあたりお題があったほうが良いので、今回はcanvasでanimation framework的なものを作ることにしました。</p>
+<p>※ 動いているアニメーションはそのframeworkに乱数と円軌道を使った描画関数を適当にのせたものです。</p>
+<h2>仕組み</h2>
+<p>menuでrequestAnimationFrameを使用してアニメーションを開始、
+Context APIを利用してframe等のデータをcanvasに渡してアニメーションを描画します。</p>
+<p>データはuseReducerとContext APIを使って管理、コンポーネントは
+HooksのFunctional Componentで実装しています。</p>
+<h1>storeの実装</h1>
+<p>useReducerとContext APIを使ったデータ層の仕組みをstoreと名付けて実装してみました。</p>
+<p>内部は大まかにuseReducerに使うReducer部分と、それらを束ねて提供するContext APIのProviderに分かれています。</p>
+<h2>Reducer</h2>
+<p>useReducerの第一引数にはreducerを渡します、reducerの型は以下の通りです。</p>
+<div class="highlight"><pre><span></span><code><span class="nt">type</span> <span class="nt">Reducer</span><span class="o">&lt;</span><span class="nt">S</span><span class="o">,</span> <span class="nt">A</span><span class="o">&gt;</span> <span class="o">=</span> <span class="o">(</span><span class="nt">prevState</span><span class="o">:</span> <span class="nt">S</span><span class="o">,</span> <span class="nt">action</span><span class="o">:</span> <span class="nt">A</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="nt">S</span><span class="o">;</span>
+</code></pre></div>
+
+<p>この型に合わせたreducerを作成します。型定義はReactのDefinitelyTypedを
+見るとわかりますので定義ジャンプ機能で逐一確認すると良いです。</p>
+<div class="highlight"><pre><span></span><code><span class="kd">interface</span> <span class="nx">IStore</span> <span class="p">{</span>
+  <span class="nx">startTime</span>: <span class="kt">number</span><span class="p">;</span>
+  <span class="nx">frame</span>: <span class="kt">number</span><span class="p">;</span>
+  <span class="nx">fps</span>: <span class="kt">number</span><span class="p">;</span>
+  <span class="nx">spendTime</span>: <span class="kt">number</span><span class="p">;</span>
+  <span class="nx">ctx?</span>: <span class="kt">CanvasRenderingContext2D</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">initialStore</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">frame</span>: <span class="kt">0</span><span class="p">,</span>
+  <span class="nx">fps</span>: <span class="kt">1</span><span class="p">,</span>
+  <span class="nx">spendTime</span>: <span class="kt">0</span><span class="p">,</span>
+  <span class="nx">startTime</span>: <span class="kt">0</span><span class="p">,</span>
+  <span class="nx">ctx</span>: <span class="kt">null</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="kd">interface</span> <span class="nx">IAction</span> <span class="p">{</span>
+  <span class="nx">payload</span>: <span class="kt">IStore</span><span class="p">;</span>
+  <span class="nx">error?</span>: <span class="kt">boolean</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">reducer</span>: <span class="kt">React.Reducer</span><span class="o">&lt;</span><span class="nx">IStore</span><span class="p">,</span> <span class="nx">IAction</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">action</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span> <span class="p">...</span><span class="nx">action</span><span class="p">.</span><span class="nx">payload</span> <span class="p">};</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p>見ての通りreducerはActionに入ってきたpayloadを素通しする手抜き実装です、
+ActionTypeを定義してswitchする実装が正攻法です。Enumを使った実装パターンがあるのでそちらも以下に紹介します。</p>
+<div class="highlight"><pre><span></span><code><span class="kd">enum</span> <span class="nx">ActionType</span> <span class="p">{</span>
+  <span class="nx">UPDATE_CANVAS_CTX</span> <span class="o">=</span> <span class="s2">&quot;UPDATE_CANVAS_CTX&quot;</span><span class="p">,</span>
+  <span class="nx">UPDATE_FRAME</span> <span class="o">=</span> <span class="s2">&quot;UPDATE_FRAME&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="kd">interface</span> <span class="nx">IAction</span> <span class="p">{</span>
+  <span class="kr">type</span><span class="o">:</span> <span class="nx">ActionType</span><span class="p">;</span>
+  <span class="nx">payload</span>: <span class="kt">IStore</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">reducer</span>: <span class="kt">React.Reducer</span><span class="o">&lt;</span><span class="nx">IStore</span><span class="p">,</span> <span class="nx">IAction</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">action</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+  <span class="k">switch</span> <span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="kr">type</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="nx">ActionType.UPDATE_CANVAS_CTX</span>:
+      <span class="kt">return</span> <span class="p">{</span>
+        <span class="p">...</span><span class="nx">state</span><span class="p">,</span>
+        <span class="nx">ctx</span>: <span class="kt">action.payload.ctx</span><span class="p">,</span>
+      <span class="p">};</span>
+    <span class="k">case</span> <span class="nx">ActionType.UPDATE_FRAME</span>:
+      <span class="kt">return</span> <span class="p">{</span>
+        <span class="p">...</span><span class="nx">state</span><span class="p">,</span>
+        <span class="nx">frame</span>: <span class="kt">action.payload.frame</span><span class="p">,</span>
+      <span class="p">};</span>
+    <span class="nx">default</span>:
+      <span class="kt">throw</span> <span class="ow">new</span> <span class="ne">Error</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<h2>Provider HOC</h2>
+<p>Context APIのProviderをHOCとして実装するパターンが存在します。
+これによってProviderの利用側がvalueを生成しないでよくなるので責務がきれいに分離されます。</p>
+<p>TypeScriptで書く場合は型を指定する必要がります、今回はuseReducerの戻り値をまとめたStoreWithActionという
+型を作成してContextに入れています。</p>
+<div class="highlight"><pre><span></span><code><span class="kd">interface</span> <span class="nx">StoreWithAction</span> <span class="p">{</span>
+  <span class="nx">state</span>: <span class="kt">IStore</span><span class="p">;</span>
+  <span class="nx">dispatch</span>: <span class="kt">React.Dispatch</span><span class="o">&lt;</span><span class="nx">IAction</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">const</span> <span class="nx">Store</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createContext</span><span class="o">&lt;</span><span class="nx">StoreWithAction</span><span class="o">&gt;</span><span class="p">({</span>
+  <span class="nx">state</span>: <span class="kt">initialStore</span><span class="p">,</span>
+  <span class="nx">dispatch</span><span class="o">:</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{},</span>
+<span class="p">});</span>
+
+<span class="kd">const</span> <span class="nx">StoreProvider</span>: <span class="kt">React.FC</span><span class="o">&lt;</span><span class="nx">React</span><span class="p">.</span><span class="nx">Props</span><span class="o">&lt;</span><span class="p">{}</span><span class="o">&gt;&gt;</span> <span class="o">=</span> <span class="nx">props</span> <span class="p">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">state</span><span class="p">,</span> <span class="nx">dispatch</span><span class="p">]</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">useReducer</span><span class="p">(</span><span class="nx">reducer</span><span class="p">,</span> <span class="nx">initialStore</span><span class="p">);</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">Store</span><span class="p">.</span><span class="nx">Provider</span> <span class="nx">value</span><span class="o">=</span><span class="p">{{</span> <span class="nx">state</span>: <span class="kt">state</span><span class="p">,</span> <span class="nx">dispatch</span>: <span class="kt">dispatch</span> <span class="p">}}</span><span class="o">&gt;</span>
+      <span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">children</span><span class="p">}</span>
+    <span class="o">&lt;</span><span class="err">/Store.Provider&gt;</span>
+  <span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p>Context APIはHooksのAPIと組み合わせると大変有用です、
+Contextを使用するコンポーネントの全てでリアクティブにデータを取得・更新することができるようになります。</p>
+<p>メモ: Contextに入れるdispatchの初期値は空の関数を使うことでTypeScriptのエラーを回避できました、
+型が一致していないように思うので少し不安ですがProviderとして使われる際には必ずdispatch関数が入るので問題ないと思います。</p>
+<h1>Componentの実装</h1>
+<p>アプリケーションのルートコンポーネントにあたるApp.tsxは以下のようになっています。</p>
+<div class="highlight"><pre><span></span><code><span class="k">import</span> <span class="o">*</span> <span class="kr">as</span> <span class="nx">React</span> <span class="kr">from</span> <span class="s2">&quot;react&quot;</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Canvas</span> <span class="kr">from</span> <span class="s2">&quot;./canvas&quot;</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Menu</span> <span class="kr">from</span> <span class="s2">&quot;./menu&quot;</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">StoreProvider</span> <span class="p">}</span> <span class="kr">from</span> <span class="s2">&quot;./store&quot;</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">StoreProvider</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">Canvas</span> <span class="o">/&gt;</span>
+      <span class="o">&lt;</span><span class="nx">Menu</span> <span class="o">/&gt;</span>
+    <span class="o">&lt;</span><span class="err">/StoreProvider&gt;</span>
+  <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">App</span><span class="p">;</span>
+</code></pre></div>
+
+<p>これでStoreProviderの子コンポーネントはContext APIを使ってstoreのデータにアクセスすることができます、非常にシンプル。</p>
+<h2>Menu</h2>
+<p>MenuコンポーネントではrequestAnimationFrameを発火してframeを+1していきます、
+開始時間を記録しておくことでfpsも測定します(requestAnimationFrameは60fpsで動作しようとします)。</p>
+<div class="highlight"><pre><span></span><code><span class="k">const</span> <span class="n">Menu</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">const</span> <span class="p">{</span> <span class="n">state</span><span class="p">,</span> <span class="n">dispatch</span> <span class="p">}</span> <span class="o">=</span> <span class="n">React</span><span class="o">.</span><span class="n">useContext</span><span class="p">(</span><span class="n">Store</span><span class="p">);</span>
+
+  <span class="k">const</span> <span class="p">[</span><span class="n">requestID</span><span class="p">,</span> <span class="n">setRequestID</span><span class="p">]</span> <span class="o">=</span> <span class="n">React</span><span class="o">.</span><span class="n">useState</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+  <span class="k">const</span> <span class="n">animation</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">const</span> <span class="n">now</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Date</span><span class="p">()</span><span class="o">.</span><span class="n">getTime</span><span class="p">();</span>
+    <span class="k">const</span> <span class="n">spendTime</span> <span class="o">=</span> <span class="p">(</span><span class="n">now</span> <span class="o">-</span> <span class="n">state</span><span class="o">.</span><span class="n">startTime</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">;</span>
+    <span class="n">state</span><span class="o">.</span><span class="n">frame</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">state</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">frame</span> <span class="o">/</span> <span class="n">spendTime</span><span class="p">;</span>
+    <span class="n">state</span><span class="o">.</span><span class="n">spendTime</span> <span class="o">=</span> <span class="n">spendTime</span><span class="p">;</span>
+    <span class="n">dispatch</span><span class="p">({</span> <span class="n">payload</span><span class="p">:</span> <span class="n">state</span> <span class="p">});</span>
+    <span class="k">const</span> <span class="n">requestID</span> <span class="o">=</span> <span class="n">window</span><span class="o">.</span><span class="n">requestAnimationFrame</span><span class="p">(</span><span class="n">animation</span><span class="p">);</span>
+    <span class="n">setRequestID</span><span class="p">(</span><span class="n">requestID</span><span class="p">);</span>
+  <span class="p">};</span>
+
+  <span class="k">const</span> <span class="n">start</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="n">state</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="bp">true</span><span class="p">;</span>
+    <span class="n">state</span><span class="o">.</span><span class="n">startTime</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Date</span><span class="p">()</span><span class="o">.</span><span class="n">getTime</span><span class="p">();</span>
+    <span class="n">dispatch</span><span class="p">({</span> <span class="n">payload</span><span class="p">:</span> <span class="n">state</span> <span class="p">});</span>
+    <span class="k">const</span> <span class="n">requestID</span> <span class="o">=</span> <span class="n">window</span><span class="o">.</span><span class="n">requestAnimationFrame</span><span class="p">(</span><span class="n">animation</span><span class="p">);</span>
+    <span class="n">setRequestID</span><span class="p">(</span><span class="n">requestID</span><span class="p">);</span>
+  <span class="p">};</span>
+
+  <span class="k">const</span> <span class="n">stop</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="n">window</span><span class="o">.</span><span class="n">cancelAnimationFrame</span><span class="p">(</span><span class="n">requestID</span><span class="p">);</span>
+  <span class="p">};</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="n">div</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">div</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">h3</span><span class="o">&gt;</span><span class="n">Menu</span><span class="o">&lt;/</span><span class="n">h3</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">button</span> <span class="n">onClick</span><span class="o">=</span><span class="p">{()</span> <span class="o">=&gt;</span> <span class="n">start</span><span class="p">()}</span><span class="o">&gt;</span><span class="n">start</span><span class="o">&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">button</span> <span class="n">onClick</span><span class="o">=</span><span class="p">{()</span> <span class="o">=&gt;</span> <span class="n">stop</span><span class="p">()}</span><span class="o">&gt;</span><span class="n">stop</span><span class="o">&lt;/</span><span class="n">button</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">TIME</span><span class="p">:</span> <span class="p">{</span><span class="n">float2str</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">spendTime</span><span class="p">,</span> <span class="mi">0</span><span class="p">)}</span> <span class="n">sec</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">{</span><span class="n">float2str</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">fps</span><span class="p">)}</span> <span class="n">FPS</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+      <span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+  <span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<h2>Canvas</h2>
+<p>Menuで更新されるframeを監視してアニメーションをします。
+状態の更新を監視するにはuseEffectを使います。</p>
+<div class="highlight"><pre><span></span><code><span class="k">const</span> <span class="n">Canvas</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">const</span> <span class="p">{</span> <span class="n">state</span><span class="p">,</span> <span class="n">dispatch</span> <span class="p">}</span> <span class="o">=</span> <span class="n">React</span><span class="o">.</span><span class="n">useContext</span><span class="p">(</span><span class="n">Store</span><span class="p">);</span>
+
+  <span class="k">const</span> <span class="n">canvasRef</span> <span class="o">=</span> <span class="n">React</span><span class="o">.</span><span class="n">useRef</span><span class="o">&lt;</span><span class="n">HTMLCanvasElement</span><span class="o">&gt;</span><span class="p">(</span><span class="nb nb-Type">null</span><span class="p">);</span>
+  <span class="n">React</span><span class="o">.</span><span class="n">useEffect</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">canvasRef</span><span class="o">.</span><span class="n">current</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">state</span><span class="o">.</span><span class="n">ctx</span> <span class="o">=</span> <span class="n">canvasRef</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">getContext</span><span class="p">(</span><span class="s2">&quot;2d&quot;</span><span class="p">);</span>
+      <span class="n">dispatch</span><span class="p">({</span> <span class="n">payload</span><span class="p">:</span> <span class="n">state</span> <span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">},</span> <span class="p">[</span><span class="n">canvasRef</span><span class="p">]);</span>
+
+  <span class="n">React</span><span class="o">.</span><span class="n">useEffect</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="n">draw</span><span class="p">(</span><span class="n">state</span><span class="p">);</span>
+  <span class="p">},</span> <span class="p">[</span><span class="n">state</span><span class="o">.</span><span class="n">frame</span><span class="p">]);</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="n">div</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="n">canvas</span>
+        <span class="n">ref</span><span class="o">=</span><span class="p">{</span><span class="n">canvasRef</span><span class="p">}</span>
+        <span class="n">width</span><span class="o">=</span><span class="p">{</span><span class="n">state</span><span class="o">.</span><span class="n">canvasWidth</span><span class="p">}</span>
+        <span class="n">height</span><span class="o">=</span><span class="p">{</span><span class="n">state</span><span class="o">.</span><span class="n">canvasHeight</span><span class="p">}</span>
+      <span class="o">/&gt;</span>
+    <span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+  <span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p>draw関数がcanvas描画の本体です。ここにframeによって変化するような描画関数を
+仕込めばアニメーションが完成します。最初にあげたgifの例は以下のようなコードです。</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span> <span class="nx">drawParticles</span> <span class="o">=</span> <span class="p">(</span><span class="nx">state</span>: <span class="kt">IStore</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">ctx</span> <span class="o">=</span> <span class="nx">state</span><span class="p">.</span><span class="nx">ctx</span><span class="o">!</span><span class="p">;</span>
+  <span class="nx">state</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">clearRect</span><span class="p">(</span><span class="mf">0</span><span class="p">,</span> <span class="mf">0</span><span class="p">,</span> <span class="mf">600</span><span class="p">,</span> <span class="mf">400</span><span class="p">);</span>
+  <span class="nx">state</span><span class="p">.</span><span class="nx">particles</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">particle</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">vframe</span> <span class="o">=</span> <span class="nx">state</span><span class="p">.</span><span class="nx">frame</span> <span class="o">*</span> <span class="mf">10</span><span class="p">;</span> <span class="c1">// velocity = 10 px/sec</span>
+    <span class="nx">ctx</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
+    <span class="nx">particle</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span>
+      <span class="nx">particle</span><span class="p">.</span><span class="nx">r</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">((</span><span class="mf">2</span> <span class="o">*</span> <span class="nx">vframe</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="p">)</span> <span class="o">/</span> <span class="mf">180</span> <span class="o">+</span> <span class="nx">particle</span><span class="p">.</span><span class="nx">arg</span><span class="p">);</span>
+    <span class="nx">particle</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span>
+      <span class="nx">particle</span><span class="p">.</span><span class="nx">r</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">((</span><span class="nx">vframe</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="p">)</span> <span class="o">/</span> <span class="mf">180</span> <span class="o">+</span> <span class="nx">particle</span><span class="p">.</span><span class="nx">arg</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">rad</span> <span class="o">=</span>
+      <span class="nx">particle</span><span class="p">.</span><span class="nx">size</span> <span class="o">*</span>
+      <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">((</span><span class="mf">5</span> <span class="o">*</span> <span class="nx">vframe</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span><span class="p">)</span> <span class="o">/</span> <span class="mf">180</span> <span class="o">+</span> <span class="nx">particle</span><span class="p">.</span><span class="nx">size_arg</span><span class="p">));</span>
+    <span class="kd">const</span> <span class="nx">startAng</span> <span class="o">=</span> <span class="mf">0</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">endAng</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">*</span> <span class="mf">2</span><span class="p">;</span>
+    <span class="nx">ctx</span><span class="p">.</span><span class="nx">arc</span><span class="p">(</span><span class="nx">particle</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">particle</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">rad</span><span class="p">,</span> <span class="nx">startAng</span><span class="p">,</span> <span class="nx">endAng</span><span class="p">);</span>
+    <span class="nx">ctx</span><span class="p">.</span><span class="nx">fill</span><span class="p">();</span>
+  <span class="p">});</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p>Canvasコンポーネントのコードを見ると、useRefでCanvasのrefを取得しています。
+HooksからCanvasを扱う場合はこの処理が必要になります。</p>
+<p>refから取得できるctxをstoreに入れるとdraw関数がctxを参照できて、
+draw関数とCanvasコンポーネントの依存が分離されるので便利です。</p>
+<h1>まとめと感想</h1>
+<ul>
+<li>React単体でここまでreduxライクに書けるのはすごい</li>
+<li>HooksのAPIはシンプルで書きやすい</li>
+<li>APIはシンプルで柔軟に設計されているので実装者の設計力が試されている気がする</li>
+<li>HooksとTypeScriptの相性は良さそう</li>
+<li>ライブラリの型定義は参考になるのでgoto definitionしよう</li>
+<li>TypeScriptの型推論強い</li>
+</ul>
+<h2>Context APIの使いどころ</h2>
+<p>あまり深く考えずにバケツリレーを回避する目的でContext APIを使う発想は微妙で
+本当に広くアクセスする必要のあるデータが必要なのか考えたほうが良いと思いました。</p>
+<p>グローバルに使えるデータは便利ですが、その分コードの見通しを悪くする可能性があります。
+useReducerのみで事足りるケースかどうか見極めると良いと考えます。</p>
+<p>今回のようにコンポーネント間での役割分担を明確にする名目で使うパターンはありかもしれないと感じました、
+他に用途があるとするとrouterを超えて共有する必要のあるデータ(Login情報やSession情報など)は
+Contextに入れると良さそうな感じがします。</p>
+<p>Reduxもそうですが、銀の弾丸ではないのでしっかりと設計を考えて便利さやかっこよさに
+囚われてオーバーな技術選定にならないようにしていきたさみをあらためて感じました。</p>
+<p>若干ポエムってしまいましたが、React単体でここまでできるのは肥大化しがちなbundleファイルを小さく保つ上でも良さを
+感じたので使っていこうと思っています、あとTypeScriptは一度使うとJSに戻るのをためらいたくなる効果がまじである...すごい...</p>
+<h1>参考URL</h1>
+<ul>
+<li><a href="https://reactjs.org/docs/hooks-intro.html">Introducing Hooks</a></li>
+<li><a href="https://levelup.gitconnected.com/usetypescript-a-complete-guide-to-react-hooks-and-typescript-db1858d1fb9c">useTypescript — A Complete Guide to React Hooks and TypeScript</a></li>
+<li><a href="https://medium.com/@jrwebdev/react-hooks-in-typescript-88fce7001d0d">React Hooks in TypeScript</a></li>
+<li><a href="https://dev.to/oieduardorabelo/react-hooks-how-to-create-and-update-contextprovider-1f68">React Hooks: How to create and update Context.Provider</a></li>
+</ul>
+    </div><!-- /.entry-content -->
+
+    <div class="article-ad">
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- responsive -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-8481391240785119"
+           data-ad-slot="3238871784"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <div class="comments">
+      <div id="disqus-toggle">
+          <h3>Show comments <span class="glyphicon glyphicon-comment"></span></h3>
+      </div>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        $("#disqus-toggle").click(function(){
+          var disqus_shortname = 'mokumoku';
+          var disqus_identifier = '8eb51d0a68e9373df41f88e5b551d4a3.html';
+          var disqus_url = 'https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html';
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//mokumoku.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          $("#disqus-toggle").remove();
+        });
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+                </div><!-- /.col-lg-12 -->
+            </div><!-- /.bs-component -->
+        </div>
+        <div id="extras" class="row">
+            <div class="bs-component">
+<div class="extras-ad">
+    <h2><span class="glyphicon glyphicon-object-align-left"></span> Adsense</h2>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- small_square -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:200px;height:200px"
+         data-ad-client="ca-pub-8481391240785119"
+         data-ad-slot="9438651388"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+    <div class="sns">
+        <h2><span class="glyphicon glyphicon-share"></span> Share</h2>
+<ul>
+    <li>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="_y_y_m_m_">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </li>
+    
+    <li>
+        <a href="http://b.hatena.ne.jp/entry/https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html" class="hatena-bookmark-button" data-hatena-bookmark-title="React Hooks: useReducer & Context API with TypeScript" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加">
+            <img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+
+    </li>
+        <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+   
+    
+    
+    
+    <li>
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3&appId=387525661451951";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+        <div class="fb-like" data-href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
+    </li>
+ 
+</ul>    </div>
+
+    <div class="blogroll">
+        <h2><span class="glyphicon glyphicon-pushpin"></span> About</h2>
+        <p>どこにでもいる平凡なプログラムを書く人間のログ。</p>
+    </div><!-- /.blogroll -->
+
+    <div class="category">
+        <h2><span class="glyphicon glyphicon-th-list"></span> Category</h2>
+        <ul>
+			<li>
+				<a href="https://muunyblue.github.io/category/diary.html">
+				    	<span class="glyphicon glyphicon-book" aria-hidden="true" style="color: #0bd566;"></span>
+				    Diary
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/jia.html">
+				    	<span class="glyphicon glyphicon-home" aria-hidden="true" style="color: #f48c39;"></span>
+				    家
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/programming.html">
+				    	<span class="glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+				    Programming
+				</a>
+			</li>
+        </ul>
+    </div>
+
+    <div class="recently">
+        <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
+        <ul>
+			    <li>
+                    <p>2021年 12月16日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/97885afd60c10c4a454c11e225763e04.html">
+                            普通のキーボード写真とBLEの話
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 5月24日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
+                            React Hooks: useReducer & Context API with TypeScript
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 1月23日 午後 09:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/214cfbe603b7f9f9bc005d5f53f7a1d3.html">
+                            普通のTwitter転職
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月22日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/3a1f85dfef891b2a3685ccb35efa807e.html">
+                            Zen Keyboard Build log
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月17日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
+                            Minidoxビルドログ
+                        </a>
+                    </p>
+			    </li>
+        </ul>
+    </div>
+
+    <div class="tags">
+        <h2><span class="glyphicon glyphicon-tags"></span> Tags</h2>
+        <ul>
+                <li><a href="https://muunyblue.github.io/tag/asakatsu.html">Asakatsu</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/btsync.html">btsync</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/c.html">C++</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ci.html">CI</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/cppcheck.html">Cppcheck</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/css.html">CSS</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/github.html">GitHub</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gitlab.html">GitLab</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/go.html">Go</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/gtk.html">Gtk+</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/haskell.html">Haskell</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/hooks.html">Hooks</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/idcf.html">IDCF</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/javascript.html">JavaScript</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/keyboard.html">Keyboard</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/markdown.html">Markdown</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
+                <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/ubuntu.html">Ubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vagrant.html">Vagrant</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vim.html">Vim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/vps.html">VPS</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/zen.html">Zen</a> (1)</li>
+        </ul>
+    </div><!-- /.social -->
+
+    <div class="social">
+        <h2><span class="glyphicon glyphicon-sunglasses"></span> Social</h2>
+        <ul>
+            <li><a href="https://twitter.com/_y_y_m_m_" target="_blank">Twitter</a></li>
+            <li><a href="https://github.com/yymm" target="_blank">Github</a></li>
+            <li><a href="https://bitbucket.org/yymm" target="_blank">Bitbucket</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.atom.xml" target="_blank" type="application/atom+xml" rel="alternate">atom feed</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.rss.xml" target="_blank" type="application/rss+xml" rel="alternate">rss feed</a></li>
+        </ul>
+    </div><!-- /.social -->
+
+            </div><!-- /.bs-component -->
+        </div><!-- /#extras -->
+    </div><!--./container -->
+    <!--Honoka Bootstrap end -->
+
+    <footer id="contentinfo">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <p id="bloginfo"><a href="https://github.com/yymm/MokuMokuBlog" target="_blank" title="This blog"><img id="mokumokublog" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/mokumokublog.ico"></img></a> POWERD BY <a href="https://github.com/getpelican/pelican" target="_blank" title="This blog"><img id="pelican" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/pelican.ico"></img></a> GENERATED BY <a href="https://github.com/yymm/MemoMemo" target="_blank" title="MemoMemo"><img id="memomemo" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/memomemo.ico"></img></a></p>
+                    <p>Copyright <span class="glyphicon glyphicon-copyright-mark"></span> 2018 <a href="https://github.com/yymm" target="_blank">yuya yano</a> All Rights Reserved.</p>
+					<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img id="copyright" alt="クリエイティブ・コモンズ・ライセンス" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a></p>
+                </div><!--./col-xs-12 -->
+            </div><!--./row -->
+        </div><!--./container -->
+    </footer><!-- /#contentinfo -->
+
+<script src="https://muunyblue.github.io/theme/js/jquery.lazyload.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+$(function() {
+	$("img.lazy").lazyload({
+		effect : "fadeIn"
+	});
+});
+</script>
+<script src="https://muunyblue.github.io/theme/js/bootstrap.min.js"></script>
+<script src="https://muunyblue.github.io/theme/js/script.js"></script>
+
+    <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-67688469-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+<script type="text/javascript">
+    var disqus_shortname = 'mokumoku';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+
+<!--
+<!-- PtEngine -->
+<script type="text/javascript">
+	window._pt_sp_2 = [];
+	_pt_sp_2.push('setAccount,3e10d017');
+	var _protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+	(function() {
+		var atag = document.createElement('script'); atag.type = 'text/javascript'; atag.async = true;
+		atag.src = _protocol + 'js.ptengine.jp/pta.js';
+		var stag = document.createElement('script'); stag.type = 'text/javascript'; stag.async = true;
+		stag.src = _protocol + 'js.ptengine.jp/pts.js';
+		var s = document.getElementsByTagName('script')[0]; 
+		s.parentNode.insertBefore(atag, s);s.parentNode.insertBefore(stag, s);
+	})();
+</script>
+-->
+
+</body>
+</html>

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="utf-8" />
+　　　　　　　　<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CodeMirrorでEmoji AutoCompleteをする</title>
+    <link rel="shortcut icon" href="https://muunyblue.github.io/theme/img/favicon.ico" >
+
+	<link rel="stylesheet" href="https://muunyblue.github.io/theme/css/main.css" />
+    <link rel="stylesheet" href="https://muunyblue.github.io/theme/css/bootstrap.min.css" />
+
+
+    <link href="https://muunyblue.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="もくもくブログ Atom Feed" />
+    <link href="https://muunyblue.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="もくもくブログ RSS Feed" />
+
+	<script src="https://muunyblue.github.io/theme/js/jquery-2.1.4.min.js"></script>
+
+    <!--[if IE]>
+        <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="google-site-verification" content="ETSvqWJsfDNiXwsK89y7-OqkwM1O7DK9wiAkkA4Vfow" />
+    <link rel="alternate" hreflang="ja" href="http://blog.muuny-blue.info/" />
+</head>
+
+<body class="no-thank-yu">
+    <header id="banner" class="page-header clearfix">
+        <div id="contenthead" class="container">
+			<a href="https://muunyblue.github.io/">
+				<img id="title-logo" src="https://muunyblue.github.io/theme/img/title.png"></img>
+			</a>
+			<img id="look" src="https://muunyblue.github.io/theme/img/2.svg"></img>
+        </div>
+    </header><!-- /#banner -->
+
+    <!--Honoka Bootstrap-->
+    <div class="container">
+        <div id="content" class="row">
+            <div class="bs-component">
+                <div class="col-lg-12">
+  <article>
+    <header>
+      <div class="page-header">
+        <h1 class="entry-title">
+          <a href="https://muunyblue.github.io/502317c9b4695a9476eb981d5fdf43a8.html" rel="bookmark"
+             title="Permalink to CodeMirrorでEmoji AutoCompleteをする">
+				<span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+            CodeMirrorでEmoji AutoCompleteをする
+          </a>
+        </h1>
+      </div>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+<ul>
+    <li class="published" title="2017-09-07T09:43:03+09:00">
+        <span>Date:</span>2017-09-07 木 (午前 09:43:03)
+    </li>
+<li><span>Tags:</span><a href="https://muunyblue.github.io/tag/javascript.html">JavaScript</a> </li>
+    <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
+</ul>
+</footer><!-- /.post-info -->      <p>":"に続けて打ち込むと自動で補完してくれるようになります。</p>
+<p><img alt="demo" src="https://gyazo.com/68de503622f29ed4213c201a75b870c1.gif"></p>
+<p>EmojiリストはGitHub APIから取得しています。</p>
+<h1>必要なパッケージ</h1>
+<ul>
+<li>CodeMirror</li>
+<li>show-hint addonのコードを編集するのでソースコードが必要</li>
+<li>Axios</li>
+</ul>
+<p>パッケージの読み込み方法は各自におまかせします(scriptタグでもビルドツールでも構いません)。</p>
+<h1>やり方</h1>
+<div class="highlight"><pre><span></span><code><span class="c1">// sample data</span>
+<span class="kd">let</span> <span class="nx">emojiList</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;apple:&#39;</span><span class="p">,</span> <span class="s1">&#39;abc:&#39;</span><span class="p">,</span> <span class="s1">&#39;axz:&#39;</span><span class="p">,</span> <span class="s1">&#39;bee:&#39;</span><span class="p">,</span> <span class="s1">&#39;beam:&#39;</span><span class="p">,</span> <span class="s1">&#39;bleach:&#39;</span><span class="p">]</span>
+
+<span class="kd">let</span> <span class="nx">emojiComplete</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cm</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">CodeMirror</span><span class="p">.</span><span class="nx">showHint</span><span class="p">(</span><span class="nx">cm</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">cur</span> <span class="o">=</span> <span class="nx">cm</span><span class="p">.</span><span class="nx">getCursor</span><span class="p">(),</span> <span class="nx">token</span> <span class="o">=</span> <span class="nx">cm</span><span class="p">.</span><span class="nx">getTokenAt</span><span class="p">(</span><span class="nx">cur</span><span class="p">)</span>
+    <span class="kd">let</span> <span class="nx">start</span> <span class="o">=</span> <span class="nx">token</span><span class="p">.</span><span class="nx">start</span><span class="p">,</span> <span class="nx">end</span> <span class="o">=</span> <span class="nx">cur</span><span class="p">.</span><span class="nx">ch</span><span class="p">,</span> <span class="nx">word</span> <span class="o">=</span> <span class="nx">token</span><span class="p">.</span><span class="nx">string</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mf">0</span><span class="p">,</span> <span class="nx">end</span> <span class="o">-</span> <span class="nx">start</span><span class="p">)</span>
+    <span class="kd">let</span> <span class="nx">ch</span> <span class="o">=</span> <span class="nx">cur</span><span class="p">.</span><span class="nx">ch</span><span class="p">,</span> <span class="nx">line</span> <span class="o">=</span> <span class="nx">cur</span><span class="p">.</span><span class="nx">line</span>
+    <span class="kd">let</span> <span class="nx">currentWord</span> <span class="o">=</span> <span class="nx">token</span><span class="p">.</span><span class="nx">string</span>
+    <span class="k">while</span> <span class="p">(</span><span class="nx">ch</span><span class="o">--</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mf">1</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">let</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">cm</span><span class="p">.</span><span class="nx">getTokenAt</span><span class="p">({</span><span class="nx">ch</span><span class="p">,</span> <span class="nx">line</span><span class="p">}).</span><span class="nx">string</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">t</span> <span class="o">===</span> <span class="s1">&#39;:&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">filteredList</span> <span class="o">=</span> <span class="nx">emojiList</span><span class="p">.</span><span class="nx">filter</span><span class="p">((</span><span class="nx">item</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="nx">item</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">currentWord</span><span class="p">)</span> <span class="o">==</span> <span class="mf">0</span> <span class="o">?</span> <span class="kc">true</span> <span class="o">:</span> <span class="kc">false</span>
+        <span class="p">})</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">filteredList</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;=</span> <span class="mf">1</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="p">{</span>
+            <span class="nx">list</span><span class="o">:</span> <span class="nx">filteredList</span><span class="p">,</span>
+            <span class="kr">from</span><span class="o">:</span> <span class="nx">CodeMirror</span><span class="p">.</span><span class="nx">Pos</span><span class="p">(</span><span class="nx">line</span><span class="p">,</span> <span class="nx">ch</span><span class="p">),</span>
+            <span class="nx">to</span><span class="o">:</span> <span class="nx">CodeMirror</span><span class="p">.</span><span class="nx">Pos</span><span class="p">(</span><span class="nx">line</span><span class="p">,</span> <span class="nx">end</span><span class="p">)</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+      <span class="nx">currentWord</span> <span class="o">=</span> <span class="nx">t</span> <span class="o">+</span> <span class="nx">currentWord</span>
+    <span class="p">}</span>
+  <span class="p">},</span> <span class="p">{</span> <span class="nx">completeSingle</span><span class="o">:</span> <span class="kc">false</span> <span class="p">})</span>
+<span class="p">}</span>
+
+<span class="nx">cm</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="nx">emojiComplete</span><span class="p">)</span>
+</code></pre></div>
+
+<p>ひとまずemoji画像のないシンプルな例です。cmはCodeMirrorインスタンスです。</p>
+<p>CodeMirrorのchangeイベントにshowHintを仕込んで実現しています。</p>
+<p>showHintの中身が肝です。</p>
+<p>最初の4行はshowHintを書く際の決まり文句のようなものでカーソル位置や対象の単語情報を変数に記録しています。</p>
+<p>while文内では、単語を一文字ずつ遡っていって":"が見つかったら補完候補を絞り込んで、補完候補が存在する場合は表示するようにしています。</p>
+<p>showHintの戻り値は、補完のリストと補完する位置を指定します。位置は今の位置から単語終了位置までになります。</p>
+<p>これで自動的に":"のあとに文字を入れると補完候補が表示されます。</p>
+<p>showHint関数に指定している、completeSingle: falseは必須です。細かい理由はわかりませんがこれがないと無限ループするようです。</p>
+<p>emojiListが末尾に":"が付いて不格好なのは、補完完了時に末尾の":"まで補完されるようにしているからですがこれは回避できます、これは以下の内容で説明します。</p>
+<h2>Emojiのリスト取得</h2>
+<p>GitHub APIにEmoji一覧を取得するAPIがあるので利用します。</p>
+<p><a href="https://developer.github.com/v3/emojis/" title="Emojis | GitHub Developer Guide">Emojis | GitHub Developer Guide</a></p>
+<p>先程の例のemojiListをapiで取得したものに置き換えれば完全なリストになります。</p>
+<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nx">res</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;https://api.github.com/emojis&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">status</span> <span class="o">!==</span> <span class="mf">200</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Error...&#39;</span><span class="p">)</span>
+  <span class="k">return</span>
+<span class="p">}</span>
+
+<span class="kd">let</span> <span class="nx">emojiList</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">key</span> <span class="ow">in</span> <span class="nx">res</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">emojiList</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="sb">`</span><span class="si">${</span><span class="nx">key</span><span class="si">}</span><span class="sb">:`</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h2>Emoji画像の表示</h2>
+<p>show-hint addonの補完候補には文字列しか表示できません。</p>
+<p>実際にCodeMirrorの<a href="https://github.com/codemirror/CodeMirror/blob/master/addon/hint/show-hint.js">addon/hint/show-hint.js</a>を見てみると、文字列リスト or {text: str, displayText: str}のリストを指定する仕様になっています。</p>
+<p>画像を表示させるようにshow-hint.jsを書き換えます。</p>
+<div class="highlight"><pre><span></span><code>      if (cur.render) cur.render(elt, data, cur);
+<span class="gd">-     else elt.appendChild(document.createTextNode(cur.displayText || getText(cur)));</span>
+<span class="gi">+     else elt.innerHTML = cur.displayText</span>
+      elt.hintId = i;
+</code></pre></div>
+
+<p><a href="https://github.com/codemirror/CodeMirror/blob/master/addon/hint/show-hint.js#L219">219行目</a>あたりです。</p>
+<p>displayTextで指定する補完候補表示をinnerHTMLで表示できるようにしました。</p>
+<p>{text: str, displayText: str}のリストでの補完候補の指定は、textは実際に補完する際に使われる文字列でdisplayTextが補完候補を表示するときに使われる文字列になるので、emojiListを以下のようにします。</p>
+<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nx">res</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;https://api.github.com/emojis&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">status</span> <span class="o">!==</span> <span class="mf">200</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Error...&#39;</span><span class="p">)</span>
+  <span class="k">return</span>
+<span class="p">}</span>
+
+<span class="kd">let</span> <span class="nx">emojiList</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">key</span> <span class="ow">in</span> <span class="nx">res</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">emojiList</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="nx">text</span><span class="o">:</span> <span class="sb">`</span><span class="si">${</span><span class="nx">key</span><span class="si">}</span><span class="sb">:`</span><span class="p">,</span> <span class="nx">displayText</span><span class="o">:</span> <span class="sb">`&lt;img width=&quot;15&quot; height=&quot;15&quot; src=&quot;</span><span class="si">${</span><span class="nx">res</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span><span class="si">}</span><span class="sb">&quot; alt=&quot;icon&quot; async&gt;&lt;/img&gt; </span><span class="si">${</span><span class="nx">key</span><span class="si">}</span><span class="sb">`</span><span class="p">})</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>displayTextをGitHub APIで取得した画像を小さくしたもの + Emoji名の形にします。</p>
+<p>これで冒頭のGifキャプチャーのように表示されるようになります。</p>
+<p>かなりの量の画像を取得するのでimgタグにはasyncオプションをつけています。</p>
+<h1>完全なコード</h1>
+<p>書き換えたshow-hint.jsを使用する必要があるので注意。</p>
+<div class="highlight"><pre><span></span><code><span class="kd">let</span> <span class="nx">cm</span> <span class="o">=</span> <span class="nx">CodeMirror</span><span class="p">(</span><span class="cm">/* Dom Element */</span><span class="p">,</span> <span class="p">{</span>
+  <span class="c1">// Options</span>
+<span class="p">})</span>
+
+<span class="c1">//</span>
+<span class="c1">// Emoji Complete</span>
+<span class="c1">//</span>
+<span class="kd">let</span> <span class="nx">res</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;https://api.github.com/emojis&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">status</span> <span class="o">!==</span> <span class="mf">200</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Error...&#39;</span><span class="p">)</span>
+  <span class="k">return</span>
+<span class="p">}</span>
+
+<span class="kd">let</span> <span class="nx">emojiList</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">key</span> <span class="ow">in</span> <span class="nx">res</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">emojiList</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="nx">text</span><span class="o">:</span> <span class="sb">`</span><span class="si">${</span><span class="nx">key</span><span class="si">}</span><span class="sb">:`</span><span class="p">,</span> <span class="nx">displayText</span><span class="o">:</span> <span class="sb">`&lt;img width=&quot;15&quot; height=&quot;15&quot; src=&quot;</span><span class="si">${</span><span class="nx">res</span><span class="p">.</span><span class="nx">data</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span><span class="si">}</span><span class="sb">&quot; alt=&quot;icon&quot; async&gt;&lt;/img&gt; </span><span class="si">${</span><span class="nx">key</span><span class="si">}</span><span class="sb">`</span><span class="p">})</span>
+<span class="p">}</span>
+
+<span class="kd">let</span> <span class="nx">emojiComplete</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cm</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">CodeMirror</span><span class="p">.</span><span class="nx">showHint</span><span class="p">(</span><span class="nx">cm</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">cur</span> <span class="o">=</span> <span class="nx">cm</span><span class="p">.</span><span class="nx">getCursor</span><span class="p">(),</span> <span class="nx">token</span> <span class="o">=</span> <span class="nx">cm</span><span class="p">.</span><span class="nx">getTokenAt</span><span class="p">(</span><span class="nx">cur</span><span class="p">)</span>
+    <span class="kd">let</span> <span class="nx">start</span> <span class="o">=</span> <span class="nx">token</span><span class="p">.</span><span class="nx">start</span><span class="p">,</span> <span class="nx">end</span> <span class="o">=</span> <span class="nx">cur</span><span class="p">.</span><span class="nx">ch</span><span class="p">,</span> <span class="nx">word</span> <span class="o">=</span> <span class="nx">token</span><span class="p">.</span><span class="nx">string</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mf">0</span><span class="p">,</span> <span class="nx">end</span> <span class="o">-</span> <span class="nx">start</span><span class="p">)</span>
+    <span class="kd">let</span> <span class="nx">ch</span> <span class="o">=</span> <span class="nx">cur</span><span class="p">.</span><span class="nx">ch</span><span class="p">,</span> <span class="nx">line</span> <span class="o">=</span> <span class="nx">cur</span><span class="p">.</span><span class="nx">line</span>
+    <span class="kd">let</span> <span class="nx">currentWord</span> <span class="o">=</span> <span class="nx">token</span><span class="p">.</span><span class="nx">string</span>
+    <span class="k">while</span> <span class="p">(</span><span class="nx">ch</span><span class="o">--</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mf">1</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">let</span> <span class="nx">t</span> <span class="o">=</span> <span class="nx">cm</span><span class="p">.</span><span class="nx">getTokenAt</span><span class="p">({</span><span class="nx">ch</span><span class="p">,</span> <span class="nx">line</span><span class="p">}).</span><span class="nx">string</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">t</span> <span class="o">===</span> <span class="s1">&#39;:&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">filteredList</span> <span class="o">=</span> <span class="nx">emojiList</span><span class="p">.</span><span class="nx">filter</span><span class="p">((</span><span class="nx">item</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="nx">item</span><span class="p">.</span><span class="nx">text</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">currentWord</span><span class="p">)</span> <span class="o">==</span> <span class="mf">0</span> <span class="o">?</span> <span class="kc">true</span> <span class="o">:</span> <span class="kc">false</span>
+        <span class="p">})</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">filteredList</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;=</span> <span class="mf">1</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="p">{</span>
+            <span class="nx">list</span><span class="o">:</span> <span class="nx">filteredList</span><span class="p">,</span>
+            <span class="kr">from</span><span class="o">:</span> <span class="nx">CodeMirror</span><span class="p">.</span><span class="nx">Pos</span><span class="p">(</span><span class="nx">line</span><span class="p">,</span> <span class="nx">ch</span><span class="p">),</span>
+            <span class="nx">to</span><span class="o">:</span> <span class="nx">CodeMirror</span><span class="p">.</span><span class="nx">Pos</span><span class="p">(</span><span class="nx">line</span><span class="p">,</span> <span class="nx">end</span><span class="p">)</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+      <span class="nx">currentWord</span> <span class="o">=</span> <span class="nx">t</span> <span class="o">+</span> <span class="nx">currentWord</span>
+    <span class="p">}</span>
+  <span class="p">},</span> <span class="p">{</span> <span class="nx">completeSingle</span><span class="o">:</span> <span class="kc">false</span> <span class="p">})</span>
+<span class="p">}</span>
+
+<span class="nx">cm</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="nx">emojiComplete</span><span class="p">)</span>
+</code></pre></div>
+
+<h1>参考記事</h1>
+<ul>
+<li><a href="http://qiita.com/mizchi/items/15441d0e285f86125b0a" title="CodeMirrorでAutoCompleteする - Qiita">CodeMirrorでAutoCompleteする - Qiita</a></li>
+<li><a href="https://codemirror.net/doc/manual.html#addons" title="CodeMirror: User Manual">CodeMirror: User Manual</a></li>
+<li><a href="https://stackoverflow.com/questions/40015901/how-to-customize-autocomplete-function-of-the-codemirror" title="javascript - How to customize autocomplete function of the CodeMirror - Stack Overflow">javascript - How to customize autocomplete function of the CodeMirror - Stack Overflow</a></li>
+<li><a href="https://stackoverflow.com/questions/22699024/codemirror-autocomplete-options-not-setting-right">css - CodeMirror - AutoComplete "options" not setting right - Stack Overflow</a></li>
+</ul>
+    </div><!-- /.entry-content -->
+
+    <div class="article-ad">
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- responsive -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-8481391240785119"
+           data-ad-slot="3238871784"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <div class="comments">
+      <div id="disqus-toggle">
+          <h3>Show comments <span class="glyphicon glyphicon-comment"></span></h3>
+      </div>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        $("#disqus-toggle").click(function(){
+          var disqus_shortname = 'mokumoku';
+          var disqus_identifier = '502317c9b4695a9476eb981d5fdf43a8.html';
+          var disqus_url = 'https://muunyblue.github.io/502317c9b4695a9476eb981d5fdf43a8.html';
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//mokumoku.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          $("#disqus-toggle").remove();
+        });
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+                </div><!-- /.col-lg-12 -->
+            </div><!-- /.bs-component -->
+        </div>
+        <div id="extras" class="row">
+            <div class="bs-component">
+<div class="extras-ad">
+    <h2><span class="glyphicon glyphicon-object-align-left"></span> Adsense</h2>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- small_square -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:200px;height:200px"
+         data-ad-client="ca-pub-8481391240785119"
+         data-ad-slot="9438651388"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+    <div class="sns">
+        <h2><span class="glyphicon glyphicon-share"></span> Share</h2>
+<ul>
+    <li>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="_y_y_m_m_">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </li>
+    
+    <li>
+        <a href="http://b.hatena.ne.jp/entry/https://muunyblue.github.io/502317c9b4695a9476eb981d5fdf43a8.html" class="hatena-bookmark-button" data-hatena-bookmark-title="CodeMirrorでEmoji AutoCompleteをする" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加">
+            <img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+
+    </li>
+        <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+   
+    
+    
+    
+    <li>
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3&appId=387525661451951";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+        <div class="fb-like" data-href="https://muunyblue.github.io/502317c9b4695a9476eb981d5fdf43a8.html" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
+    </li>
+ 
+</ul>    </div>
+
+    <div class="blogroll">
+        <h2><span class="glyphicon glyphicon-pushpin"></span> About</h2>
+        <p>どこにでもいる平凡なプログラムを書く人間のログ。</p>
+    </div><!-- /.blogroll -->
+
+    <div class="category">
+        <h2><span class="glyphicon glyphicon-th-list"></span> Category</h2>
+        <ul>
+			<li>
+				<a href="https://muunyblue.github.io/category/diary.html">
+				    	<span class="glyphicon glyphicon-book" aria-hidden="true" style="color: #0bd566;"></span>
+				    Diary
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/jia.html">
+				    	<span class="glyphicon glyphicon-home" aria-hidden="true" style="color: #f48c39;"></span>
+				    家
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/programming.html">
+				    	<span class="glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+				    Programming
+				</a>
+			</li>
+        </ul>
+    </div>
+
+    <div class="recently">
+        <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
+        <ul>
+			    <li>
+                    <p>2021年 12月16日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/97885afd60c10c4a454c11e225763e04.html">
+                            普通のキーボード写真とBLEの話
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 5月24日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
+                            React Hooks: useReducer & Context API with TypeScript
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 1月23日 午後 09:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/214cfbe603b7f9f9bc005d5f53f7a1d3.html">
+                            普通のTwitter転職
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月22日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/3a1f85dfef891b2a3685ccb35efa807e.html">
+                            Zen Keyboard Build log
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月17日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
+                            Minidoxビルドログ
+                        </a>
+                    </p>
+			    </li>
+        </ul>
+    </div>
+
+    <div class="tags">
+        <h2><span class="glyphicon glyphicon-tags"></span> Tags</h2>
+        <ul>
+                <li><a href="https://muunyblue.github.io/tag/asakatsu.html">Asakatsu</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/btsync.html">btsync</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/c.html">C++</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ci.html">CI</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/cppcheck.html">Cppcheck</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/css.html">CSS</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/github.html">GitHub</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gitlab.html">GitLab</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/go.html">Go</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/gtk.html">Gtk+</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/haskell.html">Haskell</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/hooks.html">Hooks</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/idcf.html">IDCF</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/javascript.html">JavaScript</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/keyboard.html">Keyboard</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/markdown.html">Markdown</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
+                <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/ubuntu.html">Ubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vagrant.html">Vagrant</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vim.html">Vim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/vps.html">VPS</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/zen.html">Zen</a> (1)</li>
+        </ul>
+    </div><!-- /.social -->
+
+    <div class="social">
+        <h2><span class="glyphicon glyphicon-sunglasses"></span> Social</h2>
+        <ul>
+            <li><a href="https://twitter.com/_y_y_m_m_" target="_blank">Twitter</a></li>
+            <li><a href="https://github.com/yymm" target="_blank">Github</a></li>
+            <li><a href="https://bitbucket.org/yymm" target="_blank">Bitbucket</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.atom.xml" target="_blank" type="application/atom+xml" rel="alternate">atom feed</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.rss.xml" target="_blank" type="application/rss+xml" rel="alternate">rss feed</a></li>
+        </ul>
+    </div><!-- /.social -->
+
+            </div><!-- /.bs-component -->
+        </div><!-- /#extras -->
+    </div><!--./container -->
+    <!--Honoka Bootstrap end -->
+
+    <footer id="contentinfo">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <p id="bloginfo"><a href="https://github.com/yymm/MokuMokuBlog" target="_blank" title="This blog"><img id="mokumokublog" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/mokumokublog.ico"></img></a> POWERD BY <a href="https://github.com/getpelican/pelican" target="_blank" title="This blog"><img id="pelican" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/pelican.ico"></img></a> GENERATED BY <a href="https://github.com/yymm/MemoMemo" target="_blank" title="MemoMemo"><img id="memomemo" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/memomemo.ico"></img></a></p>
+                    <p>Copyright <span class="glyphicon glyphicon-copyright-mark"></span> 2018 <a href="https://github.com/yymm" target="_blank">yuya yano</a> All Rights Reserved.</p>
+					<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img id="copyright" alt="クリエイティブ・コモンズ・ライセンス" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a></p>
+                </div><!--./col-xs-12 -->
+            </div><!--./row -->
+        </div><!--./container -->
+    </footer><!-- /#contentinfo -->
+
+<script src="https://muunyblue.github.io/theme/js/jquery.lazyload.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+$(function() {
+	$("img.lazy").lazyload({
+		effect : "fadeIn"
+	});
+});
+</script>
+<script src="https://muunyblue.github.io/theme/js/bootstrap.min.js"></script>
+<script src="https://muunyblue.github.io/theme/js/script.js"></script>
+
+    <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-67688469-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+<script type="text/javascript">
+    var disqus_shortname = 'mokumoku';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+
+<!--
+<!-- PtEngine -->
+<script type="text/javascript">
+	window._pt_sp_2 = [];
+	_pt_sp_2.push('setAccount,3e10d017');
+	var _protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+	(function() {
+		var atag = document.createElement('script'); atag.type = 'text/javascript'; atag.async = true;
+		atag.src = _protocol + 'js.ptengine.jp/pta.js';
+		var stag = document.createElement('script'); stag.type = 'text/javascript'; stag.async = true;
+		stag.src = _protocol + 'js.ptengine.jp/pts.js';
+		var s = document.getElementsByTagName('script')[0]; 
+		s.parentNode.insertBefore(atag, s);s.parentNode.insertBefore(stag, s);
+	})();
+</script>
+-->
+
+</body>
+</html>

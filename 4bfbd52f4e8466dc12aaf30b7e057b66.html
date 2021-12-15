@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="utf-8" />
+　　　　　　　　<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Minidoxビルドログ</title>
+    <link rel="shortcut icon" href="https://muunyblue.github.io/theme/img/favicon.ico" >
+
+	<link rel="stylesheet" href="https://muunyblue.github.io/theme/css/main.css" />
+    <link rel="stylesheet" href="https://muunyblue.github.io/theme/css/bootstrap.min.css" />
+
+
+    <link href="https://muunyblue.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="もくもくブログ Atom Feed" />
+    <link href="https://muunyblue.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="もくもくブログ RSS Feed" />
+
+	<script src="https://muunyblue.github.io/theme/js/jquery-2.1.4.min.js"></script>
+
+    <!--[if IE]>
+        <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="google-site-verification" content="ETSvqWJsfDNiXwsK89y7-OqkwM1O7DK9wiAkkA4Vfow" />
+    <link rel="alternate" hreflang="ja" href="http://blog.muuny-blue.info/" />
+</head>
+
+<body class="no-thank-yu">
+    <header id="banner" class="page-header clearfix">
+        <div id="contenthead" class="container">
+			<a href="https://muunyblue.github.io/">
+				<img id="title-logo" src="https://muunyblue.github.io/theme/img/title.png"></img>
+			</a>
+			<img id="look" src="https://muunyblue.github.io/theme/img/2.svg"></img>
+        </div>
+    </header><!-- /#banner -->
+
+    <!--Honoka Bootstrap-->
+    <div class="container">
+        <div id="content" class="row">
+            <div class="bs-component">
+                <div class="col-lg-12">
+  <article>
+    <header>
+      <div class="page-header">
+        <h1 class="entry-title">
+          <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html" rel="bookmark"
+             title="Permalink to Minidoxビルドログ">
+				<span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+            Minidoxビルドログ
+          </a>
+        </h1>
+      </div>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+<ul>
+    <li class="published" title="2018-08-17T13:41:01+09:00">
+        <span>Date:</span>2018-08-17 金 (午後 01:41:01)
+    </li>
+<li><span>Tags:</span><a href="https://muunyblue.github.io/tag/keyboard.html">Keyboard</a> <a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> </li>
+    <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
+</ul>
+</footer><!-- /.post-info -->      <p>まっしろMinidoxを作りました。かわいい。</p>
+<p><img alt="White Minidox" src="https://pbs.twimg.com/media/DknbeqPUYAEm4cM.jpg"></p>
+<p>ちょっと前に<a href="https://booth.pm/ja/items/718976">Boothで販売していたMinidoxのPCB</a>を購入していまたのですがやっと組み立て追わったのでビルドログを残しておきます。</p>
+<h1>組み立て編</h1>
+<p>[https://twitter.com/y_y_m_m/status/1025401830723936256:embed]</p>
+<p>基本的に<a href="https://imgur.com/a/vImo6#Rfd586V">Minidox Build log/guide</a>を見て組み立てればokなので、個人的に気をつけた点のみ書いていきます。</p>
+<p>英語がわからない場合はGoogle翻訳に突っ込むとなんとなくわかったので英語がよくわからない場合でも上記のBuild log/guideで問題ないと思います。</p>
+<h2>ダイオード折り曲げ</h2>
+<p>ダイオードの足をPCBに指定されているに折り曲げる必要があるのですが手で地道に折り曲げていくのは苦痛なのでいっぺんに折り曲げる方法を紹介します。</p>
+<p>折り曲げ幅はPCBを重ねて4枚分の幅なので今から組み立てるMinidoxのPCB2枚とPCB幅くらいの何かを2つ用意します。</p>
+<p>ちょうどZen KeyboardのPCBがあったので私はそれを使いました。</p>
+<p><img alt="pcb folding" src="https://pbs.twimg.com/media/DjpYxdOU8AEuYy-.jpg"></p>
+<p>間のPCB2枚分を隙間にしておくとダイオードがぴったりはまって調子良いです。</p>
+<h2>ProMicroの向き</h2>
+<p><strong>左右で裏表が逆になります。</strong>Build log/guideの画像は左側のみしか載せていないので注意です。</p>
+<p>あと、<strong>ProMicroはSwitchをハンダ付けしてからPCBにハンダ付けします。</strong></p>
+<p>先にProMicroの足をハンダ付けするのですがそのままの勢いでProMicro本体までハンダ付けしてしまわないように注意です。</p>
+<h1>ケース編</h1>
+<p>ケースはアクリルサンドイッチでなく3Dプリンタケースにしました。</p>
+<p>[https://github.com/pjones/minidox-case:embed]</p>
+<p>モデリング経験はないのでここにあるデータをそのまま使いました。必要なファイルは以下になります。(coverなしの場合)</p>
+<ul>
+<li>stls/case/case-left.stl</li>
+<li>stls/case/case-right.stl</li>
+<li>stls/top/top-left.stl</li>
+<li>stls/top/top-right.stl</li>
+</ul>
+<p>作成はDMM.makeにしてみました。注文方法は上記のstlファイルをDMM.makeにアップロードして確認メールを正常に受け取ったら注文するだけです。材質は一番安いナイロンのナチュラルカラーにしました。</p>
+<p>一番安い素材でもこのサイズのケースになると合計で15,000円近くなるので3Dプリンタを自宅に欲しくなりました。</p>
+<p>届いたケースの写真です。だいたい1週間程度で届きました。</p>
+<p><img alt="case" src="https://pbs.twimg.com/media/Dkxk21OUYAEHoiU.jpg"></p>
+<p><img alt="top" src="https://pbs.twimg.com/media/Dkxk3crUwAIvFfp.jpg"></p>
+<p>発注直後あたりに薄くて壊れやすい箇所があるけど大丈夫？ってメールが届いたのでそのままお願いしますというやり取りが1回ありました。</p>
+<p>実際に結構薄っぺらい箇所がありますが問題なく仕上がっていました、すごい。</p>
+<h2>ケースとPCBの干渉</h2>
+<p>残念ながら内側を少し削らないとケースにちゃんと収まりません。ちょっと写真が分かりづらいかもですが削った箇所の写真です。</p>
+<p><img alt="shave1" src="https://pbs.twimg.com/media/Dkxk4NBUwAEHsV_.jpg"></p>
+<p><img alt="shave2" src="https://pbs.twimg.com/media/Dkxk4w6UUAE3MCI.jpg"></p>
+<p>ちょうど良い道具がなかったのでニッパーとカッターでガリガリ削りました・・・結構削りやすいので彫刻刀やサンドペーパーで削るときれいに削れるのではないかと思います。</p>
+<p>削る箇所ですが、Switch足(ハンダ付けしてない部分)がケース内側のPCBが乗るでっぱり部分にあたってしまう箇所があるのでそこを削りました。蛍光ペンとかでSwitch足に軽く色をつけて載せてみると干渉箇所がよくわかります。</p>
+<p>Switchの足を削る手もあったのですがPCBを傷つけそうなのでやめました。</p>
+<h2>pjones/minidox-case</h2>
+<p>このケースに関して気になったこと一覧です。</p>
+<ul>
+<li>ケースはネジ止めできサイズはM3です</li>
+<li>ネジはなくても割と安定してはまります</li>
+<li>リセットスイッチは薄型でコンパクトなものでないと取り付けられません<ul>
+<li><a href="https://www.amazon.co.jp/uxcell-uxcell-%E3%82%BF%E3%82%AF%E3%83%88%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81-%E8%A7%A6%E8%A6%9A%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81-%E7%9E%AC%E9%96%93-%E3%83%96%E3%83%A9%E3%83%83%E3%82%AF-3-5mm%E3%83%9C%E3%82%BF%E3%83%B3%E3%81%AE%E7%9B%B4%E5%BE%84-6mmx6mmx4-3mm-50%E5%80%8B/dp/B076GXYKKX">これ</a>はだめ</li>
+<li><a href="https://www.amazon.co.jp/uxcell-SPST-%E3%82%BF%E3%82%AF%E3%83%88%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81-SMT-%E7%9E%AC%E6%99%82%E7%9A%84%E3%81%AA-5x5x1-5mm-20%E5%80%8B%E5%85%A5/dp/B00OK6D912/ref=sr_1_21?ie=UTF8&amp;qid=1534299688&amp;sr=8-21&amp;keywords=%E3%82%BF%E3%82%AF%E3%83%88%E3%82%B9%E3%82%A4%E3%83%83%E3%83%81">こっち</a>は試してないですが大丈夫かも</li>
+<li>一度ファームウェアを焼いてしまえばキー配列にリセットボタンをつけられる無理につけなくても良いかもしれません(初回は手動リセットになりますが・・・)</li>
+</ul>
+</li>
+<li>PCBに直接Switchを乗せるPCBマウントの取り付け方になるのでSwitchは5pinを購入する必要があります</li>
+<li>ナイロン素材は滑るのでゴム足が必要です</li>
+<li>上蓋とキーが干渉することがあり、上蓋の一部をかち割りたくなったりします</li>
+</ul>
+<h1>キー配列</h1>
+<p>まだ試行段階ですが以下のようになっています。</p>
+<p>[https://github.com/yymm/my-minidox-profile:embed]</p>
+<p>この記事もMinidoxで書いていますが明らかにキー数が足りてない感が否めません・・・せめてCrkbdくらい欲しくなります。</p>
+<p>明らかにキー数がなりないのでLayer以外のQMKの機能を活用したくなってきます、いくつか使った機能を紹介します。</p>
+<h2>Mod Tap</h2>
+<p><a href="https://github.com/qmk/qmk_firmware/blob/master/docs/feature_advanced_keycodes.md#mod-tap">Mod Tap - qmk_firmware</a></p>
+<p>Mod Tapとは長押しするとCtrlやShiftのようなModifierキー(修飾キー)になって短くタップすると指定した任意キーになるという機能です。</p>
+<p>個人的には、CtrlとTab、AltとEsc、などを組み合わせるのが便利です。以下keycodeです。</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// CtrlとTab</span>
+<span class="n">CTL_T</span><span class="p">(</span><span class="n">KC_TAB</span><span class="p">)</span><span class="w"></span>
+<span class="c1">// AltとEsc</span>
+<span class="n">ALT_T</span><span class="p">(</span><span class="n">KC_ESC</span><span class="p">)</span><span class="w"></span>
+</code></pre></div>
+
+<p>Tab待ち受け時間はconfig.hに設定を追加すると調整できます。</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#ifdef TAPPING_TERM</span>
+<span class="cp">#undef TAPPING_TERM</span>
+<span class="cp">#endif </span><span class="c1">// TAPPING_TERM</span>
+<span class="cp">#define TAPPING_TERM 200</span>
+</code></pre></div>
+
+<h2>LT</h2>
+<p>Mod TapのLayer版です。以下、LOWERとSpaceの例です。</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// LOWERとSpace</span>
+<span class="n">LT</span><span class="p">(</span><span class="n">_LOWER</span><span class="p">,</span><span class="n">KC_SPC</span><span class="p">)</span><span class="w"></span>
+</code></pre></div>
+
+<p>LTを使う際の注意は、SAFE_RANGEからラベリングされているcustom_keycodeの"LOWER"という変数ではなく、Oからラベリングされているlayer_numberの"_LOWER"の変数を使います。</p>
+<h1>Switch: Zilent 78g</h1>
+<p>遊舎工房産の元気なZilentです。</p>
+<p><img alt="zilent minidox" src="https://pbs.twimg.com/media/Djr1nG9VsAAw44P.jpg"></p>
+<p>個人的に前からSilent軸はすごく気になっていて遊舎工房さんで扱い始めて簡単に試すことができ嬉しいです。</p>
+<p>(というか国内でキースイッチが爆速で買えるの本当に凄い・・・)</p>
+<p>感想ですが、Zilentめっちゃ静かです。静かすぎてびっくりしています。今回Minidoxにつけたのは一番重い78gなのでなおさら静かなのかもしれません。</p>
+<p>静音リングをましましにつけていた自分にとってはぴったりな軸でした!</p>
+<p>一番軽いのも買ったので試しにつけてみた絵です。水色かわいい。かわいい。</p>
+<p>[https://twitter.com/y_y_m_m/status/1025602161634201601:embed]</p>
+<p>軽いのも良さそうでしたがなんとなく白黒で揃えたかったので、また別のキーボードに乗せることにしました。</p>
+<p>ZilentはTactileのSilent軸ですが、LinearのSilent軸も気になるのでKBDfansでGateron赤Silentが売っているので何かの機会に購入したいなぁと思っています。</p>
+<h1>白Keycaps</h1>
+<p><a href="https://talpkeyboard.stores.jp/">TALP KEYBOARD</a>で注文しました。</p>
+<p>DSAの白です、最近XDAもキーキャップも扱いだしていて気になります。1.5uのMacぽい印字のあるキーキャップも欲しかったのですが売り切れていたのでそっちはKBDfansで注文しました。</p>
+<p>ここまで来るとわかりますが、minidoxの素材は<strong>ほぼすべて日本で手に入っています。</strong></p>
+<p>国内で自作キーボードのパーツがほぼほぼ買えるってかなりすごいと思います。しかもすぐ届く。自作キーボードの時代きてますね。</p>
+<h1>ケーブル</h1>
+<p>[https://www.amazon.co.jp/gp/product/B07BJZFQ7N/ref=oh_aui_detailpage_o00_s00:embed]</p>
+<p>Minidoxは4極のケーブルを使います。せっかくなので白いケーブルを買いました。</p>
+<h1>Minidox所感</h1>
+<ul>
+<li>小さくてかわいい</li>
+<li>とにかく小さい、小さすぎる</li>
+<li>とにかくキー数足りない、少なすぎる、36キーって・・・</li>
+<li>ErgoDoxでキー数多すぎって思ってたけどこれはやりすぎでは・・・</li>
+<li>3Dプリンタケース良いかも</li>
+<li>Silent軸は本当に静かなので良い</li>
+<li>Helixユーザー的にはもう少し高さが低いほうが良いなぁと感じる</li>
+<li>特に意味はないが手元にLEDテープがあるので光らせたい</li>
+<li>写真がうまく撮れてないのでそのうち写真差し替えるかも</li>
+<li>Zen Keyboardがそろそろ作れそうなので次はZenのビルドログ書きます</li>
+</ul>
+    </div><!-- /.entry-content -->
+
+    <div class="article-ad">
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- responsive -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-8481391240785119"
+           data-ad-slot="3238871784"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <div class="comments">
+      <div id="disqus-toggle">
+          <h3>Show comments <span class="glyphicon glyphicon-comment"></span></h3>
+      </div>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        $("#disqus-toggle").click(function(){
+          var disqus_shortname = 'mokumoku';
+          var disqus_identifier = '4bfbd52f4e8466dc12aaf30b7e057b66.html';
+          var disqus_url = 'https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html';
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//mokumoku.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          $("#disqus-toggle").remove();
+        });
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+                </div><!-- /.col-lg-12 -->
+            </div><!-- /.bs-component -->
+        </div>
+        <div id="extras" class="row">
+            <div class="bs-component">
+<div class="extras-ad">
+    <h2><span class="glyphicon glyphicon-object-align-left"></span> Adsense</h2>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- small_square -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:200px;height:200px"
+         data-ad-client="ca-pub-8481391240785119"
+         data-ad-slot="9438651388"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+    <div class="sns">
+        <h2><span class="glyphicon glyphicon-share"></span> Share</h2>
+<ul>
+    <li>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="_y_y_m_m_">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </li>
+    
+    <li>
+        <a href="http://b.hatena.ne.jp/entry/https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html" class="hatena-bookmark-button" data-hatena-bookmark-title="Minidoxビルドログ" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加">
+            <img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+
+    </li>
+        <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+   
+    
+    
+    
+    <li>
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3&appId=387525661451951";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+        <div class="fb-like" data-href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
+    </li>
+ 
+</ul>    </div>
+
+    <div class="blogroll">
+        <h2><span class="glyphicon glyphicon-pushpin"></span> About</h2>
+        <p>どこにでもいる平凡なプログラムを書く人間のログ。</p>
+    </div><!-- /.blogroll -->
+
+    <div class="category">
+        <h2><span class="glyphicon glyphicon-th-list"></span> Category</h2>
+        <ul>
+			<li>
+				<a href="https://muunyblue.github.io/category/diary.html">
+				    	<span class="glyphicon glyphicon-book" aria-hidden="true" style="color: #0bd566;"></span>
+				    Diary
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/jia.html">
+				    	<span class="glyphicon glyphicon-home" aria-hidden="true" style="color: #f48c39;"></span>
+				    家
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/programming.html">
+				    	<span class="glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+				    Programming
+				</a>
+			</li>
+        </ul>
+    </div>
+
+    <div class="recently">
+        <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
+        <ul>
+			    <li>
+                    <p>2021年 12月16日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/97885afd60c10c4a454c11e225763e04.html">
+                            普通のキーボード写真とBLEの話
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 5月24日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
+                            React Hooks: useReducer & Context API with TypeScript
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 1月23日 午後 09:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/214cfbe603b7f9f9bc005d5f53f7a1d3.html">
+                            普通のTwitter転職
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月22日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/3a1f85dfef891b2a3685ccb35efa807e.html">
+                            Zen Keyboard Build log
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月17日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
+                            Minidoxビルドログ
+                        </a>
+                    </p>
+			    </li>
+        </ul>
+    </div>
+
+    <div class="tags">
+        <h2><span class="glyphicon glyphicon-tags"></span> Tags</h2>
+        <ul>
+                <li><a href="https://muunyblue.github.io/tag/asakatsu.html">Asakatsu</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/btsync.html">btsync</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/c.html">C++</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ci.html">CI</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/cppcheck.html">Cppcheck</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/css.html">CSS</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/github.html">GitHub</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gitlab.html">GitLab</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/go.html">Go</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/gtk.html">Gtk+</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/haskell.html">Haskell</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/hooks.html">Hooks</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/idcf.html">IDCF</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/javascript.html">JavaScript</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/keyboard.html">Keyboard</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/markdown.html">Markdown</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
+                <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/ubuntu.html">Ubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vagrant.html">Vagrant</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vim.html">Vim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/vps.html">VPS</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/zen.html">Zen</a> (1)</li>
+        </ul>
+    </div><!-- /.social -->
+
+    <div class="social">
+        <h2><span class="glyphicon glyphicon-sunglasses"></span> Social</h2>
+        <ul>
+            <li><a href="https://twitter.com/_y_y_m_m_" target="_blank">Twitter</a></li>
+            <li><a href="https://github.com/yymm" target="_blank">Github</a></li>
+            <li><a href="https://bitbucket.org/yymm" target="_blank">Bitbucket</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.atom.xml" target="_blank" type="application/atom+xml" rel="alternate">atom feed</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.rss.xml" target="_blank" type="application/rss+xml" rel="alternate">rss feed</a></li>
+        </ul>
+    </div><!-- /.social -->
+
+            </div><!-- /.bs-component -->
+        </div><!-- /#extras -->
+    </div><!--./container -->
+    <!--Honoka Bootstrap end -->
+
+    <footer id="contentinfo">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <p id="bloginfo"><a href="https://github.com/yymm/MokuMokuBlog" target="_blank" title="This blog"><img id="mokumokublog" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/mokumokublog.ico"></img></a> POWERD BY <a href="https://github.com/getpelican/pelican" target="_blank" title="This blog"><img id="pelican" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/pelican.ico"></img></a> GENERATED BY <a href="https://github.com/yymm/MemoMemo" target="_blank" title="MemoMemo"><img id="memomemo" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/memomemo.ico"></img></a></p>
+                    <p>Copyright <span class="glyphicon glyphicon-copyright-mark"></span> 2018 <a href="https://github.com/yymm" target="_blank">yuya yano</a> All Rights Reserved.</p>
+					<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img id="copyright" alt="クリエイティブ・コモンズ・ライセンス" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a></p>
+                </div><!--./col-xs-12 -->
+            </div><!--./row -->
+        </div><!--./container -->
+    </footer><!-- /#contentinfo -->
+
+<script src="https://muunyblue.github.io/theme/js/jquery.lazyload.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+$(function() {
+	$("img.lazy").lazyload({
+		effect : "fadeIn"
+	});
+});
+</script>
+<script src="https://muunyblue.github.io/theme/js/bootstrap.min.js"></script>
+<script src="https://muunyblue.github.io/theme/js/script.js"></script>
+
+    <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-67688469-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+<script type="text/javascript">
+    var disqus_shortname = 'mokumoku';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+
+<!--
+<!-- PtEngine -->
+<script type="text/javascript">
+	window._pt_sp_2 = [];
+	_pt_sp_2.push('setAccount,3e10d017');
+	var _protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+	(function() {
+		var atag = document.createElement('script'); atag.type = 'text/javascript'; atag.async = true;
+		atag.src = _protocol + 'js.ptengine.jp/pta.js';
+		var stag = document.createElement('script'); stag.type = 'text/javascript'; stag.async = true;
+		stag.src = _protocol + 'js.ptengine.jp/pts.js';
+		var s = document.getElementsByTagName('script')[0]; 
+		s.parentNode.insertBefore(atag, s);s.parentNode.insertBefore(stag, s);
+	})();
+</script>
+-->
+
+</body>
+</html>

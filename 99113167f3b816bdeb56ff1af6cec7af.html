@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="utf-8" />
+　　　　　　　　<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Xubuntu 16.04 初期設定</title>
+    <link rel="shortcut icon" href="https://muunyblue.github.io/theme/img/favicon.ico" >
+
+	<link rel="stylesheet" href="https://muunyblue.github.io/theme/css/main.css" />
+    <link rel="stylesheet" href="https://muunyblue.github.io/theme/css/bootstrap.min.css" />
+
+
+    <link href="https://muunyblue.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="もくもくブログ Atom Feed" />
+    <link href="https://muunyblue.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="もくもくブログ RSS Feed" />
+
+	<script src="https://muunyblue.github.io/theme/js/jquery-2.1.4.min.js"></script>
+
+    <!--[if IE]>
+        <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="google-site-verification" content="ETSvqWJsfDNiXwsK89y7-OqkwM1O7DK9wiAkkA4Vfow" />
+    <link rel="alternate" hreflang="ja" href="http://blog.muuny-blue.info/" />
+</head>
+
+<body class="no-thank-yu">
+    <header id="banner" class="page-header clearfix">
+        <div id="contenthead" class="container">
+			<a href="https://muunyblue.github.io/">
+				<img id="title-logo" src="https://muunyblue.github.io/theme/img/title.png"></img>
+			</a>
+			<img id="look" src="https://muunyblue.github.io/theme/img/2.svg"></img>
+        </div>
+    </header><!-- /#banner -->
+
+    <!--Honoka Bootstrap-->
+    <div class="container">
+        <div id="content" class="row">
+            <div class="bs-component">
+                <div class="col-lg-12">
+  <article>
+    <header>
+      <div class="page-header">
+        <h1 class="entry-title">
+          <a href="https://muunyblue.github.io/99113167f3b816bdeb56ff1af6cec7af.html" rel="bookmark"
+             title="Permalink to Xubuntu 16.04 初期設定">
+				<span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+            Xubuntu 16.04 初期設定
+          </a>
+        </h1>
+      </div>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+<ul>
+    <li class="published" title="2016-09-15T04:19:10+09:00">
+        <span>Date:</span>2016-09-15 木 (午前 04:19:10)
+    </li>
+        <!--<br />-->
+        <li class="modified" title="2016-09-15T04:25:01+09:00">
+            <span>Updated:</span>2016-09-15 木 (午前 04:25:01)
+        </li>
+<li><span>Tags:</span><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> </li>
+    <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
+</ul>
+</footer><!-- /.post-info -->      <p>ASUS Eee PC X101CHにXubuntuをインストールした際の設定です。</p>
+<p>Xubuntuは軽量デスクトップのXfce4を使っていてマシンスペックの低いPC向けで、使ってみた感じ欲しい設定は一通りそろっていて使いやすい印象があります。</p>
+<p>この記事では見た目や最低限使うための設定について書きます。</p>
+<p>これ以外に開発用にTerminalで設定している項目がありますがVimだけにとどめてあります。</p>
+<hr>
+<p>目次</p>
+<p>[TOC]</p>
+<h1>sudo apt-get update</h1>
+<p>リポジトリが古いので更新します。</p>
+<p>updateしないとgitもインストールできないので最初にやると良いです。</p>
+<h1>日本語入力</h1>
+<p>[http://blog.muuny-blue.info/3faf3b08de6c7c130e63c0e38e5553a8.html:embed]</p>
+<h1>caps to ctl</h1>
+<p><a href="http://askubuntu.com/questions/149971/how-do-you-remap-a-key-to-the-caps-lock-key-in-xubuntu/223674" title="How do you remap a key to the Caps Lock key in Xubuntu? - Ask Ubuntu">How do you remap a key to the Caps Lock key in Xubuntu? - Ask Ubuntu</a></p>
+<p>これを参考に以下の設定をします。</p>
+<div class="highlight"><pre><span></span><code>$ sudo vi /etc/default/keyboard
+<span class="nv">XKBOPTIONS</span><span class="o">=</span><span class="s2">&quot;ctrl:nocaps&quot;</span>
+</code></pre></div>
+
+<p>再起動後に結講になります。</p>
+<h1>Synapse</h1>
+<p>Synapseはランチャーです、個人的にすごい気に入って使っています。</p>
+<p>Softwareというアプリからインストールします。起動して検索窓にSynapseと入力すると出てくるのでインストールします。</p>
+<p><img alt="" src="https://i.gyazo.com/c6ed3670102891d306e21b85ba18a482.png"></p>
+<p>ThemeをSide Doishにしたのが以下です。</p>
+<p><img alt="" src="https://i.gyazo.com/3854b6b5aee86c12500875e0951b645f.png"></p>
+<p>Xfce4だと青くなるぽいです、見た目が綺麗です。</p>
+<h1>Gyazo</h1>
+<p><a href="https://github.com/gyazo/Gyazo-for-Linux" title="gyazo/Gyazo-for-Linux: Gyazo for Linux">gyazo/Gyazo-for-Linux: Gyazo for Linux</a></p>
+<p>公式リポジトリの通りにインストールします。</p>
+<div class="highlight"><pre><span></span><code>$ curl -s https://packagecloud.io/install/repositories/gyazo/gyazo-for-linux/script.deb.sh <span class="p">|</span> sudo bash
+$ sudo apt-get install gyazo
+</code></pre></div>
+
+<h1>Panelの設定</h1>
+<p><img alt="" src="https://i.gyazo.com/ec625a96ccb251fa4ade65d17738fcb1.png"></p>
+<p>デスクトップの上または横にあるbarをPanelと言います。縦の解像度が厳しいPCなのでModeを横に配置している画像です。</p>
+<p>barを右クリックして"Panel&gt;Panel Preferense"から設定を変更できます。</p>
+<p><img alt="" src="https://i.gyazo.com/8efced66e9e11e6b8faf605ace666a31.png"></p>
+<p>幅や長さも変更できてPanelのカスタマイズ性がとても高いです。</p>
+<p>Itemsで表示するItemを選択できるのですが割と欲しいものがそろっています。</p>
+<p><img alt="" src="https://i.gyazo.com/a4d54300c505f2db60f370fb66e82c6f.png"></p>
+<p>設定後</p>
+<p><img alt="" src="https://i.gyazo.com/6227d3f45f7a20051d0009fbbb45b4d6.png"></p>
+<h1>Workspaces</h1>
+<p>"Settings&gt;Workspaces"で設定できます。</p>
+<p>Xfce4の場合は横にどんどん増えていきます。2画面あると便利なので2に設定しました。</p>
+<p>切り替えはデフォルトでCtrl+Alt+十字キーです、Ctｒｌ＋Fn+Alt+十字キーでウィンドウの移動ができます。</p>
+<h1>不要なデスクトップアイコン削除</h1>
+<p>"Settings&gt;Desktop"の"Icons&gt;Default Icons"で設定できます。</p>
+<p>いらないので全部チェックを外しました。</p>
+<h1>キーリピート速度設定</h1>
+<p>"Settings&gt;Keyboard"のRepeat Delay"と"Repeat Speed"を変更します。</p>
+<p>250と55に設定しました(デフォルト500と20)</p>
+<h1>Vim</h1>
+<p>※ Vimerのみ</p>
+<p>Vimはビルドしてインストールします。</p>
+<div class="highlight"><pre><span></span><code><span class="o">$</span> <span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">git</span> <span class="n">gettext</span> <span class="n">libncurses5</span><span class="o">-</span><span class="n">dev</span> <span class="n">libacl1</span><span class="o">-</span><span class="n">dev</span> <span class="n">libgpm</span><span class="o">-</span><span class="n">dev</span> <span class="n">libxmu</span><span class="o">-</span><span class="n">dev</span> <span class="n">libgtk2</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">dev</span> <span class="n">libxpm</span><span class="o">-</span><span class="n">dev</span> <span class="n">libperl</span><span class="o">-</span><span class="n">dev</span> <span class="n">python</span><span class="o">-</span><span class="n">dev</span> <span class="n">python3</span><span class="o">-</span><span class="n">dev</span> <span class="n">ruby</span><span class="o">-</span><span class="n">dev</span> <span class="n">lua5</span><span class="o">.</span><span class="mi">2</span> <span class="n">liblua5</span><span class="o">.</span><span class="mi">2</span><span class="o">-</span><span class="n">dev</span>
+<span class="o">$</span> <span class="n">cd</span> <span class="n">Downloads</span>
+<span class="o">$</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">vim</span><span class="o">/</span><span class="n">vim</span><span class="o">.</span><span class="n">git</span>
+<span class="o">$</span> <span class="n">cd</span> <span class="n">vim</span>
+<span class="o">$</span> <span class="o">./</span><span class="n">configure</span> <span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">features</span><span class="o">=</span><span class="n">huge</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">gui</span><span class="o">=</span><span class="n">gtk2</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">perlinterp</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">pythoninterp</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">python3interp</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">rubyinterp</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">luainterp</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">fail</span><span class="o">-</span><span class="k">if</span><span class="o">-</span><span class="n">missing</span>
+<span class="o">$</span> <span class="n">make</span>
+<span class="o">$</span> <span class="n">sudo</span> <span class="n">make</span> <span class="n">install</span>
+</code></pre></div>
+    </div><!-- /.entry-content -->
+
+    <div class="article-ad">
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- responsive -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-8481391240785119"
+           data-ad-slot="3238871784"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <div class="comments">
+      <div id="disqus-toggle">
+          <h3>Show comments <span class="glyphicon glyphicon-comment"></span></h3>
+      </div>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        $("#disqus-toggle").click(function(){
+          var disqus_shortname = 'mokumoku';
+          var disqus_identifier = '99113167f3b816bdeb56ff1af6cec7af.html';
+          var disqus_url = 'https://muunyblue.github.io/99113167f3b816bdeb56ff1af6cec7af.html';
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//mokumoku.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          $("#disqus-toggle").remove();
+        });
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+                </div><!-- /.col-lg-12 -->
+            </div><!-- /.bs-component -->
+        </div>
+        <div id="extras" class="row">
+            <div class="bs-component">
+<div class="extras-ad">
+    <h2><span class="glyphicon glyphicon-object-align-left"></span> Adsense</h2>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- small_square -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:200px;height:200px"
+         data-ad-client="ca-pub-8481391240785119"
+         data-ad-slot="9438651388"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+    <div class="sns">
+        <h2><span class="glyphicon glyphicon-share"></span> Share</h2>
+<ul>
+    <li>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="_y_y_m_m_">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </li>
+    
+    <li>
+        <a href="http://b.hatena.ne.jp/entry/https://muunyblue.github.io/99113167f3b816bdeb56ff1af6cec7af.html" class="hatena-bookmark-button" data-hatena-bookmark-title="Xubuntu 16.04 初期設定" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加">
+            <img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+
+    </li>
+        <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+   
+    
+    
+    
+    <li>
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3&appId=387525661451951";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+        <div class="fb-like" data-href="https://muunyblue.github.io/99113167f3b816bdeb56ff1af6cec7af.html" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
+    </li>
+ 
+</ul>    </div>
+
+    <div class="blogroll">
+        <h2><span class="glyphicon glyphicon-pushpin"></span> About</h2>
+        <p>どこにでもいる平凡なプログラムを書く人間のログ。</p>
+    </div><!-- /.blogroll -->
+
+    <div class="category">
+        <h2><span class="glyphicon glyphicon-th-list"></span> Category</h2>
+        <ul>
+			<li>
+				<a href="https://muunyblue.github.io/category/diary.html">
+				    	<span class="glyphicon glyphicon-book" aria-hidden="true" style="color: #0bd566;"></span>
+				    Diary
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/jia.html">
+				    	<span class="glyphicon glyphicon-home" aria-hidden="true" style="color: #f48c39;"></span>
+				    家
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/programming.html">
+				    	<span class="glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+				    Programming
+				</a>
+			</li>
+        </ul>
+    </div>
+
+    <div class="recently">
+        <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
+        <ul>
+			    <li>
+                    <p>2021年 12月16日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/97885afd60c10c4a454c11e225763e04.html">
+                            普通のキーボード写真とBLEの話
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 5月24日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
+                            React Hooks: useReducer & Context API with TypeScript
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 1月23日 午後 09:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/214cfbe603b7f9f9bc005d5f53f7a1d3.html">
+                            普通のTwitter転職
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月22日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/3a1f85dfef891b2a3685ccb35efa807e.html">
+                            Zen Keyboard Build log
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月17日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
+                            Minidoxビルドログ
+                        </a>
+                    </p>
+			    </li>
+        </ul>
+    </div>
+
+    <div class="tags">
+        <h2><span class="glyphicon glyphicon-tags"></span> Tags</h2>
+        <ul>
+                <li><a href="https://muunyblue.github.io/tag/asakatsu.html">Asakatsu</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/btsync.html">btsync</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/c.html">C++</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ci.html">CI</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/cppcheck.html">Cppcheck</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/css.html">CSS</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/github.html">GitHub</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gitlab.html">GitLab</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/go.html">Go</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/gtk.html">Gtk+</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/haskell.html">Haskell</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/hooks.html">Hooks</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/idcf.html">IDCF</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/javascript.html">JavaScript</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/keyboard.html">Keyboard</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/markdown.html">Markdown</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
+                <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/ubuntu.html">Ubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vagrant.html">Vagrant</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vim.html">Vim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/vps.html">VPS</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/zen.html">Zen</a> (1)</li>
+        </ul>
+    </div><!-- /.social -->
+
+    <div class="social">
+        <h2><span class="glyphicon glyphicon-sunglasses"></span> Social</h2>
+        <ul>
+            <li><a href="https://twitter.com/_y_y_m_m_" target="_blank">Twitter</a></li>
+            <li><a href="https://github.com/yymm" target="_blank">Github</a></li>
+            <li><a href="https://bitbucket.org/yymm" target="_blank">Bitbucket</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.atom.xml" target="_blank" type="application/atom+xml" rel="alternate">atom feed</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.rss.xml" target="_blank" type="application/rss+xml" rel="alternate">rss feed</a></li>
+        </ul>
+    </div><!-- /.social -->
+
+            </div><!-- /.bs-component -->
+        </div><!-- /#extras -->
+    </div><!--./container -->
+    <!--Honoka Bootstrap end -->
+
+    <footer id="contentinfo">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <p id="bloginfo"><a href="https://github.com/yymm/MokuMokuBlog" target="_blank" title="This blog"><img id="mokumokublog" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/mokumokublog.ico"></img></a> POWERD BY <a href="https://github.com/getpelican/pelican" target="_blank" title="This blog"><img id="pelican" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/pelican.ico"></img></a> GENERATED BY <a href="https://github.com/yymm/MemoMemo" target="_blank" title="MemoMemo"><img id="memomemo" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/memomemo.ico"></img></a></p>
+                    <p>Copyright <span class="glyphicon glyphicon-copyright-mark"></span> 2018 <a href="https://github.com/yymm" target="_blank">yuya yano</a> All Rights Reserved.</p>
+					<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img id="copyright" alt="クリエイティブ・コモンズ・ライセンス" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a></p>
+                </div><!--./col-xs-12 -->
+            </div><!--./row -->
+        </div><!--./container -->
+    </footer><!-- /#contentinfo -->
+
+<script src="https://muunyblue.github.io/theme/js/jquery.lazyload.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+$(function() {
+	$("img.lazy").lazyload({
+		effect : "fadeIn"
+	});
+});
+</script>
+<script src="https://muunyblue.github.io/theme/js/bootstrap.min.js"></script>
+<script src="https://muunyblue.github.io/theme/js/script.js"></script>
+
+    <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-67688469-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+<script type="text/javascript">
+    var disqus_shortname = 'mokumoku';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+
+<!--
+<!-- PtEngine -->
+<script type="text/javascript">
+	window._pt_sp_2 = [];
+	_pt_sp_2.push('setAccount,3e10d017');
+	var _protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+	(function() {
+		var atag = document.createElement('script'); atag.type = 'text/javascript'; atag.async = true;
+		atag.src = _protocol + 'js.ptengine.jp/pta.js';
+		var stag = document.createElement('script'); stag.type = 'text/javascript'; stag.async = true;
+		stag.src = _protocol + 'js.ptengine.jp/pts.js';
+		var s = document.getElementsByTagName('script')[0]; 
+		s.parentNode.insertBefore(atag, s);s.parentNode.insertBefore(stag, s);
+	})();
+</script>
+-->
+
+</body>
+</html>

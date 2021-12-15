@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="utf-8" />
+　　　　　　　　<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Isomorphic Javascript 開発話 in 2016 (Koa + React + Material-UI)</title>
+    <link rel="shortcut icon" href="https://muunyblue.github.io/theme/img/favicon.ico" >
+
+	<link rel="stylesheet" href="https://muunyblue.github.io/theme/css/main.css" />
+    <link rel="stylesheet" href="https://muunyblue.github.io/theme/css/bootstrap.min.css" />
+
+
+    <link href="https://muunyblue.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="もくもくブログ Atom Feed" />
+    <link href="https://muunyblue.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="もくもくブログ RSS Feed" />
+
+	<script src="https://muunyblue.github.io/theme/js/jquery-2.1.4.min.js"></script>
+
+    <!--[if IE]>
+        <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="google-site-verification" content="ETSvqWJsfDNiXwsK89y7-OqkwM1O7DK9wiAkkA4Vfow" />
+    <link rel="alternate" hreflang="ja" href="http://blog.muuny-blue.info/" />
+</head>
+
+<body class="no-thank-yu">
+    <header id="banner" class="page-header clearfix">
+        <div id="contenthead" class="container">
+			<a href="https://muunyblue.github.io/">
+				<img id="title-logo" src="https://muunyblue.github.io/theme/img/title.png"></img>
+			</a>
+			<img id="look" src="https://muunyblue.github.io/theme/img/2.svg"></img>
+        </div>
+    </header><!-- /#banner -->
+
+    <!--Honoka Bootstrap-->
+    <div class="container">
+        <div id="content" class="row">
+            <div class="bs-component">
+                <div class="col-lg-12">
+  <article>
+    <header>
+      <div class="page-header">
+        <h1 class="entry-title">
+          <a href="https://muunyblue.github.io/7792b558ca0c76d24d695582021ac501.html" rel="bookmark"
+             title="Permalink to Isomorphic Javascript 開発話 in 2016 (Koa + React + Material-UI)">
+				<span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+            Isomorphic Javascript 開発話 in 2016 (Koa + React + Material-UI)
+          </a>
+        </h1>
+      </div>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+<ul>
+    <li class="published" title="2017-01-17T04:18:14+09:00">
+        <span>Date:</span>2017-01-17 火 (午前 04:18:14)
+    </li>
+        <!--<br />-->
+        <li class="modified" title="2017-01-18T00:59:13+09:00">
+            <span>Updated:</span>2017-01-18 水 (午前 12:59:13)
+        </li>
+<li><span>Tags:</span><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> <a href="https://muunyblue.github.io/tag/javascript.html">Javascript</a> <a href="https://muunyblue.github.io/tag/react.html">React</a> </li>
+    <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
+</ul>
+</footer><!-- /.post-info -->      <p>去年(2016年8月頃)、社内で使う電話帳blacklistアプリをIsomorphic Javascriptで作りながらWikiにまとめていた開発話が面白い感じになっていたのでその転載です。</p>
+<p>GitLab上で開発していたのでJavascript以外にもGitLab CIの話もあります。</p>
+<h1>開発話</h1>
+<p>Reactを使用して楽をしたいので、開発言語はNode.jsを選択。</p>
+<p>versionは新しいものを使っていこうと思うので、v6.3.0を使っていきます。</p>
+<div class="highlight"><pre><span></span><code>$ mkdir blacklist
+$ <span class="nb">cd</span> blacklist
+$ npm init
+$ git init
+$ vim .gitignore <span class="c1"># https://gist.github.com/pmq20/2887714</span>
+</code></pre></div>
+
+<p>全てESで書けるのでisomorphicということになる。</p>
+<p>Node.jsの問題はここから使用するツールをいろいろ選択肢ないとなところ...</p>
+<p>まずは、定番ぽいものを選択してboilerplateを作成していく。</p>
+<ul>
+<li>サーバサイド =&gt; Koa</li>
+<li>フロントエンド =&gt; React</li>
+<li>コンパイラ =&gt; Babel</li>
+<li>モジュール管理 =&gt; Webpack</li>
+<li>ビルド =&gt; Gulp(この手のbuildツール使いたくない...)</li>
+<li>テスト =&gt; Mocha</li>
+</ul>
+<p>ｳｯ。。。。ｵｵｽｷﾞ。。。。。</p>
+<h1>Boilerplate</h1>
+<p><a href="http://qiita.com/masato/items/b4fff7e885f78cd96edb" title="ES6で書くIsomorphicアプリ入門 - Part1: リソース - Qiita">ES6で書くIsomorphicアプリ入門 - Part1: リソース - Qiita</a></p>
+<p>このリンクからわかるように様々な人が色んなboilerplateを作成していて、しかも割りと複雑で控えめに言って地獄。</p>
+<p><a href="https://github.com/dozoisch/koa-react-full-example" title="dozoisch/koa-react-full-example: Full example using Koa, React, Passport, Mongoose, Webpack, Mocha, Babel">dozoisch/koa-react-full-example: Full example using Koa, React, Passport, Mongoose, Webpack, Mocha, Babel</a></p>
+<p>今回は必要ないもの多すぎる気がするけど参考に眺めてみると...</p>
+<ul>
+<li>npmコマンドで諸々のことができるようなのでgulpは死亡。</li>
+<li>webpackが開発サーバ建てれるようなのでwebpackの調査</li>
+<li>.babelrcという設定ファイルがあるようなのでbabelの調査</li>
+<li>eslint使うの良さそう</li>
+</ul>
+<p>いろいろ大変そうだが以下の記事が最高だと感じたので全面的に参考にしていく。</p>
+<p><a href="http://blog.joanboixados.com/building-a-boilerplate-for-a-koa-redux-react-application-including-webpack-mocha-and-sass/" title="Building a boilerplate for a Koa, Redux, React application including Webpack, Mocha and SASS">Building a boilerplate for a Koa, Redux, React application including Webpack, Mocha and SASS</a></p>
+<h2>setup server-side (koa)</h2>
+<div class="highlight"><pre><span></span><code>$ npm install --save koa
+</code></pre></div>
+
+<p>とりあえず一番シンプルなKoaを書いてみます。</p>
+<p>./server.js</p>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nx">koa</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;koa&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">koa</span><span class="p">();</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="kd">function</span> <span class="o">*</span><span class="p">(){</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">body</span> <span class="o">=</span> <span class="s1">&#39;Hello from koajs&#39;</span><span class="p">;</span>
+<span class="p">});</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mf">3000</span><span class="p">);</span>
+</code></pre></div>
+
+<p>Koaはシンプルな機能のみを提供していて、必要な機能はmiddlewareを追加していくアーキテクチャになっているので、APIサーバを書く予定なのでまずはrouterを追加する。</p>
+<div class="highlight"><pre><span></span><code>$ npm install --save koa-route
+<span class="o">(</span>$ npm install --save koa-cors<span class="o">)</span>
+</code></pre></div>
+
+<p>Koa単体だと、Cross Origin Resource Sharing (CORS)の対策がないのでAPIサーバを実装する場合には入れたほうが良い。</p>
+<p>テンプレートエンジンと静的ファイルも使いたいので、必要なパッケージを追加します。</p>
+<p>(参考: <a href="http://yosuke-furukawa.hatenablog.com/entry/2013/12/26/125351" title="koa入門 - from scratch">koa入門 - from scratch</a>)</p>
+<div class="highlight"><pre><span></span><code>$ npm install --save koa-static co-views
+</code></pre></div>
+
+<p>これらのmiddle wareを使ってserver.jsを書きなおします。</p>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nx">koa</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;koa&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">route</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;koa-route&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">serve</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;koa-static&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">views</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;co-views&#39;</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">koa</span><span class="p">();</span>
+
+<span class="c1">// View</span>
+
+<span class="kd">var</span> <span class="nx">render</span> <span class="o">=</span> <span class="nx">views</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/views&#39;</span><span class="p">);</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">route</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="o">*</span><span class="p">(){</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">body</span> <span class="o">=</span> <span class="k">yield</span> <span class="nx">render</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">);</span>
+<span class="p">}));</span>
+
+<span class="c1">// API</span>
+
+
+<span class="c1">// Static</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">serve</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/app/dist&#39;</span><span class="p">));</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mf">3000</span><span class="p">);</span>
+</code></pre></div>
+
+<h2>setup front-end (babel/webpack/react)</h2>
+<p>ディレクトリ構成は以下のようにする方針で行きます。</p>
+<div class="highlight"><pre><span></span><code>.
+├── app
+│   ├── dist
+│   │   └── bundle.js
+│   └── src
+│       └── main.js
+├── package.json
+├── server.js
+├── views
+│   └── index.html
+└── webpack.config.js
+</code></pre></div>
+
+<p>まずWebpackの準備をします。</p>
+<div class="highlight"><pre><span></span><code>$ npm install --save webpack
+$ npm install --save-dev webpack-dev-server 
+</code></pre></div>
+
+<p>最初のwebpack.config.jsを書いてみます。</p>
+<div class="highlight"><pre><span></span><code><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">entry</span><span class="o">:</span> <span class="p">[</span>
+    <span class="s1">&#39;./app/src/main.js&#39;</span>
+  <span class="p">],</span>
+  <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/app/dist&#39;</span><span class="p">,</span>
+    <span class="nx">publicPath</span><span class="o">:</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
+    <span class="nx">filename</span><span class="o">:</span> <span class="s1">&#39;bundle.js&#39;</span>
+  <span class="p">},</span>
+  <span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">contentBase</span><span class="o">:</span> <span class="s1">&#39;./app/dist&#39;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p>publicPathは、<a href="http://www.pupha.net/archives/3296/" title="タスクランナーを使わずに webpack だけでフロントエンド開発する方法 - yukisovのメモ帳">この記事</a>によると、</p>
+<blockquote>
+<p>publicPath は webpack-dev-server で自動コンパイルするために必要（URLにおけるJSファイルへのパスを書く）</p>
+</blockquote>
+<p>ということなので、index.htmlから参照するbundle.jsのディレクトリを指定します。</p>
+<p>Webpackを実行してみます。</p>
+<div class="highlight"><pre><span></span><code><span class="err">$</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="n">node_modules</span><span class="o">/</span><span class="p">.</span><span class="n">bin</span><span class="o">/</span><span class="n">webpack</span><span class="w"></span>
+<span class="nl">Hash</span><span class="p">:</span><span class="w"> </span><span class="mi">448</span><span class="n">a36d28f029188e4ee</span><span class="w"></span>
+<span class="nl">Version</span><span class="p">:</span><span class="w"> </span><span class="n">webpack</span><span class="w"> </span><span class="mf">1.13.1</span><span class="w"></span>
+<span class="nc">Time</span><span class="err">:</span><span class="w"> </span><span class="mi">51</span><span class="n">ms</span><span class="w"></span>
+<span class="w">    </span><span class="n">Asset</span><span class="w">     </span><span class="k">Size</span><span class="w">  </span><span class="n">Chunks</span><span class="w">             </span><span class="n">Chunk</span><span class="w"> </span><span class="k">Names</span><span class="w"></span>
+<span class="n">bundle</span><span class="p">.</span><span class="n">js</span><span class="w">  </span><span class="mf">1.51</span><span class="w"> </span><span class="n">kB</span><span class="w">       </span><span class="mi">0</span><span class="w">  </span><span class="o">[</span><span class="n">emitted</span><span class="o">]</span><span class="w">  </span><span class="n">main</span><span class="w"></span>
+<span class="w">   </span><span class="o">[</span><span class="n">0</span><span class="o">]</span><span class="w"> </span><span class="n">multi</span><span class="w"> </span><span class="n">main</span><span class="w"> </span><span class="mi">28</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="err">{</span><span class="mi">0</span><span class="err">}</span><span class="w"> </span><span class="o">[</span><span class="n">built</span><span class="o">]</span><span class="w"></span>
+<span class="w">   </span><span class="o">[</span><span class="n">1</span><span class="o">]</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">src</span><span class="o">/</span><span class="n">main</span><span class="p">.</span><span class="n">js</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">bytes</span><span class="w"> </span><span class="err">{</span><span class="mi">0</span><span class="err">}</span><span class="w"> </span><span class="o">[</span><span class="n">built</span><span class="o">]</span><span class="w"></span>
+</code></pre></div>
+
+<p>bundle.jsが誕生しました。package.jsonのscriptsにwebpackビルドのコマンドを追加します。</p>
+<div class="highlight"><pre><span></span><code>  &quot;scripts&quot;: {
+    &quot;webserver&quot;: &quot;node server.js&quot;,
+    &quot;build&quot;: &quot;./node_modules/.bin/webpack&quot;,
+    &quot;dev&quot;: &quot;./node_modules/.bin/webpack-dev-server&quot;
+  },
+</code></pre></div>
+
+<p>これで、"npm run build"や"npm run dev"でwebpackビルドやdev-serverの起動ができます。</p>
+<p>さぁ、ここからが本番です。~~Let's yak shaving!~~</p>
+<p>Webpackにbabelビルドを追加します。ついでにdevServerにHotRoadも追加します。</p>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack&#39;</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">entry</span><span class="o">:</span> <span class="p">[</span>
+    <span class="s1">&#39;./app/src/main.js&#39;</span>
+  <span class="p">],</span>
+  <span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">loaders</span><span class="o">:</span> <span class="p">[{</span>
+      <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.jsx?$/</span><span class="p">,</span>
+      <span class="nx">exclude</span><span class="o">:</span> <span class="sr">/node_modules/</span><span class="p">,</span>
+      <span class="nx">loader</span><span class="o">:</span> <span class="s1">&#39;babel&#39;</span>
+    <span class="p">}]</span>
+  <span class="p">},</span>
+  <span class="nx">resolve</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;.js&#39;</span><span class="p">,</span> <span class="s1">&#39;.jsx&#39;</span><span class="p">]</span>
+  <span class="p">},</span>
+  <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/app/dist&#39;</span><span class="p">,</span>
+    <span class="nx">publicPath</span><span class="o">:</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
+    <span class="nx">filename</span><span class="o">:</span> <span class="s1">&#39;bundle.js&#39;</span>
+  <span class="p">},</span>
+  <span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">contentBase</span><span class="o">:</span> <span class="s1">&#39;./app/dist&#39;</span><span class="p">,</span>
+    <span class="nx">historyApiFallback</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">hot</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">inline</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">progress</span><span class="o">:</span> <span class="kc">true</span>
+  <span class="p">},</span>
+  <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
+    <span class="ow">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">HotModuleReplacementPlugin</span><span class="p">()</span>
+  <span class="p">]</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p>babelビルドのためにbabel-loaderをインストールします。</p>
+<div class="highlight"><pre><span></span><code><span class="o">$</span> <span class="n">npm</span> <span class="n">install</span> <span class="o">--</span><span class="n">save</span> <span class="n">babel</span><span class="o">-</span><span class="n">loader</span>
+</code></pre></div>
+
+<p>Webpack固有の記法がじゃんじゃんでてきてｳｯってなりますが、<a href="http://dackdive.hateblo.jp/entry/2016/04/13/123000" title="webpack.config.jsの読み方、書き方 - dackdive's blog">webpack.config.jsの読み方、書き方 - dackdive's blog</a>などの有用な日本語記事を呼んで気を安らげると良いです。</p>
+<p>dev-serverでhotリロードするにはdistにhtmlが配置されてる必要があるようです(参考: <a href="http://dackdive.hateblo.jp/entry/2016/05/07/183335" title="webpack-dev-serverの基本的な使い方とポイント - dackdive's blog">webpack-dev-serverの基本的な使い方とポイント - dackdive's blog</a>)</p>
+<p>Koaのテンプレートとしてhtmlを扱っていたので、Koa+Webpack+Hotという構成を取る...?という流れになります。</p>
+<p>そしてさっと探すだけでそういうものが見つかります。</p>
+<p><a href="https://github.com/glenjamin/webpack-hot-middleware" title="glenjamin/webpack-hot-middleware: Webpack hot reloading you can attach to your own server">glenjamin/webpack-hot-middleware: Webpack hot reloading you can attach to your own server</a></p>
+<p>見てみると、serverサイドのコードにhotリロードのためだけに手を入れる必要がでてきます。</p>
+<p>デプロイするときは無効にするようにwebpackでやったりするのかなぁ...</p>
+<p>ｳｯ...ｵ､､､ｵｯ､､､ｵｩｴｪｪｪｪ</p>
+<p>危険を察知したなので使うのをやめます。</p>
+<p>KoaとWebpackを組み合わせるのはisomorphicとは言え面倒さがある気がします。</p>
+<p>サーバサイドとフロントエンドで同じ言語を使えますが、その壁を綺麗さっぱりぶち壊すことはできません。</p>
+<p>あらためて方針を決めていきます。</p>
+<ul>
+<li>hotリロードは便利なので使う</li>
+<li>htmlはSPA的(KoaのAPIを叩く)に使うことにして開発時はwebpack-dev-serverを使う</li>
+<li>Koaで作るAPIも動かす必要があるので、開発時はKoaサーバとwebpack-dev-serverの両方を起動した状態で開発</li>
+<li>デプロイ時は、Koaでapp/dist/index.htmlをViewとして使うがテンプレートとしては全く使用しない(ただ表示するのみ)</li>
+</ul>
+<p>開発中に2つサーバを動かすことを妥協点としてやっていくことにします。</p>
+<p>(正直この辺の選択は難しいのと個人差がありそうなので、皆さんがどうしてるか知りたいところ...)</p>
+<p>ここで今までのことの60,70%くらいが水の泡と化したので改めて検討し直します。</p>
+<h1>方針を決める</h1>
+<p>フロントエンドのほうはそのままwebpackで行きます。</p>
+<p>サーバサイドはAPIサーバとindex.htmlを単に表示して、jsとcssをstaticファイルとして配信することができればokです。</p>
+<p>本番環境ではフロントエンドをWebpackでビルドして通ったらKoaサーバを動かして完了。</p>
+<p>開発環境ではwebpack-dev-serverでフロントエンド開発、KoaサーバでAPI開発をします。(一応Koaサーバのindex.htmlで本番環境と同等の状態で動かせますがHotリロードはない)</p>
+<h1>setup server-side (Koa)</h1>
+<p>koa-staticとkoa-routeを使ってSPAとAPIを同じプロジェクト内に作ります。</p>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nx">koa</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;koa&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">route</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;koa-route&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">serve</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;koa-static&#39;</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">koa</span><span class="p">();</span>
+
+<span class="c1">// View</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">serve</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/app/dist&#39;</span><span class="p">));</span>
+
+<span class="c1">// API</span>
+
+<span class="c1">// app.use(route.get(&#39;/api/xxx&#39;, function *(next) {</span>
+<span class="c1">// }));</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mf">3000</span><span class="p">);</span>
+</code></pre></div>
+
+<h1>setup front-end (webpack, babel, react)</h1>
+<p>reactを使う方向でディレクトリ構成を改めて決めていきます。</p>
+<div class="highlight"><pre><span></span><code>.
+├── app
+│   ├── dist
+│   │   ├── bundle.js
+│   │   └── index.html
+│   └── src
+│       ├── components
+│       │   └── App.jsx
+│       └── index.jsx
+├── package.json
+├── server.js
+└── webpack.config.js
+</code></pre></div>
+
+<p>webpackを改めて書き直します。</p>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack&#39;</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">entry</span><span class="o">:</span> <span class="p">[</span>
+    <span class="s1">&#39;./app/src/index&#39;</span>
+  <span class="p">],</span>
+  <span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">loaders</span><span class="o">:</span> <span class="p">[{</span>
+      <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.jsx?$/</span><span class="p">,</span>
+      <span class="nx">exclude</span><span class="o">:</span> <span class="sr">/node_modules/</span><span class="p">,</span>
+      <span class="nx">loaders</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;babel&#39;</span><span class="p">]</span>
+    <span class="p">}]</span>
+  <span class="p">},</span>
+  <span class="nx">resolve</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;.js&#39;</span><span class="p">,</span> <span class="s1">&#39;.jsx&#39;</span><span class="p">]</span>
+  <span class="p">},</span>
+  <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/app/dist&#39;</span><span class="p">,</span>
+    <span class="nx">publicPath</span><span class="o">:</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
+    <span class="nx">filename</span><span class="o">:</span> <span class="s1">&#39;bundle.js&#39;</span>
+  <span class="p">},</span>
+  <span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">contentBase</span><span class="o">:</span> <span class="s1">&#39;./app/dist&#39;</span><span class="p">,</span>
+    <span class="nx">historyApiFallback</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">hot</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">inline</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">progress</span><span class="o">:</span> <span class="kc">true</span>
+  <span class="p">},</span>
+  <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
+    <span class="ow">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">HotModuleReplacementPlugin</span><span class="p">()</span>
+  <span class="p">]</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p>reactを使っていくので必要なものをインストールします。</p>
+<div class="highlight"><pre><span></span><code>$ npm install --save react react-dom
+</code></pre></div>
+
+<p>babelでコンパイルするのですが、babelをreactとimportに対応させるためにパッケージと.babelrcが必要です(しばらくハマった...)</p>
+<div class="highlight"><pre><span></span><code>$ npm install --save-dev babel-preset-es2015 babel-preset-react
+</code></pre></div>
+
+<p>.babelrc</p>
+<div class="highlight"><pre><span></span><code>{
+  &quot;presets&quot;: [&quot;react&quot;, &quot;es2015&quot;]
+}
+</code></pre></div>
+
+<p>これで"npm run dev"でhot-reloadなwebpack-dev-server(:8080)でフロントエンド開発ができます。</p>
+<p>最後に、ブラウザでのdebug用にsource-mapの追加と、pathが相対パスなのを修正します。</p>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">webpack</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;webpack&#39;</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">devtool</span><span class="o">:</span> <span class="s1">&#39;source-map&#39;</span><span class="p">,</span>
+  <span class="nx">entry</span><span class="o">:</span> <span class="p">[</span>
+    <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">&#39;app/src/index&#39;</span><span class="p">)</span>
+  <span class="p">],</span>
+  <span class="nx">module</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">loaders</span><span class="o">:</span> <span class="p">[{</span>
+      <span class="nx">test</span><span class="o">:</span> <span class="sr">/\.jsx?$/</span><span class="p">,</span>
+      <span class="nx">exclude</span><span class="o">:</span> <span class="sr">/node_modules/</span><span class="p">,</span>
+      <span class="nx">loaders</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;babel&#39;</span><span class="p">]</span>
+    <span class="p">}]</span>
+  <span class="p">},</span>
+  <span class="nx">resolve</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">extensions</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;.js&#39;</span><span class="p">,</span> <span class="s1">&#39;.jsx&#39;</span><span class="p">]</span>
+  <span class="p">},</span>
+  <span class="nx">output</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">path</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">&#39;app/dist&#39;</span><span class="p">),</span>
+    <span class="nx">publicPath</span><span class="o">:</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
+    <span class="nx">filename</span><span class="o">:</span> <span class="s1">&#39;bundle.js&#39;</span>
+  <span class="p">},</span>
+  <span class="nx">devServer</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">contentBase</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">&#39;app/dist&#39;</span><span class="p">),</span>
+    <span class="nx">historyApiFallback</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">hot</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">inline</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">progress</span><span class="o">:</span> <span class="kc">true</span>
+  <span class="p">},</span>
+  <span class="nx">plugins</span><span class="o">:</span> <span class="p">[</span>
+    <span class="ow">new</span> <span class="nx">webpack</span><span class="p">.</span><span class="nx">HotModuleReplacementPlugin</span><span class="p">()</span>
+  <span class="p">]</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<h1>setup test/lint</h1>
+<p>mochaとeslintのセットアップをしていきます。</p>
+<h2>eslint</h2>
+<p>eslintをdevにインストールして、initします。</p>
+<div class="highlight"><pre><span></span><code><span class="n">$</span><span class="w"> </span><span class="n">npm</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="o">--</span><span class="n">save</span><span class="o">-</span><span class="n">dev</span><span class="w"> </span><span class="n">eslint</span><span class="w"></span>
+<span class="n">$</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="n">node_modules</span><span class="o">/</span><span class="p">.</span><span class="n">bin</span><span class="o">/</span><span class="n">eslint</span><span class="w"> </span><span class="o">--</span><span class="n">init</span><span class="w"></span>
+<span class="o">?</span><span class="w"> </span><span class="n">How</span><span class="w"> </span><span class="n">would</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">like</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">configure</span><span class="w"> </span><span class="n">ESLint</span><span class="o">?</span><span class="w"> </span><span class="n">Answer</span><span class="w"> </span><span class="n">questions</span><span class="w"> </span><span class="n">about</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="n">style</span><span class="w"></span>
+<span class="o">?</span><span class="w"> </span><span class="n">Are</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="n">ECMAScript</span><span class="w"> </span><span class="mi">6</span><span class="w"> </span><span class="n">features</span><span class="o">?</span><span class="w"> </span><span class="n">Yes</span><span class="w"></span>
+<span class="o">?</span><span class="w"> </span><span class="n">Are</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="n">ES6</span><span class="w"> </span><span class="n">modules</span><span class="o">?</span><span class="w"> </span><span class="n">Yes</span><span class="w"></span>
+<span class="o">?</span><span class="w"> </span><span class="n">Where</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="n">code</span><span class="w"> </span><span class="n">run</span><span class="o">?</span><span class="w"> </span><span class="n">Browser</span><span class="w"></span>
+<span class="o">?</span><span class="w"> </span><span class="n">Do</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">use</span><span class="w"> </span><span class="n">CommonJS</span><span class="o">?</span><span class="w"> </span><span class="n">No</span><span class="w"></span>
+<span class="o">?</span><span class="w"> </span><span class="n">Do</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">use</span><span class="w"> </span><span class="n">JSX</span><span class="o">?</span><span class="w"> </span><span class="n">Yes</span><span class="w"></span>
+<span class="o">?</span><span class="w"> </span><span class="n">Do</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">use</span><span class="w"> </span><span class="n">React</span><span class="w"> </span><span class="n">Yes</span><span class="w"></span>
+<span class="o">?</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">style</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">indentation</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">use</span><span class="o">?</span><span class="w"> </span><span class="n">Spaces</span><span class="w"></span>
+<span class="o">?</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">quotes</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">use</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">strings</span><span class="o">?</span><span class="w"> </span><span class="n">Single</span><span class="w"></span>
+<span class="o">?</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="n">endings</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">use</span><span class="o">?</span><span class="w"> </span><span class="n">Unix</span><span class="w"></span>
+<span class="o">?</span><span class="w"> </span><span class="n">Do</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">require</span><span class="w"> </span><span class="n">semicolons</span><span class="o">?</span><span class="w"> </span><span class="n">Yes</span><span class="w"></span>
+<span class="o">?</span><span class="w"> </span><span class="n">What</span><span class="w"> </span><span class="n">format</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">want</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="k">in</span><span class="o">?</span><span class="w"> </span><span class="n">JavaScript</span><span class="w"></span>
+<span class="n">Installing</span><span class="w"> </span><span class="n">eslint</span><span class="o">-</span><span class="n">plugin</span><span class="o">-</span><span class="n">react</span><span class="w"></span>
+<span class="n">blacklist</span><span class="mf">@1.0.0</span><span class="w"></span>
+<span class="err">└─┬</span><span class="w"> </span><span class="n">eslint</span><span class="o">-</span><span class="n">plugin</span><span class="o">-</span><span class="n">react</span><span class="mf">@6.1.2</span><span class="w"> </span>
+<span class="w">  </span><span class="err">└──</span><span class="w"> </span><span class="n">jsx</span><span class="o">-</span><span class="n">ast</span><span class="o">-</span><span class="n">utils</span><span class="mf">@1.3.1</span><span class="w"></span>
+</code></pre></div>
+
+<p>Vimのsyntasticにeslintを使うように書いておくと、</p>
+<div class="highlight"><pre><span></span><code><span class="k">let</span> <span class="k">g</span>:syntastic_javascript_checkers <span class="p">=</span> [<span class="s1">&#39;eslint&#39;</span>]
+</code></pre></div>
+
+<p>今いるディレクトリのeslint.jsを読み込んでくれます。</p>
+<p>実はinitで吐いたeslint設定では、jsx内で使ってるはずの変数に対して</p>
+<p><img alt="" src="https://i.gyazo.com/e4d0a9c09cbb3d9ddb09dcd6fcef3009.png"></p>
+<blockquote>
+<p>error  'App' is defined but never used  (no-unused-vars)</p>
+</blockquote>
+<p>になります、これに困ってる方がたくさんいます</p>
+<ul>
+<li><a href="https://github.com/eslint/eslint/issues/1534" title="es6jsx: no-unused-vars misses JSX references · Issue #1534 · eslint/eslint">es6jsx: no-unused-vars misses JSX references · Issue #1534 · eslint/eslint</a></li>
+<li><a href="https://github.com/eslint/eslint/issues/2054" title="JSX no-unused-vars · Issue #2054 · eslint/eslint">JSX no-unused-vars · Issue #2054 · eslint/eslint</a></li>
+</ul>
+<p>というわけで、initで生成したeslintの設定を少し変えてあげる必要があります。</p>
+<p>eslint-plugin-reactのREADMEにあるように、rulesを追加します。</p>
+<p><a href="https://github.com/yannickcr/eslint-plugin-react" title="yannickcr/eslint-plugin-react: React specific linting rules for ESLint">yannickcr/eslint-plugin-react: React specific linting rules for ESLint</a></p>
+<div class="highlight"><pre><span></span><code>  <span class="s2">&quot;rules&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;react/jsx-uses-react&quot;</span><span class="p">:</span> <span class="s2">&quot;error&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;react/jsx-uses-vars&quot;</span><span class="p">:</span> <span class="s2">&quot;error&quot;</span><span class="p">,</span>
+  <span class="p">}</span>
+</code></pre></div>
+
+<p>おすすめルールを全て有効にするようにしてもいいなら</p>
+<div class="highlight"><pre><span></span><code>&quot;extends&quot;: [&quot;eslint:recommended&quot;, &quot;plugin:react/recommended&quot;],
+</code></pre></div>
+
+<p>のようにしても良さそうです。なんとなくこっちのほうが良さそうなのでextendsのほうを採用します。</p>
+<p>npm run lintで実行できるようにします。</p>
+<div class="highlight"><pre><span></span><code>&quot;lint&quot;: &quot;./node_modules/.bin/eslint server.js app/src/* --ext .js --ext .jsx&quot;,
+</code></pre></div>
+
+<h2>mocha</h2>
+<p>babelを噛ましてテストをするのでbabel-coreもインストールします。</p>
+<div class="highlight"><pre><span></span><code>$ npm install --save-dev babel-core mocha
+</code></pre></div>
+
+<p>assertにはchaiを使っているケースが多いですが、せっかく日本人なのでpower-assertを使おうと思います。</p>
+<p><a href="http://qiita.com/gitseitanaka/items/ea47d261284879a1d774" title="mocha + power-assert環境の構築 - Qiita">mocha + power-assert環境の構築 - Qiita</a>を参考にインストール。</p>
+<div class="highlight"><pre><span></span><code><span class="n">npm</span> <span class="n">install</span> <span class="o">--</span><span class="n">save</span><span class="o">-</span><span class="n">dev</span> <span class="n">intelli</span><span class="o">-</span><span class="n">espower</span><span class="o">-</span><span class="n">loader</span> <span class="n">power</span><span class="o">-</span><span class="nb">assert</span>
+</code></pre></div>
+
+<p>npm run testでテストをするためにpackage.jsonのscriptsにコマンドを作成します。</p>
+<div class="highlight"><pre><span></span><code><span class="n">test</span><span class="p">:</span> <span class="s2">&quot;./node_modules/mocha/bin/mocha --require intelli-espower-loader --recursive&quot;</span>
+</code></pre></div>
+
+<p>testディレクトリにserver-test.jsを作成してテストを書いてみます。</p>
+<p>mochaはざっと調べると、describeで大枠を作ってその中にitで実際に行うテストを複数定義していく流れぽいです。</p>
+<p>mochaでKoaのテストをする方法を調べてみると、APIのテストはsupertestを使うのが良さそうです。</p>
+<p>今回はViewは最低限のものを返しているだけなのでテストの必要はない感じです。しかも<a href="http://qiita.com/p-baleine@github/items/915703d6df575b427c7e" title="koaでのテスト - Qiita">koaでのテスト - Qiita</a>によるとViewのテストが大変そうなのでやりたくない感じもあります。</p>
+<p>Koajsのexmapleプロジェクトを参考にすると良い感じあります。</p>
+<p><a href="https://github.com/koajs/examples/blob/master/hello-world/test.js" title="examples/test.js at master · koajs/examples">examples/test.js at master · koajs/examples</a></p>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nx">assert</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;power-assert&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../server&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;supertest&#39;</span><span class="p">).</span><span class="nx">agent</span><span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">());</span>
+
+<span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;api&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">done</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="nx">request</span>
+      <span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/hello&#39;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="mf">200</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">,</span> <span class="nx">done</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<p>サーバサイドのテストはこれでokです。</p>
+<p>フロントエンドのテストはbabelでコンパイルする必要があるのでちょっと変わってきます。しかもサーバサイド(nodejs)のコードをbabelコンパイルするとKoaのGenerator周りのコードが盛大にエラーを吐くので別々のテストコマンドでテストするほうが良さそうです。 =&gt; <a href="http://qiita.com/devneko/items/c7ddb31f504c8c2a5ac5" title="Node.js &amp; webpack &amp; babel で「 regeneratorRuntime is not defined」が発生する場合の対処 - Qiita">Node.js &amp; webpack &amp; babel で「 regeneratorRuntime is not defined」が発生する場合の対処 - Qiita</a></p>
+<p>...</p>
+<p>......</p>
+<p>.........</p>
+<p>いよいよisomorphicが幻想だとわかってきました。というより自分の想像していたisomorphicが大きすぎる解釈だったと気付きました。サーバサイドとフロントエンドは別物です、全てESで書けるとはいえjavascriptとnodejsは違います、しっかり線引して扱うと良いということがわかりました。</p>
+<h1>boilerplate完成</h1>
+<p>ｾﾞｪ...ｾﾞｪ...</p>
+<p>やっと記念すべき最初のコミットが完成しました。</p>
+<p>最終的なディレクトリ構成</p>
+<div class="highlight"><pre><span></span><code>.
+├── .babelrc
+├── .eslintrc.js
+├── .gitignore
+├── app
+│   ├── dist
+│   │   ├── bundle.js
+│   │   └── index.html
+│   ├── src
+│   │   ├── components
+│   │   └── index.jsx
+│   ├── test
+│   │   └── model-test.js
+│   └── webpack.config.js
+├── package.json
+├── server.js
+└── test
+    └── server-test.js
+</code></pre></div>
+
+<ul>
+<li>webpackはフロントエンドしか関係していないのでappに配置</li>
+<li>app内はbabelでコンパイルされるのでimportで依存解決</li>
+<li>serverはnodejsなのでrequireで依存解決</li>
+</ul>
+<p>npm runコマンド</p>
+<div class="highlight"><pre><span></span><code>  <span class="s2">&quot;scripts&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;lint&quot;</span><span class="p">:</span> <span class="s2">&quot;./node_modules/.bin/eslint server.js app/src/* --ext .js --ext .jsx&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;build:front&quot;</span><span class="p">:</span> <span class="s2">&quot;cd app &amp;&amp; ../node_modules/.bin/webpack&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;dev:front&quot;</span><span class="p">:</span> <span class="s2">&quot;cd app &amp;&amp; ../node_modules/.bin/webpack-dev-server&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;dev:server&quot;</span><span class="p">:</span> <span class="s2">&quot;node server.js&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;test:front&quot;</span><span class="p">:</span> <span class="s2">&quot;./node_modules/mocha/bin/mocha --compilers js:babel-core/register --require intelli-espower-loader app/test/*.js&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;test:server&quot;</span><span class="p">:</span> <span class="s2">&quot;./node_modules/mocha/bin/mocha --require intelli-espower-loader test/*.js&quot;</span>
+  <span class="p">},</span>
+</code></pre></div>
+
+<p>というわけで、本番のアプリ開発にとりかかります。</p>
+<h1>GitLab CI</h1>
+<p>dockerビルドを試してみます。</p>
+<p>まずはRunnerの設置です。</p>
+<p><a href="https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/blob/master/docs/install/docker.md" title="docs/install/docker.md · master · GitLab.org / gitlab-ci-multi-runner · GitLab">docs/install/docker.md · master · GitLab.org / gitlab-ci-multi-runner · GitLab</a></p>
+<p>dockerビルドするためにはdockerコマンドを叩く必要があるのでhostの/var/run/docker.sockをマウントする必要があります。</p>
+<div class="highlight"><pre><span></span><code>$ docker run -d <span class="se">\</span>
+--name blacklist-runner <span class="se">\</span>
+--restart always <span class="se">\</span>
+-v /var/run/docker.sock:/var/run/docker.sock <span class="se">\</span>
+-v /srv/blacklist-runner/config:/etc/gitlab-runner <span class="se">\</span>
+gitlab/gitlab-runner:latest
+$ docker <span class="nb">exec</span> -it blacklist-runner gitlab-runner register
+</code></pre></div>
+
+<p>executerにdockerを選択して、imageにnode:6.3を指定します。</p>
+<p>プロジェクトのほうに.gitlab-ci.ymlを追加します。</p>
+<div class="highlight"><pre><span></span><code><span class="n">image</span><span class="o">:</span> <span class="n">node</span><span class="o">:</span><span class="mf">6.3</span>
+
+<span class="n">before_script</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">npm</span> <span class="n">install</span>
+
+<span class="n">stages</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">test</span>
+
+<span class="n">eslint</span><span class="o">:</span>
+    <span class="n">stage</span><span class="o">:</span> <span class="n">test</span>
+    <span class="n">script</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">npm</span> <span class="n">run</span> <span class="n">lint</span>
+
+<span class="n">mocha</span><span class="o">-</span><span class="n">test</span><span class="o">:</span>
+    <span class="n">stage</span><span class="o">:</span> <span class="n">test</span>
+    <span class="n">script</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">npm</span> <span class="n">run</span> <span class="n">test</span><span class="o">:</span><span class="n">server</span>
+        <span class="o">-</span> <span class="n">npm</span> <span class="n">run</span> <span class="n">test</span><span class="o">:</span><span class="n">front</span>
+</code></pre></div>
+
+<p>将来的にdokkuへの自動デプロイをしたいのですが、なかなか大変そうです。とりあえずアイデアを書いておきます。</p>
+<ul>
+<li>dokkuへのデプロイのためにはSSH鍵ペアが必要なのでどうにかしないとな感じ</li>
+<li>ssh鍵ペアをrunnerにマウントしてpush</li>
+<li>deployタスクだけimage使わないので工夫必要そう</li>
+<li>masterへのpushのときだけdeploy(only: master)</li>
+<li>stagingもあるとよさ(only: staging)</li>
+</ul>
+<h1>Koaサーバをコード変更でリロード</h1>
+<p><a href="http://stackoverflow.com/questions/22062298/automatically-reloading-koa-server" title="node.js - automatically reloading Koa server - Stack Overflow">node.js - automatically reloading Koa server - Stack Overflow</a></p>
+<p>nodemonで動かす。</p>
+<h1>server-side (~~redis~~mongo)</h1>
+<p>stagingブランチを作成して作っていきます。</p>
+<p>redisかなと思っていましたが、やっぱりmongodbを使ってみます。mongo採用の理由は</p>
+<ul>
+<li>使ったことないから気になっていた</li>
+<li>mongooseを使えばschemaを使えるので可読性良さそう&amp;バリデーションを自分で書かなくて良い</li>
+<li>nodeと組み合わせる情報が多い</li>
+<li>redisのset/getを同期処理させたいけど勉強不足で辛い</li>
+<li>同期処理(generator)のmongo+koaの例があった =&gt; <a href="https://eladnava.com/write-synchronous-node-js-code-with-es6-generators/" title="Write &quot;Synchronous&quot; Node.js Code with ES6 Generators">Write "Synchronous" Node.js Code with ES6 Generators</a></li>
+</ul>
+<p>早速書いてみます。</p>
+<div class="highlight"><pre><span></span><code><span class="k">const</span> <span class="n">mongoose</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;mongoose&#39;</span><span class="p">);</span>
+
+<span class="k">const</span> <span class="n">mongoUrl</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">MONGO_URL</span> <span class="err">?</span> <span class="n">process</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">MONGO_URL</span>
+                                     <span class="p">:</span> <span class="s1">&#39;localhost/blacklist&#39;</span><span class="p">;</span>
+
+<span class="n">mongoose</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">mongoUrl</span><span class="p">);</span>
+<span class="n">mongoose</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">on</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">err</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">err</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="k">const</span> <span class="n">Blacklist</span> <span class="o">=</span> <span class="n">mongoose</span><span class="o">.</span><span class="n">model</span><span class="p">(</span> <span class="s1">&#39;blacklist&#39;</span><span class="p">,</span> <span class="n">new</span> <span class="n">mongoose</span><span class="o">.</span><span class="n">Schema</span><span class="p">({</span>
+  <span class="n">company</span><span class="p">:</span> <span class="p">{</span> <span class="n">type</span><span class="p">:</span> <span class="nb nb-Type">String</span><span class="p">,</span> <span class="n">required</span><span class="p">:</span> <span class="bp">true</span> <span class="p">},</span>
+  <span class="n">sender</span><span class="p">:</span>  <span class="nb nb-Type">String</span><span class="p">,</span>
+  <span class="n">target</span><span class="p">:</span>  <span class="nb nb-Type">String</span><span class="p">,</span>
+  <span class="n">date</span><span class="p">:</span>    <span class="p">{</span> <span class="n">type</span><span class="p">:</span> <span class="n">Date</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="n">Date</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="p">},</span>
+  <span class="n">comment</span><span class="p">:</span> <span class="nb nb-Type">String</span><span class="p">,</span>
+  <span class="n">black</span><span class="p">:</span>   <span class="p">{</span> <span class="n">type</span><span class="p">:</span> <span class="n">Boolean</span><span class="p">,</span> <span class="n">default</span><span class="p">:</span> <span class="bp">true</span> <span class="p">}</span>
+<span class="p">}));</span>
+</code></pre></div>
+
+<p>良い感じします。server.jsにそのまま追記していく方針で行きますので、このままapiも書いてみます。</p>
+<div class="highlight"><pre><span></span><code><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">route</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/set&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="o">*</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">params</span> <span class="o">=</span> <span class="nx">querystring</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">querystring</span><span class="p">);</span>
+  <span class="kd">let</span> <span class="nx">blacklist</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">Blacklist</span><span class="p">();</span>
+  <span class="nx">blacklist</span><span class="p">.</span><span class="nx">company</span> <span class="o">=</span> <span class="nx">params</span><span class="p">.</span><span class="nx">company</span> <span class="o">?</span> <span class="nx">params</span><span class="p">.</span><span class="nx">company</span> <span class="o">:</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="nx">blacklist</span><span class="p">.</span><span class="nx">sender</span> <span class="o">=</span> <span class="nx">params</span><span class="p">.</span><span class="nx">sender</span> <span class="o">?</span> <span class="nx">params</span><span class="p">.</span><span class="nx">sender</span> <span class="o">:</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="nx">blacklist</span><span class="p">.</span><span class="nx">target</span> <span class="o">=</span> <span class="nx">params</span><span class="p">.</span><span class="nx">target</span> <span class="o">?</span> <span class="nx">params</span><span class="p">.</span><span class="nx">target</span> <span class="o">:</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="nx">blacklist</span><span class="p">.</span><span class="nx">comment</span> <span class="o">=</span> <span class="nx">params</span><span class="p">.</span><span class="nx">comment</span> <span class="o">?</span> <span class="nx">params</span><span class="p">.</span><span class="nx">comment</span> <span class="o">:</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="nx">blacklist</span><span class="p">.</span><span class="nx">black</span> <span class="o">=</span> <span class="nx">params</span><span class="p">.</span><span class="nx">black</span> <span class="o">?</span> <span class="nx">params</span><span class="p">.</span><span class="nx">black</span> <span class="o">:</span> <span class="kc">true</span><span class="p">;</span>
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="k">yield</span> <span class="nx">blacklist</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">body</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">ok</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">response</span><span class="o">:</span> <span class="nx">e</span><span class="p">.</span><span class="nx">message</span> <span class="p">};</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">body</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">ok</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">response</span><span class="o">:</span> <span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">blacklist</span><span class="p">)</span> <span class="p">};</span>
+<span class="p">}));</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">route</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/get&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="o">*</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">params</span> <span class="o">=</span> <span class="nx">querystring</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">querystring</span><span class="p">);</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">body</span> <span class="o">=</span> <span class="k">yield</span> <span class="nx">Blacklist</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">params</span><span class="p">);</span>
+<span class="p">}));</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">route</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/update&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="o">*</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">let</span> <span class="nx">params</span> <span class="o">=</span> <span class="nx">querystring</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">querystring</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="s1">&#39;_id&#39;</span> <span class="ow">in</span> <span class="nx">params</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">body</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">ok</span><span class="o">:</span> <span class="kc">false</span> <span class="p">};</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="kd">const</span> <span class="nx">query</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">_id</span><span class="o">:</span> <span class="nx">params</span><span class="p">.</span><span class="nx">_id</span> <span class="p">};</span>
+  <span class="ow">delete</span> <span class="nx">params</span><span class="p">.</span><span class="nx">_id</span><span class="p">;</span>
+  <span class="nx">params</span><span class="p">.</span><span class="nx">date</span> <span class="o">=</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">();</span>
+  <span class="kd">let</span> <span class="nx">blacklist</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="nx">blacklist</span> <span class="o">=</span> <span class="k">yield</span> <span class="nx">Blacklist</span><span class="p">.</span><span class="nx">findOneAndUpdate</span><span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="nx">params</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">body</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">ok</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">response</span><span class="o">:</span> <span class="nx">e</span><span class="p">.</span><span class="nx">message</span> <span class="p">};</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">body</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">ok</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">response</span><span class="o">:</span> <span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">blacklist</span><span class="p">)</span> <span class="p">};</span>
+<span class="p">}));</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">route</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/delete&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="o">*</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">params</span> <span class="o">=</span> <span class="nx">querystring</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">querystring</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">query</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">_id</span><span class="o">:</span> <span class="nx">params</span><span class="p">.</span><span class="nx">_id</span><span class="p">};</span>
+  <span class="kd">const</span> <span class="nx">res</span> <span class="o">=</span> <span class="k">yield</span> <span class="nx">Blacklist</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="nx">query</span><span class="p">);</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">body</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">ok</span><span class="o">:</span> <span class="nb">Boolean</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">result</span><span class="p">.</span><span class="nx">ok</span><span class="p">),</span> <span class="nx">response</span><span class="o">:</span> <span class="nx">res</span><span class="p">.</span><span class="nx">result</span><span class="p">.</span><span class="nx">n</span> <span class="p">};</span> <span class="c1">// res.result.nは消えた数</span>
+<span class="p">}));</span>
+</code></pre></div>
+
+<ul>
+<li>APIはgetでAPIを生やすことにしました(openなweb apiで良いと思っているので外から叩きやすいから)</li>
+<li>Koaのresquestパラメータについては<a href="https://github.com/koajs/koa/blob/master/docs/api/request.md" title="koa/request.md at master · koajs/koa">koa/request.md at master · koajs/koa</a>を参考にしました</li>
+<li>Koaはobjectをthis.bodyに渡すと普通にjsonを返します(<a href="http://qiita.com/mzyy94/items/9997529c61c8815a05f3" title="koaでJSON返させるシンプルで唯一の記述 - Qiita">koaでJSON返させるシンプルで唯一の記述 - Qiita</a>)</li>
+<li>paramsのparseは<a href="https://nodejs.org/api/querystring.html" title="Query String | Node.js v6.4.0 Documentation">Query String | Node.js v6.4.0 Documentation</a>を使いました</li>
+<li>save()するとバリデーションエラーで例外が発生する可能性があるのでtry-catchしました</li>
+<li>update/deleteは基本的にblacklistのjsonをquerystringとして受け取って処理するように書いています</li>
+<li>update/deleteは_idを元にして削除することにしました</li>
+<li>updateは<a href="http://mongoosejs.com/docs/api.html#model_Model.findOneAndUpdate" title="Mongoose API v4.5.9">Mongoose API v4.5.9</a>の関数を使用</li>
+</ul>
+<p>あと普通にmongooseを使っていると</p>
+<blockquote>
+<p>(node:52888) DeprecationWarning: Mongoose: mpromise (mongoose's default promise library) is deprecated, plug in your own promise library instead: http://mongoosejs.com/docs/promises.html</p>
+</blockquote>
+<p>というエラーが出ます。mongoose標準のPromiseが古いので比較的新しいNodejsを使っている場合はNodejsのPromiseに置き換えてやります。(<a href="http://mongoosejs.com/docs/promises.html" title="Mongoose Promises v4.5.9">Mongoose Promises v4.5.9</a>)</p>
+<div class="highlight"><pre><span></span><code><span class="nx">mongoose</span><span class="p">.</span><span class="nb">Promise</span> <span class="o">=</span> <span class="nb">global</span><span class="p">.</span><span class="nb">Promise</span><span class="p">;</span>
+</code></pre></div>
+
+<p>そんなこんなで、テストも一通り書いて実装が完成しました。</p>
+<h1>.gitlab-ciの改善</h1>
+<p>サーバサイド実装のコミットでCIが死にました。mongoがないのが原因です。</p>
+<p>デプロイをしたいのもあるのでもう少し凝ったCIに書き直します。</p>
+<p><a href="http://docs.gitlab.com/ce/ci/yaml/README.html" title="GitLab Documentation">GitLab Documentation</a>によると、docker image/serviceはjobごとに設定できます。デプロイはdocker containerではなくrunner上でやるほうが良さそうなので明示的にcontainerとrunnerでのjobを分けます。</p>
+<p>.........</p>
+<p>試してみましたが、imageを一度指定してしまうと全てのjobに対してimageが適用される模様...</p>
+<h1>front-end開発</h1>
+<p><a href="http://www.material-ui.com/#/get-started/prerequisites" title="Prerequisites - Material-UI">Prerequisites - Material-UI</a></p>
+<p>Getting Startsする。</p>
+<div class="highlight"><pre><span></span><code>$ npm install --save react-tap-event-plugin material-ui
+</code></pre></div>
+
+<p>そろそろまとめるのが面倒になってきたのでリンクと何を勉強したかとまとめていきます。</p>
+<h2>Material UI関連</h2>
+<ul>
+<li><a href="http://www.material-ui.com/#/components/text-field" title="Text Field - Material-UI">Text Field - Material-UI</a></li>
+</ul>
+<p>ここにはComponentの全てが詰まっています。</p>
+<ul>
+<li><a href="https://design.google.com/icons/" title="Material icons - Google Design">Material icons - Google Design</a></li>
+</ul>
+<p>iconはこちら。namespaceは小文字、空白は"-"で繋いでsvg形式でimportできます。</p>
+<p>(例)</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">PhoneMissed</span> <span class="kn">from</span> <span class="s1">&#39;material-ui/svg-icons/notification/phone-missed&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<ul>
+<li><a href="https://github.com/callemall/material-ui/issues/647" title="[FlatButton] File input not working with button. · Issue #647 · callemall/material-ui">[FlatButton] File input not working with button. · Issue #647 · callemall/material-ui</a></li>
+<li><a href="http://service.cresco.co.jp/blog/entry/710" title="&lt;input type=&quot;file&quot;&gt;の話"><input type="file">の話</a></li>
+<li><a href="https://codezine.jp/article/detail/6500?p=3" title="IE10で動くHTML5アプリ実装例 「File APIを利用したアプリ」 (3/3)：CodeZine（コードジン）">IE10で動くHTML5アプリ実装例　「File APIを利用したアプリ」 (3/3)：CodeZine（コードジン）</a></li>
+</ul>
+<p>type=inputをMaterial UIで扱う方法が謎なのと、そもそもFile APIなんて使ったことなかったのでその情報です。</p>
+<p>結果的に以下のようなコードになりました。</p>
+<div class="highlight"><pre><span></span><code>  <span class="nx">handleCsvUpload</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">fileUploadDom</span> <span class="o">=</span> <span class="nx">ReactDOM</span><span class="p">.</span><span class="nx">findDOMNode</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">refs</span><span class="p">.</span><span class="nx">fileUpload</span><span class="p">);</span>
+    <span class="nx">fileUploadDom</span><span class="p">.</span><span class="nx">click</span><span class="p">();</span>
+  <span class="p">}</span>
+
+  <span class="nx">handleVirtualClickCsvUpload</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">reader</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">FileReader</span><span class="p">();</span>
+    <span class="nx">reader</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+      <span class="kd">const</span> <span class="nx">csv</span> <span class="o">=</span> <span class="nx">reader</span><span class="p">.</span><span class="nx">result</span><span class="p">;</span>
+      <span class="c1">// TODO: Server: web api未実装</span>
+    <span class="p">};</span>
+    <span class="nx">reader</span><span class="p">.</span><span class="nx">readAsText</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">files</span><span class="p">[</span><span class="mf">0</span><span class="p">],</span> <span class="s1">&#39;UTF-8&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+
+<span class="c1">// ...</span>
+
+          <span class="o">&lt;</span><span class="nx">FlatButton</span>
+            <span class="nx">label</span><span class="o">=</span><span class="s1">&#39;CSV import&#39;</span>
+            <span class="nx">labelPosition</span><span class="o">=</span><span class="s1">&#39;after&#39;</span>
+            <span class="nx">icon</span><span class="o">=</span><span class="p">{</span><span class="o">&lt;</span><span class="nx">ImportExport</span> <span class="o">/&gt;</span><span class="p">}</span>
+            <span class="nx">onTouchTap</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">handleCsvUpload</span><span class="p">}</span>
+          <span class="o">/&gt;</span>
+          <span class="o">&lt;</span><span class="nx">input</span>
+            <span class="nx">ref</span><span class="o">=</span><span class="s1">&#39;fileUpload&#39;</span>
+            <span class="nx">type</span><span class="o">=</span><span class="s1">&#39;file&#39;</span> 
+            <span class="nx">style</span><span class="o">=</span><span class="p">{{</span><span class="s1">&#39;display&#39;</span> <span class="o">:</span> <span class="s1">&#39;none&#39;</span><span class="p">}}</span>
+            <span class="nx">accept</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;text/csv&#39;</span><span class="p">}</span>
+            <span class="nx">onChange</span><span class="o">=</span><span class="p">{</span><span class="k">this</span><span class="p">.</span><span class="nx">handleChange</span><span class="p">}</span>
+          <span class="o">/&gt;</span>
+</code></pre></div>
+
+<h2>GUI設計</h2>
+<ul>
+<li><a href="http://qiita.com/kiita312/items/d769c85f446994349b52" title="Redux入門 6日目 ReduxとReactの連携(公式ドキュメント和訳) - Qiita">Redux入門 6日目 ReduxとReactの連携(公式ドキュメント和訳) - Qiita</a></li>
+<li><a href="http://azu.github.io/slide/react-meetup/flux.html" title="10分で実装するFlux">10分で実装するFlux</a></li>
+<li><a href="https://facebook.github.io/flux/docs/todo-list.html#content" title="Flux | Application Architecture for Building User Interfaces">Flux | Application Architecture for Building User Interfaces</a></li>
+</ul>
+<p>フレームワークは使いませんが参考にはしました。</p>
+    </div><!-- /.entry-content -->
+
+    <div class="article-ad">
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- responsive -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-8481391240785119"
+           data-ad-slot="3238871784"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <div class="comments">
+      <div id="disqus-toggle">
+          <h3>Show comments <span class="glyphicon glyphicon-comment"></span></h3>
+      </div>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        $("#disqus-toggle").click(function(){
+          var disqus_shortname = 'mokumoku';
+          var disqus_identifier = '7792b558ca0c76d24d695582021ac501.html';
+          var disqus_url = 'https://muunyblue.github.io/7792b558ca0c76d24d695582021ac501.html';
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//mokumoku.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          $("#disqus-toggle").remove();
+        });
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+                </div><!-- /.col-lg-12 -->
+            </div><!-- /.bs-component -->
+        </div>
+        <div id="extras" class="row">
+            <div class="bs-component">
+<div class="extras-ad">
+    <h2><span class="glyphicon glyphicon-object-align-left"></span> Adsense</h2>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- small_square -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:200px;height:200px"
+         data-ad-client="ca-pub-8481391240785119"
+         data-ad-slot="9438651388"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+    <div class="sns">
+        <h2><span class="glyphicon glyphicon-share"></span> Share</h2>
+<ul>
+    <li>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="_y_y_m_m_">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </li>
+    
+    <li>
+        <a href="http://b.hatena.ne.jp/entry/https://muunyblue.github.io/7792b558ca0c76d24d695582021ac501.html" class="hatena-bookmark-button" data-hatena-bookmark-title="Isomorphic Javascript 開発話 in 2016 (Koa + React + Material-UI)" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加">
+            <img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+
+    </li>
+        <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+   
+    
+    
+    
+    <li>
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3&appId=387525661451951";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+        <div class="fb-like" data-href="https://muunyblue.github.io/7792b558ca0c76d24d695582021ac501.html" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
+    </li>
+ 
+</ul>    </div>
+
+    <div class="blogroll">
+        <h2><span class="glyphicon glyphicon-pushpin"></span> About</h2>
+        <p>どこにでもいる平凡なプログラムを書く人間のログ。</p>
+    </div><!-- /.blogroll -->
+
+    <div class="category">
+        <h2><span class="glyphicon glyphicon-th-list"></span> Category</h2>
+        <ul>
+			<li>
+				<a href="https://muunyblue.github.io/category/diary.html">
+				    	<span class="glyphicon glyphicon-book" aria-hidden="true" style="color: #0bd566;"></span>
+				    Diary
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/jia.html">
+				    	<span class="glyphicon glyphicon-home" aria-hidden="true" style="color: #f48c39;"></span>
+				    家
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/programming.html">
+				    	<span class="glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+				    Programming
+				</a>
+			</li>
+        </ul>
+    </div>
+
+    <div class="recently">
+        <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
+        <ul>
+			    <li>
+                    <p>2021年 12月16日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/97885afd60c10c4a454c11e225763e04.html">
+                            普通のキーボード写真とBLEの話
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 5月24日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
+                            React Hooks: useReducer & Context API with TypeScript
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 1月23日 午後 09:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/214cfbe603b7f9f9bc005d5f53f7a1d3.html">
+                            普通のTwitter転職
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月22日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/3a1f85dfef891b2a3685ccb35efa807e.html">
+                            Zen Keyboard Build log
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月17日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
+                            Minidoxビルドログ
+                        </a>
+                    </p>
+			    </li>
+        </ul>
+    </div>
+
+    <div class="tags">
+        <h2><span class="glyphicon glyphicon-tags"></span> Tags</h2>
+        <ul>
+                <li><a href="https://muunyblue.github.io/tag/asakatsu.html">Asakatsu</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/btsync.html">btsync</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/c.html">C++</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ci.html">CI</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/cppcheck.html">Cppcheck</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/css.html">CSS</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/github.html">GitHub</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gitlab.html">GitLab</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/go.html">Go</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/gtk.html">Gtk+</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/haskell.html">Haskell</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/hooks.html">Hooks</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/idcf.html">IDCF</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/javascript.html">JavaScript</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/keyboard.html">Keyboard</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/markdown.html">Markdown</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
+                <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/ubuntu.html">Ubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vagrant.html">Vagrant</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vim.html">Vim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/vps.html">VPS</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/zen.html">Zen</a> (1)</li>
+        </ul>
+    </div><!-- /.social -->
+
+    <div class="social">
+        <h2><span class="glyphicon glyphicon-sunglasses"></span> Social</h2>
+        <ul>
+            <li><a href="https://twitter.com/_y_y_m_m_" target="_blank">Twitter</a></li>
+            <li><a href="https://github.com/yymm" target="_blank">Github</a></li>
+            <li><a href="https://bitbucket.org/yymm" target="_blank">Bitbucket</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.atom.xml" target="_blank" type="application/atom+xml" rel="alternate">atom feed</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.rss.xml" target="_blank" type="application/rss+xml" rel="alternate">rss feed</a></li>
+        </ul>
+    </div><!-- /.social -->
+
+            </div><!-- /.bs-component -->
+        </div><!-- /#extras -->
+    </div><!--./container -->
+    <!--Honoka Bootstrap end -->
+
+    <footer id="contentinfo">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <p id="bloginfo"><a href="https://github.com/yymm/MokuMokuBlog" target="_blank" title="This blog"><img id="mokumokublog" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/mokumokublog.ico"></img></a> POWERD BY <a href="https://github.com/getpelican/pelican" target="_blank" title="This blog"><img id="pelican" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/pelican.ico"></img></a> GENERATED BY <a href="https://github.com/yymm/MemoMemo" target="_blank" title="MemoMemo"><img id="memomemo" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/memomemo.ico"></img></a></p>
+                    <p>Copyright <span class="glyphicon glyphicon-copyright-mark"></span> 2018 <a href="https://github.com/yymm" target="_blank">yuya yano</a> All Rights Reserved.</p>
+					<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img id="copyright" alt="クリエイティブ・コモンズ・ライセンス" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a></p>
+                </div><!--./col-xs-12 -->
+            </div><!--./row -->
+        </div><!--./container -->
+    </footer><!-- /#contentinfo -->
+
+<script src="https://muunyblue.github.io/theme/js/jquery.lazyload.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+$(function() {
+	$("img.lazy").lazyload({
+		effect : "fadeIn"
+	});
+});
+</script>
+<script src="https://muunyblue.github.io/theme/js/bootstrap.min.js"></script>
+<script src="https://muunyblue.github.io/theme/js/script.js"></script>
+
+    <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-67688469-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+<script type="text/javascript">
+    var disqus_shortname = 'mokumoku';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+
+<!--
+<!-- PtEngine -->
+<script type="text/javascript">
+	window._pt_sp_2 = [];
+	_pt_sp_2.push('setAccount,3e10d017');
+	var _protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+	(function() {
+		var atag = document.createElement('script'); atag.type = 'text/javascript'; atag.async = true;
+		atag.src = _protocol + 'js.ptengine.jp/pta.js';
+		var stag = document.createElement('script'); stag.type = 'text/javascript'; stag.async = true;
+		stag.src = _protocol + 'js.ptengine.jp/pts.js';
+		var s = document.getElementsByTagName('script')[0]; 
+		s.parentNode.insertBefore(atag, s);s.parentNode.insertBefore(stag, s);
+	})();
+</script>
+-->
+
+</body>
+</html>

@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="utf-8" />
+　　　　　　　　<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Neovimはじめました & 2016年vimrc大掃除</title>
+    <link rel="shortcut icon" href="https://muunyblue.github.io/theme/img/favicon.ico" >
+
+	<link rel="stylesheet" href="https://muunyblue.github.io/theme/css/main.css" />
+    <link rel="stylesheet" href="https://muunyblue.github.io/theme/css/bootstrap.min.css" />
+
+
+    <link href="https://muunyblue.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="もくもくブログ Atom Feed" />
+    <link href="https://muunyblue.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="もくもくブログ RSS Feed" />
+
+	<script src="https://muunyblue.github.io/theme/js/jquery-2.1.4.min.js"></script>
+
+    <!--[if IE]>
+        <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="google-site-verification" content="ETSvqWJsfDNiXwsK89y7-OqkwM1O7DK9wiAkkA4Vfow" />
+    <link rel="alternate" hreflang="ja" href="http://blog.muuny-blue.info/" />
+</head>
+
+<body class="no-thank-yu">
+    <header id="banner" class="page-header clearfix">
+        <div id="contenthead" class="container">
+			<a href="https://muunyblue.github.io/">
+				<img id="title-logo" src="https://muunyblue.github.io/theme/img/title.png"></img>
+			</a>
+			<img id="look" src="https://muunyblue.github.io/theme/img/2.svg"></img>
+        </div>
+    </header><!-- /#banner -->
+
+    <!--Honoka Bootstrap-->
+    <div class="container">
+        <div id="content" class="row">
+            <div class="bs-component">
+                <div class="col-lg-12">
+  <article>
+    <header>
+      <div class="page-header">
+        <h1 class="entry-title">
+          <a href="https://muunyblue.github.io/c95d62c68196b2d0c1c1de8c7eeb6d50.html" rel="bookmark"
+             title="Permalink to Neovimはじめました & 2016年vimrc大掃除">
+				<span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+            Neovimはじめました & 2016年vimrc大掃除
+          </a>
+        </h1>
+      </div>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+<ul>
+    <li class="published" title="2016-12-27T04:36:50+09:00">
+        <span>Date:</span>2016-12-27 火 (午前 04:36:50)
+    </li>
+        <!--<br />-->
+        <li class="modified" title="2016-12-27T04:44:54+09:00">
+            <span>Updated:</span>2016-12-27 火 (午前 04:44:54)
+        </li>
+<li><span>Tags:</span><a href="https://muunyblue.github.io/tag/neovim.html">neovim</a> <a href="https://muunyblue.github.io/tag/vim.html">vim</a> </li>
+    <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
+</ul>
+</footer><!-- /.post-info -->      <p><img alt="" src="https://i.gyazo.com/1089d23c5abf4d0cf038f597d3ee64a5.png"></p>
+<p>11月あたりからvim環境を見直して概ねまとまってきたのでメモとして残しておきます。</p>
+<p>概要は</p>
+<ul>
+<li>Neovim導入</li>
+<li>プラグイン整理(neobundle =&gt; dein.vim)</li>
+<li>Neovim/Vim/Nyaovim対応</li>
+</ul>
+<p>になります。</p>
+<p>設定ファイルはGitHubの.dotfilesにあるのでこちらを見ればこの記事は読まなくてもいいかもしれません。</p>
+<p>[https://github.com/yymm/.dotfiles/tree/master/config/nvim:embed]</p>
+<hr>
+<p>[TOC]</p>
+<h1>Neovimはじめました</h1>
+<p><a href="https://neovim.io/" title="Home - Neovim">Home - Neovim</a></p>
+<p>Neovimのterminal modeに感動してNeovimをはじめてみることにしました。</p>
+<p>あとVimよりサクサク動いていて、思考の速度に近づいてる気がします。</p>
+<h2>Neovimのインストールはパッケージマネージャーから</h2>
+<p>OSXとUbuntuでの開発が多いのでパッケージマネージャーを使ってインストールすることにします。</p>
+<p>しかもNeovimの場合パッケージマネージャーを使用して新しいNeovimをインストールすることが可能なので手元でビルドしなくていいのもメリットだと感じています。</p>
+<p>あとPython拡張を使うのでインストールと一緒に有効にしておきます。</p>
+<p>OSXの場合(<a href="https://github.com/neovim/homebrew-neovim/blob/master/README.md" title="homebrew-neovim/README.md at master · neovim/homebrew-neovim">homebrew-neovim/README.md at master · neovim/homebrew-neovim</a>)</p>
+<div class="highlight"><pre><span></span><code>brew tap neovim/neovim
+brew install --HEAD neovim
+brew install python
+brew install python3
+pip2 install --user --upgrade neovim
+pip3 install --user --upgrade neovim
+</code></pre></div>
+
+<p>Ubuntuの場合(<a href="https://github.com/neovim/neovim/wiki/Installing-Neovim#ubuntu" title="Installing Neovim · neovim/neovim Wiki">Installing Neovim · neovim/neovim Wiki</a>)</p>
+<div class="highlight"><pre><span></span><code>sudo apt-get install software-properties-common
+sudo add-apt-repository ppa:neovim-ppa/unstable
+sudo apt-get update
+sudo apt-get install neovim
+sudo apt-get install python-dev python-pip python3-dev python3-pip
+sudo pip2 install --user --upgrade neovim
+sudo pip3 install --user --upgrade neovim
+</code></pre></div>
+
+<p>手元でビルドする場合、<a href="https://github.com/neovim/neovim/wiki/Building-Neovim#build-prerequisites" title="Building Neovim · neovim/neovim Wiki">CentOS6以前などではビルドに必要なツールをビルドする必要があったりする</a>ので、自分の場合は環境によってはNeovimは諦めてVimも併用で使うようにしています。</p>
+<h2>設定ファイルの場所</h2>
+<p>デフォルトでは"~/.config/nvim/init.vim"がVimで言う"~/.vimrc"になります。</p>
+<p>環境変数"$XDG_CONFIG_HOME"を変更することで、デフォルトの"~/.config"部分を変更できます。</p>
+<p>今後Neovimメインで使っていくような気がしているので、.vimrcへのシンボリックリンクを作成することでVimも同じ設定で使えるようにしています。</p>
+<h1>Nyaovimもはじめました</h1>
+<p><img alt="" src="https://i.gyazo.com/dafd85baa0a464ccffb2ceeff43c4d46.gif"></p>
+<p>MiniBrowserプラグインを使って、Web開発のプレビューを横に出しながらプログラミングできて楽しいです。</p>
+<p>Markdownプレビューも最高です。</p>
+<p>設定ファイル(~/.config/nyaovim/nyaovimrc.html)</p>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="n">dom</span><span class="o">-</span><span class="k">module</span><span class="w"> </span><span class="n">id</span><span class="o">=</span><span class="ss">&quot;nyaovim-app&quot;</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="o">&lt;</span><span class="n">template</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">style</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">      </span><span class="cm">/* CSS configurations here */</span><span class="w"></span>
+<span class="w">      </span><span class="p">.</span><span class="n">horizontal</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
+<span class="w">         </span><span class="nl">display</span><span class="p">:</span><span class="w"> </span><span class="n">flex</span><span class="p">;</span><span class="w"></span>
+<span class="w">         </span><span class="nl">width</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="o">%</span><span class="p">;</span><span class="w"></span>
+<span class="w">         </span><span class="nl">height</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="o">%</span><span class="p">;</span><span class="w"></span>
+<span class="w">       </span><span class="err">}</span><span class="w"></span>
+<span class="w">       </span><span class="n">neovim</span><span class="o">-</span><span class="n">editor</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
+<span class="w">         </span><span class="nl">width</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="o">%</span><span class="p">;</span><span class="w"></span>
+<span class="w">         </span><span class="nl">height</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="o">%</span><span class="p">;</span><span class="w"></span>
+<span class="w">       </span><span class="err">}</span><span class="w"></span>
+<span class="w">    </span><span class="o">&lt;/</span><span class="n">style</span><span class="o">&gt;</span><span class="w"></span>
+
+<span class="w">    </span><span class="o">&lt;</span><span class="err">!</span><span class="o">--</span><span class="w"> </span><span class="n">Component</span><span class="w"> </span><span class="n">tags</span><span class="w"> </span><span class="n">here</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"></span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">div</span><span class="w"> </span><span class="k">class</span><span class="o">=</span><span class="ss">&quot;horizontal&quot;</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">      </span><span class="o">&lt;</span><span class="n">neovim</span><span class="o">-</span><span class="n">editor</span><span class="w"></span>
+<span class="w">        </span><span class="n">id</span><span class="o">=</span><span class="ss">&quot;nyaovim-editor&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">argv</span><span class="o">=</span><span class="ss">&quot;[[argv]]&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">font</span><span class="o">-</span><span class="k">size</span><span class="o">=</span><span class="ss">&quot;16&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="n">font</span><span class="o">=</span><span class="ss">&quot;Meslo LG M DZ for Powerline&quot;</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">      </span><span class="o">&lt;/</span><span class="n">neovim</span><span class="o">-</span><span class="n">editor</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">      </span><span class="o">&lt;</span><span class="n">markdown</span><span class="o">-</span><span class="n">preview</span><span class="w"> </span><span class="n">editor</span><span class="o">=</span><span class="ss">&quot;[[editor]]&quot;</span><span class="o">&gt;&lt;/</span><span class="n">markdown</span><span class="o">-</span><span class="n">preview</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">      </span><span class="o">&lt;</span><span class="n">mini</span><span class="o">-</span><span class="n">browser</span><span class="w"> </span><span class="n">url</span><span class="o">=</span><span class="ss">&quot;https://google.com&quot;</span><span class="w"> </span><span class="n">editor</span><span class="o">=</span><span class="ss">&quot;[[editor]]&quot;</span><span class="o">&gt;&lt;/</span><span class="n">mini</span><span class="o">-</span><span class="n">browser</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">    </span><span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">popup</span><span class="o">-</span><span class="n">tooltip</span><span class="w"> </span><span class="n">editor</span><span class="o">=</span><span class="ss">&quot;[[editor]]&quot;</span><span class="o">&gt;&lt;/</span><span class="n">popup</span><span class="o">-</span><span class="n">tooltip</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="o">&lt;/</span><span class="n">template</span><span class="o">&gt;</span><span class="w"></span>
+<span class="o">&lt;/</span><span class="n">dom</span><span class="o">-</span><span class="k">module</span><span class="o">&gt;</span><span class="w"></span>
+</code></pre></div>
+
+<p>Nyaovimプラグインもdein.vimで読み込むのですが、"if exists('g:nyaovim_version')"を使うことでNyaovim固有の設定を記述します。</p>
+<h1>プラグイン整理</h1>
+<p>今までの構成を大幅に変更してみました。dein.vimによる影響が大きいですが以下の点が今までと大きく変わりました。</p>
+<ul>
+<li>cacheの利用</li>
+<li>プラグイン遅延ロード</li>
+<li>tomlファイルでプラグイン管理</li>
+<li>NeovimとVimとNyaovimで設定を分ける</li>
+<li>NeovimとVimとNyaovimで使用するプラグインも使い分かる</li>
+</ul>
+<p>Neovimをメインに据えていくのでルートディレクトリは"~/.config/nvim"で、ディレクトリ構成は以下のようになっています。</p>
+<div class="highlight"><pre><span></span><code>~/.config/nvim
+├── dein.toml
+├── deinlazy.toml
+├── init.vim
+├── keymap.rc.vim
+├── options.rc.vim
+└── plugins
+    ├── airline.rc.vim
+    ├── anzu.rc.vim
+    ├── deoplete.rc.vim
+    ├── iceberg.rc.vim
+    ├── neocomplete.rc.vim
+    ├── neomake.rc.vim
+    ├── neoterm.rc.vim
+    ├── nerdcomenter.rc.vim
+    ├── syntastic.rc.vim
+    ├── vimfiler.rc.vim
+    ├── vimshell.rc.vim
+    └── yankround.rc.vim
+</code></pre></div>
+
+<h2>dein.vim</h2>
+<p>Shougo氏がdein.vimという新しいプラグインマネージャを作っていたのでそちらに移行しました。</p>
+<p>基本的にShougo氏の<a href="https://github.com/Shougo/shougo-s-github/tree/master/vim/rc" title="shougo-s-github/vim/rc at master · Shougo/shougo-s-github">vimrc</a>を参考にして作ってみました。</p>
+<ul>
+<li>cacheを使う(dein#load_state) =&gt; <a href="https://github.com/Shougo/shougo-s-github/blob/master/vim/rc/dein.rc.vim#L8" title="shougo-s-github/dein.rc.vim at master · Shougo/shougo-s-github">shougo-s-github/dein.rc.vim#L8</a></li>
+<li>deinがインストールされていなかったらインストールする =&gt; <a href="https://github.com/Shougo/shougo-s-github/blob/master/vim/rc/init.rc.vim#L70" title="shougo-s-github/init.rc.vim at master · Shougo/shougo-s-github">shougo-s-github/init.rc.vim#L70</a></li>
+<li>tomlを使う =&gt; <a href="https://github.com/Shougo/shougo-s-github/blob/master/vim/rc/dein.rc.vim#L15" title="shougo-s-github/dein.rc.vim at master · Shougo/shougo-s-github">shougo-s-github/dein.rc.vim#L15</a></li>
+</ul>
+<p>このあたりを参考にして以下のようなinit.vimになりました。</p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span> &amp;<span class="nb">compatible</span>
+  <span class="k">set</span> <span class="nb">nocompatible</span>
+<span class="k">endif</span>
+
+augroup MyAutoCmd
+  autocmd<span class="p">!</span>
+augroup END
+
+<span class="k">if</span> exists<span class="p">(</span><span class="s1">&#39;g:nyaovim_version&#39;</span><span class="p">)</span>
+  <span class="k">let</span> s:dein_cache_path <span class="p">=</span> expand<span class="p">(</span><span class="s1">&#39;~/.cache/nyaovim/dein&#39;</span><span class="p">)</span>
+<span class="k">elseif</span> has<span class="p">(</span><span class="s1">&#39;nvim&#39;</span><span class="p">)</span>
+  <span class="k">let</span> s:dein_cache_path <span class="p">=</span> expand<span class="p">(</span><span class="s1">&#39;~/.cache/nvim/dein&#39;</span><span class="p">)</span>
+<span class="k">else</span>
+  <span class="k">let</span> s:dein_cache_path <span class="p">=</span> expand<span class="p">(</span><span class="s1">&#39;~/.cache/vim/dein&#39;</span><span class="p">)</span>
+<span class="k">endif</span>
+
+<span class="k">let</span> s:dein_dir <span class="p">=</span> s:dein_cache_path
+                 \ .<span class="s1">&#39;/repos/github.com/Shougo/dein.vim&#39;</span>
+
+<span class="k">if</span> &amp;<span class="nb">runtimepath</span> <span class="p">!~</span> <span class="s1">&#39;/dein.vim&#39;</span>
+  <span class="k">if</span> <span class="p">!</span>isdirectory<span class="p">(</span>s:dein_dir<span class="p">)</span>
+    execute <span class="s1">&#39;!git clone https://github.com/Shougo/dein.vim&#39;</span> s:dein_dir
+  <span class="k">endif</span>
+  execute <span class="s1">&#39;set runtimepath+=&#39;</span> . fnamemodify<span class="p">(</span>s:dein_dir<span class="p">,</span> <span class="s1">&#39;:p&#39;</span><span class="p">)</span>
+<span class="k">endif</span>
+
+<span class="k">if</span> dein#load_state<span class="p">(</span>s:dein_cache_path<span class="p">)</span>
+  <span class="k">call</span> dein#begin<span class="p">(</span>s:dein_cache_path<span class="p">)</span>
+
+  <span class="k">call</span> dein#load_toml<span class="p">(</span><span class="s1">&#39;~/.config/nvim/dein.toml&#39;</span><span class="p">,</span> {<span class="s1">&#39;lazy&#39;</span> : <span class="m">0</span>}<span class="p">)</span>
+  <span class="k">call</span> dein#load_toml<span class="p">(</span><span class="s1">&#39;~/.config/nvim/deinlazy.toml&#39;</span><span class="p">,</span> {<span class="s1">&#39;lazy&#39;</span> : <span class="m">1</span>}<span class="p">)</span>
+
+  <span class="k">if</span> exists<span class="p">(</span><span class="s1">&#39;g:nyaovim_version&#39;</span><span class="p">)</span>
+    <span class="k">call</span> dein#add<span class="p">(</span><span class="s1">&#39;rhysd/nyaovim-popup-tooltip&#39;</span><span class="p">)</span>
+    <span class="k">call</span> dein#add<span class="p">(</span><span class="s1">&#39;rhysd/nyaovim-markdown-preview&#39;</span><span class="p">)</span>
+    <span class="k">call</span> dein#add<span class="p">(</span><span class="s1">&#39;rhysd/nyaovim-mini-browser&#39;</span><span class="p">)</span>
+  <span class="k">endif</span>
+
+  <span class="k">call</span> dein#<span class="k">end</span><span class="p">()</span>
+  <span class="k">call</span> dein#save_state<span class="p">()</span>
+<span class="k">endif</span>
+
+<span class="k">if</span> dein#check_install<span class="p">()</span>
+  <span class="k">call</span> dein#install<span class="p">()</span>
+<span class="k">endif</span>
+
+<span class="k">filetype</span> plugin indent <span class="k">on</span>
+<span class="nb">syntax</span> enable
+
+runtime<span class="p">!</span> <span class="k">options</span>.rc.<span class="k">vim</span>
+runtime<span class="p">!</span> <span class="nb">keymap</span>.rc.<span class="k">vim</span>
+</code></pre></div>
+
+<p>ポイントは、Neovim/Vim/Nyaovimでcacheのパスを使い分けて各々のプラグインを使用できるようにしています。</p>
+<p>Vim本体の設定とKeymapは別ファイルとして最後に読み込んでいます。</p>
+<p>Neovimも開発中なので、プラグインに関しても日々更新されていくものが多いので、動作がおかしいときや数日に一度は":call dein#update()"してプラグインを更新すると良いです。</p>
+<p>管理するプラグインについてはdein.toml(遅延ロードするプラグインはdeinlazy.toml)に書きます。</p>
+<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;xxx/yyy&#39;</span>
+</code></pre></div>
+
+<p>基本的には上の書き方で、設定がある場合はhook_*を使って設定を読み込みます。</p>
+<ul>
+<li>hook_addはプラグイン追加後</li>
+<li>hook_sourceはプラグイン読み込み前</li>
+<li>hook_post_sourceはプラグイン読み込み後</li>
+</ul>
+<p>(ドキュメント =&gt; <a href="https://github.com/Shougo/dein.vim/blob/master/doc/dein.txt#L751" title="dein.vim/dein.txt at master · Shougo/dein.vim">dein.vim/dein.txt at master · Shougo/dein.vim</a>)</p>
+<p>hookのスクリプトに"source <path>.vim"と書いて外部のVim scriptを読み込むようにするとtomlファイルがすっきりするので、設定が長くなるプラグインなどはそうしています。</p>
+<p>ifというキーを使ってNeovimやVimの切り替えができます。</p>
+<p>以下はneocompleteとdeoplete.nvim、neotermとvimshellの例です。</p>
+<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;Shougo/neocomplete.vim&#39;</span>
+<span class="na">depends</span> <span class="o">=</span> <span class="s">&#39;context_filetype.vim&#39;</span>
+<span class="na">if</span> <span class="o">=</span> <span class="s">&quot;has(&#39;lua&#39;)&quot;</span>
+<span class="na">on_i</span> <span class="o">=</span> <span class="s">1</span>
+<span class="na">hook_source</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="na">source ~/.config/nvim/plugins/neocomplete.rc.vim</span>
+<span class="na">&#39;&#39;&#39;</span>
+
+<span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;Shougo/deoplete.nvim&#39;</span>
+<span class="na">depends</span> <span class="o">=</span> <span class="s">&#39;context_filetype.vim&#39;</span>
+<span class="na">if</span> <span class="o">=</span> <span class="s">&quot;has(&#39;nvim&#39;)&quot;</span>
+<span class="na">on_i</span> <span class="o">=</span> <span class="s">1</span>
+<span class="na">hook_source</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="na">source ~/.config/nvim/plugins/deoplete.rc.vim</span>
+<span class="na">&#39;&#39;&#39;</span>
+
+<span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;kassio/neoterm&#39;</span>
+<span class="na">if</span> <span class="o">=</span> <span class="s">&quot;has(&#39;nvim&#39;)&quot;</span>
+<span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="na">source ~/.config/nvim/plugins/neoterm.rc.vim</span>
+<span class="na">&#39;&#39;&#39;</span>
+
+<span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;Shougo/vimshell&#39;</span>
+<span class="na">if</span> <span class="o">=</span> <span class="s">&quot;!has(&#39;nvim&#39;)&quot;</span>
+<span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="na">source ~/.config/nvim/plugins/vimshell.rc.vim</span>
+<span class="na">&#39;&#39;&#39;</span>
+</code></pre></div>
+
+<p>これを書くまでに参考にして勉強したりした情報集です、ありがとうございました。</p>
+<ul>
+<li><a href="http://qiita.com/okamos/items/2259d5c770d51b88d75b" title="NeoVim、そしてdein.vimへ - Qiita">NeoVim、そしてdein.vimへ - Qiita</a></li>
+<li><a href="http://qiita.com/delphinus/items/00ff2c0ba972c6e41542" title="NeoBundle から dein.vim に乗り換えたら爆速だった話 - Qiita">NeoBundle から dein.vim に乗り換えたら爆速だった話 - Qiita</a></li>
+<li><a href="http://qiita.com/Ress/items/7e71e007cf8d41a07a1a" title="NeoVim と dein.vim を使ってみる! - Qiita">NeoVim と dein.vim を使ってみる! - Qiita</a></li>
+<li><a href="http://qiita.com/kawaz/items/ee725f6214f91337b42b" title="dein.vimによるプラグイン管理のマイベストプラクティス - Qiita">dein.vimによるプラグイン管理のマイベストプラクティス - Qiita</a></li>
+<li><a href="http://qiita.com/hanaclover/items/f45250b55e2298c4ac5a" title="dein.vimをインストールする - Qiita">dein.vimをインストールする - Qiita</a></li>
+<li><a href="http://d.hatena.ne.jp/raiden325/20160716/1468641998" title="vimのプラグインマネージャをdeinに変えました - raidenの技術系備忘録">vimのプラグインマネージャをdeinに変えました - raidenの技術系備忘録</a></li>
+<li><a href="http://cocu.hatenablog.com/entry/2016/03/16/054603" title="いい感じに dein.vim を活用したvim confを設計した話 - cocuh's note">いい感じに dein.vim を活用したvim confを設計した話 - cocuh's note</a></li>
+</ul>
+<p>Vimの文法はこちら</p>
+<ul>
+<li><a href="http://nanasi.jp/articles/code/io/file-path.html" title="ファイル名、ファイルパス情報の取得 — 名無しのvim使い">ファイル名、ファイルパス情報の取得 — 名無しのvim使い</a></li>
+<li><a href="http://thinca.hatenablog.com/entry/20100205/1265307642" title="vimrc基礎文法最速マスター - 永遠に未完成">vimrc基礎文法最速マスター - 永遠に未完成</a></li>
+<li><a href="http://thinca.hatenablog.com/entry/20100201/1265009821" title="Vimスクリプト基礎文法最速マスター - 永遠に未完成">Vimスクリプト基礎文法最速マスター - 永遠に未完成</a></li>
+</ul>
+<hr>
+<p>残りは気になった個別のプラグインについて書いていきます。</p>
+<h1>iceberg</h1>
+<p><a href="http://cocopon.me/app/vim-iceberg/" title="Iceberg - dark color scheme for Vim">Iceberg - dark color scheme for Vim</a></p>
+<p>目に優しそうでカッコいいカラースキームです。</p>
+<p>visual modeを結構多用するのですが、モニターのブルーライトカットが効きすぎているのか色が分かりづらかったのでオレンジ色に変えてあります。</p>
+<div class="highlight"><pre><span></span><code><span class="k">au</span> MyAutoCmd <span class="nb">VimEnter</span> * nested <span class="k">colorscheme</span> iceberg
+<span class="c">&quot; Visual mode</span>
+<span class="k">au</span> MyAutoCmd <span class="nb">VimEnter</span> * <span class="nb">highlight</span> Visual ctermbg<span class="p">=</span><span class="m">216</span>
+<span class="c">&quot; backgroung transparency</span>
+<span class="c">&quot;au MyAutoCmd VimEnter * highlight Normal ctermbg=none</span>
+<span class="c">&quot;au MyAutoCmd VimEnter * highlight NonText ctermbg=none</span>
+<span class="c">&quot;au MyAutoCmd VimEnter * highlight TablineSel ctermbg=none</span>
+<span class="c">&quot;au MyAutoCmd VimEnter * highlight LineNr ctermbg=none</span>
+<span class="c">&quot;au MyAutoCmd VimEnter * highlight CursorLineNr ctermbg=none</span>
+</code></pre></div>
+
+<p>カラースキームを使う場合、一行目の記述は必須のようです。</p>
+<ul>
+<li><a href="http://qiita.com/kawaz/items/ee725f6214f91337b42b" title="dein.vimによるプラグイン管理のマイベストプラクティス - Qiita">dein.vimによるプラグイン管理のマイベストプラクティス - Qiita</a></li>
+<li><a href="http://qiita.com/s_of_p/items/87a9d787ff5506edab8e" title="端末上の Vim で colorscheme の背景を透過する - Qiita">端末上の Vim で colorscheme の背景を透過する - Qiita</a></li>
+</ul>
+<h1>neoterm</h1>
+<p>neovimのterminal modeが便利すぎてやばいです。</p>
+<p>とりあえずいつもどおりにノーマルモードを使用するために以下の設定をします。</p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span> has<span class="p">(</span><span class="s1">&#39;nvim&#39;</span><span class="p">)</span>
+  tnoremap <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span>ESC<span class="p">&gt;</span> <span class="p">&lt;</span>C<span class="p">-</span>\<span class="p">&gt;&lt;</span>C<span class="p">-</span><span class="k">n</span><span class="p">&gt;</span>
+<span class="k">endif</span>
+</code></pre></div>
+
+<p>もっと便利に使うためにneotermを導入します。</p>
+<p><a href="https://github.com/kassio/neoterm" title="kassio/neoterm: Wrapper of some neovim's :terminal functions.">kassio/neoterm: Wrapper of some neovim's :terminal functions.</a></p>
+<p>neotermはneovimのterminalラッパープラグインです。手軽に分割ターミナルとかが使えます。</p>
+<p>さらに、<a href="https://github.com/kassio/neoterm#repl" title="kassio/neoterm: Wrapper of some neovim's :terminal functions.">ファイルや行、選択範囲をreplに突っ込んでterminalで実行したり</a>、<a href="https://github.com/kassio/neoterm#test-libs" title="kassio/neoterm: Wrapper of some neovim's :terminal functions.">テスト連携</a>があったりと便利機能満載です。</p>
+<p>以下のように設定しました。</p>
+<ul>
+<li>Quickrunの代用ぽい設定</li>
+<li><a href="https://github.com/kassio/neoterm/commit/5586f57ee3a15f31d44bb6bc49def98799d20527" title="Add a Ttoggle command. · kassio/neoterm@5586f57">toggle</a>する設定</li>
+<li>vimshellの代用ぽい設定</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;kassio/neoterm&#39;</span>
+<span class="na">if</span> <span class="o">=</span> <span class="s">&quot;has(&#39;nvim&#39;)&quot;</span>
+<span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="na">nnoremap &lt;silent&gt; ,rc :TREPLSendFile&lt;cr&gt;</span>
+<span class="na">nnoremap &lt;silent&gt; ,rl :TREPLSendLine&lt;cr&gt;</span>
+<span class="na">vnoremap &lt;silent&gt; ,rl :TREPLSendSelection&lt;cr&gt;</span>
+<span class="na">nnoremap &lt;silent&gt; vt :Ttoggle&lt;cr&gt;</span>
+<span class="na">nnoremap &lt;silent&gt; vs :terminal&lt;cr&gt;</span>
+<span class="na">&#39;&#39;&#39;</span>
+</code></pre></div>
+
+<p>shellを指定している方を多く見ましたが、自分の環境では$SHELLが開いている感じがしたので設定していません。</p>
+<p>[https://twitter.com/y_y_m_m/status/799147443942105088:embed]</p>
+<p>とは言いましたが、Vimではterminal modeは使えないのでVimShellを使うように設定しています。</p>
+<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;kassio/neoterm&#39;</span>
+<span class="na">if</span> <span class="o">=</span> <span class="s">&quot;has(&#39;nvim&#39;)&quot;</span>
+<span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="na">source ~/.config/nvim/plugins/neoterm.rc.vim</span>
+<span class="na">&#39;&#39;&#39;</span>
+
+<span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;Shougo/vimshell&#39;</span>
+<span class="na">if</span> <span class="o">=</span> <span class="s">&quot;!has(&#39;nvim&#39;)&quot;</span>
+<span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="na">source ~/.config/nvim/plugins/vimshell.rc.vim</span>
+<span class="na">&#39;&#39;&#39;</span>
+
+<span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;Shougo/vimproc.vim&#39;</span>
+<span class="na">if</span> <span class="o">=</span> <span class="s">&quot;!has(&#39;nvim&#39;)&quot;</span>
+<span class="na">build</span> <span class="o">=</span> <span class="s">&#39;make&#39;</span>
+</code></pre></div>
+
+<h1>neomake</h1>
+<p>非同期でmakeやlintを実行するsyntasticの非同期版のようなプラグインです。</p>
+<p>READMEは最低限の内容のみとなっているので、helpを読みながら設定していきます。</p>
+<p>まず、見た目の設定です。</p>
+<div class="highlight"><pre><span></span><code><span class="c">&quot; color</span>
+autocmd<span class="p">!</span> <span class="nb">BufWritePost</span> * Neomake
+<span class="k">au</span> MyAutoCmd <span class="nb">ColorScheme</span> * <span class="k">hi</span> NeomakeErrorSign cterm<span class="p">=</span><span class="nb">bold</span> ctermfg<span class="p">=</span><span class="m">7</span> ctermbg<span class="p">=</span><span class="m">9</span>
+<span class="k">au</span> MyAutoCmd <span class="nb">ColorScheme</span> * <span class="k">hi</span> NeomakeWarningSign cterm<span class="p">=</span><span class="nb">bold</span> ctermfg<span class="p">=</span><span class="m">8</span> ctermbg<span class="p">=</span><span class="m">216</span>
+<span class="k">au</span> MyAutoCmd <span class="nb">ColorScheme</span> * <span class="k">hi</span> NeomakeMessageSign cterm<span class="p">=</span><span class="nb">bold</span> ctermfg<span class="p">=</span><span class="m">8</span> ctermbg<span class="p">=</span><span class="m">150</span>
+<span class="k">au</span> MyAutoCmd <span class="nb">ColorScheme</span> * <span class="k">hi</span> NeomakeInfoSign cterm<span class="p">=</span><span class="nb">bold</span> ctermfg<span class="p">=</span><span class="m">8</span> ctermbg<span class="p">=</span><span class="m">110</span>
+<span class="c">&quot; text</span>
+<span class="k">let</span> <span class="k">g</span>:neomake_error_sign <span class="p">=</span> {<span class="s1">&#39;text&#39;</span>: <span class="s1">&#39;E✖&#39;</span><span class="p">,</span> <span class="s1">&#39;texthl&#39;</span>: <span class="s1">&#39;NeomakeErrorSign&#39;</span>}
+<span class="k">let</span> <span class="k">g</span>:neomake_warning_sign <span class="p">=</span> {
+    \   <span class="s1">&#39;text&#39;</span>: <span class="s1">&#39;W➤&#39;</span><span class="p">,</span>
+    \   <span class="s1">&#39;texthl&#39;</span>: <span class="s1">&#39;NeomakeWarningSign&#39;</span><span class="p">,</span>
+    \ }
+<span class="k">let</span> <span class="k">g</span>:neomake_message_sign <span class="p">=</span> {
+     \   <span class="s1">&#39;text&#39;</span>: <span class="s1">&#39;M➤&#39;</span><span class="p">,</span>
+     \   <span class="s1">&#39;texthl&#39;</span>: <span class="s1">&#39;NeomakeMessageSign&#39;</span><span class="p">,</span>
+     \ }
+<span class="k">let</span> <span class="k">g</span>:neomake_info_sign <span class="p">=</span> {<span class="s1">&#39;text&#39;</span>: <span class="s1">&#39;ℹ➤&#39;</span><span class="p">,</span> <span class="s1">&#39;texthl&#39;</span>: <span class="s1">&#39;NeomakeInfoSign&#39;</span>}
+</code></pre></div>
+
+<p>基本的に<a href="https://github.com/neomake/neomake/tree/master/autoload/neomake/makers" title="neomake/autoload/neomake/makers at master · neomake/neomake">ここ</a>にあるmakerは使えます。有効にする際は以下のように書きます。</p>
+<div class="highlight"><pre><span></span><code>let g:neomake_&lt;lang&gt;_enabled_makers = [&#39;&lt;maker&gt;&#39;, &#39;&lt;maker&gt;&#39;]
+</code></pre></div>
+
+<p>maker名は末尾の名前です、例えば<a href="https://github.com/neomake/neomake/blob/master/autoload/neomake/makers/ft/cpp.vim" title="neomake/cpp.vim at master · neomake/neomake">neomake/cpp.vim at master · neomake/neomake</a>にある"function! neomake#makers#ft#cpp#gcc()"の場合は"gcc"になります。</p>
+<p>複数指定すると複数個makerが動くことになるので動作が被ってる場合、同じメッセージが複数出ます。</p>
+<p>makerは自作することもできるようです。</p>
+<div class="highlight"><pre><span></span><code><span class="n">g</span><span class="o">:</span><span class="n">neomake_</span><span class="o">{</span> <span class="n">filetype</span> <span class="o">}</span><span class="n">_</span><span class="o">{</span> <span class="n">makername</span> <span class="o">}</span><span class="n">_maker</span>
+</code></pre></div>
+
+<p>ディレクトリmakerという機能もあるようなので気になります。</p>
+<p>Vim7.4.503からneomakeは使用可能ですが、syntasticに慣れていたのもありVimを使う時はsyntasticを使うようにしています。</p>
+<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;neomake/neomake&#39;</span>
+<span class="na">if</span> <span class="o">=</span> <span class="s">&quot;has(&#39;nvim&#39;)&quot;</span>
+<span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="na">source ~/.config/nvim/plugins/neomake.rc.vim</span>
+<span class="na">&#39;&#39;&#39;</span>
+
+<span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;vim-syntastic/syntastic&#39;</span>
+<span class="na">if</span> <span class="o">=</span> <span class="s">&quot;!has(&#39;nvim&#39;)&quot;</span>
+<span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="na">source ~/.config/nvim/plugins/syntastic.rc.vim</span>
+<span class="na">&#39;&#39;&#39;</span>
+</code></pre></div>
+
+<p>ちなみにSyntasticもneomakeと同じような見た目になるように設定しています。</p>
+<div class="highlight"><pre><span></span><code><span class="c">&quot; ColorScheme</span>
+<span class="k">au</span> MyAutoCmd <span class="nb">VimEnter</span> * <span class="nb">highlight</span> SignColumn ctermbg<span class="p">=</span><span class="m">237</span>
+<span class="k">au</span> MyAutoCmd <span class="nb">VimEnter</span> * <span class="nb">highlight</span> SyntasticErrorSign cterm<span class="p">=</span><span class="nb">bold</span> ctermfg<span class="p">=</span><span class="m">255</span> ctermbg<span class="p">=</span><span class="m">203</span>
+<span class="k">au</span> MyAutoCmd <span class="nb">VimEnter</span> * <span class="nb">highlight</span> SyntasticWarningSign cterm<span class="p">=</span><span class="nb">bold</span> ctermfg<span class="p">=</span><span class="m">233</span> ctermbg<span class="p">=</span><span class="m">150</span>
+<span class="k">let</span> <span class="k">g</span>:syntastic_error_symbol <span class="p">=</span> <span class="s1">&#39;E➤&#39;</span>
+<span class="k">let</span> <span class="k">g</span>:syntastic_warning_symbol <span class="p">=</span> <span class="s1">&#39;W➤&#39;</span>
+<span class="c">&quot; Basic setting</span>
+<span class="k">let</span> <span class="k">g</span>:syntastic_always_populate_loc_list <span class="p">=</span> <span class="m">1</span>
+<span class="c">&quot;let g:syntastic_auto_loc_list = 1</span>
+<span class="k">let</span> <span class="k">g</span>:syntastic_check_on_open <span class="p">=</span> <span class="m">1</span>
+<span class="k">let</span> <span class="k">g</span>:syntastic_check_on_wq <span class="p">=</span> <span class="m">0</span>
+<span class="c">&quot; for javascript</span>
+<span class="k">let</span> <span class="k">g</span>:syntastic_javascript_checkers <span class="p">=</span> [<span class="s1">&#39;eslint&#39;</span>]
+<span class="c">&quot; for c/cpp</span>
+<span class="k">let</span> <span class="k">g</span>:syntastic_cpp_compiler_options <span class="p">=</span> <span class="s1">&#39;-Wall&#39;</span>
+</code></pre></div>
+
+<h1>deoplete.nvim</h1>
+<p>neocompleteに次ぐ補完プラグインです。</p>
+<p>deinlazyに追加します。</p>
+<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;Shougo/deoplete.nvim&#39;</span>
+<span class="na">depends</span> <span class="o">=</span> <span class="s">&#39;context_filetype.vim&#39;</span>
+<span class="na">if</span> <span class="o">=</span> <span class="s">&quot;has(&#39;nvim&#39;)&quot;</span>
+<span class="na">on_i</span> <span class="o">=</span> <span class="s">1</span>
+<span class="na">hook_source</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="na">source ~/.config/nvim/plugins/deoplete.rc.vim</span>
+<span class="na">&#39;&#39;&#39;</span>
+</code></pre></div>
+
+<p>deoplete.rc.vim</p>
+<div class="highlight"><pre><span></span><code><span class="k">let</span> <span class="k">g</span>:deoplete#enable_at_startup <span class="p">=</span> <span class="m">1</span>
+<span class="c">&quot; &lt;TAB&gt;: completion.</span>
+<span class="nb">inoremap</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;&lt;</span>expr<span class="p">&gt;</span> <span class="p">&lt;</span>TAB<span class="p">&gt;</span>
+      \ pumvisible<span class="p">()</span> ? <span class="s2">&quot;\&lt;C-n&gt;&quot;</span> :
+      \ <span class="p">&lt;</span>SID<span class="p">&gt;</span>check_back_space<span class="p">()</span> ? <span class="s2">&quot;\&lt;TAB&gt;&quot;</span> :
+      \ deoplete#manual_complete<span class="p">()</span>
+<span class="k">function</span><span class="p">!</span> s:check_back_space<span class="p">()</span> abort <span class="c">&quot;{{{</span>
+  <span class="k">let</span> <span class="k">col</span> <span class="p">=</span> <span class="k">col</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="p">-</span> <span class="m">1</span>
+  <span class="k">return</span> <span class="p">!</span><span class="k">col</span> <span class="p">||</span> getline<span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>[<span class="k">col</span> <span class="p">-</span> <span class="m">1</span>]  <span class="p">=~</span> <span class="s1">&#39;\s&#39;</span>
+<span class="k">endfunction</span>&quot;}}}
+
+<span class="c">&quot; &lt;S-TAB&gt;: completion back.</span>
+<span class="nb">inoremap</span> <span class="p">&lt;</span>expr<span class="p">&gt;&lt;</span>S<span class="p">-</span>TAB<span class="p">&gt;</span>  pumvisible<span class="p">()</span> ? <span class="s2">&quot;\&lt;C-p&gt;&quot;</span> : <span class="s2">&quot;\&lt;C-h&gt;&quot;</span>
+
+<span class="c">&quot; &lt;BS&gt;: close popup and delete backword char.</span>
+<span class="nb">inoremap</span> <span class="p">&lt;</span>expr<span class="p">&gt;&lt;</span>BS<span class="p">&gt;</span> deoplete#smart_close_popup<span class="p">()</span>.<span class="s2">&quot;\&lt;C-h&gt;&quot;</span>
+
+<span class="c">&quot; Use auto delimiter</span>
+<span class="k">call</span> deoplete#custom#<span class="k">set</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;converters&#39;</span><span class="p">,</span> [
+      \ <span class="s1">&#39;converter_remove_paren&#39;</span><span class="p">,</span>
+      \ <span class="s1">&#39;converter_remove_overlap&#39;</span><span class="p">,</span>
+      \ <span class="s1">&#39;converter_truncate_abbr&#39;</span><span class="p">,</span>
+      \ <span class="s1">&#39;converter_truncate_menu&#39;</span><span class="p">,</span>
+      \ <span class="s1">&#39;converter_auto_delimiter&#39;</span><span class="p">,</span>
+\ ]<span class="p">)</span>
+
+<span class="k">let</span> <span class="k">g</span>:deoplete#enable_camel_case <span class="p">=</span> <span class="m">1</span>
+</code></pre></div>
+
+<p><a href="https://github.com/Shougo/deoplete.nvim/blob/master/doc/deoplete.txt#L887" title="deoplete.nvim/deoplete.txt at master · Shougo/deoplete.nvim">deoplete.nvim/deoplete.txt at master · Shougo/deoplete.nvim</a></p>
+<p>ドキュメントを見ると言語ごとにEXTERNAL SOURCESがあるので、開発する言語を中心にプラグインを適宜追加していけば良さそうです。</p>
+<h1>vim-airline</h1>
+<p>airlineは対応しているプラグインも多く設定も少なくて済むので、とても好きなpowerlineです。</p>
+<p>dein.vimは依存関係を書けるので設定ファイルがわかりやすくなって良いです。</p>
+<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;majutsushi/tagbar&#39;</span>
+
+<span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;tpope/vim-fugitive&#39;</span>
+
+<span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;vim-airline/vim-airline&#39;</span>
+<span class="na">depends</span> <span class="o">=</span> <span class="s">[&#39;tagbar&#39;, &#39;vim-fugitive&#39;]</span>
+<span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="na">source ~/.config/nvim/plugins/airline.rc.vim</span>
+<span class="na">&#39;&#39;&#39;</span>
+
+<span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;vim-airline/vim-airline-themes&#39;</span>
+<span class="na">depends</span> <span class="o">=</span> <span class="s">&#39;vim-airline&#39;</span>
+<span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="na">let g:airline_theme</span><span class="o">=</span><span class="s">&#39;luna&#39;</span>
+<span class="na">&#39;&#39;&#39;</span>
+</code></pre></div>
+
+<p>airline.rc.vim</p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span> exists<span class="p">(</span><span class="s1">&#39;g:nyaovim_version&#39;</span><span class="p">)</span>
+  <span class="k">let</span> <span class="k">g</span>:airline_powerline_fonts <span class="p">=</span> <span class="m">0</span>
+  <span class="k">let</span> <span class="k">g</span>:airline_left_sep <span class="p">=</span> <span class="s1">&#39;&#39;</span>
+  <span class="k">let</span> <span class="k">g</span>:airline_right_sep <span class="p">=</span> <span class="s1">&#39;&#39;</span>
+<span class="k">else</span>
+  <span class="k">let</span> <span class="k">g</span>:airline_powerline_fonts <span class="p">=</span> <span class="m">1</span>
+<span class="k">endif</span>
+<span class="k">let</span> <span class="k">g</span>:airline#extensions#<span class="nb">tabline</span>#enabled <span class="p">=</span> <span class="m">1</span>
+<span class="k">if</span> <span class="p">!</span>has<span class="p">(</span><span class="s1">&#39;nvim&#39;</span><span class="p">)</span>
+  <span class="k">let</span> <span class="k">g</span>:airline#extensions#whitespace#mixed_indent_algo <span class="p">=</span> <span class="m">2</span> <span class="c">&quot; see :help airline-whitespace@en</span>
+<span class="k">endif</span>
+</code></pre></div>
+
+<p>NyaovimでPowerlineFontが崩れてしまったのでNyaovimでは無効にしています。</p>
+<p>mixed_indentがうざかったりしますがドキュメントを読むとアルゴリズムを変更できるので賢めのアルゴリズムに変更しています。</p>
+<h1>Vimfiler</h1>
+<p><a href="https://github.com/Shougo/vimfiler.vim" title="Shougo/vimfiler.vim: Powerful file explorer implemented by Vim script">Shougo/vimfiler.vim: Powerful file explorer implemented by Vim script</a></p>
+<p>便利すぎて手放せないプラグインです。</p>
+<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;Shougo/unite.vim&#39;</span>
+<span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="na">nnoremap &lt;silent&gt; fb :&lt;C-u&gt;Unite buffer&lt;CR&gt;</span>
+<span class="na">&#39;&#39;&#39;</span>
+
+<span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;Shougo/vimfiler.vim&#39;</span>
+<span class="na">depends</span> <span class="o">=</span> <span class="s">&#39;unite.vim&#39;</span>
+<span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="na">source ~/.config/nvim/plugins/vimfiler.rc.vim</span>
+<span class="na">&#39;&#39;&#39;</span>
+</code></pre></div>
+
+<p>vimfiler.rc.vim</p>
+<div class="highlight"><pre><span></span><code><span class="k">call</span> vimfiler#custom#profile<span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="s1">&#39;context&#39;</span><span class="p">,</span> {
+     \ <span class="s1">&#39;safe&#39;</span> : <span class="m">0</span><span class="p">,</span>
+     \ <span class="s1">&#39;auto_expand&#39;</span> : <span class="m">1</span><span class="p">,</span>
+     \ <span class="s1">&#39;parent&#39;</span> : <span class="m">0</span><span class="p">,</span>
+     \ }<span class="p">)</span>
+<span class="c">&quot;default explore -&gt; vimfiler</span>
+<span class="k">let</span> <span class="k">g</span>:vimfiler_as_default_explorer <span class="p">=</span> <span class="m">1</span>
+<span class="c">&quot;buffer directory</span>
+<span class="nb">nnoremap</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;</span> fe :<span class="p">&lt;</span>C<span class="p">-</span><span class="k">u</span><span class="p">&gt;</span>VimFilerBufferDir <span class="p">-</span>quit<span class="p">&lt;</span>CR<span class="p">&gt;</span>
+<span class="c">&quot; Nerdtree like</span>
+<span class="nb">nnoremap</span> <span class="p">&lt;</span>C<span class="p">-</span><span class="k">e</span><span class="p">&gt;</span> :<span class="p">&lt;</span>C<span class="p">-</span><span class="k">u</span><span class="p">&gt;</span>VimFilerBufferDir <span class="p">-</span>split <span class="p">-</span><span class="nb">winwidth</span><span class="p">=</span><span class="m">120</span> <span class="p">-</span>toggle <span class="p">-</span>no<span class="p">-</span>quit<span class="p">&lt;</span>CR<span class="p">&gt;</span>
+<span class="c">&quot;key mapping</span>
+autocmd MyAutoCmd <span class="nb">FileType</span> vimfiler <span class="k">call</span> s:vimfiler_my_settings<span class="p">()</span>
+<span class="k">function</span><span class="p">!</span> s:vimfiler_my_settings<span class="p">()</span>
+  <span class="nb">nnoremap</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;&lt;</span>buffer<span class="p">&gt;&lt;</span>expr<span class="p">&gt;</span> s vimfiler#do_switch_action<span class="p">(</span><span class="s1">&#39;vsplit&#39;</span><span class="p">)</span>
+  <span class="nb">nnoremap</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;&lt;</span>buffer<span class="p">&gt;&lt;</span>expr<span class="p">&gt;</span> <span class="k">v</span> vimfiler#do_switch_action<span class="p">(</span><span class="s1">&#39;split&#39;</span><span class="p">)</span>
+  <span class="nb">nnoremap</span> <span class="p">&lt;</span><span class="k">silent</span><span class="p">&gt;&lt;</span>buffer<span class="p">&gt;&lt;</span>expr<span class="p">&gt;</span> <span class="k">t</span> vimfiler#do_action<span class="p">(</span><span class="s1">&#39;tabopen&#39;</span><span class="p">)</span>
+<span class="k">endfunction</span>
+<span class="c">&quot; Textmate icons</span>
+<span class="k">let</span> <span class="k">g</span>:vimfiler_tree_leaf_icon <span class="p">=</span> <span class="s1">&#39; &#39;</span>
+<span class="k">let</span> <span class="k">g</span>:vimfiler_tree_opened_icon <span class="p">=</span> <span class="s1">&#39;▾&#39;</span>
+<span class="k">let</span> <span class="k">g</span>:vimfiler_tree_closed_icon <span class="p">=</span> <span class="s1">&#39;▸&#39;</span>
+<span class="k">let</span> <span class="k">g</span>:vimfiler_file_icon <span class="p">=</span> <span class="s1">&#39;-&#39;</span>
+<span class="k">let</span> <span class="k">g</span>:vimfiler_marked_file_icon <span class="p">=</span> <span class="s1">&#39;*&#39;</span>
+</code></pre></div>
+
+<h1>関数内検索</h1>
+<p>1000行くらいの長い関数がひしめき合ってるコードと向かい合うとき関数内検索があるとかなり便利なので下記の情報を元にできるようにしました。かなり便利です。</p>
+<ul>
+<li><a href="http://qiita.com/kentaro/items/dd981f7d1337d2fd8e94" title="Vimで、特定の範囲内(textobj)で検索する - Qiita">Vimで、特定の範囲内(textobj)で検索する - Qiita</a></li>
+<li><a href="http://d.hatena.ne.jp/osyo-manga/20131019/1382191487" title="Vim で範囲内を検索する operator をつくった - C++でゲームプログラミング">Vim で範囲内を検索する operator をつくった - C++でゲームプログラミング</a></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;kana/vim-operator-user&#39;</span>
+
+<span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;kana/vim-textobj-user&#39;</span>
+
+<span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;kana/vim-textobj-function&#39;</span>
+
+<span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;osyo-manga/vim-operator-search&#39;</span>
+<span class="na">depends</span> <span class="o">=</span> <span class="s">[&#39;vim-operator-user&#39;, &#39;vim-textobj-function&#39;, &#39;vim-textobj-user&#39;]</span>
+<span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="na">nmap &lt;Space&gt;/ &lt;Plug&gt;(operator-search)if</span>
+<span class="na">&#39;&#39;&#39;</span>
+</code></pre></div>
+
+<p><Space>/で検索できます。</p>
+    </div><!-- /.entry-content -->
+
+    <div class="article-ad">
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- responsive -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-8481391240785119"
+           data-ad-slot="3238871784"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <div class="comments">
+      <div id="disqus-toggle">
+          <h3>Show comments <span class="glyphicon glyphicon-comment"></span></h3>
+      </div>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        $("#disqus-toggle").click(function(){
+          var disqus_shortname = 'mokumoku';
+          var disqus_identifier = 'c95d62c68196b2d0c1c1de8c7eeb6d50.html';
+          var disqus_url = 'https://muunyblue.github.io/c95d62c68196b2d0c1c1de8c7eeb6d50.html';
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//mokumoku.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          $("#disqus-toggle").remove();
+        });
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+                </div><!-- /.col-lg-12 -->
+            </div><!-- /.bs-component -->
+        </div>
+        <div id="extras" class="row">
+            <div class="bs-component">
+<div class="extras-ad">
+    <h2><span class="glyphicon glyphicon-object-align-left"></span> Adsense</h2>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- small_square -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:200px;height:200px"
+         data-ad-client="ca-pub-8481391240785119"
+         data-ad-slot="9438651388"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+    <div class="sns">
+        <h2><span class="glyphicon glyphicon-share"></span> Share</h2>
+<ul>
+    <li>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="_y_y_m_m_">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </li>
+    
+    <li>
+        <a href="http://b.hatena.ne.jp/entry/https://muunyblue.github.io/c95d62c68196b2d0c1c1de8c7eeb6d50.html" class="hatena-bookmark-button" data-hatena-bookmark-title="Neovimはじめました & 2016年vimrc大掃除" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加">
+            <img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+
+    </li>
+        <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+   
+    
+    
+    
+    <li>
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3&appId=387525661451951";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+        <div class="fb-like" data-href="https://muunyblue.github.io/c95d62c68196b2d0c1c1de8c7eeb6d50.html" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
+    </li>
+ 
+</ul>    </div>
+
+    <div class="blogroll">
+        <h2><span class="glyphicon glyphicon-pushpin"></span> About</h2>
+        <p>どこにでもいる平凡なプログラムを書く人間のログ。</p>
+    </div><!-- /.blogroll -->
+
+    <div class="category">
+        <h2><span class="glyphicon glyphicon-th-list"></span> Category</h2>
+        <ul>
+			<li>
+				<a href="https://muunyblue.github.io/category/diary.html">
+				    	<span class="glyphicon glyphicon-book" aria-hidden="true" style="color: #0bd566;"></span>
+				    Diary
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/jia.html">
+				    	<span class="glyphicon glyphicon-home" aria-hidden="true" style="color: #f48c39;"></span>
+				    家
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/programming.html">
+				    	<span class="glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+				    Programming
+				</a>
+			</li>
+        </ul>
+    </div>
+
+    <div class="recently">
+        <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
+        <ul>
+			    <li>
+                    <p>2021年 12月16日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/97885afd60c10c4a454c11e225763e04.html">
+                            普通のキーボード写真とBLEの話
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 5月24日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
+                            React Hooks: useReducer & Context API with TypeScript
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 1月23日 午後 09:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/214cfbe603b7f9f9bc005d5f53f7a1d3.html">
+                            普通のTwitter転職
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月22日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/3a1f85dfef891b2a3685ccb35efa807e.html">
+                            Zen Keyboard Build log
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月17日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
+                            Minidoxビルドログ
+                        </a>
+                    </p>
+			    </li>
+        </ul>
+    </div>
+
+    <div class="tags">
+        <h2><span class="glyphicon glyphicon-tags"></span> Tags</h2>
+        <ul>
+                <li><a href="https://muunyblue.github.io/tag/asakatsu.html">Asakatsu</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/btsync.html">btsync</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/c.html">C++</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ci.html">CI</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/cppcheck.html">Cppcheck</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/css.html">CSS</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/github.html">GitHub</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gitlab.html">GitLab</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/go.html">Go</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/gtk.html">Gtk+</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/haskell.html">Haskell</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/hooks.html">Hooks</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/idcf.html">IDCF</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/javascript.html">JavaScript</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/keyboard.html">Keyboard</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/markdown.html">Markdown</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
+                <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/ubuntu.html">Ubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vagrant.html">Vagrant</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vim.html">Vim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/vps.html">VPS</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/zen.html">Zen</a> (1)</li>
+        </ul>
+    </div><!-- /.social -->
+
+    <div class="social">
+        <h2><span class="glyphicon glyphicon-sunglasses"></span> Social</h2>
+        <ul>
+            <li><a href="https://twitter.com/_y_y_m_m_" target="_blank">Twitter</a></li>
+            <li><a href="https://github.com/yymm" target="_blank">Github</a></li>
+            <li><a href="https://bitbucket.org/yymm" target="_blank">Bitbucket</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.atom.xml" target="_blank" type="application/atom+xml" rel="alternate">atom feed</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.rss.xml" target="_blank" type="application/rss+xml" rel="alternate">rss feed</a></li>
+        </ul>
+    </div><!-- /.social -->
+
+            </div><!-- /.bs-component -->
+        </div><!-- /#extras -->
+    </div><!--./container -->
+    <!--Honoka Bootstrap end -->
+
+    <footer id="contentinfo">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <p id="bloginfo"><a href="https://github.com/yymm/MokuMokuBlog" target="_blank" title="This blog"><img id="mokumokublog" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/mokumokublog.ico"></img></a> POWERD BY <a href="https://github.com/getpelican/pelican" target="_blank" title="This blog"><img id="pelican" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/pelican.ico"></img></a> GENERATED BY <a href="https://github.com/yymm/MemoMemo" target="_blank" title="MemoMemo"><img id="memomemo" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/memomemo.ico"></img></a></p>
+                    <p>Copyright <span class="glyphicon glyphicon-copyright-mark"></span> 2018 <a href="https://github.com/yymm" target="_blank">yuya yano</a> All Rights Reserved.</p>
+					<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img id="copyright" alt="クリエイティブ・コモンズ・ライセンス" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a></p>
+                </div><!--./col-xs-12 -->
+            </div><!--./row -->
+        </div><!--./container -->
+    </footer><!-- /#contentinfo -->
+
+<script src="https://muunyblue.github.io/theme/js/jquery.lazyload.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+$(function() {
+	$("img.lazy").lazyload({
+		effect : "fadeIn"
+	});
+});
+</script>
+<script src="https://muunyblue.github.io/theme/js/bootstrap.min.js"></script>
+<script src="https://muunyblue.github.io/theme/js/script.js"></script>
+
+    <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-67688469-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+<script type="text/javascript">
+    var disqus_shortname = 'mokumoku';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+
+<!--
+<!-- PtEngine -->
+<script type="text/javascript">
+	window._pt_sp_2 = [];
+	_pt_sp_2.push('setAccount,3e10d017');
+	var _protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+	(function() {
+		var atag = document.createElement('script'); atag.type = 'text/javascript'; atag.async = true;
+		atag.src = _protocol + 'js.ptengine.jp/pta.js';
+		var stag = document.createElement('script'); stag.type = 'text/javascript'; stag.async = true;
+		stag.src = _protocol + 'js.ptengine.jp/pts.js';
+		var s = document.getElementsByTagName('script')[0]; 
+		s.parentNode.insertBefore(atag, s);s.parentNode.insertBefore(stag, s);
+	})();
+</script>
+-->
+
+</body>
+</html>

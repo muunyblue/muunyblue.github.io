@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="utf-8" />
+　　　　　　　　<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>IDCFクラウド借りました</title>
+    <link rel="shortcut icon" href="https://muunyblue.github.io/theme/img/favicon.ico" >
+
+	<link rel="stylesheet" href="https://muunyblue.github.io/theme/css/main.css" />
+    <link rel="stylesheet" href="https://muunyblue.github.io/theme/css/bootstrap.min.css" />
+
+
+    <link href="https://muunyblue.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="もくもくブログ Atom Feed" />
+    <link href="https://muunyblue.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="もくもくブログ RSS Feed" />
+
+	<script src="https://muunyblue.github.io/theme/js/jquery-2.1.4.min.js"></script>
+
+    <!--[if IE]>
+        <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="google-site-verification" content="ETSvqWJsfDNiXwsK89y7-OqkwM1O7DK9wiAkkA4Vfow" />
+    <link rel="alternate" hreflang="ja" href="http://blog.muuny-blue.info/" />
+</head>
+
+<body class="no-thank-yu">
+    <header id="banner" class="page-header clearfix">
+        <div id="contenthead" class="container">
+			<a href="https://muunyblue.github.io/">
+				<img id="title-logo" src="https://muunyblue.github.io/theme/img/title.png"></img>
+			</a>
+			<img id="look" src="https://muunyblue.github.io/theme/img/2.svg"></img>
+        </div>
+    </header><!-- /#banner -->
+
+    <!--Honoka Bootstrap-->
+    <div class="container">
+        <div id="content" class="row">
+            <div class="bs-component">
+                <div class="col-lg-12">
+  <article>
+    <header>
+      <div class="page-header">
+        <h1 class="entry-title">
+          <a href="https://muunyblue.github.io/50982fb2f2cfa186d335310461dfa2be.html" rel="bookmark"
+             title="Permalink to IDCFクラウド借りました">
+				<span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+            IDCFクラウド借りました
+          </a>
+        </h1>
+      </div>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+<ul>
+    <li class="published" title="2015-09-19T00:27:54+09:00">
+        <span>Date:</span>2015-09-19 土 (午前 12:27:54)
+    </li>
+        <!--<br />-->
+        <li class="modified" title="2015-09-19T00:44:17+09:00">
+            <span>Updated:</span>2015-09-19 土 (午前 12:44:17)
+        </li>
+<li><span>Tags:</span><a href="https://muunyblue.github.io/tag/idcf.html">IDCF</a> <a href="https://muunyblue.github.io/tag/vps.html">VPS</a> </li>
+    <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
+</ul>
+</footer><!-- /.post-info -->      <h1>経緯</h1>
+<p>今までGehirnを使っていたけど、<a href="https://www.gehirn.jp/gis/rs2plan.html">Gehirnの料金体制の変更</a>に伴い、VPSを変更することにしました。</p>
+<p>自分の場合、個人用途なのでアクセスも主に自分くらいしかないようなサービスしか動かさないのでとにかく安いVPSを探して使っています。</p>
+<p>旧Gehirnは300円(税抜) per monthという遠足のお菓子くらいの価格なので選択していましたが、料金体制が40円 per dayになるのでもっと安いのにしたいので乗り換えることにしました。</p>
+<p>とりあえず、安いVPSを探すと</p>
+<ul>
+<li>Digital Ocean</li>
+<li>IDCFクラウド</li>
+</ul>
+<p>が500円くらい。</p>
+<p>DigitalOceanがあるが為替が安定しないので辞めて、IDCFクラウドにしました。</p>
+<p>IDCFクラウドは、2015/7/31までに申し込めば使える3000円クーポンがあったのが決め手。</p>
+<h1>申し込み</h1>
+<p><a href="http://www.idcf.jp/cloud/?cl=top_cloud" title="IDCFクラウド -使いやすく、パワフル｜IDCフロンティア">IDCFクラウド -使いやすく、パワフル｜IDCフロンティア</a></p>
+<ol>
+<li>「無料で始める」からユーザーの登録をします</li>
+<li>名前、ユーザー名、メールアドレス、パスワードを入力して、電話又はSNS認証をします</li>
+<li>メールが届くので承認して、登録完了です</li>
+</ol>
+<p>管理コンソールに初めてアクセスすると、基本情報と支払情報の入力をしないといけないのでします。</p>
+<p>初期費用もなくサーバもすぐに立ち上がります。すごい良さ。</p>
+<p>管理画面もわかりやすくて、すごい良さです。</p>
+<p>IDCFクラウド、良いです。</p>
+<h1>サーバを立てる</h1>
+<p>light.S1の追加ストレージなしをUbuntu14.04LTSで立てました。</p>
+<p><img alt="" src="http://i.gyazo.com/def8832573d5be0803aeacde516d1487.png"></p>
+<p>このとき、あとでSSHするのでSSH keyも登録しておきます。</p>
+<h1>SSHの設定</h1>
+<p>サーバを立てましたが、プライベートネットワークで構成されているので、グローバルIPでサーバの必要なポートにアクセスできるように設定します。</p>
+<p><img alt="IDCFクラウドのイメージ" src="http://i.gyazo.com/e84703268212c03dc9b627c5341f888b.png"></p>
+<p>こんな感じのイメージ(イメージなので正しくないかもしれません)なので、FirewallとPort forwardingの設定をします。</p>
+<p>管理コンソールのIPアドレスにある、もらってるIPのところで設定ができます。</p>
+<p><img alt="FirewallとPort forwardの設定ボタン" src="http://i.gyazo.com/c08a33d300fbe9a840276e77ee32f40e.png"></p>
+<p>ポートフォワードでプレイベートポートにSSH(22番ポート)、パブリックポートに22ポートを指定します。</p>
+<p>次にFirewallで、さきほどパブリックポートに指定したポートに対して、ソースCIDRにMy IP、タイプにCustom TCPを設定します。</p>
+<p>(セキュリティ的に、ポートフォワードのパブリックのSSHのポートを変えたほうがいいですが、ここでは、FirewallのソースCIDRでIPを制限することにしています。)</p>
+<p>コメントは両者ともSSHとしました。</p>
+<p>SSHの公開鍵を登録したPCからSSHします。</p>
+<div class="highlight"><pre><span></span><code>$ ssh root@XXX.XXX.XXX.XXX
+</code></pre></div>
+
+<p>Ubuntuの場合、ログインできたら以下のようになりました。</p>
+<p><img alt="" src="http://i.gyazo.com/77ab6842dfbb6fca19fa225f17a5500e.png"></p>
+<h1>swap領域の設定</h1>
+<p>デフォルトでswap領域は作られていないので作っておきます。(Docker使うのでswapを作っておいたほうが良さそうでした)</p>
+<ul>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-add-swap-on-ubuntu-12-04" title="How To Add Swap on Ubuntu 12.04 | DigitalOcean">How To Add Swap on Ubuntu 12.04 | DigitalOcean</a></li>
+<li><a href="http://piro791.blog.so-net.ne.jp/2009-03-05" title="Linuxのswap領域を追加する方法：ぴろにっき：So-netブログ">Linuxのswap領域を追加する方法：ぴろにっき：So-netブログ</a></li>
+<li><a href="http://server.etutsplus.com/allocate-swap-space/" title="推奨される Swap 領域の目安 - eTuts+ Server Tutorial">推奨される Swap 領域の目安 - eTuts+ Server Tutorial</a></li>
+</ul>
+<p>このあたりを参考にしました。</p>
+<p>RAM1Gなので、上記の記事によると2Gのswapを確保することになるが、あんまり大きくてもディスクを圧迫しかねないので1Gにしておきます。</p>
+<blockquote>
+<p>dd if=/dev/zero of=swap用ファイルのパス名 bs=単位 count=サイズ</p>
+</blockquote>
+<p>1Gにするなら、bs=1024 count=1024kで1G、bs=1M count=1024で1G。</p>
+<p>/.swapfileに作る。</p>
+<div class="highlight"><pre><span></span><code>$ sudo dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/.swapfile <span class="nv">bs</span><span class="o">=</span>1M <span class="nv">count</span><span class="o">=</span><span class="m">1024</span>
+$ sudo mkswap /.swapfile
+$ sudo swapon /.swapfile
+$ sudo vi /etc/fstab
+/.swapfile       none    swap    sw      <span class="m">0</span>       <span class="m">0</span>
+$ sudo chown root:root /.swapfile
+$ sudo chmod <span class="m">0600</span> /.swapfile
+</code></pre></div>
+
+<h1>userの追加</h1>
+<p>rootユーザーしかいないので、セキュリティ的にrootでSSH出来ないようにして、root権限を持つユーザーで操作するように設定します。</p>
+<div class="highlight"><pre><span></span><code>$ adduser <span class="nv">$USER</span>
+$ visudo
+<span class="nv">$USER</span>    <span class="nv">ALL</span><span class="o">=(</span>ALL:ALL<span class="o">)</span> ALL
+</code></pre></div>
+
+<p>sshできるようにして、rootのssh接続をできないようにします。</p>
+<div class="highlight"><pre><span></span><code>$ su <span class="nv">$USER</span>
+$ mkdir ~/.ssh
+$ chmod <span class="m">0700</span> ~/.ssh
+$ vi ~/.ssh/authorized_keys
+<span class="o">(</span>接続するPCのSSHの公開鍵を記載<span class="o">)</span>
+$ chmod <span class="m">0600</span> ~/.ssh/authorized_keys
+$ sudo vi /etc/ssh/sshd_config
+<span class="c1">#PermitRootLogin without-password</span>
+PermitRootLogin no
+</code></pre></div>
+
+<p>sshd_configは以下の項目も確認。</p>
+<div class="highlight"><pre><span></span><code>PubkeyAuthentication yes
+PasswordAuthentication no
+</code></pre></div>
+
+<h1>Mackerelを使う</h1>
+<p>IDCFクラウドは、サーバの状態を見たりするUIがなさそうなので、Mackarelで監視してみました。</p>
+<p>IDCFクラウドはMackerel対応していて、OAuthしてMackarel使えるみたいでしたが、同じメールアドレスでMackerelのユーザー持ってたので、もったいないですが既存のユーザーで行いました。</p>
+<p>Ubuntuにしたので、debパッケージでのインストール方法を参考にインストール、追加でサービスの設定等はしていませんが、Mackerelでの監視はさくっとできました。</p>
+<h1>今後</h1>
+<p>Dokkuを動かしたいなぁという感じです。</p>
+    </div><!-- /.entry-content -->
+
+    <div class="article-ad">
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- responsive -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-8481391240785119"
+           data-ad-slot="3238871784"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <div class="comments">
+      <div id="disqus-toggle">
+          <h3>Show comments <span class="glyphicon glyphicon-comment"></span></h3>
+      </div>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        $("#disqus-toggle").click(function(){
+          var disqus_shortname = 'mokumoku';
+          var disqus_identifier = '50982fb2f2cfa186d335310461dfa2be.html';
+          var disqus_url = 'https://muunyblue.github.io/50982fb2f2cfa186d335310461dfa2be.html';
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//mokumoku.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          $("#disqus-toggle").remove();
+        });
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+                </div><!-- /.col-lg-12 -->
+            </div><!-- /.bs-component -->
+        </div>
+        <div id="extras" class="row">
+            <div class="bs-component">
+<div class="extras-ad">
+    <h2><span class="glyphicon glyphicon-object-align-left"></span> Adsense</h2>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- small_square -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:200px;height:200px"
+         data-ad-client="ca-pub-8481391240785119"
+         data-ad-slot="9438651388"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+    <div class="sns">
+        <h2><span class="glyphicon glyphicon-share"></span> Share</h2>
+<ul>
+    <li>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="_y_y_m_m_">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </li>
+    
+    <li>
+        <a href="http://b.hatena.ne.jp/entry/https://muunyblue.github.io/50982fb2f2cfa186d335310461dfa2be.html" class="hatena-bookmark-button" data-hatena-bookmark-title="IDCFクラウド借りました" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加">
+            <img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+
+    </li>
+        <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+   
+    
+    
+    
+    <li>
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3&appId=387525661451951";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+        <div class="fb-like" data-href="https://muunyblue.github.io/50982fb2f2cfa186d335310461dfa2be.html" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
+    </li>
+ 
+</ul>    </div>
+
+    <div class="blogroll">
+        <h2><span class="glyphicon glyphicon-pushpin"></span> About</h2>
+        <p>どこにでもいる平凡なプログラムを書く人間のログ。</p>
+    </div><!-- /.blogroll -->
+
+    <div class="category">
+        <h2><span class="glyphicon glyphicon-th-list"></span> Category</h2>
+        <ul>
+			<li>
+				<a href="https://muunyblue.github.io/category/diary.html">
+				    	<span class="glyphicon glyphicon-book" aria-hidden="true" style="color: #0bd566;"></span>
+				    Diary
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/jia.html">
+				    	<span class="glyphicon glyphicon-home" aria-hidden="true" style="color: #f48c39;"></span>
+				    家
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/programming.html">
+				    	<span class="glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+				    Programming
+				</a>
+			</li>
+        </ul>
+    </div>
+
+    <div class="recently">
+        <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
+        <ul>
+			    <li>
+                    <p>2021年 12月16日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/97885afd60c10c4a454c11e225763e04.html">
+                            普通のキーボード写真とBLEの話
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 5月24日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
+                            React Hooks: useReducer & Context API with TypeScript
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 1月23日 午後 09:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/214cfbe603b7f9f9bc005d5f53f7a1d3.html">
+                            普通のTwitter転職
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月22日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/3a1f85dfef891b2a3685ccb35efa807e.html">
+                            Zen Keyboard Build log
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月17日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
+                            Minidoxビルドログ
+                        </a>
+                    </p>
+			    </li>
+        </ul>
+    </div>
+
+    <div class="tags">
+        <h2><span class="glyphicon glyphicon-tags"></span> Tags</h2>
+        <ul>
+                <li><a href="https://muunyblue.github.io/tag/asakatsu.html">Asakatsu</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/btsync.html">btsync</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/c.html">C++</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ci.html">CI</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/cppcheck.html">Cppcheck</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/css.html">CSS</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/github.html">GitHub</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gitlab.html">GitLab</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/go.html">Go</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/gtk.html">Gtk+</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/haskell.html">Haskell</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/hooks.html">Hooks</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/idcf.html">IDCF</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/javascript.html">JavaScript</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/keyboard.html">Keyboard</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/markdown.html">Markdown</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
+                <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/ubuntu.html">Ubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vagrant.html">Vagrant</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vim.html">Vim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/vps.html">VPS</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/zen.html">Zen</a> (1)</li>
+        </ul>
+    </div><!-- /.social -->
+
+    <div class="social">
+        <h2><span class="glyphicon glyphicon-sunglasses"></span> Social</h2>
+        <ul>
+            <li><a href="https://twitter.com/_y_y_m_m_" target="_blank">Twitter</a></li>
+            <li><a href="https://github.com/yymm" target="_blank">Github</a></li>
+            <li><a href="https://bitbucket.org/yymm" target="_blank">Bitbucket</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.atom.xml" target="_blank" type="application/atom+xml" rel="alternate">atom feed</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.rss.xml" target="_blank" type="application/rss+xml" rel="alternate">rss feed</a></li>
+        </ul>
+    </div><!-- /.social -->
+
+            </div><!-- /.bs-component -->
+        </div><!-- /#extras -->
+    </div><!--./container -->
+    <!--Honoka Bootstrap end -->
+
+    <footer id="contentinfo">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <p id="bloginfo"><a href="https://github.com/yymm/MokuMokuBlog" target="_blank" title="This blog"><img id="mokumokublog" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/mokumokublog.ico"></img></a> POWERD BY <a href="https://github.com/getpelican/pelican" target="_blank" title="This blog"><img id="pelican" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/pelican.ico"></img></a> GENERATED BY <a href="https://github.com/yymm/MemoMemo" target="_blank" title="MemoMemo"><img id="memomemo" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/memomemo.ico"></img></a></p>
+                    <p>Copyright <span class="glyphicon glyphicon-copyright-mark"></span> 2018 <a href="https://github.com/yymm" target="_blank">yuya yano</a> All Rights Reserved.</p>
+					<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img id="copyright" alt="クリエイティブ・コモンズ・ライセンス" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a></p>
+                </div><!--./col-xs-12 -->
+            </div><!--./row -->
+        </div><!--./container -->
+    </footer><!-- /#contentinfo -->
+
+<script src="https://muunyblue.github.io/theme/js/jquery.lazyload.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+$(function() {
+	$("img.lazy").lazyload({
+		effect : "fadeIn"
+	});
+});
+</script>
+<script src="https://muunyblue.github.io/theme/js/bootstrap.min.js"></script>
+<script src="https://muunyblue.github.io/theme/js/script.js"></script>
+
+    <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-67688469-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+<script type="text/javascript">
+    var disqus_shortname = 'mokumoku';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+
+<!--
+<!-- PtEngine -->
+<script type="text/javascript">
+	window._pt_sp_2 = [];
+	_pt_sp_2.push('setAccount,3e10d017');
+	var _protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+	(function() {
+		var atag = document.createElement('script'); atag.type = 'text/javascript'; atag.async = true;
+		atag.src = _protocol + 'js.ptengine.jp/pta.js';
+		var stag = document.createElement('script'); stag.type = 'text/javascript'; stag.async = true;
+		stag.src = _protocol + 'js.ptengine.jp/pts.js';
+		var s = document.getElementsByTagName('script')[0]; 
+		s.parentNode.insertBefore(atag, s);s.parentNode.insertBefore(stag, s);
+	})();
+</script>
+-->
+
+</body>
+</html>

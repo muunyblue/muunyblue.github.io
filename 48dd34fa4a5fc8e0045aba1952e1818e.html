@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="utf-8" />
+　　　　　　　　<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>VimでLanguage Serverを活用する(Rust, Vue.js)</title>
+    <link rel="shortcut icon" href="https://muunyblue.github.io/theme/img/favicon.ico" >
+
+	<link rel="stylesheet" href="https://muunyblue.github.io/theme/css/main.css" />
+    <link rel="stylesheet" href="https://muunyblue.github.io/theme/css/bootstrap.min.css" />
+
+
+    <link href="https://muunyblue.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="もくもくブログ Atom Feed" />
+    <link href="https://muunyblue.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="もくもくブログ RSS Feed" />
+
+	<script src="https://muunyblue.github.io/theme/js/jquery-2.1.4.min.js"></script>
+
+    <!--[if IE]>
+        <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="google-site-verification" content="ETSvqWJsfDNiXwsK89y7-OqkwM1O7DK9wiAkkA4Vfow" />
+    <link rel="alternate" hreflang="ja" href="http://blog.muuny-blue.info/" />
+</head>
+
+<body class="no-thank-yu">
+    <header id="banner" class="page-header clearfix">
+        <div id="contenthead" class="container">
+			<a href="https://muunyblue.github.io/">
+				<img id="title-logo" src="https://muunyblue.github.io/theme/img/title.png"></img>
+			</a>
+			<img id="look" src="https://muunyblue.github.io/theme/img/2.svg"></img>
+        </div>
+    </header><!-- /#banner -->
+
+    <!--Honoka Bootstrap-->
+    <div class="container">
+        <div id="content" class="row">
+            <div class="bs-component">
+                <div class="col-lg-12">
+  <article>
+    <header>
+      <div class="page-header">
+        <h1 class="entry-title">
+          <a href="https://muunyblue.github.io/48dd34fa4a5fc8e0045aba1952e1818e.html" rel="bookmark"
+             title="Permalink to VimでLanguage Serverを活用する(Rust, Vue.js)">
+				<span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+            VimでLanguage Serverを活用する(Rust, Vue.js)
+          </a>
+        </h1>
+      </div>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+<ul>
+    <li class="published" title="2017-12-23T00:56:58+09:00">
+        <span>Date:</span>2017-12-23 土 (午前 12:56:58)
+    </li>
+<li><span>Tags:</span><a href="https://muunyblue.github.io/tag/vim.html">Vim</a> <a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> <a href="https://muunyblue.github.io/tag/rust.html">Rust</a> <a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> </li>
+    <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
+</ul>
+</footer><!-- /.post-info -->      <p>遅刻しましたが <a href="https://qiita.com/advent-calendar/2017/vim2">Vim2 Advent Calendar 2017</a> 22日目の記事です。</p>
+<p>VSCodeを使っていると知らない間にお世話になっていたりするLanguage Server Protcol(LSP)ですが、便利なので少しずつVimでも活用してみています。</p>
+<p>実際に最近使っているRustとVue.jsの例を紹介をします。</p>
+<p>2018/01 Vue.jsのほうをまとめ直しました =&gt; <a href="https://muunyblue.github.io/520bae6649b42ff5a3c8c58b7fcfc5a9.html">Neovim/Vim8で快適Vue.js開発(Vue Language Server)</a></p>
+<p>※ Neovimでしか動作検証してません・・・使っているプラグインはVim対応してるので多分Vimでも動きます</p>
+<h1>プラグイン構成</h1>
+<p>補完とLinterが欲しいので以下のプラグインを入れます。</p>
+<ul>
+<li>LanguageClient-neovim</li>
+<li>deoplete.nvim</li>
+<li>neosnippet</li>
+<li>ale</li>
+</ul>
+<p>プラグインマネージャーなお好きなものを使うと良いですが、dein.vimでtomlで設定を読んでいる場合以下のようになります。</p>
+<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<span class="n">repo</span> <span class="o">=</span> <span class="s">&#39;Shougo/context_filetype.vim&#39;</span>
+
+<span class="k">[[plugins]]</span>
+<span class="n">repo</span> <span class="o">=</span> <span class="s">&#39;Shougo/deoplete.nvim&#39;</span>
+<span class="n">depends</span> <span class="o">=</span> <span class="s">&#39;context_filetype.vim&#39;</span>
+<span class="n">on_i</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">hook_source</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="s">let g:deoplete#enable_at_startup = 1</span>
+<span class="s">&#39;&#39;&#39;</span>
+
+<span class="k">[[plugins]]</span>
+<span class="n">repo</span> <span class="o">=</span> <span class="s">&#39;Shougo/neosnippet.vim&#39;</span>
+<span class="n">depends</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;context_filetype.vim&#39;</span><span class="p">]</span>
+<span class="n">on_event</span> <span class="o">=</span> <span class="s">&#39;InsertCharPre&#39;</span>
+<span class="n">on_ft</span> <span class="o">=</span> <span class="s">&#39;snippet&#39;</span>
+
+<span class="k">[[plugins]]</span>
+<span class="n">repo</span> <span class="o">=</span> <span class="s">&#39;autozimu/LanguageClient-neovim&#39;</span>
+<span class="n">depends</span> <span class="o">=</span> <span class="s">&#39;deoplete.nvim&#39;</span>
+<span class="n">on_ft</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;rust&#39;</span><span class="p">,</span> <span class="s">&#39;vue&#39;</span><span class="p">]</span>
+<span class="n">build</span> <span class="o">=</span> <span class="s">&#39;./install.sh&#39;</span>
+<span class="n">hook_source</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="s">set hidden</span>
+<span class="s">let g:LanguageClient_serverCommands = {</span>
+<span class="s">    \ &#39;</span><span class="n">vue</span><span class="s">&#39;: [&#39;</span><span class="n">vls</span><span class="s">&#39;],</span>
+<span class="s">    \ &#39;</span><span class="n">rust</span><span class="s">&#39;: [&#39;</span><span class="n">rustup</span><span class="s">&#39;, &#39;</span><span class="n">run</span><span class="s">&#39;, &#39;</span><span class="n">nightly</span><span class="s">&#39;, &#39;</span><span class="n">rls</span><span class="s">&#39;],</span>
+<span class="s">    \ }</span>
+<span class="s">let g:LanguageClient_autoStart = 1</span>
+<span class="s">nnoremap &lt;silent&gt; K :call LanguageClient_textDocument_hover()&lt;CR&gt;</span>
+<span class="s">nnoremap &lt;silent&gt; gd :call LanguageClient_textDocument_definition()&lt;CR&gt;</span>
+<span class="s">nnoremap &lt;silent&gt; &lt;F2&gt; :call LanguageClient_textDocument_rename()&lt;CR&gt;</span>
+<span class="s">&#39;&#39;&#39;</span>
+
+<span class="k">[[plugins]]</span>
+<span class="n">repo</span> <span class="o">=</span> <span class="s">&#39;w0rp/ale&#39;</span>
+</code></pre></div>
+
+<p>今回の話に無関係な設定は消してあります、全設定が知りたい人は↓</p>
+<p>[https://github.com/yymm/.dotfiles/tree/master/config/nvim:embed]</p>
+<h1>LanguageClient-neovim</h1>
+<p>あまりVimでLSPを使っている人を見たことがないのでデファクトがわからないのですが、勝手にこれをデファクトだと思って使っています。</p>
+<ul>
+<li><a href="https://langserver.org/">Langserver.org</a>で紹介されていて全チェック入ってるので全機能使える</li>
+<li>ドキュメントを見る限りVimでもNeovimでも動く</li>
+<li>deoplete.nvimとaleと自動で連携するので便利</li>
+<li>あと多くの部分がRustで書かれていてｶｯｺｲｲ・・・</li>
+</ul>
+<p>同様のプラグインにvim-lspやvim-lscもありますが試していないので、ユーザーの方いたら意見を聞いてみたいです。</p>
+<h1>Rust</h1>
+<p><a href="https://github.com/rust-lang-nursery/rls">RLS</a>を使います。</p>
+<p>完全に便利なのでvim-racerから完全に乗り換えました。</p>
+<p>以下RLSのインストール方法です。</p>
+<div class="highlight"><pre><span></span><code>% rustup update
+% rustup component add rls-preview --toolchain nightly
+% rustup component add rust-analysis --toolchain nightly
+% rustup component add rust-src --toolchain nightly
+</code></pre></div>
+
+<p>rustupが入っていない場合は<a href="https://www.rustup.rs/">ここ</a>にあるコマンドでインストールします。</p>
+<p>LSPの前にRustを書くときはrust.vimを入れておく必要があります。</p>
+<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<span class="n">repo</span> <span class="o">=</span> <span class="s">&#39;rust-lang/rust.vim&#39;</span>
+<span class="n">on_ft</span> <span class="o">=</span> <span class="s">&#39;rust&#39;</span>
+<span class="n">hook_source</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="err">&#39;</span>
+<span class="n">let</span> <span class="n">g</span><span class="p">:</span><span class="n">rustfmt_autosave</span> <span class="o">=</span> <span class="mi">1</span>
+</code></pre></div>
+
+<p>rustfmtを入れて自動で整形するのがおすすめです。</p>
+<p>これでVimを起動すると最高のRust開発環境が待っています。</p>
+<h1>Vue.js</h1>
+<p><a href="https://github.com/vuejs/vetur/tree/master/server">VLS</a>を使います。</p>
+<p>VLSはVSCodeでVue.js書いたことがある人ならお世話になっているVetur内部のLanguage Serverです。</p>
+<p>単体でインストールできるので下記のコマンドで導入します。</p>
+<div class="highlight"><pre><span></span><code>$ npm install vue-language-server -g
+</code></pre></div>
+
+<p>deoplete.nvimでvueファイルのような複数言語の混ざったファイルはcontext/_filetype.vimで判定して補完しています。</p>
+<p>vueファイルには対応していなかったので<a href="https://github.com/Shougo/context_filetype.vim/pull/33">PR</a>を出して対応しました。</p>
+<p>ハイライトには<a href="https://github.com/posva/vim-vue">posva/vim-vue</a>を使います。</p>
+<p>これで万事うまくいけばよかったのですが・・・</p>
+<p>補完がうまく効いていないのが現状です。aleはちゃんと効きます。deoplete.nvimの本来の補完(html,js,css)は効くのでなんとか開発はできます。</p>
+<p>せっかくのアドベントカレンダーでうまく動かない...では残念なので<a href="https://github.com/roxma/nvim-completion-manager">nvim-completion-manager</a>を使ってみました。</p>
+<p>deoplete.nvimの部分をnvim-completion-manager(ncm)に置き換えます。</p>
+<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<span class="n">repo</span> <span class="o">=</span> <span class="s">&#39;roxma/nvim-completion-manager&#39;</span>
+<span class="n">on_ft</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;vue&#39;</span><span class="p">]</span>
+<span class="n">on_i</span> <span class="o">=</span> <span class="kc">true</span>
+<span class="n">hook_source</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="s">inoremap &lt;expr&gt; &lt;CR&gt; (pumvisible() ? &quot;\&lt;c-y&gt;\&lt;cr&gt;&quot; : &quot;\&lt;CR&gt;&quot;)</span>
+<span class="s">imap &lt;expr&gt; &lt;CR&gt;  (pumvisible() ?  &quot;\&lt;c-y&gt;\&lt;Plug&gt;(expand_or_nl)&quot; : &quot;\&lt;CR&gt;&quot;)</span>
+<span class="s">imap &lt;expr&gt; &lt;Plug&gt;(expand_or_nl) (cm#completed_is_snippet() ? &quot;\&lt;C-U&gt;&quot;:&quot;\&lt;CR&gt;&quot;)</span>
+<span class="s">inoremap &lt;c-c&gt; &lt;ESC&gt;</span>
+<span class="s">inoremap &lt;expr&gt; &lt;Tab&gt; pumvisible() ? &quot;\&lt;C-n&gt;&quot; : &quot;\&lt;Tab&gt;&quot;</span>
+<span class="s">inoremap &lt;expr&gt; &lt;S-Tab&gt; pumvisible() ? &quot;\&lt;C-p&gt;&quot; : &quot;\&lt;S-Tab&gt;&quot;</span>
+<span class="s">&#39;&#39;&#39;</span>
+</code></pre></div>
+
+<p>[https://twitter.com/y_y_m_m/status/944042507662323712:embed]</p>
+<p>scaffoldやjs補完は効いています。ただ、ncmのcontextの解釈が完全でないためHTML部分で効く補完が弱いです。</p>
+<p>この記事を書きながらncmでは動くなとつぶやいていたらShougoさんがやってきました。</p>
+<p>[https://twitter.com/ShougoMatsu/status/944043865811574784:embed]</p>
+<p>[https://twitter.com/ShougoMatsu/status/944048033393553409:embed]</p>
+<p>Issueあげるアドバイスをもらったので近日中に時間を作ってやります。</p>
+<p>正直deoplete.nvimが好きなのでncmに乗り換えるより、deoplete.nvimで最高のVue.js開発環境にしていきたいので頑張りたいです。</p>
+<p>Vimが最高のVue.js開発環境になったらまた記事を書こうと思います。</p>
+<hr>
+<p>Language Server Protcolは補完やLint以外にもrenameや定義参照など便利な機能があるので他の言語も積極的に導入を試みたいと思っています。</p>
+    </div><!-- /.entry-content -->
+
+    <div class="article-ad">
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- responsive -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-8481391240785119"
+           data-ad-slot="3238871784"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <div class="comments">
+      <div id="disqus-toggle">
+          <h3>Show comments <span class="glyphicon glyphicon-comment"></span></h3>
+      </div>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        $("#disqus-toggle").click(function(){
+          var disqus_shortname = 'mokumoku';
+          var disqus_identifier = '48dd34fa4a5fc8e0045aba1952e1818e.html';
+          var disqus_url = 'https://muunyblue.github.io/48dd34fa4a5fc8e0045aba1952e1818e.html';
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//mokumoku.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          $("#disqus-toggle").remove();
+        });
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+                </div><!-- /.col-lg-12 -->
+            </div><!-- /.bs-component -->
+        </div>
+        <div id="extras" class="row">
+            <div class="bs-component">
+<div class="extras-ad">
+    <h2><span class="glyphicon glyphicon-object-align-left"></span> Adsense</h2>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- small_square -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:200px;height:200px"
+         data-ad-client="ca-pub-8481391240785119"
+         data-ad-slot="9438651388"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+    <div class="sns">
+        <h2><span class="glyphicon glyphicon-share"></span> Share</h2>
+<ul>
+    <li>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="_y_y_m_m_">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </li>
+    
+    <li>
+        <a href="http://b.hatena.ne.jp/entry/https://muunyblue.github.io/48dd34fa4a5fc8e0045aba1952e1818e.html" class="hatena-bookmark-button" data-hatena-bookmark-title="VimでLanguage Serverを活用する(Rust, Vue.js)" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加">
+            <img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+
+    </li>
+        <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+   
+    
+    
+    
+    <li>
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3&appId=387525661451951";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+        <div class="fb-like" data-href="https://muunyblue.github.io/48dd34fa4a5fc8e0045aba1952e1818e.html" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
+    </li>
+ 
+</ul>    </div>
+
+    <div class="blogroll">
+        <h2><span class="glyphicon glyphicon-pushpin"></span> About</h2>
+        <p>どこにでもいる平凡なプログラムを書く人間のログ。</p>
+    </div><!-- /.blogroll -->
+
+    <div class="category">
+        <h2><span class="glyphicon glyphicon-th-list"></span> Category</h2>
+        <ul>
+			<li>
+				<a href="https://muunyblue.github.io/category/diary.html">
+				    	<span class="glyphicon glyphicon-book" aria-hidden="true" style="color: #0bd566;"></span>
+				    Diary
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/jia.html">
+				    	<span class="glyphicon glyphicon-home" aria-hidden="true" style="color: #f48c39;"></span>
+				    家
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/programming.html">
+				    	<span class="glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+				    Programming
+				</a>
+			</li>
+        </ul>
+    </div>
+
+    <div class="recently">
+        <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
+        <ul>
+			    <li>
+                    <p>2021年 12月16日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/97885afd60c10c4a454c11e225763e04.html">
+                            普通のキーボード写真とBLEの話
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 5月24日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
+                            React Hooks: useReducer & Context API with TypeScript
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 1月23日 午後 09:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/214cfbe603b7f9f9bc005d5f53f7a1d3.html">
+                            普通のTwitter転職
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月22日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/3a1f85dfef891b2a3685ccb35efa807e.html">
+                            Zen Keyboard Build log
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月17日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
+                            Minidoxビルドログ
+                        </a>
+                    </p>
+			    </li>
+        </ul>
+    </div>
+
+    <div class="tags">
+        <h2><span class="glyphicon glyphicon-tags"></span> Tags</h2>
+        <ul>
+                <li><a href="https://muunyblue.github.io/tag/asakatsu.html">Asakatsu</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/btsync.html">btsync</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/c.html">C++</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ci.html">CI</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/cppcheck.html">Cppcheck</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/css.html">CSS</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/github.html">GitHub</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gitlab.html">GitLab</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/go.html">Go</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/gtk.html">Gtk+</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/haskell.html">Haskell</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/hooks.html">Hooks</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/idcf.html">IDCF</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/javascript.html">JavaScript</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/keyboard.html">Keyboard</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/markdown.html">Markdown</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
+                <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/ubuntu.html">Ubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vagrant.html">Vagrant</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vim.html">Vim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/vps.html">VPS</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/zen.html">Zen</a> (1)</li>
+        </ul>
+    </div><!-- /.social -->
+
+    <div class="social">
+        <h2><span class="glyphicon glyphicon-sunglasses"></span> Social</h2>
+        <ul>
+            <li><a href="https://twitter.com/_y_y_m_m_" target="_blank">Twitter</a></li>
+            <li><a href="https://github.com/yymm" target="_blank">Github</a></li>
+            <li><a href="https://bitbucket.org/yymm" target="_blank">Bitbucket</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.atom.xml" target="_blank" type="application/atom+xml" rel="alternate">atom feed</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.rss.xml" target="_blank" type="application/rss+xml" rel="alternate">rss feed</a></li>
+        </ul>
+    </div><!-- /.social -->
+
+            </div><!-- /.bs-component -->
+        </div><!-- /#extras -->
+    </div><!--./container -->
+    <!--Honoka Bootstrap end -->
+
+    <footer id="contentinfo">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <p id="bloginfo"><a href="https://github.com/yymm/MokuMokuBlog" target="_blank" title="This blog"><img id="mokumokublog" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/mokumokublog.ico"></img></a> POWERD BY <a href="https://github.com/getpelican/pelican" target="_blank" title="This blog"><img id="pelican" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/pelican.ico"></img></a> GENERATED BY <a href="https://github.com/yymm/MemoMemo" target="_blank" title="MemoMemo"><img id="memomemo" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/memomemo.ico"></img></a></p>
+                    <p>Copyright <span class="glyphicon glyphicon-copyright-mark"></span> 2018 <a href="https://github.com/yymm" target="_blank">yuya yano</a> All Rights Reserved.</p>
+					<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img id="copyright" alt="クリエイティブ・コモンズ・ライセンス" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a></p>
+                </div><!--./col-xs-12 -->
+            </div><!--./row -->
+        </div><!--./container -->
+    </footer><!-- /#contentinfo -->
+
+<script src="https://muunyblue.github.io/theme/js/jquery.lazyload.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+$(function() {
+	$("img.lazy").lazyload({
+		effect : "fadeIn"
+	});
+});
+</script>
+<script src="https://muunyblue.github.io/theme/js/bootstrap.min.js"></script>
+<script src="https://muunyblue.github.io/theme/js/script.js"></script>
+
+    <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-67688469-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+<script type="text/javascript">
+    var disqus_shortname = 'mokumoku';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+
+<!--
+<!-- PtEngine -->
+<script type="text/javascript">
+	window._pt_sp_2 = [];
+	_pt_sp_2.push('setAccount,3e10d017');
+	var _protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+	(function() {
+		var atag = document.createElement('script'); atag.type = 'text/javascript'; atag.async = true;
+		atag.src = _protocol + 'js.ptengine.jp/pta.js';
+		var stag = document.createElement('script'); stag.type = 'text/javascript'; stag.async = true;
+		stag.src = _protocol + 'js.ptengine.jp/pts.js';
+		var s = document.getElementsByTagName('script')[0]; 
+		s.parentNode.insertBefore(atag, s);s.parentNode.insertBefore(stag, s);
+	})();
+</script>
+-->
+
+</body>
+</html>

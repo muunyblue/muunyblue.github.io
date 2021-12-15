@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="utf-8" />
+　　　　　　　　<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>docker-composeを使って最高の開発環境を手に入れた</title>
+    <link rel="shortcut icon" href="https://muunyblue.github.io/theme/img/favicon.ico" >
+
+	<link rel="stylesheet" href="https://muunyblue.github.io/theme/css/main.css" />
+    <link rel="stylesheet" href="https://muunyblue.github.io/theme/css/bootstrap.min.css" />
+
+
+    <link href="https://muunyblue.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="もくもくブログ Atom Feed" />
+    <link href="https://muunyblue.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="もくもくブログ RSS Feed" />
+
+	<script src="https://muunyblue.github.io/theme/js/jquery-2.1.4.min.js"></script>
+
+    <!--[if IE]>
+        <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="google-site-verification" content="ETSvqWJsfDNiXwsK89y7-OqkwM1O7DK9wiAkkA4Vfow" />
+    <link rel="alternate" hreflang="ja" href="http://blog.muuny-blue.info/" />
+</head>
+
+<body class="no-thank-yu">
+    <header id="banner" class="page-header clearfix">
+        <div id="contenthead" class="container">
+			<a href="https://muunyblue.github.io/">
+				<img id="title-logo" src="https://muunyblue.github.io/theme/img/title.png"></img>
+			</a>
+			<img id="look" src="https://muunyblue.github.io/theme/img/2.svg"></img>
+        </div>
+    </header><!-- /#banner -->
+
+    <!--Honoka Bootstrap-->
+    <div class="container">
+        <div id="content" class="row">
+            <div class="bs-component">
+                <div class="col-lg-12">
+  <article>
+    <header>
+      <div class="page-header">
+        <h1 class="entry-title">
+          <a href="https://muunyblue.github.io/7d128c1d4a33165a8676d1650d8ff828.html" rel="bookmark"
+             title="Permalink to docker-composeを使って最高の開発環境を手に入れた">
+				<span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+            docker-composeを使って最高の開発環境を手に入れた
+          </a>
+        </h1>
+      </div>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+<ul>
+    <li class="published" title="2016-01-13T01:08:23+09:00">
+        <span>Date:</span>2016-01-13 水 (午前 01:08:23)
+    </li>
+        <!--<br />-->
+        <li class="modified" title="2016-01-27T05:12:02+09:00">
+            <span>Updated:</span>2016-01-27 水 (午前 05:12:02)
+        </li>
+<li><span>Tags:</span><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> </li>
+    <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
+</ul>
+</footer><!-- /.post-info -->      <p>開発環境を作ってるの楽しい人種なので定期的に開発環境を見直したくなります。</p>
+<p>Dockerを使ってポータブルな開発環境を手に入れたので紹介します。</p>
+<p>開発用コンテナと各種データベースコンテナをdocker-composeを使って構築します。</p>
+<hr>
+<p>✗TOC</p>
+<p>[TOC]</p>
+<h1>Dockerポータブルな開発環境</h1>
+<p><img alt="" src="https://slack-files.com/files-tmb/T02B7Q6RW-F0HAV7659-dfeef9aabc/screenshot_from_2015-12-25_16_17_28_360.png"></p>
+<p>"docker-compose up -d"で開発環境が出来上がります、すごい。mysqlやredis他も使える、すごい。</p>
+<p>ディレクトリ構成は以下のようになっています。</p>
+<div class="highlight"><pre><span></span><code>|-- data
+|   |-- mongo
+|   |-- mysql
+|   |-- postgresql
+|   |-- redis
+|   `-- works
+|-- docker-compose.yml
+|-- Dockerfile
+|-- id_rsa
+`-- id_rsa.pub
+</code></pre></div>
+
+<p>dataにコンテナ上の永続化したいデータをマウントしています。各データベースのデータと、worksは開発コンテナの~/worksをマウントしており作業はここで行い、作業中のデータは保存されるようになっています。</p>
+<p>動かすには、dockerとdocker-composeが入っている環境で以下のコマンドを打ちます。</p>
+<div class="highlight"><pre><span></span><code>$ docker-compose build
+$ docker-compose pull
+$ docker-compose up -d
+</code></pre></div>
+
+<p>新しい環境ではこのコマンドを実行して、二回目以降は最後のコマンドだけで立ち上がります。</p>
+<p>sshできるようになっているのでホストからsshすればDockerfileに書いてある内容の開発環境が出迎えてくれます。</p>
+<p>これで、どの開発機でもDockerとdocker-composeが入っていれば開発環境が立ち上がる体制が作れました。</p>
+<p>以下に詳しい内容を書いていきます。</p>
+<h1>開発用コンテナ</h1>
+<p>Dockerfileにsshで接続できる開発環境を記述します。含まれている内容は以下になります。</p>
+<p>ベース</p>
+<ul>
+<li>Ubuntu 14.04</li>
+<li>ssh</li>
+<li>zsh</li>
+<li>tmux</li>
+<li>dotfiles</li>
+<li>Vim</li>
+</ul>
+<p>各言語</p>
+<ul>
+<li>Ruby (rbenv)</li>
+<li>Python (pyenv)</li>
+<li>Node.js (nvm)</li>
+<li>Golang (1.5)</li>
+<li>Clang (3.5)</li>
+</ul>
+<p>データベース</p>
+<ul>
+<li>SQLite3</li>
+<li>各データベースのクライアントツール</li>
+</ul>
+<p>普段の開発で雑多に使うため、複数言語+複数データベースの環境を富豪的に作っています。</p>
+<p>Webアプリを開発することが多いので、開発で使うお好みのポートをdocker-compose.ymlでポートフォワーディングしておきます。</p>
+<div class="highlight"><pre><span></span><code><span class="n">ev</span><span class="o">:</span>
+  <span class="n">restart</span><span class="o">:</span> <span class="n">always</span>
+  <span class="n">build</span><span class="o">:</span> <span class="o">.</span>
+  <span class="n">ports</span><span class="o">:</span>
+    <span class="o">-</span> <span class="s2">&quot;5000:5000&quot;</span>
+    <span class="o">-</span> <span class="s2">&quot;8080:8080&quot;</span>
+    <span class="o">-</span> <span class="s2">&quot;8888:8888&quot;</span>
+    <span class="o">-</span> <span class="s2">&quot;2222:22&quot;</span>
+  <span class="n">volumes</span><span class="o">:</span>
+    <span class="o">-</span> <span class="o">./</span><span class="n">data</span><span class="sr">/works:/home/yymm/</span><span class="n">works</span>
+</code></pre></div>
+
+<h2>ベース</h2>
+<p>OSはUbuntu 14.04、シェルはzsh、ターミナルマルチプレクサはtmux、エディタはVimです。</p>
+<p>基本的なパッケージもインストールしています。</p>
+<p>普段からTerminal上で開発することが多いのでVimを使っていて、プラグインにまみれているので、Vimはソースコードからビルドします。</p>
+<div class="highlight"><pre><span></span><code>#<span class="nv">vim</span>
+<span class="nv">RUN</span> <span class="nv">apt</span><span class="o">-</span><span class="nv">get</span> <span class="nv">install</span> <span class="nv">git</span> <span class="nv">mercurial</span> <span class="nv">gettext</span> <span class="nv">libncurses5</span><span class="o">-</span><span class="nv">dev</span>  <span class="nv">libperl</span><span class="o">-</span><span class="nv">dev</span> <span class="nv">python</span><span class="o">-</span><span class="nv">dev</span> <span class="nv">python3</span><span class="o">-</span><span class="nv">dev</span> <span class="nv">ruby</span><span class="o">-</span><span class="nv">dev</span> <span class="nv">lua5</span>.<span class="mi">2</span> <span class="nv">liblua5</span>.<span class="mi">2</span><span class="o">-</span><span class="nv">dev</span> <span class="nv">luajit</span> <span class="nv">libluajit</span><span class="o">-</span><span class="mi">5</span>.<span class="mi">1</span> <span class="o">-</span><span class="nv">y</span>
+<span class="nv">RUN</span> <span class="nv">cd</span> <span class="o">/</span><span class="nv">tmp</span> \
+    <span class="o">&amp;&amp;</span> <span class="nv">git</span> <span class="nv">clone</span> <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">vim</span><span class="o">/</span><span class="nv">vim</span>.<span class="nv">git</span> \
+    <span class="o">&amp;&amp;</span> <span class="nv">cd</span> <span class="o">/</span><span class="nv">tmp</span><span class="o">/</span><span class="nv">vim</span> \
+    <span class="o">&amp;&amp;</span> .<span class="o">/</span><span class="nv">configure</span> <span class="o">--</span><span class="nv">with</span><span class="o">-</span><span class="nv">features</span><span class="o">=</span><span class="nv">huge</span> <span class="o">--</span><span class="nv">enable</span><span class="o">-</span><span class="nv">perlinterp</span> <span class="o">--</span><span class="nv">enable</span><span class="o">-</span><span class="nv">pythoninterp</span> <span class="o">--</span><span class="nv">enable</span><span class="o">-</span><span class="nv">python3interp</span> <span class="o">--</span><span class="nv">enable</span><span class="o">-</span><span class="nv">rubyinterp</span> <span class="o">--</span><span class="nv">enable</span><span class="o">-</span><span class="nv">luainterp</span> <span class="o">--</span><span class="nv">with</span><span class="o">-</span><span class="nv">luajit</span> <span class="o">--</span><span class="nv">enable</span><span class="o">-</span><span class="nv">fail</span><span class="o">-</span><span class="k">if</span><span class="o">-</span><span class="nv">missing</span> \
+    <span class="o">&amp;&amp;</span> <span class="nv">make</span> \
+    <span class="o">&amp;&amp;</span> <span class="nv">make</span> <span class="nv">install</span>
+</code></pre></div>
+
+<p>dotfilesは、各環境ごとにブランチで分けているので、os/ubuntu-dockerに切り替えて、bootstrap.shでブートストラップしてます。dotfilesのエイリアスを貼って、Vimプラグインをインストールしてくれます。</p>
+<div class="highlight"><pre><span></span><code># dotfiles
+RUN git clone https://github.com/yymm/dotfiles.git ~/dotfiles \
+    &amp;&amp; cd ~/dotfiles \
+    &amp;&amp; git checkout os/ubuntu-docker \
+    &amp;&amp; bash bootstrap.sh
+</code></pre></div>
+
+<p>sshできる環境を作るのにハマりどころがいくつかありますので以下の記事を参考にしました。</p>
+<ul>
+<li><a href="http://qiita.com/mopemope/items/495ab1f74bcbef0f88bb" title="Docker で開発環境も使い捨てにしよう！ - Qiita">Docker で開発環境も使い捨てにしよう！ - Qiita</a></li>
+<li><a href="https://docs.docker.com/engine/examples/running_ssh_service/" title="Dockerizing an SSH service">Dockerizing an SSH service</a></li>
+</ul>
+<h2>各言語</h2>
+<p>言語ごとのバージョンマネージャで使いそうなバージョンをドドっと入れておきます。</p>
+<p>必要なバージョンが増えたらDockerfileに追記してビルドし直します。</p>
+<h3>Ruby (rbenv)</h3>
+<p>rbenvをインストールして、使うバージョンをインストールします。"rbenv install"するときはまだパスが通っていないので直接叩きます。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Ruby (rbenv)</span>
+<span class="n">RUN</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">rbenv</span><span class="o">/</span><span class="n">rbenv</span><span class="o">.</span><span class="n">git</span> <span class="o">~/.</span><span class="n">rbenv</span>
+<span class="n">RUN</span> <span class="n">cd</span> <span class="o">~/.</span><span class="n">rbenv</span> <span class="o">&amp;&amp;</span> <span class="n">src</span><span class="o">/</span><span class="n">configure</span> <span class="o">&amp;&amp;</span> <span class="n">make</span> <span class="o">-</span><span class="n">C</span> <span class="n">src</span>
+<span class="n">RUN</span> <span class="n">echo</span> <span class="s1">&#39;export PATH=&quot;$HOME/.rbenv/bin:$PATH&quot;&#39;</span> <span class="o">&gt;&gt;</span> <span class="o">~/.</span><span class="n">zshrc</span>
+<span class="n">RUN</span> <span class="n">echo</span> <span class="s1">&#39;eval &quot;$(rbenv init -)&quot;&#39;</span> <span class="o">&gt;&gt;</span> <span class="o">~/.</span><span class="n">zshrc</span>
+<span class="n">RUN</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">rbenv</span><span class="o">/</span><span class="n">ruby</span><span class="o">-</span><span class="n">build</span><span class="o">.</span><span class="n">git</span> <span class="o">~/.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">plugins</span><span class="o">/</span><span class="n">ruby</span><span class="o">-</span><span class="n">build</span>
+<span class="n">RUN</span> <span class="o">~/.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">rbenv</span> <span class="n">install</span> <span class="mf">2.2</span><span class="o">.</span><span class="mi">4</span>
+<span class="n">RUN</span> <span class="o">~/.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">rbenv</span> <span class="n">install</span> <span class="mf">1.9</span><span class="o">.</span><span class="mi">3</span><span class="o">-</span><span class="n">p551</span>
+</code></pre></div>
+
+<h3>Python (pyenv)</h3>
+<p>個人的な事情で2系ではvirtualenvを使いたいので、virtualenvもインストールしています。</p>
+<p>pyenvをインストールして、使うバージョンをインストールします。"pyenv install"するときはまだパスが通っていないので直接叩きます。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Python (virtualenv)</span>
+<span class="n">USER</span> <span class="n">root</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">pip</span> <span class="o">-</span><span class="n">y</span>
+<span class="n">RUN</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">virtualenv</span>
+<span class="n">RUN</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">virtualenvwrapper</span>
+<span class="n">USER</span> <span class="n">yymm</span>
+<span class="n">RUN</span> <span class="n">echo</span> <span class="s1">&#39;export WORKON_HOME=$HOME/.virtualenvs&#39;</span> <span class="o">&gt;&gt;</span> <span class="o">~/.</span><span class="n">zshrc</span>
+<span class="n">RUN</span> <span class="n">echo</span> <span class="s1">&#39;source `which virtualenvwrapper.sh`&#39;</span> <span class="o">&gt;&gt;</span> <span class="o">~/.</span><span class="n">zshrc</span>
+
+<span class="c1"># Python (pyenv)</span>
+<span class="n">RUN</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">yyuu</span><span class="o">/</span><span class="n">pyenv</span><span class="o">.</span><span class="n">git</span> <span class="o">~/.</span><span class="n">pyenv</span>
+<span class="n">RUN</span> <span class="n">echo</span> <span class="s1">&#39;export PYENV_ROOT=&quot;$HOME/.pyenv&quot;&#39;</span> <span class="o">&gt;&gt;</span> <span class="o">~/.</span><span class="n">zshrc</span>
+<span class="n">RUN</span> <span class="n">echo</span> <span class="s1">&#39;export PATH=&quot;$PYENV_ROOT/bin:$PATH&quot;&#39;</span> <span class="o">&gt;&gt;</span> <span class="o">~/.</span><span class="n">zshrc</span>
+<span class="n">RUN</span> <span class="n">echo</span> <span class="s1">&#39;eval &quot;$(pyenv init -)&quot;&#39;</span> <span class="o">&gt;&gt;</span> <span class="o">~/.</span><span class="n">zshrc</span>
+<span class="n">USER</span> <span class="n">root</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">libssl</span><span class="o">-</span><span class="n">dev</span> <span class="n">openssl</span> <span class="o">-</span><span class="n">y</span> <span class="c1"># need to install python 3.4 later</span>
+<span class="n">USER</span> <span class="n">yymm</span>
+<span class="n">RUN</span> <span class="o">~/.</span><span class="n">pyenv</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">pyenv</span> <span class="n">install</span> <span class="mf">3.5</span><span class="o">.</span><span class="mi">1</span>
+<span class="n">RUN</span> <span class="o">~/.</span><span class="n">pyenv</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">pyenv</span> <span class="n">install</span> <span class="mf">2.7</span><span class="o">.</span><span class="mi">11</span>
+</code></pre></div>
+
+<h3>Golang (1.5)</h3>
+<p>gvmはDockerと相性が悪いらしく今のところ使えません。</p>
+<p>しょうがないので、ほしいバージョンを自分で入れるのが今は良いみたいです。</p>
+<p>golangはビルド済みのものをダウンロードすることができるので、ダウンロードして/usr/localに展開、環境変数を設定します。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Golang (1.5)</span>
+<span class="n">USER</span> <span class="n">root</span>
+<span class="n">RUN</span> <span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">storage</span><span class="o">.</span><span class="n">googleapis</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">golang</span><span class="o">/</span><span class="n">go1</span><span class="o">.</span><span class="mf">5.</span><span class="n">linux</span><span class="o">-</span><span class="n">amd64</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">RUN</span> <span class="n">tar</span> <span class="o">-</span><span class="n">C</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span> <span class="o">-</span><span class="n">xzf</span> <span class="n">go1</span><span class="o">.</span><span class="mf">5.</span><span class="n">linux</span><span class="o">-</span><span class="n">amd64</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">RUN</span> <span class="n">rm</span> <span class="o">-</span><span class="n">f</span> <span class="n">go1</span><span class="o">.</span><span class="mf">5.</span><span class="n">linux</span><span class="o">-</span><span class="n">amd64</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">USER</span> <span class="n">yymm</span>
+<span class="n">RUN</span> <span class="n">echo</span> <span class="s1">&#39;export GOROOT=&quot;/usr/local/go&quot;&#39;</span> <span class="o">&gt;&gt;</span> <span class="o">~/.</span><span class="n">zshrc</span>
+<span class="n">RUN</span> <span class="n">echo</span> <span class="s1">&#39;export PATH=&quot;$GOROOT/bin:$PATH&quot;&#39;</span> <span class="o">&gt;&gt;</span> <span class="o">~/.</span><span class="n">zshrc</span>
+</code></pre></div>
+
+<h3>Node.js (nvm)</h3>
+<p>nvmをインストールして、使うバージョンをインストールします。</p>
+<p>globalで使うnpmパッケージがあるときはここでインストールしておきます。</p>
+<p>"nvm install"するときは、~/.nvm/nvm.shを実行する必要があるのでワンライナーにする必要があります。</p>
+<div class="highlight"><pre><span></span><code># Node.js (nvm)
+RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh | bash
+ENV NODE_VERSION 5.4.0
+ENV NVM_DIR /home/yymm/.nvm
+RUN . ~/.nvm/nvm.sh &amp;&amp; nvm install $NODE_VERSION &amp;&amp; nvm alias default $NODE_VERSION &amp;&amp; npm install -g gulp yo hubot coffee-script browserify
+</code></pre></div>
+
+<h2>データベース</h2>
+<p>SQLite3は開発コンテナにインストールして、その他のデータベースについてはクライアントを入れておきます。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># SQLite</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">sqlite3</span> <span class="n">libsqlite3</span><span class="o">-</span><span class="n">dev</span> <span class="o">-</span><span class="n">y</span>
+<span class="c1"># client</span>
+<span class="n">RUN</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">mysql</span><span class="o">-</span><span class="n">client</span> <span class="n">redis</span><span class="o">-</span><span class="n">tools</span> <span class="n">postgresql</span><span class="o">-</span><span class="n">client</span> <span class="n">mongodb</span><span class="o">-</span><span class="n">clients</span> <span class="o">-</span><span class="n">y</span>
+</code></pre></div>
+
+<h1>データベースコンテナ</h1>
+<p>docker-composeで開発サーバと連携したデータベースコンテナを立てます。</p>
+<ul>
+<li>mysql</li>
+<li>postgresql</li>
+<li>redis</li>
+<li>mongodb</li>
+<li>memcached</li>
+</ul>
+<p>を用意して、データはホストのdataディレクトリに永続化させます。</p>
+<div class="highlight"><pre><span></span><code><span class="n">mysql</span><span class="o">:</span>
+  <span class="n">restart</span><span class="o">:</span> <span class="n">always</span>
+  <span class="n">image</span><span class="o">:</span> <span class="n">mysql</span>
+  <span class="n">volumes</span><span class="o">:</span>
+    <span class="o">-</span> <span class="o">./</span><span class="n">data</span><span class="sr">/mysql:/var/lib/</span><span class="n">mysql</span>
+  <span class="n">environment</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">MYSQL_ROOT_PASSWORD</span><span class="o">=</span><span class="n">root</span>
+
+<span class="n">postgres</span><span class="o">:</span>
+  <span class="n">restart</span><span class="o">:</span> <span class="n">always</span>
+  <span class="n">image</span><span class="o">:</span> <span class="n">postgres</span>
+  <span class="n">volumes</span><span class="o">:</span>
+    <span class="o">-</span> <span class="o">./</span><span class="n">data</span><span class="sr">/postgresql:/var/lib/postgresql/</span><span class="n">data</span>
+
+<span class="n">redis</span><span class="o">:</span>
+  <span class="n">restart</span><span class="o">:</span> <span class="n">always</span>
+  <span class="n">image</span><span class="o">:</span> <span class="n">redis</span>
+  <span class="n">volumes</span><span class="o">:</span>
+    <span class="o">-</span> <span class="o">./</span><span class="n">data</span><span class="sr">/redis:/</span><span class="n">data</span>
+  <span class="n">command</span><span class="o">:</span> <span class="n">redis</span><span class="o">-</span><span class="n">server</span> <span class="o">--</span><span class="n">appendonly</span> <span class="n">yes</span>
+
+<span class="n">mongo</span><span class="o">:</span>
+  <span class="n">restart</span><span class="o">:</span> <span class="n">always</span>
+  <span class="n">image</span><span class="o">:</span> <span class="n">mongo</span>
+  <span class="n">volumes</span><span class="o">:</span>
+    <span class="o">-</span> <span class="o">./</span><span class="n">data</span><span class="sr">/mongo:/data/</span><span class="n">db</span>
+
+<span class="n">memcached</span><span class="o">:</span>
+  <span class="n">restart</span><span class="o">:</span> <span class="n">always</span>
+  <span class="n">image</span><span class="o">:</span> <span class="n">memcached</span>
+</code></pre></div>
+
+<p>開発サーバからlinksでリンクすればよしなに使えます。</p>
+<div class="highlight"><pre><span></span><code><span class="n">dev</span><span class="o">:</span>
+  <span class="n">restart</span><span class="o">:</span> <span class="n">always</span>
+  <span class="n">build</span><span class="o">:</span> <span class="o">.</span>
+  <span class="n">ports</span><span class="o">:</span>
+    <span class="o">-</span> <span class="s2">&quot;5000:5000&quot;</span>
+    <span class="o">-</span> <span class="s2">&quot;8080:8080&quot;</span>
+    <span class="o">-</span> <span class="s2">&quot;8888:8888&quot;</span>
+    <span class="o">-</span> <span class="s2">&quot;2222:22&quot;</span>
+  <span class="n">links</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">mysql</span>
+    <span class="o">-</span> <span class="n">redis</span>
+    <span class="o">-</span> <span class="n">postgres</span>
+    <span class="o">-</span> <span class="n">mongo</span>
+    <span class="o">-</span> <span class="n">memcached</span>
+  <span class="n">volumes</span><span class="o">:</span>
+    <span class="o">-</span> <span class="o">./</span><span class="n">data</span><span class="sr">/works:/home/yymm/</span><span class="n">works</span>
+</code></pre></div>
+
+<p>データベースコンテナについては以前に別の記事にまとめてます。</p>
+<p><a href="http://blog.muuny-blue.info/9f067d8d6df2d4b8c64fb4c084d6c208.html" title="docker-composeでデータベースコンテナを立てるときのTips">docker-composeでデータベースコンテナを立てるときのTips</a></p>
+<h1>付録</h1>
+<p>実際に使ってるDockerfileとdocker-compose.ymlです。</p>
+<h2>Dockerfile</h2>
+<p>[https://gist.github.com/yymm/9d8fbbc52de8e500827a:embed]</p>
+<h2>docker-compose.yml</h2>
+<p>[https://gist.github.com/yymm/16cf829939aeecc5132d:embed]</p>
+    </div><!-- /.entry-content -->
+
+    <div class="article-ad">
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- responsive -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-8481391240785119"
+           data-ad-slot="3238871784"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <div class="comments">
+      <div id="disqus-toggle">
+          <h3>Show comments <span class="glyphicon glyphicon-comment"></span></h3>
+      </div>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        $("#disqus-toggle").click(function(){
+          var disqus_shortname = 'mokumoku';
+          var disqus_identifier = '7d128c1d4a33165a8676d1650d8ff828.html';
+          var disqus_url = 'https://muunyblue.github.io/7d128c1d4a33165a8676d1650d8ff828.html';
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//mokumoku.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          $("#disqus-toggle").remove();
+        });
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+                </div><!-- /.col-lg-12 -->
+            </div><!-- /.bs-component -->
+        </div>
+        <div id="extras" class="row">
+            <div class="bs-component">
+<div class="extras-ad">
+    <h2><span class="glyphicon glyphicon-object-align-left"></span> Adsense</h2>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- small_square -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:200px;height:200px"
+         data-ad-client="ca-pub-8481391240785119"
+         data-ad-slot="9438651388"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+    <div class="sns">
+        <h2><span class="glyphicon glyphicon-share"></span> Share</h2>
+<ul>
+    <li>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="_y_y_m_m_">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </li>
+    
+    <li>
+        <a href="http://b.hatena.ne.jp/entry/https://muunyblue.github.io/7d128c1d4a33165a8676d1650d8ff828.html" class="hatena-bookmark-button" data-hatena-bookmark-title="docker-composeを使って最高の開発環境を手に入れた" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加">
+            <img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+
+    </li>
+        <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+   
+    
+    
+    
+    <li>
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3&appId=387525661451951";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+        <div class="fb-like" data-href="https://muunyblue.github.io/7d128c1d4a33165a8676d1650d8ff828.html" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
+    </li>
+ 
+</ul>    </div>
+
+    <div class="blogroll">
+        <h2><span class="glyphicon glyphicon-pushpin"></span> About</h2>
+        <p>どこにでもいる平凡なプログラムを書く人間のログ。</p>
+    </div><!-- /.blogroll -->
+
+    <div class="category">
+        <h2><span class="glyphicon glyphicon-th-list"></span> Category</h2>
+        <ul>
+			<li>
+				<a href="https://muunyblue.github.io/category/diary.html">
+				    	<span class="glyphicon glyphicon-book" aria-hidden="true" style="color: #0bd566;"></span>
+				    Diary
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/jia.html">
+				    	<span class="glyphicon glyphicon-home" aria-hidden="true" style="color: #f48c39;"></span>
+				    家
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/programming.html">
+				    	<span class="glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+				    Programming
+				</a>
+			</li>
+        </ul>
+    </div>
+
+    <div class="recently">
+        <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
+        <ul>
+			    <li>
+                    <p>2021年 12月16日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/97885afd60c10c4a454c11e225763e04.html">
+                            普通のキーボード写真とBLEの話
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 5月24日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
+                            React Hooks: useReducer & Context API with TypeScript
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 1月23日 午後 09:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/214cfbe603b7f9f9bc005d5f53f7a1d3.html">
+                            普通のTwitter転職
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月22日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/3a1f85dfef891b2a3685ccb35efa807e.html">
+                            Zen Keyboard Build log
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月17日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
+                            Minidoxビルドログ
+                        </a>
+                    </p>
+			    </li>
+        </ul>
+    </div>
+
+    <div class="tags">
+        <h2><span class="glyphicon glyphicon-tags"></span> Tags</h2>
+        <ul>
+                <li><a href="https://muunyblue.github.io/tag/asakatsu.html">Asakatsu</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/btsync.html">btsync</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/c.html">C++</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ci.html">CI</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/cppcheck.html">Cppcheck</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/css.html">CSS</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/github.html">GitHub</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gitlab.html">GitLab</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/go.html">Go</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/gtk.html">Gtk+</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/haskell.html">Haskell</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/hooks.html">Hooks</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/idcf.html">IDCF</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/javascript.html">JavaScript</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/keyboard.html">Keyboard</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/markdown.html">Markdown</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
+                <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/ubuntu.html">Ubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vagrant.html">Vagrant</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vim.html">Vim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/vps.html">VPS</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/zen.html">Zen</a> (1)</li>
+        </ul>
+    </div><!-- /.social -->
+
+    <div class="social">
+        <h2><span class="glyphicon glyphicon-sunglasses"></span> Social</h2>
+        <ul>
+            <li><a href="https://twitter.com/_y_y_m_m_" target="_blank">Twitter</a></li>
+            <li><a href="https://github.com/yymm" target="_blank">Github</a></li>
+            <li><a href="https://bitbucket.org/yymm" target="_blank">Bitbucket</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.atom.xml" target="_blank" type="application/atom+xml" rel="alternate">atom feed</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.rss.xml" target="_blank" type="application/rss+xml" rel="alternate">rss feed</a></li>
+        </ul>
+    </div><!-- /.social -->
+
+            </div><!-- /.bs-component -->
+        </div><!-- /#extras -->
+    </div><!--./container -->
+    <!--Honoka Bootstrap end -->
+
+    <footer id="contentinfo">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <p id="bloginfo"><a href="https://github.com/yymm/MokuMokuBlog" target="_blank" title="This blog"><img id="mokumokublog" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/mokumokublog.ico"></img></a> POWERD BY <a href="https://github.com/getpelican/pelican" target="_blank" title="This blog"><img id="pelican" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/pelican.ico"></img></a> GENERATED BY <a href="https://github.com/yymm/MemoMemo" target="_blank" title="MemoMemo"><img id="memomemo" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/memomemo.ico"></img></a></p>
+                    <p>Copyright <span class="glyphicon glyphicon-copyright-mark"></span> 2018 <a href="https://github.com/yymm" target="_blank">yuya yano</a> All Rights Reserved.</p>
+					<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img id="copyright" alt="クリエイティブ・コモンズ・ライセンス" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a></p>
+                </div><!--./col-xs-12 -->
+            </div><!--./row -->
+        </div><!--./container -->
+    </footer><!-- /#contentinfo -->
+
+<script src="https://muunyblue.github.io/theme/js/jquery.lazyload.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+$(function() {
+	$("img.lazy").lazyload({
+		effect : "fadeIn"
+	});
+});
+</script>
+<script src="https://muunyblue.github.io/theme/js/bootstrap.min.js"></script>
+<script src="https://muunyblue.github.io/theme/js/script.js"></script>
+
+    <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-67688469-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+<script type="text/javascript">
+    var disqus_shortname = 'mokumoku';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+
+<!--
+<!-- PtEngine -->
+<script type="text/javascript">
+	window._pt_sp_2 = [];
+	_pt_sp_2.push('setAccount,3e10d017');
+	var _protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+	(function() {
+		var atag = document.createElement('script'); atag.type = 'text/javascript'; atag.async = true;
+		atag.src = _protocol + 'js.ptengine.jp/pta.js';
+		var stag = document.createElement('script'); stag.type = 'text/javascript'; stag.async = true;
+		stag.src = _protocol + 'js.ptengine.jp/pts.js';
+		var s = document.getElementsByTagName('script')[0]; 
+		s.parentNode.insertBefore(atag, s);s.parentNode.insertBefore(stag, s);
+	})();
+</script>
+-->
+
+</body>
+</html>

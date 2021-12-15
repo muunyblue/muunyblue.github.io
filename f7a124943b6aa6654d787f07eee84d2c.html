@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="utf-8" />
+　　　　　　　　<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ステラのまほうのエンディングで始めるThree.js</title>
+    <link rel="shortcut icon" href="https://muunyblue.github.io/theme/img/favicon.ico" >
+
+	<link rel="stylesheet" href="https://muunyblue.github.io/theme/css/main.css" />
+    <link rel="stylesheet" href="https://muunyblue.github.io/theme/css/bootstrap.min.css" />
+
+
+    <link href="https://muunyblue.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="もくもくブログ Atom Feed" />
+    <link href="https://muunyblue.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="もくもくブログ RSS Feed" />
+
+	<script src="https://muunyblue.github.io/theme/js/jquery-2.1.4.min.js"></script>
+
+    <!--[if IE]>
+        <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="google-site-verification" content="ETSvqWJsfDNiXwsK89y7-OqkwM1O7DK9wiAkkA4Vfow" />
+    <link rel="alternate" hreflang="ja" href="http://blog.muuny-blue.info/" />
+</head>
+
+<body class="no-thank-yu">
+    <header id="banner" class="page-header clearfix">
+        <div id="contenthead" class="container">
+			<a href="https://muunyblue.github.io/">
+				<img id="title-logo" src="https://muunyblue.github.io/theme/img/title.png"></img>
+			</a>
+			<img id="look" src="https://muunyblue.github.io/theme/img/2.svg"></img>
+        </div>
+    </header><!-- /#banner -->
+
+    <!--Honoka Bootstrap-->
+    <div class="container">
+        <div id="content" class="row">
+            <div class="bs-component">
+                <div class="col-lg-12">
+  <article>
+    <header>
+      <div class="page-header">
+        <h1 class="entry-title">
+          <a href="https://muunyblue.github.io/f7a124943b6aa6654d787f07eee84d2c.html" rel="bookmark"
+             title="Permalink to ステラのまほうのエンディングで始めるThree.js">
+				<span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+            ステラのまほうのエンディングで始めるThree.js
+          </a>
+        </h1>
+      </div>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+<ul>
+    <li class="published" title="2016-12-08T10:02:09+09:00">
+        <span>Date:</span>2016-12-08 木 (午前 10:02:09)
+    </li>
+        <!--<br />-->
+        <li class="modified" title="2016-12-08T21:54:32+09:00">
+            <span>Updated:</span>2016-12-08 木 (午後 09:54:32)
+        </li>
+<li><span>Tags:</span><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> <a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> </li>
+    <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
+</ul>
+</footer><!-- /.post-info -->      <p>この記事は、<a href="http://qiita.com/advent-calendar/2016/threejs" title="Three.js Advent Calendar 2016 - Qiita">Three.js Advent Calendar 2016</a> 9日目の記事です。</p>
+<p>たまたま空いていたので、<a href="http://www.adventar.org/calendars/1454#list-2016-12-05" title="まんがタイムきらら Advent Calendar 2016 - Adventar">まんがタイムきらら Advent Calendar 2016</a> 9日目の記事でもありますが、きらら成分はステラのまほうのアニメ(しかもエンディングだけ)となっていますので気をつけてください。</p>
+<p>✗目次</p>
+<p>[TOC]</p>
+<hr>
+<p>仕事の疲れをステラのまほうで癒やしているとき、エンディングのヨナカジカルを見ているとWebGLでやれそうだなぁ...となったので仕事の息抜きにやってみた話です。</p>
+<p>普段からWebGL触っている系の職種ではないため過度な期待はしないで下さい。</p>
+<p>結果として以下のようなものが出来上がります。</p>
+<p>[https://twitter.com/y_y_m_m/status/791193793831706624:embed]</p>
+<p>Demo =&gt; <a href="https://yymm.github.io/Yonakajikaru/" title="Yonakajikaru">Yonakajikaru</a></p>
+<p>Repo =&gt; <a href="https://github.com/yymm/Yonakajikaru" title="yymm/Yonakajikaru: https://yymm.github.io/Yonakajikaru/">yymm/Yonakajikaru</a></p>
+<h1>何でThree.js?</h1>
+<p>WebGLレンダリングもでき、APIがわかりやすいという印象を受けたので採用しました。</p>
+<h1>はじめの一歩</h1>
+<p>基本的に公式のドキュメントを参考にして作っていきました。</p>
+<p><a href="https://threejs.org/docs/index.html#Manual/Introduction/Creating_a_scene" title="three.js - documentation - Manual - Creating a scene">three.js - documentation - Manual - Creating a scene</a></p>
+<p>上記のドキュメントの最後に書いてあるhtmlとjavascript部分をちょっといじってファイルにしたものです。</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>My first Three.js app<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+    <span class="nt">body</span> <span class="p">{</span> <span class="k">margin</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span> <span class="p">}</span>
+    <span class="nt">canvas</span> <span class="p">{</span> <span class="k">width</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span> <span class="k">height</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span> <span class="p">}</span>
+  <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;js/three.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;js/app.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="kd">const</span> <span class="nx">scene</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Scene</span><span class="p">();</span>
+<span class="kd">const</span> <span class="nx">camera</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">PerspectiveCamera</span><span class="p">(</span> <span class="mf">75</span><span class="p">,</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span><span class="o">/</span><span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">1000</span> <span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">renderer</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">WebGLRenderer</span><span class="p">();</span>
+<span class="nx">renderer</span><span class="p">.</span><span class="nx">setSize</span><span class="p">(</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span><span class="p">,</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span> <span class="p">);</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span> <span class="nx">renderer</span><span class="p">.</span><span class="nx">domElement</span> <span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">geometry</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">BoxGeometry</span><span class="p">(</span> <span class="mf">1</span><span class="p">,</span> <span class="mf">1</span><span class="p">,</span> <span class="mf">1</span> <span class="p">);</span>
+<span class="kd">const</span> <span class="nx">material</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">MeshBasicMaterial</span><span class="p">(</span> <span class="p">{</span> <span class="nx">color</span><span class="o">:</span> <span class="mh">0x00ff00</span> <span class="p">}</span> <span class="p">);</span>
+<span class="kd">const</span> <span class="nx">cube</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Mesh</span><span class="p">(</span> <span class="nx">geometry</span><span class="p">,</span> <span class="nx">material</span> <span class="p">);</span>
+<span class="nx">scene</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span> <span class="nx">cube</span> <span class="p">);</span>
+
+<span class="nx">camera</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span> <span class="o">=</span> <span class="mf">5</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">render</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="nx">requestAnimationFrame</span><span class="p">(</span> <span class="nx">render</span> <span class="p">);</span>
+  <span class="nx">cube</span><span class="p">.</span><span class="nx">rotation</span><span class="p">.</span><span class="nx">x</span> <span class="o">+=</span> <span class="mf">0.1</span><span class="p">;</span>
+  <span class="nx">cube</span><span class="p">.</span><span class="nx">rotation</span><span class="p">.</span><span class="nx">y</span> <span class="o">+=</span> <span class="mf">0.1</span><span class="p">;</span>
+  <span class="nx">renderer</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="nx">scene</span><span class="p">,</span> <span class="nx">camera</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">render</span><span class="p">();</span>
+</code></pre></div>
+
+<p>index.htmlをブラウザで見てみると緑のcubeがぐるぐるしているのがみえるはずです。</p>
+<p>このサンプルコードをベースに作っていきます。</p>
+<h1>四角を表示する</h1>
+<p>表示したいのはただの四角形なので四角形をドキュメントから探します。</p>
+<p>図形はGeometriesにあり、PlaneGeometoryかPlaneBufferGeometryを使えば四角形を表示できるようです。</p>
+<p><a href="https://threejs.org/docs/index.html#Reference/Geometries/PlaneGeometry" title="three.js - documentation - Reference - PlaneGeometry">three.js - documentation - Reference - PlaneGeometry</a></p>
+<blockquote>
+<p>PlaneGeometry(width, height, widthSegments, heightSegments)</p>
+<p>width — Width along the X axis.
+height — Height along the Y axis.
+widthSegments — Optional. Default is 1.
+heightSegments — Optional. Default is 1. </p>
+</blockquote>
+<p>BoxGeometryをPlaneGeometryに差替えます、引数は必要なものだけBoxGeometryを同じ値で設定します。</p>
+<div class="highlight"><pre><span></span><code><span class="gd">- const geometry = new THREE.BoxGeometry( 1, 1, 1 );</span>
+<span class="gi">+ const geometry = new THREE.PlaneGeometry( 1, 1 );</span>
+</code></pre></div>
+
+<p>引数はwidth,heightなので1×1の四角になります。</p>
+<hr>
+<p>普通のGeometryかBufferGeometryのどちらを使えばいいのか判断するためBufferGeometryのドキュメントを読みました。</p>
+<p><a href="https://threejs.org/docs/index.html#Reference/Core/BufferGeometry" title="three.js - documentation - Reference - BufferGeometry">three.js - documentation - Reference - BufferGeometry</a></p>
+<p>BufferGeometryはGeometryよりも効率的だけど扱いが大変で、シェーダーなど使う場合はBufferGeomerty一択になるようです。</p>
+<p>今回は複雑な使い方しないの+いっぱい四角を表示するのでGPU効率の良いBufferGeometryを使うことにします。</p>
+<h1>四角を増やす</h1>
+<p>愚直にfor文をぶん回す方法で増やてみます、ひとつひとつ図形(Mesh:geometryとmaterial)を作ってSceneに追加していく方法です。</p>
+<p>図形の位置はMeshのpositionを変更することで移動できます。positionのデフォルト値は(x,y,z)=(0,0,0)です。</p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mf">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mf">3</span><span class="p">;</span> <span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">geometry</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">PlaneBufferGeometry</span><span class="p">(</span> <span class="mf">1</span><span class="p">,</span> <span class="mf">1</span> <span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">material</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">MeshBasicMaterial</span><span class="p">(</span> <span class="p">{</span> <span class="nx">color</span><span class="o">:</span> <span class="mh">0x00ff00</span> <span class="p">}</span> <span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">plane</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Mesh</span><span class="p">(</span> <span class="nx">geometry</span><span class="p">,</span> <span class="nx">material</span> <span class="p">);</span>
+  <span class="nx">plane</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
+  <span class="nx">plane</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
+  <span class="nx">scene</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span> <span class="nx">plane</span> <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><img alt="086da7fe3c4a4a75e6f4971f09076019.png" src="https://i.gyazo.com/086da7fe3c4a4a75e6f4971f09076019.png"></p>
+<p>増えましたが、効率悪そうです。</p>
+<p><a href="http://blog.tsumikiinc.com/article/20160225_threejs-points.html" title="three.js製パーティクルシステムの実装 | 技術コラム | つみきブログ">three.js製パーティクルシステムの実装 | 技術コラム | つみきブログ</a></p>
+<p>上記のブログにあるようにgeometryで四角いパーティクルを作ってシェーダーで色や動きをつけていくほうが効率的なように思えますが今後の課題とします。(パフォーマンスの測定方法とかも知らないのでこれも課題)</p>
+<h1>ランダムにいっぱいの四角を表示する</h1>
+<p>まず表示する範囲について考えます。</p>
+<p>エンディングでカメラが動いた時に横にも四角が広がっているように見えるので、見えている範囲より広め(表示範囲の２倍くらい)に分布するようにします。</p>
+<p>各話でエンディングムービーが若干異なりますが一話のエンディングの感じだと相当奥まで多くの四角が広がっているのでz方向が深めにとったほうが良さそうです。</p>
+<p>以上を踏まえてxy方向、z方向についてカメラの範囲と位置や四角の大きさ、表示範囲を調整します。</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span> <span class="nx">scene</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Scene</span><span class="p">();</span>
+<span class="kd">const</span> <span class="nx">far</span> <span class="o">=</span> <span class="mf">10000</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">camera</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">PerspectiveCamera</span><span class="p">(</span> <span class="mf">75</span><span class="p">,</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span><span class="o">/</span><span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="nx">far</span> <span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">renderer</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">WebGLRenderer</span><span class="p">();</span>
+<span class="nx">renderer</span><span class="p">.</span><span class="nx">setSize</span><span class="p">(</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span><span class="p">,</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span> <span class="p">);</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span> <span class="nx">renderer</span><span class="p">.</span><span class="nx">domElement</span> <span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">getRandomInt</span><span class="p">(</span><span class="nx">min</span><span class="p">,</span> <span class="nx">max</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="nx">max</span> <span class="o">-</span> <span class="nx">min</span> <span class="o">+</span> <span class="mf">1</span><span class="p">)</span> <span class="p">)</span> <span class="o">+</span> <span class="nx">min</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span> <span class="o">*</span> <span class="mf">2</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">h</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span> <span class="o">*</span> <span class="mf">2</span><span class="p">;</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mf">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mf">1000</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">geometry</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">PlaneBufferGeometry</span><span class="p">(</span> <span class="mf">50</span><span class="p">,</span> <span class="mf">50</span> <span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">material</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">MeshBasicMaterial</span><span class="p">(</span> <span class="p">{</span> <span class="nx">color</span><span class="o">:</span> <span class="mh">0x00ff00</span> <span class="p">}</span> <span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">plane</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Mesh</span><span class="p">(</span> <span class="nx">geometry</span><span class="p">,</span> <span class="nx">material</span> <span class="p">);</span>
+  <span class="nx">plane</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">getRandomInt</span><span class="p">(</span><span class="o">-</span><span class="nx">w</span><span class="p">,</span> <span class="nx">w</span><span class="p">);</span>
+  <span class="nx">plane</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">getRandomInt</span><span class="p">(</span><span class="o">-</span><span class="nx">h</span><span class="p">,</span> <span class="nx">h</span><span class="p">);</span>
+  <span class="nx">plane</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span> <span class="o">=</span> <span class="nx">getRandomInt</span><span class="p">(</span><span class="mf">0</span><span class="p">,</span> <span class="nx">far</span><span class="p">);</span>
+  <span class="nx">scene</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span> <span class="nx">plane</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">camera</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span> <span class="o">=</span> <span class="nx">far</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">render</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="nx">requestAnimationFrame</span><span class="p">(</span> <span class="nx">render</span> <span class="p">);</span>
+  <span class="nx">renderer</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="nx">scene</span><span class="p">,</span> <span class="nx">camera</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">render</span><span class="p">();</span>
+</code></pre></div>
+
+<p><img alt="c2972efba2b732c68eb3e0c437ebb5f8.png" src="https://i.gyazo.com/c2972efba2b732c68eb3e0c437ebb5f8.png"></p>
+<p>いい感じです、コードの説明をします。</p>
+<p>まずカメラですが、ドキュメントを確認すると引数は以下のようになっています。</p>
+<blockquote>
+<p>PerspectiveCamera( fov, aspect, near, far )</p>
+<p>fov — Camera frustum vertical field of view.
+aspect — Camera frustum aspect ratio.
+near — Camera frustum near plane.
+far — Camera frustum far plane. </p>
+</blockquote>
+<p>fov(画角)を広げるか、frustum(円錐)を広げるか迷いますが、frustumのfarを変更するほうが直感的に分かりやすかったのでfovはサンプルコードの初期値のままにしました。</p>
+<p>あと、cameraのz方向が元のサンプルコードのままだと近すぎて何も見えないので設定したfar程度に離します。</p>
+<p>(fovやfrustumなど全く聞き慣れない単語なので検索ないとよくわからなかったです。<a href="https://ja.wikipedia.org/wiki/%E7%94%BB%E8%A7%92" title="画角 - Wikipedia">画角 - Wikipedia</a>や<a href="http://r-dimension.xsrv.jp/classes_j/6_interactive3d/" title="6. カメラ（processing 3D入門） | Yasushi Noguchi Class">6. カメラ（processing 3D入門） | Yasushi Noguchi Class</a>などを参考にしました。)</p>
+<p>四角の位置はランダムに配置するようにします、x,y,z方向で範囲が違うので任意の範囲で乱数生成しています。サイズは1のままだと近いものしか見えないので適度な大きさ(50)にしています。個数は1000個にしてますがカメラをもっと離して個数をもっと増やすと賑やかしくなりそうです。</p>
+<p>(ちなみに、はじめのうちは調整する感覚がつかめず真っ黒な画面になることが多かったです、値を変更しながらイメージして試行錯誤してこの値になってます。)</p>
+<h1>カラフルにする</h1>
+<p>色などはmaterialで設定します。</p>
+<ul>
+<li><a href="https://threejs.org/docs/index.html#Reference/Materials/MeshBasicMaterial" title="three.js - documentation - Reference - MeshBasicMaterial">three.js - documentation - Reference - MeshBasicMaterial</a></li>
+<li><a href="https://threejs.org/docs/index.html#Reference/Materials/Material" title="three.js - documentation - Reference - Material">three.js - documentation - Reference - Material</a></li>
+</ul>
+<p>透過も一緒に設定します。</p>
+<div class="highlight"><pre><span></span><code>  <span class="kd">const</span> <span class="nx">color</span> <span class="o">=</span> <span class="s2">&quot;#000000&quot;</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/0/g</span><span class="p">,</span><span class="kd">function</span><span class="p">(){</span><span class="k">return</span> <span class="p">(</span><span class="o">~~</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mf">16</span><span class="p">)).</span><span class="nx">toString</span><span class="p">(</span><span class="mf">16</span><span class="p">);});</span>
+  <span class="kd">const</span> <span class="nx">material</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">MeshBasicMaterial</span><span class="p">(</span> <span class="p">{</span> <span class="nx">color</span><span class="o">:</span> <span class="nx">color</span><span class="p">,</span> <span class="nx">transparent</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">opacity</span><span class="o">:</span> <span class="mf">0.6</span> <span class="p">}</span> <span class="p">);</span>
+</code></pre></div>
+
+<p><img alt="247da044b6db69d7c707ab76c1ac7fcc.png" src="https://i.gyazo.com/247da044b6db69d7c707ab76c1ac7fcc.png"></p>
+<p>それっぽい感じになってきました。ちょっと変更するだけでそれっぽくなってテンションが上がります。</p>
+<p>fovを2倍、個数を5倍にして賑やかしさも上げました、PCのファンも回り出します。</p>
+<p>HEXを作っているコードはstackoverflowから拾ってきたものです(URLは忘れてしまいました...)</p>
+<h1>カメラを動かす</h1>
+<p>アニメーションは最後の方にあるrenderの関数内に記述します。</p>
+<p>とりあえず、cameraのz方向を小さくしていくと近づいていきます。</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span> <span class="nx">render</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="nx">requestAnimationFrame</span><span class="p">(</span> <span class="nx">render</span> <span class="p">);</span>
+  <span class="nx">camera</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span> <span class="o">-=</span> <span class="mf">4.0</span><span class="p">;</span>
+  <span class="nx">renderer</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="nx">scene</span><span class="p">,</span> <span class="nx">camera</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p>xy方向はカメラが回転している感じに動いているので、mousemoveイベントを追加してカメラを連動させてみます。</p>
+<div class="highlight"><pre><span></span><code><span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span> <span class="s1">&#39;mousemove&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">x</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span> <span class="o">/</span> <span class="mf">2</span> <span class="o">-</span> <span class="nx">event</span><span class="p">.</span><span class="nx">clientX</span><span class="p">;</span>
+  <span class="kd">const</span> <span class="nx">y</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span> <span class="o">/</span> <span class="mf">2</span> <span class="o">-</span> <span class="nx">event</span><span class="p">.</span><span class="nx">clientY</span><span class="p">;</span>
+  <span class="nx">camera</span><span class="p">.</span><span class="nx">rotation</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">y</span> <span class="o">/</span> <span class="mf">500</span><span class="p">;</span>
+  <span class="nx">camera</span><span class="p">.</span><span class="nx">rotation</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">/</span> <span class="mf">500</span><span class="p">;</span>
+<span class="p">}</span> <span class="p">);</span>
+</code></pre></div>
+
+<p>画面中心を(0,0)としてマウスの方向に連動(x,yの指定が逆)して動くように設定しています。</p>
+<p>rotationは角度(rad)で指定するため大きい数で割らないとぶっ飛んで行くので注意です。</p>
+<hr>
+<p>カメラを回転して気づくことですが、通り過ぎていった四角を後ろから見ようとすると見えません何故か消えてなくなっています。これはMaterialのsideがデフォルトでTHREE.FrontSideになっており表しか見えなかったためです。T
+HREE.DoubleSideを指定すると通り過ぎていった四角も見えるようになります。</p>
+<p><a href="https://threejs.org/docs/index.html#Reference/Materials/Material" title="three.js - documentation - Reference - Material">three.js - documentation - Reference - Material</a></p>
+<div class="highlight"><pre><span></span><code>  <span class="kd">const</span> <span class="nx">material</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">MeshBasicMaterial</span><span class="p">(</span> <span class="p">{</span> <span class="nx">color</span><span class="o">:</span> <span class="nx">color</span><span class="p">,</span> <span class="nx">side</span><span class="o">:</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">DoubleSide</span><span class="p">,</span> <span class="nx">transparent</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">opacity</span><span class="o">:</span> <span class="mf">0.8</span> <span class="p">}</span> <span class="p">);</span>
+</code></pre></div>
+
+<p>マウスに連動してカメラがぐるぐるしている様子です。</p>
+<p><img alt="3f70de403256df94b5ca5130de4c5ec8.gif" src="https://i.gyazo.com/3f70de403256df94b5ca5130de4c5ec8.gif"></p>
+<h1>微調整</h1>
+<ul>
+<li>回転済みの四角作成</li>
+<li>スピードチェンジ機能</li>
+<li>その他微調整</li>
+</ul>
+<p>以下これまでの内容のapp.jsです。</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span> <span class="nx">scene</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Scene</span><span class="p">();</span>
+<span class="kd">const</span> <span class="nx">far</span> <span class="o">=</span> <span class="mf">20000</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">camera</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">PerspectiveCamera</span><span class="p">(</span> <span class="mf">75</span><span class="p">,</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span><span class="o">/</span><span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="nx">far</span> <span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">renderer</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">WebGLRenderer</span><span class="p">();</span>
+<span class="nx">renderer</span><span class="p">.</span><span class="nx">setSize</span><span class="p">(</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span><span class="p">,</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span> <span class="p">);</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span> <span class="nx">renderer</span><span class="p">.</span><span class="nx">domElement</span> <span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">getRandomInt</span><span class="p">(</span><span class="nx">min</span><span class="p">,</span> <span class="nx">max</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="nx">max</span> <span class="o">-</span> <span class="nx">min</span> <span class="o">+</span> <span class="mf">1</span><span class="p">)</span> <span class="p">)</span> <span class="o">+</span> <span class="nx">min</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">getRandom</span><span class="p">(</span><span class="nx">min</span><span class="p">,</span> <span class="nx">max</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="nx">max</span> <span class="o">-</span> <span class="nx">min</span><span class="p">)</span> <span class="o">+</span> <span class="nx">min</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">w</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span> <span class="o">*</span> <span class="mf">2.5</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">h</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span> <span class="o">*</span> <span class="mf">2.5</span><span class="p">;</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mf">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mf">5000</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">geometry</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">PlaneBufferGeometry</span><span class="p">(</span> <span class="mf">50</span><span class="p">,</span> <span class="mf">50</span> <span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">color</span> <span class="o">=</span> <span class="s2">&quot;#000000&quot;</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/0/g</span><span class="p">,</span><span class="kd">function</span><span class="p">(){</span><span class="k">return</span> <span class="p">(</span><span class="o">~~</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span><span class="o">*</span><span class="mf">16</span><span class="p">)).</span><span class="nx">toString</span><span class="p">(</span><span class="mf">16</span><span class="p">);});</span>
+  <span class="kd">const</span> <span class="nx">material</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">MeshBasicMaterial</span><span class="p">(</span> <span class="p">{</span> <span class="nx">color</span><span class="o">:</span> <span class="nx">color</span><span class="p">,</span> <span class="nx">side</span><span class="o">:</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">DoubleSide</span><span class="p">,</span> <span class="nx">transparent</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">opacity</span><span class="o">:</span> <span class="nx">getRandom</span><span class="p">(</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span> <span class="p">)</span> <span class="p">}</span> <span class="p">);</span>
+  <span class="kd">const</span> <span class="nx">plane</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Mesh</span><span class="p">(</span> <span class="nx">geometry</span><span class="p">,</span> <span class="nx">material</span> <span class="p">);</span>
+  <span class="nx">plane</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">getRandomInt</span><span class="p">(</span><span class="o">-</span><span class="nx">w</span><span class="p">,</span> <span class="nx">w</span><span class="p">);</span>
+  <span class="nx">plane</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">getRandomInt</span><span class="p">(</span><span class="o">-</span><span class="nx">h</span><span class="p">,</span> <span class="nx">h</span><span class="p">);</span>
+  <span class="nx">plane</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span> <span class="o">=</span> <span class="nx">getRandomInt</span><span class="p">(</span><span class="mf">0</span><span class="p">,</span> <span class="nx">far</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">plane</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span> <span class="o">%</span> <span class="mf">5</span> <span class="o">==</span> <span class="mf">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">plane</span><span class="p">.</span><span class="nx">rotation</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">getRandom</span><span class="p">(</span> <span class="o">-</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">plane</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span> <span class="o">%</span> <span class="mf">7</span> <span class="o">==</span> <span class="mf">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">plane</span><span class="p">.</span><span class="nx">rotation</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">getRandom</span><span class="p">(</span> <span class="o">-</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nx">scene</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span> <span class="nx">plane</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">camera</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span> <span class="o">=</span> <span class="nx">far</span> <span class="o">*</span> <span class="mf">3</span> <span class="o">/</span> <span class="mf">4</span><span class="p">;</span>
+
+<span class="kd">let</span> <span class="nx">isMouseDown</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">zSpeed</span> <span class="o">=</span> <span class="mf">5</span><span class="p">;</span>
+
+<span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span> <span class="s1">&#39;mousedown&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">isMouseDown</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">}</span> <span class="p">);</span>
+
+<span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span> <span class="s1">&#39;mouseup&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">isMouseDown</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<span class="p">}</span> <span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">camera</span><span class="p">.</span><span class="nx">rotation</span><span class="p">.</span><span class="nx">order</span><span class="p">);</span>
+
+<span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span> <span class="s1">&#39;mousemove&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">x</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerWidth</span> <span class="o">/</span> <span class="mf">2</span> <span class="o">-</span> <span class="nx">event</span><span class="p">.</span><span class="nx">clientX</span><span class="p">;</span>
+  <span class="kd">const</span> <span class="nx">y</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">innerHeight</span> <span class="o">/</span> <span class="mf">2</span> <span class="o">-</span> <span class="nx">event</span><span class="p">.</span><span class="nx">clientY</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">isMouseDown</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">zSpeed</span> <span class="o">=</span> <span class="mf">50</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">zSpeed</span> <span class="o">=</span> <span class="mf">5</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nx">camera</span><span class="p">.</span><span class="nx">rotation</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">y</span> <span class="o">/</span> <span class="mf">500</span><span class="p">;</span>
+  <span class="nx">camera</span><span class="p">.</span><span class="nx">rotation</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">/</span> <span class="mf">500</span><span class="p">;</span>
+<span class="p">}</span> <span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">render</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="nx">requestAnimationFrame</span><span class="p">(</span> <span class="nx">render</span> <span class="p">);</span>
+  <span class="nx">camera</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span> <span class="o">-=</span> <span class="nx">zSpeed</span><span class="p">;</span>
+  <span class="nx">renderer</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="nx">scene</span><span class="p">,</span> <span class="nx">camera</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="nx">render</span><span class="p">();</span>
+</code></pre></div>
+
+<p><img alt="519d6baa7dfb2a8568851e968d7d3f1c.gif" src="https://i.gyazo.com/519d6baa7dfb2a8568851e968d7d3f1c.gif"></p>
+<p>左ドラッグするとｷﾞｭｰﾝと近づきます。すごいそれっぽい。</p>
+<p>透過と角度をランダムに指定しているのでキラキラ感が増した気がします。</p>
+<h1>背景アニメーション</h1>
+<p>背景の色はrendererのsetClearColorで変更できます。</p>
+<p><a href="https://threejs.org/docs/index.html?q=render#Reference/Renderers/WebGLRenderer" title="three.js - documentation - Reference - WebGLRenderer">three.js - documentation - Reference - WebGLRenderer</a></p>
+<p>いい方法が思いつかないので非常に雑に白にしてみます。</p>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span> <span class="nx">fadeColor</span> <span class="o">=</span> <span class="p">[</span> <span class="mh">0xffffff</span><span class="p">,</span> <span class="mh">0xdddddd</span><span class="p">,</span> <span class="mh">0xbbbbbb</span><span class="p">,</span> <span class="mh">0x555555</span><span class="p">,</span> <span class="mh">0x333333</span><span class="p">,</span> <span class="mh">0x111111</span> <span class="p">];</span>
+
+<span class="kd">const</span> <span class="nx">render</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="nx">requestAnimationFrame</span><span class="p">(</span> <span class="nx">render</span> <span class="p">);</span>
+  <span class="nx">camera</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span> <span class="o">-=</span> <span class="nx">zSpeed</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">camera</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span> <span class="o">==</span> <span class="mf">14800</span><span class="p">)</span> <span class="p">{</span> <span class="nx">renderer</span><span class="p">.</span><span class="nx">setClearColor</span><span class="p">(</span><span class="nx">fadeColor</span><span class="p">[</span><span class="mf">0</span><span class="p">],</span> <span class="mf">1.0</span><span class="p">);</span> <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">camera</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span> <span class="o">==</span> <span class="mf">14810</span><span class="p">)</span> <span class="p">{</span> <span class="nx">renderer</span><span class="p">.</span><span class="nx">setClearColor</span><span class="p">(</span><span class="nx">fadeColor</span><span class="p">[</span><span class="mf">1</span><span class="p">],</span> <span class="mf">1.0</span><span class="p">);</span> <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">camera</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span> <span class="o">==</span> <span class="mf">14820</span><span class="p">)</span> <span class="p">{</span> <span class="nx">renderer</span><span class="p">.</span><span class="nx">setClearColor</span><span class="p">(</span><span class="nx">fadeColor</span><span class="p">[</span><span class="mf">2</span><span class="p">],</span> <span class="mf">1.0</span><span class="p">);</span> <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">camera</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span> <span class="o">==</span> <span class="mf">14830</span><span class="p">)</span> <span class="p">{</span> <span class="nx">renderer</span><span class="p">.</span><span class="nx">setClearColor</span><span class="p">(</span><span class="nx">fadeColor</span><span class="p">[</span><span class="mf">3</span><span class="p">],</span> <span class="mf">1.0</span><span class="p">);</span> <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">camera</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span> <span class="o">==</span> <span class="mf">14840</span><span class="p">)</span> <span class="p">{</span> <span class="nx">renderer</span><span class="p">.</span><span class="nx">setClearColor</span><span class="p">(</span><span class="nx">fadeColor</span><span class="p">[</span><span class="mf">4</span><span class="p">],</span> <span class="mf">1.0</span><span class="p">);</span> <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">camera</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">z</span> <span class="o">==</span> <span class="mf">14850</span><span class="p">)</span> <span class="p">{</span> <span class="nx">renderer</span><span class="p">.</span><span class="nx">setClearColor</span><span class="p">(</span><span class="nx">fadeColor</span><span class="p">[</span><span class="mf">5</span><span class="p">],</span> <span class="mf">1.0</span><span class="p">);</span> <span class="p">}</span>
+  <span class="nx">renderer</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="nx">scene</span><span class="p">,</span> <span class="nx">camera</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p><img alt="c7b46473622af8697026e5ea01a61de4.gif" src="https://i.gyazo.com/c7b46473622af8697026e5ea01a61de4.gif"></p>
+<p>雑ですが動いたのでok.....</p>
+<h1>最後に</h1>
+<p>サンプルコードをベースにして、コードを書く側としては無理なく作ってみました(ブラウザやGPUやCPUは無理してるかもしれません)。</p>
+<p>普段ビジュアル的なプログラミングをしていない自分でも手軽にリッチな表現を扱えるThree.jsは面白いと感じました。</p>
+<p>(欲を言えば音楽や星形や図形のアニメーションもやりたかったのですが仕事の息抜きの範疇を超え始めるので断念しました無念。)</p>
+<p>余裕があれば最適なコードを勉強していきたい所存なので、有識者の方アドバイスあれば是非に。</p>
+<hr>
+<p>もともと<a href="http://www.adventar.org/calendars/1454#list-2016-12-05" title="まんがタイムきらら Advent Calendar 2016 - Adventar">まんがタイムきらら Advent Calendar 2016</a>の参加予定はなかったのですが、たまたま空いていたので急遽入れてみました。</p>
+<p>きららアニメには毎期癒やされていますが、ステラのまほうは癒やし効果とプログラミングのモチベーション向上効果があって最高です、みなさん癒やされてプログラミングがんばりましょう。</p>
+<p><img alt="a47ec6591fa0030818008a1dda344f5d.png" src="https://i.gyazo.com/a47ec6591fa0030818008a1dda344f5d.png"></p>
+    </div><!-- /.entry-content -->
+
+    <div class="article-ad">
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- responsive -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-8481391240785119"
+           data-ad-slot="3238871784"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <div class="comments">
+      <div id="disqus-toggle">
+          <h3>Show comments <span class="glyphicon glyphicon-comment"></span></h3>
+      </div>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        $("#disqus-toggle").click(function(){
+          var disqus_shortname = 'mokumoku';
+          var disqus_identifier = 'f7a124943b6aa6654d787f07eee84d2c.html';
+          var disqus_url = 'https://muunyblue.github.io/f7a124943b6aa6654d787f07eee84d2c.html';
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//mokumoku.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          $("#disqus-toggle").remove();
+        });
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+                </div><!-- /.col-lg-12 -->
+            </div><!-- /.bs-component -->
+        </div>
+        <div id="extras" class="row">
+            <div class="bs-component">
+<div class="extras-ad">
+    <h2><span class="glyphicon glyphicon-object-align-left"></span> Adsense</h2>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- small_square -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:200px;height:200px"
+         data-ad-client="ca-pub-8481391240785119"
+         data-ad-slot="9438651388"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+    <div class="sns">
+        <h2><span class="glyphicon glyphicon-share"></span> Share</h2>
+<ul>
+    <li>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="_y_y_m_m_">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </li>
+    
+    <li>
+        <a href="http://b.hatena.ne.jp/entry/https://muunyblue.github.io/f7a124943b6aa6654d787f07eee84d2c.html" class="hatena-bookmark-button" data-hatena-bookmark-title="ステラのまほうのエンディングで始めるThree.js" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加">
+            <img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+
+    </li>
+        <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+   
+    
+    
+    
+    <li>
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3&appId=387525661451951";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+        <div class="fb-like" data-href="https://muunyblue.github.io/f7a124943b6aa6654d787f07eee84d2c.html" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
+    </li>
+ 
+</ul>    </div>
+
+    <div class="blogroll">
+        <h2><span class="glyphicon glyphicon-pushpin"></span> About</h2>
+        <p>どこにでもいる平凡なプログラムを書く人間のログ。</p>
+    </div><!-- /.blogroll -->
+
+    <div class="category">
+        <h2><span class="glyphicon glyphicon-th-list"></span> Category</h2>
+        <ul>
+			<li>
+				<a href="https://muunyblue.github.io/category/diary.html">
+				    	<span class="glyphicon glyphicon-book" aria-hidden="true" style="color: #0bd566;"></span>
+				    Diary
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/jia.html">
+				    	<span class="glyphicon glyphicon-home" aria-hidden="true" style="color: #f48c39;"></span>
+				    家
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/programming.html">
+				    	<span class="glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+				    Programming
+				</a>
+			</li>
+        </ul>
+    </div>
+
+    <div class="recently">
+        <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
+        <ul>
+			    <li>
+                    <p>2021年 12月16日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/97885afd60c10c4a454c11e225763e04.html">
+                            普通のキーボード写真とBLEの話
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 5月24日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
+                            React Hooks: useReducer & Context API with TypeScript
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 1月23日 午後 09:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/214cfbe603b7f9f9bc005d5f53f7a1d3.html">
+                            普通のTwitter転職
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月22日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/3a1f85dfef891b2a3685ccb35efa807e.html">
+                            Zen Keyboard Build log
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月17日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
+                            Minidoxビルドログ
+                        </a>
+                    </p>
+			    </li>
+        </ul>
+    </div>
+
+    <div class="tags">
+        <h2><span class="glyphicon glyphicon-tags"></span> Tags</h2>
+        <ul>
+                <li><a href="https://muunyblue.github.io/tag/asakatsu.html">Asakatsu</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/btsync.html">btsync</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/c.html">C++</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ci.html">CI</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/cppcheck.html">Cppcheck</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/css.html">CSS</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/github.html">GitHub</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gitlab.html">GitLab</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/go.html">Go</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/gtk.html">Gtk+</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/haskell.html">Haskell</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/hooks.html">Hooks</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/idcf.html">IDCF</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/javascript.html">JavaScript</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/keyboard.html">Keyboard</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/markdown.html">Markdown</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
+                <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/ubuntu.html">Ubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vagrant.html">Vagrant</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vim.html">Vim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/vps.html">VPS</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/zen.html">Zen</a> (1)</li>
+        </ul>
+    </div><!-- /.social -->
+
+    <div class="social">
+        <h2><span class="glyphicon glyphicon-sunglasses"></span> Social</h2>
+        <ul>
+            <li><a href="https://twitter.com/_y_y_m_m_" target="_blank">Twitter</a></li>
+            <li><a href="https://github.com/yymm" target="_blank">Github</a></li>
+            <li><a href="https://bitbucket.org/yymm" target="_blank">Bitbucket</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.atom.xml" target="_blank" type="application/atom+xml" rel="alternate">atom feed</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.rss.xml" target="_blank" type="application/rss+xml" rel="alternate">rss feed</a></li>
+        </ul>
+    </div><!-- /.social -->
+
+            </div><!-- /.bs-component -->
+        </div><!-- /#extras -->
+    </div><!--./container -->
+    <!--Honoka Bootstrap end -->
+
+    <footer id="contentinfo">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <p id="bloginfo"><a href="https://github.com/yymm/MokuMokuBlog" target="_blank" title="This blog"><img id="mokumokublog" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/mokumokublog.ico"></img></a> POWERD BY <a href="https://github.com/getpelican/pelican" target="_blank" title="This blog"><img id="pelican" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/pelican.ico"></img></a> GENERATED BY <a href="https://github.com/yymm/MemoMemo" target="_blank" title="MemoMemo"><img id="memomemo" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/memomemo.ico"></img></a></p>
+                    <p>Copyright <span class="glyphicon glyphicon-copyright-mark"></span> 2018 <a href="https://github.com/yymm" target="_blank">yuya yano</a> All Rights Reserved.</p>
+					<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img id="copyright" alt="クリエイティブ・コモンズ・ライセンス" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a></p>
+                </div><!--./col-xs-12 -->
+            </div><!--./row -->
+        </div><!--./container -->
+    </footer><!-- /#contentinfo -->
+
+<script src="https://muunyblue.github.io/theme/js/jquery.lazyload.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+$(function() {
+	$("img.lazy").lazyload({
+		effect : "fadeIn"
+	});
+});
+</script>
+<script src="https://muunyblue.github.io/theme/js/bootstrap.min.js"></script>
+<script src="https://muunyblue.github.io/theme/js/script.js"></script>
+
+    <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-67688469-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+<script type="text/javascript">
+    var disqus_shortname = 'mokumoku';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+
+<!--
+<!-- PtEngine -->
+<script type="text/javascript">
+	window._pt_sp_2 = [];
+	_pt_sp_2.push('setAccount,3e10d017');
+	var _protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+	(function() {
+		var atag = document.createElement('script'); atag.type = 'text/javascript'; atag.async = true;
+		atag.src = _protocol + 'js.ptengine.jp/pta.js';
+		var stag = document.createElement('script'); stag.type = 'text/javascript'; stag.async = true;
+		stag.src = _protocol + 'js.ptengine.jp/pts.js';
+		var s = document.getElementsByTagName('script')[0]; 
+		s.parentNode.insertBefore(atag, s);s.parentNode.insertBefore(stag, s);
+	})();
+</script>
+-->
+
+</body>
+</html>

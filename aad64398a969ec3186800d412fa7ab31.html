@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="utf-8" />
+　　　　　　　　<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>lexとyaccで計算機</title>
+    <link rel="shortcut icon" href="https://muunyblue.github.io/theme/img/favicon.ico" >
+
+	<link rel="stylesheet" href="https://muunyblue.github.io/theme/css/main.css" />
+    <link rel="stylesheet" href="https://muunyblue.github.io/theme/css/bootstrap.min.css" />
+
+
+    <link href="https://muunyblue.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="もくもくブログ Atom Feed" />
+    <link href="https://muunyblue.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="もくもくブログ RSS Feed" />
+
+	<script src="https://muunyblue.github.io/theme/js/jquery-2.1.4.min.js"></script>
+
+    <!--[if IE]>
+        <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="google-site-verification" content="ETSvqWJsfDNiXwsK89y7-OqkwM1O7DK9wiAkkA4Vfow" />
+    <link rel="alternate" hreflang="ja" href="http://blog.muuny-blue.info/" />
+</head>
+
+<body class="no-thank-yu">
+    <header id="banner" class="page-header clearfix">
+        <div id="contenthead" class="container">
+			<a href="https://muunyblue.github.io/">
+				<img id="title-logo" src="https://muunyblue.github.io/theme/img/title.png"></img>
+			</a>
+			<img id="look" src="https://muunyblue.github.io/theme/img/2.svg"></img>
+        </div>
+    </header><!-- /#banner -->
+
+    <!--Honoka Bootstrap-->
+    <div class="container">
+        <div id="content" class="row">
+            <div class="bs-component">
+                <div class="col-lg-12">
+  <article>
+    <header>
+      <div class="page-header">
+        <h1 class="entry-title">
+          <a href="https://muunyblue.github.io/aad64398a969ec3186800d412fa7ab31.html" rel="bookmark"
+             title="Permalink to lexとyaccで計算機">
+				<span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+            lexとyaccで計算機
+          </a>
+        </h1>
+      </div>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+<ul>
+    <li class="published" title="2015-09-29T00:27:49+09:00">
+        <span>Date:</span>2015-09-29 火 (午前 12:27:49)
+    </li>
+<li><span>Tags:</span><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> </li>
+    <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
+</ul>
+</footer><!-- /.post-info -->      <p><a href="http://blog.muuny-blue.info/f5cfbc876972bd0d031c8abc37344c28.html" title="プログラミング言語を作る前知識">前の記事(プログラミング言語を作る前知識)</a>でプログラミング言語少し作れる気がしてきたので、lexとyaccに軽く触れてみた。</p>
+<p>実際はflexとbisonを使っている。</p>
+<h1>lexの書き方</h1>
+<p>lexのファイルには3つのブロックがあって、%%で区切って記述します。</p>
+<div class="highlight"><pre><span></span><code><span class="c"> </span><span class="nb">-------------------------------------------------------</span><span class="c"></span>
+<span class="c">| 定義部</span>
+<span class="c">| オプションやincludeや変数宣言、マクロなどを記述します。</span>
+<span class="c">| includeや変数宣言は%{</span><span class="nt">...</span><span class="c">%}で囲って書きます。</span>
+<span class="c">| yaccと組み合わせて使う場合、生成されるCソースを</span>
+<span class="c">| インクルードすることがあるので、ここに記載します。 </span>
+<span class="c">| オプションは%ではじめます。</span>
+<span class="c">| %noyywrap</span>
+<span class="c">| これは入力が1ファイルであることを示していて、よく使われます。</span>
+<span class="c">| マクロは、「マクロ名  正規表現」で書きます。</span>
+<span class="c"> </span><span class="nb">-------------------------------------------------------</span><span class="c"></span>
+<span class="c">%%</span>
+<span class="c"> </span><span class="nb">-------------------------------------------------------</span><span class="c"></span>
+<span class="c">| ルール部</span>
+<span class="c">| 「正規表現  対応するCコード」という記述方法でルールを書きます。</span>
+<span class="c">| </span><span class="nb">+</span><span class="c">や*などは正規表現の特殊文字なので、文字として使いたい場合は</span>
+<span class="c">| \でエスケープしたり、&quot;&quot;で囲んで明示的に文字列として書きます。</span>
+<span class="c">| 定義部で宣言したマクロは{}で囲うことで使えます。</span>
+<span class="c"> </span><span class="nb">-------------------------------------------------------</span><span class="c"></span>
+<span class="c">%%</span>
+<span class="c"> </span><span class="nb">-------------------------------------------------------</span><span class="c"></span>
+<span class="c">| ユーザーサブルーチン部</span>
+<span class="c">| C言語のmain関数などを書きます。</span>
+<span class="c">| yaccと組み合わせて使う場合は、main関数はyacc側に書くため</span>
+<span class="c">| この部分はあまり書かないかもしれません。</span>
+<span class="c"> </span><span class="nb">-------------------------------------------------------</span><span class="c"></span>
+</code></pre></div>
+
+<p>lexで使える正規表現情報です。</p>
+<p><a href="http://cis.k.hosei.ac.jp/~nakata/lectureCompiler/YaccLex/2.html" title="Lex(flex)の使い方（簡略版）">Lex(flex)の使い方（簡略版）</a></p>
+<p>lexのファイルは*.lという名前で作成し、lex(flex)コマンドでCソースを生成します。</p>
+<div class="highlight"><pre><span></span><code>// lexの場合
+$ lex sample.l
+// flexの場合
+$ flex sample.l
+</code></pre></div>
+
+<p>lex.yy.cというファイルが出力されていればok。</p>
+<h1>yaccの書き方</h1>
+<p>基本構造はlexと同じです。</p>
+<div class="highlight"><pre><span></span><code><span class="c"> </span><span class="nb">-------------------------------------------------------</span><span class="c"></span>
+<span class="c">| 定義部</span>
+<span class="c">| includeや%union</span><span class="nt">,</span><span class="c"> %token</span><span class="nt">,</span><span class="c"> %typeなどを定義します。</span>
+<span class="c">| includeはlexと同様に%{</span><span class="nt">...</span><span class="c">%}で記述します。</span>
+<span class="c">| %unionは、型定義に使います。</span>
+<span class="c">| %tokenは、単にトークンを定義します。</span>
+<span class="c">| %typeは、ルール部で使用する変数名を定義します。</span>
+<span class="c">| </span><span class="nv">&lt;&gt;</span><span class="c">で囲んでuniconの変数名を参照して記述することもできます。</span>
+<span class="c"> </span><span class="nb">-------------------------------------------------------</span><span class="c"></span>
+<span class="c">%%</span>
+<span class="c"> </span><span class="nb">-------------------------------------------------------</span><span class="c"></span>
+<span class="c">| ルール部</span>
+<span class="c">| ルール定義のブロックは以下のよな構成になります。</span>
+<span class="c">| 変換結果: 構成要素1 構成要素2 </span><span class="nt">...</span><span class="c"></span>
+<span class="c">|         | (他の構成内容)</span>
+<span class="c">|         { (マッチした際に実行されるCコード) }</span>
+<span class="c">|         ;</span>
+<span class="c">| ;は省略可能で、{}は構成内容につきそれぞれ定義できます。</span>
+<span class="c"> </span><span class="nb">-------------------------------------------------------</span><span class="c"></span>
+<span class="c">%%</span>
+<span class="c"> </span><span class="nb">-------------------------------------------------------</span><span class="c"></span>
+<span class="c">| ユーザーサブルーチン部</span>
+<span class="c">| C言語のmain関数などを書きます。</span>
+<span class="c">| 実際に入力を解析したりするのに使います。</span>
+<span class="c">| 構文解析関数はyyparseです。</span>
+<span class="c">| yyparse関数を使う際、yacc単体で利用するときは</span>
+<span class="c">| 字句解析器としてyylex関数の実装が必要になります。</span>
+<span class="c"> </span><span class="nb">-------------------------------------------------------</span><span class="c"></span>
+</code></pre></div>
+
+<p>yaccファイルは、*.yという名前で作成し、yacc(bison)コマンドでCソースを生成します。</p>
+<div class="highlight"><pre><span></span><code>// yaccの場合
+$ yacc -d sample.y
+// bisonの場合
+$ bison -d sample.y
+</code></pre></div>
+
+<p>sample.tab.hとsample.tab.cというファイルが出力されていればok。</p>
+<h1>lexとyaccを組み合わせて使う</h1>
+<p>yyparseが、yylexを必要としているように、lexとyaccは組み合わせ使うと便利です。</p>
+<h2>大域変数の利用パターン(変数)</h2>
+<p>intやdoubleなどの変数を扱う場合に、lexとyaccの間で大域変数を使用して、lexの正規表現にマッチした変数を、yaccのunionと紐付けておくことができます。</p>
+<p>yaccでuniconで定義した変数は、lexで、<strong>yylval.変数名</strong>で参照できます。</p>
+<p>double型の足し算をするだけの単純な例です。</p>
+<p>lexファイル(sample.l)</p>
+<div class="highlight"><pre><span></span><code><span class="cm">%{</span>
+<span class="cm">#include &lt;stdio.h&gt;</span>
+<span class="cm">#include &lt;stdlib.h&gt;</span>
+<span class="cm">#include &quot;sample.tab.h&quot;</span>
+<span class="cm">%}</span><span class="w"></span>
+<span class="c">%%</span><span class="w"></span>
+<span class="p">[</span><span class="mi">0</span><span class="o">-</span><span class="mi">9</span><span class="p">]</span><span class="o">+\</span><span class="p">.[</span><span class="mi">0</span><span class="o">-</span><span class="mi">9</span><span class="p">]</span><span class="o">*</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">yylval</span><span class="p">.</span><span class="n">double_value</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">atof</span><span class="p">(</span><span class="n">yytext</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">DOUBLE</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="s">&quot;+&quot;</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">ADD</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="c">%%</span><span class="w"></span>
+</code></pre></div>
+
+<p>yaccファイル(sample.y)</p>
+<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="p">{</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+<span class="o">%</span><span class="p">}</span><span class="w"></span>
+<span class="nf">%union</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">double_value</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="nf">%token</span><span class="w"> </span><span class="o">&lt;</span><span class="n">double_value</span><span class="o">&gt;</span><span class="w"> </span><span class="n">DOUBLE</span><span class="w"></span>
+<span class="nf">%type</span><span class="w"> </span><span class="o">&lt;</span><span class="n">double_value</span><span class="o">&gt;</span><span class="w"> </span><span class="n">factor</span><span class="w"> </span><span class="n">expr</span><span class="w"></span>
+<span class="nf">%left</span><span class="w"> </span><span class="n">ADD</span><span class="w"> </span>
+<span class="o">%%</span><span class="w"></span>
+<span class="nl">input</span> <span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="n">line</span><span class="w"></span>
+<span class="nl">line</span>  <span class="p">:</span><span class="w"> </span><span class="n">CR</span><span class="w"></span>
+<span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">expr</span><span class="w"> </span><span class="n">CR</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;&gt;&gt; %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">$1</span><span class="p">);</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="nl">expr</span>  <span class="p">:</span><span class="w"> </span><span class="n">factor</span><span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="n">$$</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">$1</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">expr</span><span class="w"> </span><span class="n">ADD</span><span class="w"> </span><span class="n">expr</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">$$</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">$1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">$3</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="nl">factor</span><span class="p">:</span><span class="w"> </span><span class="n">DOUBLE</span><span class="w"></span>
+<span class="o">%%</span><span class="w"></span>
+<span class="kt">int</span><span class="w"> </span><span class="n">yyerror</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">*</span><span class="n">str</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">str</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">yyparse</span><span class="p">();</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>double_valをいうyaccで定義した型を、lexファイルでyylvalを介して参照しています。</p>
+<p>yaccファイルでは、%tokenを使ってDOUBLEとunionの変数を紐付けることで、自動的に型をつけるように指定しています。</p>
+<h1>簡単な計算機を作る</h1>
+<p>計算機なので計算順序を正しく定義してあげるのが大事だと思います。計算順序を決めるのに、yaccの%left、%rightが役に立ちそうです。</p>
+<p>%leftは左結合規則を定義、%rightは右結合規則を定義できます。</p>
+<p>身近なところだと、足し算などは左結合、代入などは右結合です。</p>
+<p>%left,%rightは定義した順番(上から下)に優先順位がつきます。</p>
+<p>"+-*/%^()"と数字(小数点)をlexで定義します。</p>
+<div class="highlight"><pre><span></span><code><span class="nf">%option</span><span class="w"> </span><span class="n">noyywrap</span><span class="w"></span>
+<span class="o">%</span><span class="p">{</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;cal.tab.h&quot;</span><span class="cp"></span>
+<span class="o">%</span><span class="p">}</span><span class="w"></span>
+<span class="o">%%</span><span class="w"></span>
+<span class="p">[</span><span class="mi">0-9</span><span class="p">][</span><span class="mi">0-9</span><span class="p">]</span><span class="o">*</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">yylval</span><span class="p">.</span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">atof</span><span class="p">(</span><span class="n">yytext</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">VALUE</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="p">[</span><span class="mi">0-9</span><span class="p">]</span><span class="o">+</span><span class="err">\</span><span class="p">.[</span><span class="mi">0-9</span><span class="p">]</span><span class="o">*</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">yylval</span><span class="p">.</span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">atof</span><span class="p">(</span><span class="n">yytext</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">VALUE</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="s">&quot;+&quot;</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">ADD</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="s">&quot;-&quot;</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">SUB</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="s">&quot;*&quot;</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">MUL</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="s">&quot;/&quot;</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">DIV</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="s">&quot;%&quot;</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">REM</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="s">&quot;^&quot;</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">POW</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">CR</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="s">&quot;(&quot;</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">LP</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="s">&quot;)&quot;</span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">RP</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="o">%%</span><span class="w"></span>
+</code></pre></div>
+
+<p>yaccで構文規則を書いていきます、今から作る計算機は"^"だけ右結合です。</p>
+<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="p">{</span><span class="w"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
+<span class="o">%</span><span class="p">}</span><span class="w"></span>
+<span class="nf">%union</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="nf">%token</span><span class="w"> </span><span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="w"> </span><span class="n">VALUE</span><span class="w">            </span>
+<span class="nf">%token</span><span class="w"> </span><span class="n">ADD</span><span class="w"> </span><span class="n">SUB</span><span class="w"> </span><span class="n">MUL</span><span class="w"> </span><span class="n">DIV</span><span class="w"> </span><span class="n">REM</span><span class="w"> </span><span class="n">POW</span><span class="w"> </span><span class="n">CR</span><span class="w"> </span><span class="n">LP</span><span class="w"> </span><span class="n">RP</span><span class="w"></span>
+<span class="nf">%type</span><span class="w"> </span><span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="w"> </span><span class="n">factor</span><span class="w"> </span><span class="n">expr</span><span class="w"></span>
+<span class="nf">%left</span><span class="w"> </span><span class="n">ADD</span><span class="w"> </span><span class="n">SUB</span><span class="w"></span>
+<span class="nf">%left</span><span class="w"> </span><span class="n">MUL</span><span class="w"> </span><span class="n">DIV</span><span class="w"> </span><span class="n">REM</span><span class="w"></span>
+<span class="nf">%left</span><span class="w"> </span><span class="n">NEG</span><span class="w"> </span><span class="n">POS</span><span class="w"></span>
+<span class="nf">%right</span><span class="w"> </span><span class="n">POW</span><span class="w"></span>
+<span class="o">%%</span><span class="w"></span>
+<span class="nl">input</span> <span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="n">line</span><span class="w"></span>
+<span class="nl">line</span>  <span class="p">:</span><span class="w"> </span><span class="n">CR</span><span class="w"></span>
+<span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">expr</span><span class="w"> </span><span class="n">CR</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;&gt;&gt; %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">$1</span><span class="p">);</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">CR</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">yyerrok</span><span class="p">;</span><span class="w"> </span><span class="n">yyclearin</span><span class="p">;</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="nl">expr</span>  <span class="p">:</span><span class="w"> </span><span class="n">factor</span><span class="w"></span>
+<span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">ADD</span><span class="w"> </span><span class="n">expr</span><span class="w"> </span><span class="nf">%prec</span><span class="w"> </span><span class="n">POS</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">$$</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">$2</span><span class="p">;</span><span class="w">           </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">SUB</span><span class="w"> </span><span class="n">expr</span><span class="w"> </span><span class="nf">%prec</span><span class="w"> </span><span class="n">NEG</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">$$</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">$2</span><span class="p">;</span><span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">expr</span><span class="w"> </span><span class="n">ADD</span><span class="w"> </span><span class="n">expr</span><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="n">$$</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">$1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">$3</span><span class="p">;</span><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">expr</span><span class="w"> </span><span class="n">SUB</span><span class="w"> </span><span class="n">expr</span><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="n">$$</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">$1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">$3</span><span class="p">;</span><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">expr</span><span class="w"> </span><span class="n">MUL</span><span class="w"> </span><span class="n">expr</span><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="n">$$</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">$1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">$3</span><span class="p">;</span><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">expr</span><span class="w"> </span><span class="n">DIV</span><span class="w"> </span><span class="n">expr</span><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="n">$$</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">$1</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">$3</span><span class="p">;</span><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">expr</span><span class="w"> </span><span class="n">REM</span><span class="w"> </span><span class="n">expr</span><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="n">$$</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fmod</span><span class="p">(</span><span class="n">$1</span><span class="p">,</span><span class="w"> </span><span class="n">$3</span><span class="p">);</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">expr</span><span class="w"> </span><span class="n">POW</span><span class="w"> </span><span class="n">expr</span><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="n">$$</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pow</span><span class="p">(</span><span class="n">$1</span><span class="p">,</span><span class="w"> </span><span class="n">$3</span><span class="p">);</span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">LP</span><span class="w"> </span><span class="n">expr</span><span class="w"> </span><span class="n">RP</span><span class="w">         </span><span class="p">{</span><span class="w"> </span><span class="n">$$</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">$2</span><span class="p">;</span><span class="w">           </span><span class="p">}</span><span class="w"></span>
+<span class="nl">factor</span><span class="p">:</span><span class="w"> </span><span class="n">VALUE</span><span class="w"></span>
+<span class="o">%%</span><span class="w"></span>
+<span class="kt">int</span><span class="w"> </span><span class="n">yyerror</span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">*</span><span class="n">str</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">extern</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">yytext</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">--&gt; %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="n">yytext</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">yyparse</span><span class="p">();</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>コンパイルして実行します。</p>
+<div class="highlight"><pre><span></span><code>$ flex cal.l
+$ bison -d cal.y
+$ gcc cal.tab.c lex.yy.c -lm -o cal
+$ ./cal
+<span class="m">2</span>+4*4
+&gt;&gt; <span class="m">18</span>.000000
+<span class="o">(</span><span class="m">2</span>+4<span class="o">)</span>*4
+&gt;&gt; <span class="m">24</span>.000000
+<span class="m">60</span>/5*2
+&gt;&gt; <span class="m">24</span>.000000
+<span class="o">(</span><span class="m">9</span>-2*3<span class="o">)</span>^3
+&gt;&gt; <span class="m">27</span>.000000
+</code></pre></div>
+
+<p>おぉ、ちゃんと動いてる風だ。</p>
+<h4>計算機の例が書いてあって参考にした記事</h4>
+<ul>
+<li><a href="http://kmaebashi.com/programmer/devlang/yacclex.html" title="プログラミング言語を作る/yaccとlex">プログラミング言語を作る/yaccとlex</a></li>
+<li><a href="http://d.hatena.ne.jp/hake/20110207/p1" title="bison &amp; flexメモ その５ - はけの徒然日記">bison &amp; flexメモ　その５ - はけの徒然日記</a></li>
+<li><a href="http://www7b.biglobe.ne.jp/~robe/pf/pf012.html" title="プログラマの友 第十ニ報：bison を使ってみる">プログラマの友 第十ニ報：bison を使ってみる</a></li>
+<li><a href="https://ja.wikipedia.org/wiki/Yacc" title="Yacc - Wikipedia">Yacc - Wikipedia</a></li>
+<li><a href="http://www.cs.man.ac.uk/~pjj/cs212/ho/node4.html" title="YACC">YACC</a></li>
+</ul>
+<h1>まとめ</h1>
+<p>lexとyaccの記法について、わかってくれば計算機作れた。</p>
+<p>実際に言語を作るときは、yaccで即時評価するのでなく、ASTを作成することになるので、ややこしくなってくる。。</p>
+<h1>参考記事</h1>
+<ul>
+<li><a href="http://kmaebashi.com/programmer/devlang/yacclex.html" title="プログラミング言語を作る/yaccとlex">プログラミング言語を作る/yaccとlex</a></li>
+<li><a href="http://www.hpcs.cs.tsukuba.ac.jp/~msato/lecture-note/comp-lecture/note7.html" title="プログラミング言語処理">プログラミング言語処理</a></li>
+<li><a href="http://itref.fc2web.com/c/yacc.html" title="yacc/lex">yacc/lex</a></li>
+<li><a href="http://epaperpress.com/lexandyacc/intro.html" title="Lex &amp; Yacc | Overview">Lex &amp; Yacc | Overview</a></li>
+<li><a href="http://cis.k.hosei.ac.jp/~nakata/lectureCompiler/YaccLex/5.html" title="Yaccの使い方">Yaccの使い方</a></li>
+<li><a href="https://ja.wikipedia.org/wiki/Yacc" title="Yacc - Wikipedia">Yacc - Wikipedia</a></li>
+<li><a href="http://www.cs.man.ac.uk/~pjj/cs212/ho/node4.html" title="YACC">YACC</a></li>
+<li><a href="http://i.loveruby.net/ja/rhg/book/yacc.html" title="第9章 速習&lt;code&gt;yacc&lt;/code&gt;">第9章 速習<code>yacc</code></a></li>
+<li><a href="http://cis.k.hosei.ac.jp/~nakata/lectureCompiler/YaccLex/">http://cis.k.hosei.ac.jp/~nakata/lectureCompiler/YaccLex/</a></li>
+<li><a href="http://www.hpcs.cs.tsukuba.ac.jp/~msato/lecture-note/comp-lecture/note5.html" title="プログラミング言語処理">プログラミング言語処理</a></li>
+<li><a href="http://www7b.biglobe.ne.jp/~robe/pf/pf012.html" title="プログラマの友 第十ニ報：bison を使ってみる">プログラマの友 第十ニ報：bison を使ってみる</a></li>
+<li><a href="http://www.csg.ci.i.u-tokyo.ac.jp/~chiba/lecture/os/lang104.html" title="Lecture Notes">Lecture Notes</a></li>
+</ul>
+    </div><!-- /.entry-content -->
+
+    <div class="article-ad">
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- responsive -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-8481391240785119"
+           data-ad-slot="3238871784"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <div class="comments">
+      <div id="disqus-toggle">
+          <h3>Show comments <span class="glyphicon glyphicon-comment"></span></h3>
+      </div>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        $("#disqus-toggle").click(function(){
+          var disqus_shortname = 'mokumoku';
+          var disqus_identifier = 'aad64398a969ec3186800d412fa7ab31.html';
+          var disqus_url = 'https://muunyblue.github.io/aad64398a969ec3186800d412fa7ab31.html';
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//mokumoku.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          $("#disqus-toggle").remove();
+        });
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+                </div><!-- /.col-lg-12 -->
+            </div><!-- /.bs-component -->
+        </div>
+        <div id="extras" class="row">
+            <div class="bs-component">
+<div class="extras-ad">
+    <h2><span class="glyphicon glyphicon-object-align-left"></span> Adsense</h2>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- small_square -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:200px;height:200px"
+         data-ad-client="ca-pub-8481391240785119"
+         data-ad-slot="9438651388"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+    <div class="sns">
+        <h2><span class="glyphicon glyphicon-share"></span> Share</h2>
+<ul>
+    <li>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="_y_y_m_m_">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </li>
+    
+    <li>
+        <a href="http://b.hatena.ne.jp/entry/https://muunyblue.github.io/aad64398a969ec3186800d412fa7ab31.html" class="hatena-bookmark-button" data-hatena-bookmark-title="lexとyaccで計算機" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加">
+            <img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+
+    </li>
+        <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+   
+    
+    
+    
+    <li>
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3&appId=387525661451951";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+        <div class="fb-like" data-href="https://muunyblue.github.io/aad64398a969ec3186800d412fa7ab31.html" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
+    </li>
+ 
+</ul>    </div>
+
+    <div class="blogroll">
+        <h2><span class="glyphicon glyphicon-pushpin"></span> About</h2>
+        <p>どこにでもいる平凡なプログラムを書く人間のログ。</p>
+    </div><!-- /.blogroll -->
+
+    <div class="category">
+        <h2><span class="glyphicon glyphicon-th-list"></span> Category</h2>
+        <ul>
+			<li>
+				<a href="https://muunyblue.github.io/category/diary.html">
+				    	<span class="glyphicon glyphicon-book" aria-hidden="true" style="color: #0bd566;"></span>
+				    Diary
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/jia.html">
+				    	<span class="glyphicon glyphicon-home" aria-hidden="true" style="color: #f48c39;"></span>
+				    家
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/programming.html">
+				    	<span class="glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+				    Programming
+				</a>
+			</li>
+        </ul>
+    </div>
+
+    <div class="recently">
+        <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
+        <ul>
+			    <li>
+                    <p>2021年 12月16日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/97885afd60c10c4a454c11e225763e04.html">
+                            普通のキーボード写真とBLEの話
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 5月24日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
+                            React Hooks: useReducer & Context API with TypeScript
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 1月23日 午後 09:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/214cfbe603b7f9f9bc005d5f53f7a1d3.html">
+                            普通のTwitter転職
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月22日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/3a1f85dfef891b2a3685ccb35efa807e.html">
+                            Zen Keyboard Build log
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月17日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
+                            Minidoxビルドログ
+                        </a>
+                    </p>
+			    </li>
+        </ul>
+    </div>
+
+    <div class="tags">
+        <h2><span class="glyphicon glyphicon-tags"></span> Tags</h2>
+        <ul>
+                <li><a href="https://muunyblue.github.io/tag/asakatsu.html">Asakatsu</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/btsync.html">btsync</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/c.html">C++</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ci.html">CI</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/cppcheck.html">Cppcheck</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/css.html">CSS</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/github.html">GitHub</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gitlab.html">GitLab</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/go.html">Go</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/gtk.html">Gtk+</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/haskell.html">Haskell</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/hooks.html">Hooks</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/idcf.html">IDCF</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/javascript.html">JavaScript</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/keyboard.html">Keyboard</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/markdown.html">Markdown</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
+                <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/ubuntu.html">Ubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vagrant.html">Vagrant</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vim.html">Vim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/vps.html">VPS</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/zen.html">Zen</a> (1)</li>
+        </ul>
+    </div><!-- /.social -->
+
+    <div class="social">
+        <h2><span class="glyphicon glyphicon-sunglasses"></span> Social</h2>
+        <ul>
+            <li><a href="https://twitter.com/_y_y_m_m_" target="_blank">Twitter</a></li>
+            <li><a href="https://github.com/yymm" target="_blank">Github</a></li>
+            <li><a href="https://bitbucket.org/yymm" target="_blank">Bitbucket</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.atom.xml" target="_blank" type="application/atom+xml" rel="alternate">atom feed</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.rss.xml" target="_blank" type="application/rss+xml" rel="alternate">rss feed</a></li>
+        </ul>
+    </div><!-- /.social -->
+
+            </div><!-- /.bs-component -->
+        </div><!-- /#extras -->
+    </div><!--./container -->
+    <!--Honoka Bootstrap end -->
+
+    <footer id="contentinfo">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <p id="bloginfo"><a href="https://github.com/yymm/MokuMokuBlog" target="_blank" title="This blog"><img id="mokumokublog" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/mokumokublog.ico"></img></a> POWERD BY <a href="https://github.com/getpelican/pelican" target="_blank" title="This blog"><img id="pelican" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/pelican.ico"></img></a> GENERATED BY <a href="https://github.com/yymm/MemoMemo" target="_blank" title="MemoMemo"><img id="memomemo" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/memomemo.ico"></img></a></p>
+                    <p>Copyright <span class="glyphicon glyphicon-copyright-mark"></span> 2018 <a href="https://github.com/yymm" target="_blank">yuya yano</a> All Rights Reserved.</p>
+					<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img id="copyright" alt="クリエイティブ・コモンズ・ライセンス" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a></p>
+                </div><!--./col-xs-12 -->
+            </div><!--./row -->
+        </div><!--./container -->
+    </footer><!-- /#contentinfo -->
+
+<script src="https://muunyblue.github.io/theme/js/jquery.lazyload.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+$(function() {
+	$("img.lazy").lazyload({
+		effect : "fadeIn"
+	});
+});
+</script>
+<script src="https://muunyblue.github.io/theme/js/bootstrap.min.js"></script>
+<script src="https://muunyblue.github.io/theme/js/script.js"></script>
+
+    <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-67688469-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+<script type="text/javascript">
+    var disqus_shortname = 'mokumoku';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+
+<!--
+<!-- PtEngine -->
+<script type="text/javascript">
+	window._pt_sp_2 = [];
+	_pt_sp_2.push('setAccount,3e10d017');
+	var _protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+	(function() {
+		var atag = document.createElement('script'); atag.type = 'text/javascript'; atag.async = true;
+		atag.src = _protocol + 'js.ptengine.jp/pta.js';
+		var stag = document.createElement('script'); stag.type = 'text/javascript'; stag.async = true;
+		stag.src = _protocol + 'js.ptengine.jp/pts.js';
+		var s = document.getElementsByTagName('script')[0]; 
+		s.parentNode.insertBefore(atag, s);s.parentNode.insertBefore(stag, s);
+	})();
+</script>
+-->
+
+</body>
+</html>

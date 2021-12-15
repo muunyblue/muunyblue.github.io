@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="utf-8" />
+　　　　　　　　<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>IDCFクラウドで自分だけのHerokuを構築する</title>
+    <link rel="shortcut icon" href="https://muunyblue.github.io/theme/img/favicon.ico" >
+
+	<link rel="stylesheet" href="https://muunyblue.github.io/theme/css/main.css" />
+    <link rel="stylesheet" href="https://muunyblue.github.io/theme/css/bootstrap.min.css" />
+
+
+    <link href="https://muunyblue.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="もくもくブログ Atom Feed" />
+    <link href="https://muunyblue.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="もくもくブログ RSS Feed" />
+
+	<script src="https://muunyblue.github.io/theme/js/jquery-2.1.4.min.js"></script>
+
+    <!--[if IE]>
+        <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="google-site-verification" content="ETSvqWJsfDNiXwsK89y7-OqkwM1O7DK9wiAkkA4Vfow" />
+    <link rel="alternate" hreflang="ja" href="http://blog.muuny-blue.info/" />
+</head>
+
+<body class="no-thank-yu">
+    <header id="banner" class="page-header clearfix">
+        <div id="contenthead" class="container">
+			<a href="https://muunyblue.github.io/">
+				<img id="title-logo" src="https://muunyblue.github.io/theme/img/title.png"></img>
+			</a>
+			<img id="look" src="https://muunyblue.github.io/theme/img/2.svg"></img>
+        </div>
+    </header><!-- /#banner -->
+
+    <!--Honoka Bootstrap-->
+    <div class="container">
+        <div id="content" class="row">
+            <div class="bs-component">
+                <div class="col-lg-12">
+  <article>
+    <header>
+      <div class="page-header">
+        <h1 class="entry-title">
+          <a href="https://muunyblue.github.io/c3daba8ba04565423e12eb8cb6237b46.html" rel="bookmark"
+             title="Permalink to IDCFクラウドで自分だけのHerokuを構築する">
+				<span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+            IDCFクラウドで自分だけのHerokuを構築する
+          </a>
+        </h1>
+      </div>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+<ul>
+    <li class="published" title="2015-11-15T06:11:54+09:00">
+        <span>Date:</span>2015-11-15 日 (午前 06:11:54)
+    </li>
+        <!--<br />-->
+        <li class="modified" title="2015-11-15T06:43:38+09:00">
+            <span>Updated:</span>2015-11-15 日 (午前 06:43:38)
+        </li>
+<li><span>Tags:</span><a href="https://muunyblue.github.io/tag/idcf.html">IDCF</a> <a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> </li>
+    <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
+</ul>
+</footer><!-- /.post-info -->      <p><a href="http://www.idcf.jp/cloud/cp/1st-present.html" title="IDCFクラウド１周年ありがとうキャンペーン！">IDCFクラウド１周年</a>めでたいですね。</p>
+<p>この間からIDCFクラウドの最小インスタンスを借りて日々便利しています。</p>
+<p>個人用途で使っていたHerokuに乗せていたアプリをことごとくIDCFクラウドにのせ替えたので紹介します。個人用途なら最小インスタンスでも割りと快適です。</p>
+<p>その前に私の感じるIDCFの良さを紹介します。</p>
+<h1>IDCFの良さ</h1>
+<h2>選んだ理由</h2>
+<p>子供のお小遣いで済みそうなくらい安いVPSを探していて最終的に、DigitalOceanとIDCFで迷っていました。</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>IDCF</th>
+<th>DigitalOcean</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>料金/month</td>
+<td>500円</td>
+<td>$5</td>
+</tr>
+<tr>
+<td>CPU</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>RAM</td>
+<td>1G</td>
+<td>1G</td>
+</tr>
+<tr>
+<td>Storage</td>
+<td>20G</td>
+<td>20G</td>
+</tr>
+<tr>
+<td>root</td>
+<td>あり</td>
+<td>あり</td>
+</tr>
+</tbody>
+</table>
+<p>最小インスタンスの基本的なスペックの比較ですが、気のせいかもしれないですがDigitalOceanをメタっているふうに見えます。両者ともインスタンスを登録後すぐに起動できる点でも似てる..</p>
+<p>DigitalOceanのデメリットは為替の影響を受けるので大体700円くらいになってしまうのと、一番近いサーバでもシンガポールなのでアクセスが遅いことです。(あと、管理コンソールが英語)</p>
+<p>逆にDigitalOceanのメリットは選べるOSが充実しているところで、CoreOSを使えるのは面白いと思いました。</p>
+<p>結局IDCFにしたのですが、決め手はサーバが日本あるのでアクセスが速いことでした。</p>
+<p>用途が個人利用のアプリの運用や試運転なのでSSHでログインして作業することが多いのでコマンド１つ１つにいちいち遅延があるとすごくストレスなので、そういう場合サーバが日本にあるのはかなりメリットだと思いました。</p>
+<h2>使ってて良さを感じる点</h2>
+<ul>
+<li>インスタンスが速攻で立ち上がる</li>
+<li>管理コンソールがわかりやすい</li>
+<li>グローバルIPに対して、ローカルIPからポートフォワーディングする仕組みが良い</li>
+<li>ロードバランサが使える</li>
+<li>Mackerelに公式対応</li>
+</ul>
+<h1>自分だけのHeroku構築</h1>
+<p>DokkuというOSSを使えば、IDCFでHerokuライクなPaaSを構築することができ、デプロイ先をHerokuからDokkuに変えるだけで手軽に移行できます。</p>
+<h2>Dokku</h2>
+<p>[https://github.com/progrium/dokku:embed]</p>
+<p>Dokkuはmini-herokuと書いてある通り、HerokuライクなPaaSエンジンです。</p>
+<p>Dockerを使っていて、アプリのビルドにはherokuishを使っているのでHerokuで動かしていたアプリは割りとすんなり動きます。</p>
+<p>しかし、miniというだけあってできないこともあるので、用法用量を守るのが大事です。</p>
+<h2>準備</h2>
+<p>IDCFの最小インスタンスでUbuntu14.04を立てます。</p>
+<h2>インストール</h2>
+<div class="highlight"><pre><span></span><code>$ wget https://raw.githubusercontent.com/progrium/dokku/v0.4.4/bootstrap.sh
+$ sudo <span class="nv">DOKKU_TAG</span><span class="o">=</span>v0.4.4 bash bootstrap.sh
+</code></pre></div>
+
+<p>これで必要なパッケージ(dockerやnginxなど)も一緒にインストールされます。</p>
+<h2>設定</h2>
+<p>ホスト名とSSH公開鍵の設定をします。foo.barと<name>は適宜置き換えてください。</p>
+<div class="highlight"><pre><span></span><code># echo &quot;foo.bar&quot; &gt; /home/dokku/VHOST
+# echo &quot;foo.bar&quot; &gt; /home/dokku/HOSTNAME
+# cat ~/.ssh/id_rsa.pub | sudo sshcommand acl-add dokku &lt;name&gt;
+</code></pre></div>
+
+<p>ホスト名は使っているDNSサーバ側でAレコードの設定が必要です。</p>
+<p>IDCFクラウドの管理コンソールでファイアウォールとポートフォワーディングで22portを開けておきます。(22portをフルで開けるのは怖いのでファイアウォールでIPを制限すると良いです。)</p>
+<h2>使い方</h2>
+<p>Herokuにデプロイしていたアプリのgitリポジトリのremoteにdokkuを追加します。foo.barと<project>は適宜置き換えてください。</p>
+<div class="highlight"><pre><span></span><code>$ git remote add dokku dokku@foo.bar:&lt;project&gt;
+</code></pre></div>
+
+<p>"git push dokku"するとdokkuにデプロイが始まり、Herokuで見たことあるような出力が返ってきます。</p>
+<div class="highlight"><pre><span></span><code><span class="n">$</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="n">push</span><span class="w"> </span><span class="n">dokku</span><span class="w"> </span><span class="n">master</span><span class="w"></span>
+<span class="n">Counting</span><span class="w"> </span><span class="nl">objects</span><span class="p">:</span><span class="w"> </span><span class="mi">21</span><span class="p">,</span><span class="w"> </span><span class="n">done</span><span class="p">.</span><span class="w"></span>
+<span class="n">Delta</span><span class="w"> </span><span class="n">compression</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="n">up</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span><span class="n">threads</span><span class="p">.</span><span class="w"></span>
+<span class="n">Compressing</span><span class="w"> </span><span class="nl">objects</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="o">%</span><span class="w"> </span><span class="p">(</span><span class="mi">17</span><span class="o">/</span><span class="mi">17</span><span class="p">),</span><span class="w"> </span><span class="n">done</span><span class="p">.</span><span class="w"></span>
+<span class="n">Writing</span><span class="w"> </span><span class="nl">objects</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="o">%</span><span class="w"> </span><span class="p">(</span><span class="mi">21</span><span class="o">/</span><span class="mi">21</span><span class="p">),</span><span class="w"> </span><span class="mf">1.81</span><span class="w"> </span><span class="n">KiB</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">bytes</span><span class="o">/</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">done</span><span class="p">.</span><span class="w"></span>
+<span class="n">Total</span><span class="w"> </span><span class="mi">21</span><span class="w"> </span><span class="p">(</span><span class="n">delta</span><span class="w"> </span><span class="mi">6</span><span class="p">),</span><span class="w"> </span><span class="n">reused</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">(</span><span class="n">delta</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="o">-----&gt;</span><span class="w"> </span><span class="n">Cleaning</span><span class="w"> </span><span class="n">up</span><span class="p">...</span><span class="w"></span>
+<span class="o">-----&gt;</span><span class="w"> </span><span class="n">Building</span><span class="w"> </span><span class="n">python</span><span class="o">-</span><span class="n">sample</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">herokuish</span><span class="p">...</span><span class="w"></span>
+<span class="nl">remote</span><span class="p">:</span><span class="w"> </span><span class="n">Unable</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">find</span><span class="w"> </span><span class="n">image</span><span class="w"> </span><span class="err">&#39;</span><span class="n">gliderlabs</span><span class="o">/</span><span class="nl">herokuish</span><span class="p">:</span><span class="n">latest</span><span class="err">&#39;</span><span class="w"> </span><span class="n">locally</span><span class="w"></span>
+<span class="nl">remote</span><span class="p">:</span><span class="w"> </span><span class="nl">latest</span><span class="p">:</span><span class="w"> </span><span class="n">Pulling</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">gliderlabs</span><span class="o">/</span><span class="n">herokuish</span><span class="w"></span>
+<span class="nl">remote</span><span class="p">:</span><span class="w"> </span><span class="mi">835</span><span class="nl">c565d00e2</span><span class="p">:</span><span class="w"> </span><span class="n">Pulling</span><span class="w"> </span><span class="n">fs</span><span class="w"> </span><span class="n">layer</span><span class="w"></span>
+<span class="nl">remote</span><span class="p">:</span><span class="w"> </span><span class="nl">c5c659229e15</span><span class="p">:</span><span class="w"> </span><span class="n">Pulling</span><span class="w"> </span><span class="n">fs</span><span class="w"> </span><span class="n">layer</span><span class="w"></span>
+<span class="p">(</span><span class="err">中略</span><span class="p">)</span><span class="w"></span>
+<span class="nl">remote</span><span class="p">:</span><span class="w"> </span><span class="mf">359e311</span><span class="nl">e765f</span><span class="p">:</span><span class="w"> </span><span class="n">Pull</span><span class="w"> </span><span class="n">complete</span><span class="w"></span>
+<span class="nl">remote</span><span class="p">:</span><span class="w"> </span><span class="mf">359e311</span><span class="nl">e765f</span><span class="p">:</span><span class="w"> </span><span class="n">Already</span><span class="w"> </span><span class="n">exists</span><span class="w"></span>
+<span class="nl">remote</span><span class="p">:</span><span class="w"> </span><span class="nl">Digest</span><span class="p">:</span><span class="w"> </span><span class="nl">sha256</span><span class="p">:</span><span class="mi">7</span><span class="n">aaa5dd65a7f90a47f2bb1266375b27d4f273ff94495527949536c9e944a871a</span><span class="w"></span>
+<span class="nl">remote</span><span class="p">:</span><span class="w"> </span><span class="nl">Status</span><span class="p">:</span><span class="w"> </span><span class="n">Downloaded</span><span class="w"> </span><span class="n">newer</span><span class="w"> </span><span class="n">image</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">gliderlabs</span><span class="o">/</span><span class="nl">herokuish</span><span class="p">:</span><span class="n">latest</span><span class="w"></span>
+<span class="o">-----&gt;</span><span class="w"> </span><span class="n">Adding</span><span class="w"> </span><span class="n">BUILD_ENV</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">build</span><span class="w"> </span><span class="n">environment</span><span class="p">...</span><span class="w"></span>
+<span class="p">(</span><span class="err">中略</span><span class="p">)</span><span class="w"></span>
+<span class="o">-----&gt;</span><span class="w"> </span><span class="n">DOKKU_SCALE</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">found</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">app</span><span class="w"> </span><span class="n">image</span><span class="p">.</span><span class="w"> </span><span class="n">Defaulting</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">single</span><span class="w"> </span><span class="n">web</span><span class="w"> </span><span class="n">process</span><span class="w"></span>
+<span class="o">-----&gt;</span><span class="w"> </span><span class="n">New</span><span class="w"> </span><span class="n">DOKKU_SCALE</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="n">generated</span><span class="w"></span>
+<span class="o">-----&gt;</span><span class="w"> </span><span class="n">Running</span><span class="w"> </span><span class="n">pre</span><span class="o">-</span><span class="n">flight</span><span class="w"> </span><span class="n">checks</span><span class="w"></span>
+<span class="w">       </span><span class="n">For</span><span class="w"> </span><span class="n">more</span><span class="w"> </span><span class="n">efficient</span><span class="w"> </span><span class="n">zero</span><span class="w"> </span><span class="n">downtime</span><span class="w"> </span><span class="n">deployments</span><span class="p">,</span><span class="w"> </span><span class="n">create</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="n">CHECKS</span><span class="p">.</span><span class="w"></span>
+<span class="w">       </span><span class="n">See</span><span class="w"> </span><span class="nl">http</span><span class="p">:</span><span class="c1">//progrium.viewdocs.io/dokku/checks-examples.md for examples</span>
+<span class="w">       </span><span class="n">CHECKS</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">found</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nl">container</span><span class="p">:</span><span class="w"> </span><span class="n">Running</span><span class="w"> </span><span class="n">simple</span><span class="w"> </span><span class="n">container</span><span class="w"> </span><span class="n">check</span><span class="p">...</span><span class="w"></span>
+<span class="o">-----&gt;</span><span class="w"> </span><span class="n">Waiting</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="n">seconds</span><span class="w"> </span><span class="p">...</span><span class="w"></span>
+<span class="o">-----&gt;</span><span class="w"> </span><span class="n">Default</span><span class="w"> </span><span class="n">container</span><span class="w"> </span><span class="n">check</span><span class="w"> </span><span class="n">successful</span><span class="o">!</span><span class="w"></span>
+<span class="o">=====&gt;</span><span class="w"> </span><span class="o">&lt;</span><span class="n">project</span><span class="o">&gt;</span><span class="w"> </span><span class="n">container</span><span class="w"> </span><span class="nl">output</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="o">*</span><span class="w"> </span><span class="n">Running</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="nl">http</span><span class="p">:</span><span class="c1">//0.0.0.0:5000/</span>
+<span class="o">=====&gt;</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">&lt;</span><span class="n">project</span><span class="o">&gt;</span><span class="w"> </span><span class="n">container</span><span class="w"> </span><span class="n">output</span><span class="w"></span>
+<span class="o">-----&gt;</span><span class="w"> </span><span class="n">Running</span><span class="w"> </span><span class="n">post</span><span class="o">-</span><span class="n">deploy</span><span class="w"></span>
+<span class="o">-----&gt;</span><span class="w"> </span><span class="n">Creating</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">dokku</span><span class="o">/&lt;</span><span class="n">project</span><span class="o">&gt;/</span><span class="n">VHOST</span><span class="p">...</span><span class="w"></span>
+<span class="o">-----&gt;</span><span class="w"> </span><span class="n">Configuring</span><span class="w"> </span><span class="o">&lt;</span><span class="n">project</span><span class="o">&gt;</span><span class="p">.</span><span class="n">foo</span><span class="p">.</span><span class="n">bar</span><span class="p">...</span><span class="w"></span>
+<span class="o">-----&gt;</span><span class="w"> </span><span class="n">Creating</span><span class="w"> </span><span class="n">http</span><span class="w"> </span><span class="n">nginx</span><span class="p">.</span><span class="n">conf</span><span class="w"></span>
+<span class="o">-----&gt;</span><span class="w"> </span><span class="n">Running</span><span class="w"> </span><span class="n">nginx</span><span class="o">-</span><span class="n">pre</span><span class="o">-</span><span class="n">reload</span><span class="w"></span>
+<span class="w">       </span><span class="n">Reloading</span><span class="w"> </span><span class="n">nginx</span><span class="w"></span>
+<span class="o">=====&gt;</span><span class="w"> </span><span class="n">Application</span><span class="w"> </span><span class="nl">deployed</span><span class="p">:</span><span class="w"></span>
+<span class="w">       </span><span class="nl">http</span><span class="p">:</span><span class="c1">//&lt;project&gt;.foo.bar</span>
+
+<span class="n">To</span><span class="w"> </span><span class="n">dokku</span><span class="p">@</span><span class="n">foo</span><span class="p">.</span><span class="nl">bar</span><span class="p">:</span><span class="o">&lt;</span><span class="n">project</span><span class="o">&gt;</span><span class="w"></span>
+<span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">[</span><span class="n">new</span><span class="w"> </span><span class="n">branch</span><span class="p">]</span><span class="w">      </span><span class="n">master</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">master</span><span class="w"></span>
+</code></pre></div>
+
+<h2>さらに詳しくは</h2>
+<p>以前にブログにまとめたものがあります。</p>
+<p><a href="http://blog.muuny-blue.info/9375084629cd055e6b819053bc9714de.html" title="IDCFクラウドの一番安いのでDokkuを使う">IDCFクラウドの一番安いのでDokkuを使う</a></p>
+<p>IDCF + お名前.com + Dokkuの構成を作っています。</p>
+<p>あと、Dokkuを構築する際にDockerを使っているのでSwap領域を作っておいたほうがいいです、そのへんの基本的な設定も以前にブログにまとめたので参考にどうぞ。</p>
+<p><a href="http://blog.muuny-blue.info/50982fb2f2cfa186d335310461dfa2be.html" title="IDCFクラウド借りました">IDCFクラウド借りました</a></p>
+<h1>まとめ</h1>
+<p>HerokuからIDCF+Dokkuにいくつかのアプリをのせ替えて使っていますが、今のところ快適に動いていますのでおすすめできるかなと思います。</p>
+<p>しかし、HerokuのAddonをガッツリ使っていたりなど、Dokkuではどうしようもない部分もあるので、Herokuを捨てられる銀の弾丸ではないのでご注意を。</p>
+    </div><!-- /.entry-content -->
+
+    <div class="article-ad">
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- responsive -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-8481391240785119"
+           data-ad-slot="3238871784"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <div class="comments">
+      <div id="disqus-toggle">
+          <h3>Show comments <span class="glyphicon glyphicon-comment"></span></h3>
+      </div>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        $("#disqus-toggle").click(function(){
+          var disqus_shortname = 'mokumoku';
+          var disqus_identifier = 'c3daba8ba04565423e12eb8cb6237b46.html';
+          var disqus_url = 'https://muunyblue.github.io/c3daba8ba04565423e12eb8cb6237b46.html';
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//mokumoku.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          $("#disqus-toggle").remove();
+        });
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+                </div><!-- /.col-lg-12 -->
+            </div><!-- /.bs-component -->
+        </div>
+        <div id="extras" class="row">
+            <div class="bs-component">
+<div class="extras-ad">
+    <h2><span class="glyphicon glyphicon-object-align-left"></span> Adsense</h2>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- small_square -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:200px;height:200px"
+         data-ad-client="ca-pub-8481391240785119"
+         data-ad-slot="9438651388"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+    <div class="sns">
+        <h2><span class="glyphicon glyphicon-share"></span> Share</h2>
+<ul>
+    <li>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="_y_y_m_m_">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </li>
+    
+    <li>
+        <a href="http://b.hatena.ne.jp/entry/https://muunyblue.github.io/c3daba8ba04565423e12eb8cb6237b46.html" class="hatena-bookmark-button" data-hatena-bookmark-title="IDCFクラウドで自分だけのHerokuを構築する" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加">
+            <img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+
+    </li>
+        <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+   
+    
+    
+    
+    <li>
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3&appId=387525661451951";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+        <div class="fb-like" data-href="https://muunyblue.github.io/c3daba8ba04565423e12eb8cb6237b46.html" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
+    </li>
+ 
+</ul>    </div>
+
+    <div class="blogroll">
+        <h2><span class="glyphicon glyphicon-pushpin"></span> About</h2>
+        <p>どこにでもいる平凡なプログラムを書く人間のログ。</p>
+    </div><!-- /.blogroll -->
+
+    <div class="category">
+        <h2><span class="glyphicon glyphicon-th-list"></span> Category</h2>
+        <ul>
+			<li>
+				<a href="https://muunyblue.github.io/category/diary.html">
+				    	<span class="glyphicon glyphicon-book" aria-hidden="true" style="color: #0bd566;"></span>
+				    Diary
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/jia.html">
+				    	<span class="glyphicon glyphicon-home" aria-hidden="true" style="color: #f48c39;"></span>
+				    家
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/programming.html">
+				    	<span class="glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+				    Programming
+				</a>
+			</li>
+        </ul>
+    </div>
+
+    <div class="recently">
+        <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
+        <ul>
+			    <li>
+                    <p>2021年 12月16日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/97885afd60c10c4a454c11e225763e04.html">
+                            普通のキーボード写真とBLEの話
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 5月24日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
+                            React Hooks: useReducer & Context API with TypeScript
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 1月23日 午後 09:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/214cfbe603b7f9f9bc005d5f53f7a1d3.html">
+                            普通のTwitter転職
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月22日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/3a1f85dfef891b2a3685ccb35efa807e.html">
+                            Zen Keyboard Build log
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月17日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
+                            Minidoxビルドログ
+                        </a>
+                    </p>
+			    </li>
+        </ul>
+    </div>
+
+    <div class="tags">
+        <h2><span class="glyphicon glyphicon-tags"></span> Tags</h2>
+        <ul>
+                <li><a href="https://muunyblue.github.io/tag/asakatsu.html">Asakatsu</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/btsync.html">btsync</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/c.html">C++</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ci.html">CI</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/cppcheck.html">Cppcheck</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/css.html">CSS</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/github.html">GitHub</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gitlab.html">GitLab</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/go.html">Go</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/gtk.html">Gtk+</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/haskell.html">Haskell</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/hooks.html">Hooks</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/idcf.html">IDCF</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/javascript.html">JavaScript</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/keyboard.html">Keyboard</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/markdown.html">Markdown</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
+                <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/ubuntu.html">Ubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vagrant.html">Vagrant</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vim.html">Vim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/vps.html">VPS</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/zen.html">Zen</a> (1)</li>
+        </ul>
+    </div><!-- /.social -->
+
+    <div class="social">
+        <h2><span class="glyphicon glyphicon-sunglasses"></span> Social</h2>
+        <ul>
+            <li><a href="https://twitter.com/_y_y_m_m_" target="_blank">Twitter</a></li>
+            <li><a href="https://github.com/yymm" target="_blank">Github</a></li>
+            <li><a href="https://bitbucket.org/yymm" target="_blank">Bitbucket</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.atom.xml" target="_blank" type="application/atom+xml" rel="alternate">atom feed</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.rss.xml" target="_blank" type="application/rss+xml" rel="alternate">rss feed</a></li>
+        </ul>
+    </div><!-- /.social -->
+
+            </div><!-- /.bs-component -->
+        </div><!-- /#extras -->
+    </div><!--./container -->
+    <!--Honoka Bootstrap end -->
+
+    <footer id="contentinfo">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <p id="bloginfo"><a href="https://github.com/yymm/MokuMokuBlog" target="_blank" title="This blog"><img id="mokumokublog" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/mokumokublog.ico"></img></a> POWERD BY <a href="https://github.com/getpelican/pelican" target="_blank" title="This blog"><img id="pelican" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/pelican.ico"></img></a> GENERATED BY <a href="https://github.com/yymm/MemoMemo" target="_blank" title="MemoMemo"><img id="memomemo" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/memomemo.ico"></img></a></p>
+                    <p>Copyright <span class="glyphicon glyphicon-copyright-mark"></span> 2018 <a href="https://github.com/yymm" target="_blank">yuya yano</a> All Rights Reserved.</p>
+					<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img id="copyright" alt="クリエイティブ・コモンズ・ライセンス" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a></p>
+                </div><!--./col-xs-12 -->
+            </div><!--./row -->
+        </div><!--./container -->
+    </footer><!-- /#contentinfo -->
+
+<script src="https://muunyblue.github.io/theme/js/jquery.lazyload.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+$(function() {
+	$("img.lazy").lazyload({
+		effect : "fadeIn"
+	});
+});
+</script>
+<script src="https://muunyblue.github.io/theme/js/bootstrap.min.js"></script>
+<script src="https://muunyblue.github.io/theme/js/script.js"></script>
+
+    <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-67688469-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+<script type="text/javascript">
+    var disqus_shortname = 'mokumoku';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+
+<!--
+<!-- PtEngine -->
+<script type="text/javascript">
+	window._pt_sp_2 = [];
+	_pt_sp_2.push('setAccount,3e10d017');
+	var _protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+	(function() {
+		var atag = document.createElement('script'); atag.type = 'text/javascript'; atag.async = true;
+		atag.src = _protocol + 'js.ptengine.jp/pta.js';
+		var stag = document.createElement('script'); stag.type = 'text/javascript'; stag.async = true;
+		stag.src = _protocol + 'js.ptengine.jp/pts.js';
+		var s = document.getElementsByTagName('script')[0]; 
+		s.parentNode.insertBefore(atag, s);s.parentNode.insertBefore(stag, s);
+	})();
+</script>
+-->
+
+</body>
+</html>

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="utf-8" />
+　　　　　　　　<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Vimで始める型付きPython3開発</title>
+    <link rel="shortcut icon" href="https://muunyblue.github.io/theme/img/favicon.ico" >
+
+	<link rel="stylesheet" href="https://muunyblue.github.io/theme/css/main.css" />
+    <link rel="stylesheet" href="https://muunyblue.github.io/theme/css/bootstrap.min.css" />
+
+
+    <link href="https://muunyblue.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="もくもくブログ Atom Feed" />
+    <link href="https://muunyblue.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate" title="もくもくブログ RSS Feed" />
+
+	<script src="https://muunyblue.github.io/theme/js/jquery-2.1.4.min.js"></script>
+
+    <!--[if IE]>
+        <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="google-site-verification" content="ETSvqWJsfDNiXwsK89y7-OqkwM1O7DK9wiAkkA4Vfow" />
+    <link rel="alternate" hreflang="ja" href="http://blog.muuny-blue.info/" />
+</head>
+
+<body class="no-thank-yu">
+    <header id="banner" class="page-header clearfix">
+        <div id="contenthead" class="container">
+			<a href="https://muunyblue.github.io/">
+				<img id="title-logo" src="https://muunyblue.github.io/theme/img/title.png"></img>
+			</a>
+			<img id="look" src="https://muunyblue.github.io/theme/img/2.svg"></img>
+        </div>
+    </header><!-- /#banner -->
+
+    <!--Honoka Bootstrap-->
+    <div class="container">
+        <div id="content" class="row">
+            <div class="bs-component">
+                <div class="col-lg-12">
+  <article>
+    <header>
+      <div class="page-header">
+        <h1 class="entry-title">
+          <a href="https://muunyblue.github.io/6afd3a1bbb557f8e05f45ded7bf96836.html" rel="bookmark"
+             title="Permalink to Vimで始める型付きPython3開発">
+				<span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+            Vimで始める型付きPython3開発
+          </a>
+        </h1>
+      </div>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+<ul>
+    <li class="published" title="2017-01-23T01:48:13+09:00">
+        <span>Date:</span>2017-01-23 月 (午前 01:48:13)
+    </li>
+        <!--<br />-->
+        <li class="modified" title="2017-01-23T01:52:28+09:00">
+            <span>Updated:</span>2017-01-23 月 (午前 01:52:28)
+        </li>
+<li><span>Tags:</span><a href="https://muunyblue.github.io/tag/python.html">Python</a> <a href="https://muunyblue.github.io/tag/vim.html">Vim</a> <a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> </li>
+    <li><span>Category:</span><a href="https://muunyblue.github.io/category/programming.html">Programming</a></li>
+</ul>
+</footer><!-- /.post-info -->      <p><img alt="" src="https://i.gyazo.com/675774830708de1e6282eaa2ecc577dd.gif"></p>
+<p>型付きPythonは静的型解析ツールであるmypyによる検査と、jediによる補完が効くという開発に役立つ便利な恩恵があります。</p>
+<p>実行時には(まだ)型の恩恵はないですが始めるには十分な恩恵だと感じたので始めてみました。</p>
+<hr>
+<p>venvとmypyを使うので、Python3と言ってもPython3.5(現在の最新版)を使います。</p>
+<p>スタイルチェックにはflake8を使用します。</p>
+<h1>Vim(Neovim)の準備</h1>
+<div class="highlight"><pre><span></span><code>:echo has(&#39;python&#39;)
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>:echo has(&#39;python3&#39;)
+</code></pre></div>
+
+<p>コマンドが1を返すことを確認します。もし0の場合は、Pythonを有効にします(有効にする方法は"vim python 有効"で検索)。</p>
+<h1>Python3.5のインストール</h1>
+<p>※Python3.6も出るみたいなので適宜その時の最新版をインストールしてください</p>
+<p>パッケージマネージャーでインストールするとPython3.5が入って便利かつ簡単です。</p>
+<p>macOS</p>
+<div class="highlight"><pre><span></span><code>$ brew install python3
+$ python3 --version
+<span class="m">3</span>.5.2
+</code></pre></div>
+
+<p>ubuntu16.04</p>
+<div class="highlight"><pre><span></span><code><span class="c">% sudo apt-get install python3</span><span class="w"></span>
+<span class="c">% python3 --version</span><span class="w"></span>
+</code></pre></div>
+
+<p>Windows</p>
+<p>パッケージマネージャがあるのかもしれませんが詳しくないので、インストーラからPython3.5をインストールします。</p>
+<h1>必要なパッケージのインストール</h1>
+<p>UbuntuとWindowsでは管理者権限が必要になるので、それぞれsudoをつける、管理者権限でcmdを起動してください。</p>
+<div class="highlight"><pre><span></span><code>$ pip3 install -U flake8 mypy-lang jedi
+</code></pre></div>
+
+<p>それぞれ</p>
+<ul>
+<li>flake8はスタイルチェッカー</li>
+<li>mypyは静的型解析</li>
+<li>jediは補完エンジン</li>
+</ul>
+<p>です。</p>
+<p>mypyは型付きPythonに必須のツールです。</p>
+<p><a href="https://github.com/python/mypy" title="python/mypy: Optional static typing for Python 2 and 3 (PEP484)">python/mypy: Optional static typing for Python 2 and 3 (PEP484)</a></p>
+<p>後述するsyntasticやneomakeと組み合わせて使うとファイル編集時に型チェックができてとても良いです。</p>
+<p><a href="https://github.com/python/typeshed" title="python/typeshed: Collection of library stubs for Python, with static types">typeshed</a>にてライブラリや3rd-partyパッケージの型にも対応しようとしていて今後の発展に注目です。</p>
+<p>(たとえばFlaskは現在対応中のようです(help wanted by Guido...) =&gt; <a href="https://github.com/python/typeshed/issues/28" title="Stub for flask · Issue #28 · python/typeshed">Stub for flask · Issue #28 · python/typeshed</a>)</p>
+<p>次にflake8ですが、スタイルチェッカーにはpylintやhackingなどがありますがflake8を選びました。理由は、</p>
+<ul>
+<li>flake8で十分と感じた</li>
+<li>flake8だけでも割りと遅いので併用したくない</li>
+</ul>
+<p>ということでflake8単体で使っています。</p>
+<p>しかもsyntasticを使用した場合、非同期に実行されないのでスタイルチェッカーが重いと結構なストレスになりそうです。</p>
+<h1>環境構築(venv)</h1>
+<p>デフォルトでvenvが同梱されているのでそちらを使います。</p>
+<div class="highlight"><pre><span></span><code>$ mkdir progect
+$ pyvenv project
+$ <span class="nb">cd</span> project
+$ <span class="nb">source</span> bin/activate
+</code></pre></div>
+
+<p>!!! warning
+    activateファイルにfishスクリプトも用意されているのですが、"$(var)"を使っていてエラーになるので該当部分を"(var)"に修正すれば動きます。</p>
+<p>pyvenvコマンドをすると色々ファイルが作られるのでgitignoreしたくなります。</p>
+<p>GitHub公式のgitignoreを使うと良いです。</p>
+<ul>
+<li><a href="https://github.com/github/gitignore/blob/master/Python.gitignore" title="gitignore/Python.gitignore at master · github/gitignore">gitignore/Python.gitignore at master · github/gitignore</a></li>
+<li><a href="https://github.com/github/gitignore/blob/master/Global/VirtualEnv.gitignore" title="gitignore/VirtualEnv.gitignore at master · github/gitignore">gitignore/VirtualEnv.gitignore at master · github/gitignore</a></li>
+</ul>
+<p>この2つを組み合わせればPythonのgitignoreは多くのケースで十分そうです。</p>
+<p>後者の方は<a href="http://qiita.com/katsew/items/5cade12fa743a2f31f25" title="グローバルで.gitignoreを適応する - Qiita">Globalのgitignore</a>に入れると良いようです。</p>
+<h1>Neovim/Vimの設定</h1>
+<p>flake8とmypyのスタイルチェックをSyntasticまたはNeomakeで行い、jediで補完します。</p>
+<p><img alt="" src="https://i.gyazo.com/ed444e6bcf1f5b7071eff9cfbf76601e.png"></p>
+<h2>型チェック &amp; スタイルチェック</h2>
+<p><a href="https://github.com/vim-syntastic/syntastic" title="vim-syntastic/syntastic: Syntax checking hacks for vim">syntastic</a>または<a href="https://github.com/neomake/neomake" title="neomake/neomake: Async :make and linting framework for Neovim/Vim">neomake</a>を使って、ファイル保存時にチェックします。</p>
+<p>インストール方法は各プラグインマネージャなどに従って下さい。</p>
+<p>Python用の設定は以下のように書きます。</p>
+<p>syntastic↓</p>
+<div class="highlight"><pre><span></span><code>let g:syntastic_python_checkers = [&#39;python&#39;, &#39;flake8&#39;, &#39;mypy&#39;]
+</code></pre></div>
+
+<p>neomake↓</p>
+<div class="highlight"><pre><span></span><code>let g:neomake_python_enabled_makers = [&#39;python&#39;, &#39;flake8&#39;, &#39;mypy&#39;]
+</code></pre></div>
+
+<p>参考までに私の設定です。プラグインマネージャにはdein.vimを使ってtomlファイルでプラグインを管理しています、Neovimのときはneomake、Vimのときはsyntasticを使っています。</p>
+<p>(neomakeはNeovim専用ではなくVim8.0.0027以降であれば使えます)</p>
+<div class="highlight"><pre><span></span><code><span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;neomake/neomake&#39;</span>
+<span class="na">if</span> <span class="o">=</span> <span class="s">&quot;has(&#39;nvim&#39;)&quot;</span>
+<span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="na">autocmd! BufEnter,BufWritePost * Neomake</span>
+<span class="na">let g:neomake_python_enabled_makers</span> <span class="o">=</span> <span class="s">[&#39;python&#39;, &#39;flake8&#39;, &#39;mypy&#39;]</span>
+<span class="na">&#39;&#39;&#39;</span>
+
+<span class="k">[[plugins]]</span>
+<span class="na">repo</span> <span class="o">=</span> <span class="s">&#39;vim-syntastic/syntastic&#39;</span>
+<span class="na">if</span> <span class="o">=</span> <span class="s">&quot;!has(&#39;nvim&#39;)&quot;</span>
+<span class="na">hook_add</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="na">let g:syntastic_always_populate_loc_list</span> <span class="o">=</span> <span class="s">1</span>
+<span class="na">let g:syntastic_check_on_open</span> <span class="o">=</span> <span class="s">1</span>
+<span class="na">let g:syntastic_check_on_wq</span> <span class="o">=</span> <span class="s">0</span>
+<span class="na">&quot; for Python</span>
+<span class="na">let g:syntastic_python_checkers</span> <span class="o">=</span> <span class="s">[&#39;python&#39;, &#39;flake8&#39;, &#39;mypy&#39;]</span>
+<span class="na">&#39;&#39;&#39;</span>
+</code></pre></div>
+
+<h2>補完</h2>
+<p>jediをneocomplete.vimとdeoplete.nvimから利用する方法を紹介します。</p>
+<p>jediはType Hintsがついてると型に応じてメソッド名などを補完するのでかなり便利です。</p>
+<p><img alt="" src="https://i.gyazo.com/675774830708de1e6282eaa2ecc577dd.gif"></p>
+<p>neocomplete.vimとdeoplete.nvimのインストール方法については省略します。</p>
+<h3>neocomplete.vim</h3>
+<p><a href="https://github.com/davidhalter/jedi-vim" title="davidhalter/jedi-vim: Using the jedi autocompletion library for VIM.">davidhalter/jedi-vim: Using the jedi autocompletion library for VIM.</a>をプラグインを追加して以下の設定をします。</p>
+<div class="highlight"><pre><span></span><code><span class="n">autocmd</span> <span class="n">FileType</span> <span class="n">python</span> <span class="n">setlocal</span> <span class="n">omnifunc</span><span class="o">=</span><span class="n">jedi</span><span class="c1">#completions</span>
+<span class="n">let</span> <span class="n">g</span><span class="p">:</span><span class="n">jedi</span><span class="c1">#completions_enabled = 0</span>
+<span class="n">let</span> <span class="n">g</span><span class="p">:</span><span class="n">jedi</span><span class="c1">#auto_vim_configuration = 0</span>
+<span class="n">let</span> <span class="n">g</span><span class="p">:</span><span class="n">neocomplete</span><span class="c1">#force_omni_input_patterns.python = &#39;\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*&#39;</span>
+</code></pre></div>
+
+<p>参考: <a href="http://kozo2.hatenablog.com/entry/2014/01/22/050714" title="jedi-vimとneocomplete.vimを併用する際に行っておきたい設定 - kozo2's blog">jedi-vimとneocomplete.vimを併用する際に行っておきたい設定 - kozo2's blog</a></p>
+<h3>deoplete.nvim</h3>
+<p><a href="https://github.com/zchee/deoplete-jedi" title="zchee/deoplete-jedi: deoplete.nvim source for Python">zchee/deoplete-jedi: deoplete.nvim source for Python</a>をプラグインに追加します。</p>
+<p>venvを使うのでグローバルにインストールされているPythonへのパスの設定が必要です。</p>
+<div class="highlight"><pre><span></span><code>let g:python_host_prog = &#39;/full/path/to/neovim2/bin/python&#39;
+let g:python3_host_prog = &#39;/full/path/to/neovim3/bin/python&#39;
+</code></pre></div>
+
+<h3>Previewが邪魔な人向け</h3>
+<p>jediを使っているとPreviewがでてきて邪魔という方が多く見受けられます、Vimの機能なのでVim側の設定で変えられます。</p>
+<p><a href="https://github.com/Shougo/deoplete.nvim/issues/298" title="Leave the preview window always closed · Issue #298 · Shougo/deoplete.nvim">Previewを出さない</a></p>
+<div class="highlight"><pre><span></span><code>set completeopt-=preview
+</code></pre></div>
+
+<p><a href="https://github.com/Shougo/deoplete.nvim/issues/115" title="Close preview window after completion? · Issue #115 · Shougo/deoplete.nvim">補完終了時に自動で閉じる</a></p>
+<div class="highlight"><pre><span></span><code><span class="nv">autocmd</span> <span class="nv">InsertLeave</span>,<span class="nv">CompleteDone</span> <span class="o">*</span> <span class="k">if</span> <span class="nv">pumvisible</span><span class="ss">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">|</span> <span class="nv">pclose</span> <span class="o">|</span> <span class="k">endif</span>
+</code></pre></div>
+
+<p>など良い感じに設定すると良いです。</p>
+<h1>まとめ</h1>
+<p>型の恩恵は実行時には(まだ)ないですが、静的型チェッカー(mypy)、jediによる補完と開発に置ける恩恵はなかなかのものだと思うのでおすすめです。</p>
+<p>紹介した方法は新しいPython1つしかインストールしてないので、古いバージョンでのデバック作業などが必要になった場合に困りそうですがそれはまた必要になってから考えようかと思ってます。とりあえず現状はCIするときにtoxで各バージョンのテストを走らせることで確認しています。</p>
+    </div><!-- /.entry-content -->
+
+    <div class="article-ad">
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- responsive -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-8481391240785119"
+           data-ad-slot="3238871784"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <div class="comments">
+      <div id="disqus-toggle">
+          <h3>Show comments <span class="glyphicon glyphicon-comment"></span></h3>
+      </div>
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        $("#disqus-toggle").click(function(){
+          var disqus_shortname = 'mokumoku';
+          var disqus_identifier = '6afd3a1bbb557f8e05f45ded7bf96836.html';
+          var disqus_url = 'https://muunyblue.github.io/6afd3a1bbb557f8e05f45ded7bf96836.html';
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//mokumoku.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          $("#disqus-toggle").remove();
+        });
+      </script>
+      <noscript>Please enable JavaScript to view the comments.</noscript>
+    </div>
+
+  </article>
+                </div><!-- /.col-lg-12 -->
+            </div><!-- /.bs-component -->
+        </div>
+        <div id="extras" class="row">
+            <div class="bs-component">
+<div class="extras-ad">
+    <h2><span class="glyphicon glyphicon-object-align-left"></span> Adsense</h2>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- small_square -->
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:200px;height:200px"
+         data-ad-client="ca-pub-8481391240785119"
+         data-ad-slot="9438651388"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</div>
+
+    <div class="sns">
+        <h2><span class="glyphicon glyphicon-share"></span> Share</h2>
+<ul>
+    <li>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="_y_y_m_m_">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+    </li>
+    
+    <li>
+        <a href="http://b.hatena.ne.jp/entry/https://muunyblue.github.io/6afd3a1bbb557f8e05f45ded7bf96836.html" class="hatena-bookmark-button" data-hatena-bookmark-title="Vimで始める型付きPython3開発" data-hatena-bookmark-layout="standard-balloon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加">
+            <img src="https://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a>
+
+    </li>
+        <script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+   
+    
+    
+    
+    <li>
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.3&appId=387525661451951";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+        <div class="fb-like" data-href="https://muunyblue.github.io/6afd3a1bbb557f8e05f45ded7bf96836.html" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
+    </li>
+ 
+</ul>    </div>
+
+    <div class="blogroll">
+        <h2><span class="glyphicon glyphicon-pushpin"></span> About</h2>
+        <p>どこにでもいる平凡なプログラムを書く人間のログ。</p>
+    </div><!-- /.blogroll -->
+
+    <div class="category">
+        <h2><span class="glyphicon glyphicon-th-list"></span> Category</h2>
+        <ul>
+			<li>
+				<a href="https://muunyblue.github.io/category/diary.html">
+				    	<span class="glyphicon glyphicon-book" aria-hidden="true" style="color: #0bd566;"></span>
+				    Diary
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/jia.html">
+				    	<span class="glyphicon glyphicon-home" aria-hidden="true" style="color: #f48c39;"></span>
+				    家
+				</a>
+			</li>
+			<li>
+				<a href="https://muunyblue.github.io/category/programming.html">
+				    	<span class="glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+				    Programming
+				</a>
+			</li>
+        </ul>
+    </div>
+
+    <div class="recently">
+        <h2><span class="glyphicon glyphicon-bullhorn"></span> Recently</h2>
+        <ul>
+			    <li>
+                    <p>2021年 12月16日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/97885afd60c10c4a454c11e225763e04.html">
+                            普通のキーボード写真とBLEの話
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 5月24日 午前 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/8eb51d0a68e9373df41f88e5b551d4a3.html">
+                            React Hooks: useReducer & Context API with TypeScript
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2019年 1月23日 午後 09:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/214cfbe603b7f9f9bc005d5f53f7a1d3.html">
+                            普通のTwitter転職
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月22日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/3a1f85dfef891b2a3685ccb35efa807e.html">
+                            Zen Keyboard Build log
+                        </a>
+                    </p>
+			    </li>
+			    <li>
+                    <p>2018年 8月17日 午後 01:41<br />
+			    	        <span class="icon-category glyphicon glyphicon-console" aria-hidden="true" style="color: #555;"></span>
+                        <a href="https://muunyblue.github.io/4bfbd52f4e8466dc12aaf30b7e057b66.html">
+                            Minidoxビルドログ
+                        </a>
+                    </p>
+			    </li>
+        </ul>
+    </div>
+
+    <div class="tags">
+        <h2><span class="glyphicon glyphicon-tags"></span> Tags</h2>
+        <ul>
+                <li><a href="https://muunyblue.github.io/tag/asakatsu.html">Asakatsu</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/btsync.html">btsync</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/c.html">C++</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ci.html">CI</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/cppcheck.html">Cppcheck</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/css.html">CSS</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker.html">Docker</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/docker-compose.html">docker-compose</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/dokku.html">Dokku</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/ergodox.html">ErgoDox</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/fish.html">fish</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/flask.html">Flask</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gentoo.html">Gentoo</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/github.html">GitHub</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/gitlab.html">GitLab</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/go.html">Go</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/gtk.html">Gtk+</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/haskell.html">Haskell</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/hooks.html">Hooks</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/idcf.html">IDCF</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/javascript.html">JavaScript</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/keyboard.html">Keyboard</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/markdown.html">Markdown</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/minidox.html">Minidox</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/neovim.html">Neovim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/nodejs.html">Node.js</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/pelican.html">Pelican</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/poem.html">Poem</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/programminglanguage.html">ProgrammingLanguage</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/python.html">Python</a> (12)</li>
+                <li><a href="https://muunyblue.github.io/tag/react.html">React</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/rust.html">Rust</a> (6)</li>
+                <li><a href="https://muunyblue.github.io/tag/sushicorp.html">SushiCorp</a> (3)</li>
+                <li><a href="https://muunyblue.github.io/tag/swift.html">Swift</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/threejs.html">Three.js</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/typescript.html">TypeScript</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/ubuntu.html">Ubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vagrant.html">Vagrant</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vim.html">Vim</a> (5)</li>
+                <li><a href="https://muunyblue.github.io/tag/vps.html">VPS</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vscode.html">VSCode</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/vue.html">Vue</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/vuejs.html">Vue.js</a> (4)</li>
+                <li><a href="https://muunyblue.github.io/tag/webassembly.html">WebAssembly</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/webgl.html">WebGL</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/windows.html">Windows</a> (1)</li>
+                <li><a href="https://muunyblue.github.io/tag/xubuntu.html">Xubuntu</a> (2)</li>
+                <li><a href="https://muunyblue.github.io/tag/zen.html">Zen</a> (1)</li>
+        </ul>
+    </div><!-- /.social -->
+
+    <div class="social">
+        <h2><span class="glyphicon glyphicon-sunglasses"></span> Social</h2>
+        <ul>
+            <li><a href="https://twitter.com/_y_y_m_m_" target="_blank">Twitter</a></li>
+            <li><a href="https://github.com/yymm" target="_blank">Github</a></li>
+            <li><a href="https://bitbucket.org/yymm" target="_blank">Bitbucket</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.atom.xml" target="_blank" type="application/atom+xml" rel="alternate">atom feed</a></li>
+            <li><a href="https://muunyblue.github.io/feeds/all.rss.xml" target="_blank" type="application/rss+xml" rel="alternate">rss feed</a></li>
+        </ul>
+    </div><!-- /.social -->
+
+            </div><!-- /.bs-component -->
+        </div><!-- /#extras -->
+    </div><!--./container -->
+    <!--Honoka Bootstrap end -->
+
+    <footer id="contentinfo">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <p id="bloginfo"><a href="https://github.com/yymm/MokuMokuBlog" target="_blank" title="This blog"><img id="mokumokublog" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/mokumokublog.ico"></img></a> POWERD BY <a href="https://github.com/getpelican/pelican" target="_blank" title="This blog"><img id="pelican" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/pelican.ico"></img></a> GENERATED BY <a href="https://github.com/yymm/MemoMemo" target="_blank" title="MemoMemo"><img id="memomemo" class="bloginfo-icon" src="https://muunyblue.github.io/theme/img/memomemo.ico"></img></a></p>
+                    <p>Copyright <span class="glyphicon glyphicon-copyright-mark"></span> 2018 <a href="https://github.com/yymm" target="_blank">yuya yano</a> All Rights Reserved.</p>
+					<p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img id="copyright" alt="クリエイティブ・コモンズ・ライセンス" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a></p>
+                </div><!--./col-xs-12 -->
+            </div><!--./row -->
+        </div><!--./container -->
+    </footer><!-- /#contentinfo -->
+
+<script src="https://muunyblue.github.io/theme/js/jquery.lazyload.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+$(function() {
+	$("img.lazy").lazyload({
+		effect : "fadeIn"
+	});
+});
+</script>
+<script src="https://muunyblue.github.io/theme/js/bootstrap.min.js"></script>
+<script src="https://muunyblue.github.io/theme/js/script.js"></script>
+
+    <script type="text/javascript">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-67688469-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+<script type="text/javascript">
+    var disqus_shortname = 'mokumoku';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+
+<!--
+<!-- PtEngine -->
+<script type="text/javascript">
+	window._pt_sp_2 = [];
+	_pt_sp_2.push('setAccount,3e10d017');
+	var _protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+	(function() {
+		var atag = document.createElement('script'); atag.type = 'text/javascript'; atag.async = true;
+		atag.src = _protocol + 'js.ptengine.jp/pta.js';
+		var stag = document.createElement('script'); stag.type = 'text/javascript'; stag.async = true;
+		stag.src = _protocol + 'js.ptengine.jp/pts.js';
+		var s = document.getElementsByTagName('script')[0]; 
+		s.parentNode.insertBefore(atag, s);s.parentNode.insertBefore(stag, s);
+	})();
+</script>
+-->
+
+</body>
+</html>
